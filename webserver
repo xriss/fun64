@@ -1,0 +1,5 @@
+# if you have python installed, this probably works and you probably have python installed...
+
+python -m SimpleHTTPServer
+
+
