@@ -22,18 +22,17 @@ hardware={
 		filter="scanline",
 		scale=ss,
 		fps=60,
+		drawlist={ -- draw components with a 1 pix *merged* drop shadow
+			{ color={0,0,0,0.5} , dx=1 , dy=1 },
+			{ color={0,0,0,0.5} , dx=2 , dy=2 },
+			{ color={1,1,1,1  } , dx=0 , dy=0 },
+		}
 	},
 	{
 		component="tiles",
 		name="tiles",
 		tile_size={8,8},
-		bitmap_size={16,16},
-	},
-	{
-		component="tiles",
-		name="font",
-		tile_size={4,8},
-		bitmap_size={128,1},
+		bitmap_size={64,16},
 	},
 	{
 		component="copper",
@@ -54,7 +53,8 @@ hardware={
 	{
 		component="tilemap",
 		name="text",
-		tiles="font",
+		tiles="tiles",
+		tile_size={4,8}, -- use half width tiles for font
 		tilemap_size={math.ceil(hx/4),math.ceil(hy/8)},
 	},
 }
@@ -71,34 +71,34 @@ end
 
 
 local tilemap={
-	[0]={0,0,0,0},
+	[0]={0,1,0,0},
 
-	[". "]={  0,  0,  0,  0},
-	["1 "]={  1,  0,  0,  0,	solid=1},
-	["2 "]={  2,  0,  0,  0,	solid=1,dense=1},
-	["3 "]={  3,  0,  0,  0,	solid=0},
+	[". "]={  0,  1,  0,  0},
+	["1 "]={  1,  1,  0,  0,	solid=1},
+	["2 "]={  2,  1,  0,  0,	solid=1,dense=1},
+	["3 "]={  3,  1,  0,  0,	solid=0},
 
-	["X "]={  4,  0,  0,  0,	deadly=1},
-	["5 "]={  5,  0,  0,  0,	solid=1},
-	["6 "]={  6,  0,  0,  0,	solid=1},
-	["7 "]={  7,  0,  0,  0,	solid=1},
-	["8 "]={  8,  0,  0,  0,	solid=1},
-	["9 "]={  9,  0,  0,  0,	solid=1},
-	["A "]={ 10,  0,  0,  0,	solid=1},
-	["B "]={ 11,  0,  0,  0,	solid=1},
-	["C "]={ 12,  0,  0,  0,	solid=1},
-	["D "]={ 13,  0,  0,  0,	solid=1},
-	["E "]={ 14,  0,  0,  0,	solid=1},
-	["F "]={ 15,  0,  0,  0,	solid=1},
+	["X "]={  4,  1,  0,  0,	deadly=1},
+	["5 "]={  5,  1,  0,  0,	solid=1},
+	["6 "]={  6,  1,  0,  0,	solid=1},
+	["7 "]={  7,  1,  0,  0,	solid=1},
+	["8 "]={  8,  1,  0,  0,	solid=1},
+	["9 "]={  9,  1,  0,  0,	solid=1},
+	["A "]={ 10,  1,  0,  0,	solid=1},
+	["B "]={ 11,  1,  0,  0,	solid=1},
+	["C "]={ 12,  1,  0,  0,	solid=1},
+	["D "]={ 13,  1,  0,  0,	solid=1},
+	["E "]={ 14,  1,  0,  0,	solid=1},
+	["F "]={ 15,  1,  0,  0,	solid=1},
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
-	["$ "]={  0,  0,  0,  0,	loot=1},
-	["? "]={  0,  0,  0,  0,	item=1},
-	["S "]={  0,  0,  0,  0,	"start"},
+	["$ "]={  0,  1,  0,  0,	loot=1},
+	["? "]={  0,  1,  0,  0,	item=1},
+	["S "]={  0,  1,  0,  0,	"start"},
 }
 
 
-set_tile_name(0x0000,"char_empty",[[
+set_tile_name(0x0100,"char_empty",[[
 . . . . . . . . 
 . . . . . . . . 
 . . . . . . . . 
@@ -108,7 +108,7 @@ set_tile_name(0x0000,"char_empty",[[
 . . . . . . . . 
 . . . . . . . . 
 ]])
-set_tile_name(0x0001,"char_wall",[[
+set_tile_name(0x0101,"char_wall",[[
 O O R R R R O O 
 O O R R R R O O 
 r r r r o o o o 
@@ -118,7 +118,7 @@ R R O O O O R R
 o o o o r r r r 
 o o o o r r r r 
 ]])
-set_tile_name(0x0002,"char_black",[[
+set_tile_name(0x0102,"char_black",[[
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
@@ -128,7 +128,7 @@ set_tile_name(0x0002,"char_black",[[
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
 ]])
-set_tile_name(0x0003,"char_box",[[
+set_tile_name(0x0103,"char_box",[[
 7 7 7 7 7 7 7 7 
 7 0 0 0 0 0 0 7 
 7 0 0 0 0 0 0 7 
@@ -138,7 +138,7 @@ set_tile_name(0x0003,"char_box",[[
 7 0 0 0 0 0 0 7 
 7 7 7 7 7 7 7 7 
 ]])
-set_tile_name(0x0004,"char_spike",[[
+set_tile_name(0x0104,"char_spike",[[
 R R 7 7 7 7 R R 
 R R 7 7 7 7 R R 
 . R R 7 7 R R . 
@@ -148,7 +148,7 @@ R R 7 7 7 7 R R
 . . . R R . . . 
 . . . R R . . . 
 ]])
-set_tile_name(0x0100,"char_0100",[[
+set_tile_name(0x0105,"char_0100",[[
 . . Y Y Y Y . . 
 . Y Y Y Y Y Y . 
 Y Y Y Y Y Y Y Y 
@@ -158,7 +158,7 @@ Y Y Y Y Y Y Y Y
 . Y Y Y Y Y Y . 
 . . Y Y Y Y . . 
 ]])
-set_tile_name(0x0101,"char_0101",[[
+set_tile_name(0x0106,"char_0101",[[
 . . . . . . . . 
 . . Y Y Y Y . . 
 . Y Y 0 0 Y Y . 
@@ -412,17 +412,18 @@ function main(need)
 
 -- cache components in locals for less typing
 	local ctiles   = system.components.tiles
-	local cfont    = system.components.font
 	local ccopper  = system.components.copper
 	local cmap     = system.components.map
 	local csprites = system.components.sprites
 	local ctext    = system.components.text
 
+	ctext.py=0
+	
 --	ccopper.shader_name="fun_copper_back_noise"
 
 
 -- copy font data
-	cfont.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
+	ctiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
 
 -- copy image data
 	bitdown.pixtab_tiles( tiles,    bitdown.cmap, ctiles   )
@@ -677,6 +678,7 @@ function main(need)
 			p.active=true
 			p.body=space:body(1,math.huge)
 			p.body:position(px,py)
+			p.body:velocity(vx,vy)
 			p.body.headroom={}
 			
 			p.body:velocity_func(function(body)
@@ -717,7 +719,10 @@ function main(need)
 		end
 		
 	end
-	
+
+-- save png test
+--system.save_fun_png()
+
 -- after setup we should yield and then perform updates only if requested from yield
 	local done=false while not done do
 		need=coroutine.yield()
@@ -747,26 +752,28 @@ function main(need)
 				end
 				
 				if p.bubble_active then
+				
+					local px,py=p.bubble_body:position()
 
 					if up.button("left") then
 						
-						p.bubble_body:apply_force(-120,0,0,0)
+						p.bubble_body:apply_force(-120,0,px,py,"world")
 						p.dir=-1
 						p.frame=p.frame+1
 						
 					elseif  up.button("right") then
 
-						p.bubble_body:apply_force(120,0,0,0)
+						p.bubble_body:apply_force(120,0,px,py,"world")
 						p.dir= 1
 						p.frame=p.frame+1
 
 					elseif up.button("up") then
 						
-						p.bubble_body:apply_force(0,-120,0,0)
+						p.bubble_body:apply_force(0,-120,px,py,"world")
 						
 					elseif  up.button("down") then
 
-						p.bubble_body:apply_force(0,120,0,0)
+						p.bubble_body:apply_force(0,120,px,py,"world")
 
 					end
 
@@ -885,7 +892,7 @@ function main(need)
 					p.frame=p.frame%16
 					local t=p.frames[1+math.floor(p.frame/4)]
 					
-					csprites.list_add({t=t,h=24,px=px,py=py,sx=(p.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,r=p.color.r,g=p.color.g,b=p.color.b,a=p.color.a})
+					csprites.list_add({t=t,h=24,px=px,py=py,sx=(p.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=p.color})
 					
 					csprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
 
@@ -895,7 +902,7 @@ function main(need)
 					p.frame=p.frame%16
 					local t=p.frames[1+math.floor(p.frame/4)]
 					
-					csprites.list_add({t=t,h=24,px=px,py=py,sx=p.dir,sy=1,rz=180*rz/math.pi,r=p.color.r,g=p.color.g,b=p.color.b,a=p.color.a})
+					csprites.list_add({t=t,h=24,px=px,py=py,sx=p.dir,sy=1,rz=180*rz/math.pi,color=p.color})
 
 
 					local s=string.format("%d",p.score)
@@ -908,12 +915,7 @@ function main(need)
 					local px,py=item.body:position()
 					local rz=item.body:angle()
 --					rz=0
-					csprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,
-						r=item.color and item.color.r,
-						g=item.color and item.color.g,
-						b=item.color and item.color.b,
-						a=item.color and item.color.a,
-						})
+					csprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
 				end
 			end
 			local remain=0
