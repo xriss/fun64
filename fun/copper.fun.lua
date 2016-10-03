@@ -21,6 +21,10 @@ hardware={
 		fps=60,
 	},
 	{
+		component="colors",
+		cmap=bitdown.cmap, -- swanky32 palette
+	},
+	{
 		component="tiles",
 		name="tiles",
 		tile_size={8,8},

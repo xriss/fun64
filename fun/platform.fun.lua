@@ -13,6 +13,8 @@ local chipmunk=require("wetgenes.chipmunk")
 local hx,hy,ss=424,240,3
 local fps=60
 
+local cmap=bitdown.cmap -- use default swanky32 colors
+
 --request this hardware setup before calling main
 hardware={
 	{
@@ -22,11 +24,15 @@ hardware={
 		filter="scanline",
 		scale=ss,
 		fps=60,
-		drawlist={ -- draw components with a 1 pix *merged* drop shadow
+		drawlist={ -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={0,0,0,0.5} , dx=2 , dy=2 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
 		}
+	},
+	{
+		component="colors",
+		cmap=cmap, -- swanky32 palette
 	},
 	{
 		component="tiles",
@@ -38,17 +44,20 @@ hardware={
 		component="copper",
 		name="copper",
 		size={hx,hy},
+		drawtype="first",
 	},
 	{
 		component="tilemap",
 		name="map",
 		tiles="tiles",
 		tilemap_size={math.ceil(hx/8),math.ceil(hy/8)},
+		drawtype="merge",
 	},
 	{
 		component="sprites",
 		name="sprites",
 		tiles="tiles",
+		drawtype="merge",
 	},
 	{
 		component="tilemap",
@@ -56,6 +65,12 @@ hardware={
 		tiles="tiles",
 		tile_size={4,8}, -- use half width tiles for font
 		tilemap_size={math.ceil(hx/4),math.ceil(hy/8)},
+		drawtype="last",
+		drawlist={ -- draw components with a 2 pix *merged* drop shadow
+			{ color={0,0,0,0.5} , dx=1 , dy=1 },
+			{ color={0,0,0,0.5} , dx=2 , dy=2 },
+			{ color={1,1,1,1  } , dx=0 , dy=0 },
+		}
 	},
 }
 
@@ -69,32 +84,31 @@ local set_tile_name=function(tile,name,data)
 	tiles[tile]=data
 end
 
-
 local tilemap={
 	[0]={0,1,0,0},
 
-	[". "]={  0,  1,  0,  0},
-	["1 "]={  1,  1,  0,  0,	solid=1},
-	["2 "]={  2,  1,  0,  0,	solid=1,dense=1},
-	["3 "]={  3,  1,  0,  0,	solid=0},
+	[". "]={  0,  1,  31,  0},
+	["1 "]={  1,  1,  31,  0,	solid=1},
+	["2 "]={  2,  1,  31,  0,	solid=1,dense=1},
+	["3 "]={  3,  1,  31,  0,	solid=0},
 
-	["X "]={  4,  1,  0,  0,	deadly=1},
-	["5 "]={  5,  1,  0,  0,	solid=1},
-	["6 "]={  6,  1,  0,  0,	solid=1},
-	["7 "]={  7,  1,  0,  0,	solid=1},
-	["8 "]={  8,  1,  0,  0,	solid=1},
-	["9 "]={  9,  1,  0,  0,	solid=1},
-	["A "]={ 10,  1,  0,  0,	solid=1},
-	["B "]={ 11,  1,  0,  0,	solid=1},
-	["C "]={ 12,  1,  0,  0,	solid=1},
-	["D "]={ 13,  1,  0,  0,	solid=1},
-	["E "]={ 14,  1,  0,  0,	solid=1},
-	["F "]={ 15,  1,  0,  0,	solid=1},
+	["X "]={  4,  1,  31,  0,	deadly=1},
+	["5 "]={  5,  1,  31,  0,	solid=1},
+	["6 "]={  6,  1,  31,  0,	solid=1},
+	["7 "]={  7,  1,  31,  0,	solid=1},
+	["8 "]={  8,  1,  31,  0,	solid=1},
+	["9 "]={  9,  1,  31,  0,	solid=1},
+	["A "]={ 10,  1,  31,  0,	solid=1},
+	["B "]={ 11,  1,  31,  0,	solid=1},
+	["C "]={ 12,  1,  31,  0,	solid=1},
+	["D "]={ 13,  1,  31,  0,	solid=1},
+	["E "]={ 14,  1,  31,  0,	solid=1},
+	["F "]={ 15,  1,  31,  0,	solid=1},
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
-	["$ "]={  0,  1,  0,  0,	loot=1},
-	["? "]={  0,  1,  0,  0,	item=1},
-	["S "]={  0,  1,  0,  0,	"start"},
+	["$ "]={  0,  1,  31,  0,	loot=1},
+	["? "]={  0,  1,  31,  0,	item=1},
+	["S "]={  0,  1,  31,  0,	"start"},
 }
 
 
@@ -627,14 +641,15 @@ function main(need)
 		p.idx=i
 		p.score=0
 		
-		local t=bitdown.map[ players_colors[i] ]
+		local t=bitdown.cmap[ players_colors[i] ]
 		p.color={}
 		p.color.r=t[1]/255
 		p.color.g=t[2]/255
 		p.color.b=t[3]/255
 		p.color.a=t[4]/255
+		p.color.idx=players_colors[i]
 		
-		p.up_text_x=math.ceil( (ctext.tilemap_hx/8)*( i>3 and i+1 or i ) )
+		p.up_text_x=math.ceil( (ctext.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
 
 		p.frame=0
 		p.frames={0x0200,0x0203,0x0200,0x0206}
@@ -719,6 +734,8 @@ function main(need)
 		end
 		
 	end
+	
+	ups(1).touch="left_right" -- request this touch control scheme for player 0 only
 
 -- save png test
 --system.save_fun_png()
@@ -730,6 +747,19 @@ function main(need)
 		
 			for _,p in ipairs(players) do
 				local up=ups(p.idx) -- the controls for this player
+				
+				p.move=false
+				p.jump=up.button("fire") -- right
+				if up.button("left") and up.button("right") then -- jump
+					p.move=p.move_last
+					p.jump=true
+				elseif up.button("left") then -- left
+					p.move_last="left"
+					p.move="left"
+				elseif up.button("right") then -- right
+					p.move_last="right"
+					p.move="right"
+				end
 				
 				if p.call then -- a callback requested
 					p[p.call](p)
@@ -744,7 +774,7 @@ function main(need)
 
 				if p.bubble_active then
 					if not p.active then
-						if not p.joined and up.button("fire") then -- first join is free
+						if not p.joined and p.jump then -- first join is free
 							p.joined=true
 							p:join() -- join for real and remove bubble
 						end
@@ -790,7 +820,7 @@ function main(need)
 
 						p.shape:friction(1)
 
-						if --[[up.button("up") or]] up.button("fire") then
+						if p.jump then
 
 							local vx,vy=p.body:velocity()
 
@@ -805,7 +835,7 @@ function main(need)
 
 						end
 
-						if up.button("left") then
+						if p.move=="left" then
 							
 							local vx,vy=p.body:velocity()
 							if vx>0 then p.body:velocity(0,vy) end
@@ -815,7 +845,7 @@ function main(need)
 							p.dir=-1
 							p.frame=p.frame+1
 							
-						elseif  up.button("right") then
+						elseif p.move=="right" then
 
 							local vx,vy=p.body:velocity()
 							if vx<0 then p.body:velocity(0,vy) end
@@ -835,7 +865,7 @@ function main(need)
 
 						p.shape:friction(0)
 
-						if up.button("left") then
+						if p.move=="left" then
 							
 							local vx,vy=p.body:velocity()
 							if vx>0 then p.body:velocity(0,vy) end
@@ -845,7 +875,7 @@ function main(need)
 							p.dir=-1
 							p.frame=p.frame+1
 							
-						elseif  up.button("right") then
+						elseif  p.move=="right" then
 
 							local vx,vy=p.body:velocity()
 							if vx<0 then p.body:velocity(0,vy) end
@@ -874,8 +904,27 @@ function main(need)
 		end
 		if need.draw then
 		
-			ctext.tilemap_grd:clear(0)
+			ctext.dirty(true)
+			ctext.text_window()
+			ctext.text_clear(0x00000000)
+			
 
+-- draw test menu
+--[[
+for i=1,12 do
+
+	local s=(" "):rep(14)
+	ctext.text_print(s,10-2,10-1+i,31,2)
+
+end
+for i=1,10 do
+	local s=string.format("%2dxx",i)
+	s=(" "):rep((10-#s)/2)..s
+	s=s..(" "):rep((10-#s))
+	ctext.text_print(s,10,10+i,31,1)
+
+end
+]]
 			local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
 			local ts=math.floor(t)
 			local tp=math.floor((t%1)*100)
@@ -906,7 +955,7 @@ function main(need)
 
 
 					local s=string.format("%d",p.score)
-					ctext.text_print(s,math.floor(p.up_text_x-(#s/2)),0)
+					ctext.text_print(s,math.floor(p.up_text_x-(#s/2)),0,p.color.idx)
 					
 				end
 			end
@@ -937,6 +986,10 @@ function main(need)
 			if remain==0 and not finish_time then -- done
 				finish_time=game_time
 			end
+
+--			ctext.text_window_center(30,10)
+--			ctext.text_clear(0x00000031)
+
 		end
 		if need.clean then done=true end -- cleanup requested
 	end
