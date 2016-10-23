@@ -452,6 +452,45 @@ function main(need)
 	local space=chipmunk.space()
 	space:gravity(0,700)
 	space:damping(0.5)
+	
+
+	local verse -- a place to store everything that needs to be updated
+	local verse_info -- a place to store options or values
+	local verse_reset=function()
+		verse={}
+		verse_info={}
+	end
+-- get items for the given caste
+	local verse_items=function(caste)
+		if not verse[caste] then verse[caste]={} end -- create on use
+		return verse[caste]
+	end
+-- add an item to this caste
+	local verse_add=function(it,caste)
+		caste=caste or it.caste -- probably from item
+		local items=verse_items(caste)
+		items[ #items+1 ]=it -- add to end of array
+		return it
+	end
+-- call this functions on all items in every caste
+	local verse_call=function(fname,...)
+		local count=0
+		for caste,items in pairs(verse) do
+			for idx=#items,1,-1 do -- call backwards so item can remove self
+				local it=items[idx]
+				if it[fname] then
+					it[fname](it,...)
+					count=count+1
+				end
+			end			
+		end
+		return count -- number of items called
+	end
+-- get/set info associated with this verse
+	local verse_get=function(name)       return verse_info[name]        end
+	local verse_set=function(name,value)        verse_info[name]=value	end
+-- reset the verse
+	verse_reset()
 
 -- mess around with low level setting that should not be messed with
 --	space:collision_slop(0)
@@ -459,10 +498,42 @@ function main(need)
 --	space:iterations(10)
 
 -- items, can be used for general detritus, IE just physics shapes no special actions
-	local items={}
-	local add_item=function(sprite,h,px,py,bm,bi,bf,be,...)
-		local item={}
-		items[#items+1]=item
+
+	local add_item=function()
+		local item=verse_add{caste="item"}
+		item.draw=function()
+			if item.active then
+				local px,py=item.body:position()
+				local rz=item.body:angle()
+--					rz=0
+				csprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
+			end
+		end
+		return item
+	end
+
+	local add_loot=function()
+		local loot=verse_add{caste="loot"}
+		loot.update=function()
+			if loot.active then				
+				if loot.player then
+					loot.player.score=loot.player.score+1
+					loot.active=false
+					space:remove(loot.shape)
+				end
+			end
+		end
+		loot.draw=function()
+			if loot.active then				
+				local b=math.sin( (game_time*8 + (loot.px+loot.py)/16 ) )*2
+				csprites.list_add({t=0x0500,h=8,px=loot.px,py=loot.py+b})				
+			end
+		end
+		return loot
+	end
+
+	local add_detritus=function(sprite,h,px,py,bm,bi,bf,be,...)
+		local item=add_item()
 		
 		item.sprite=sprite
 		item.h=h
@@ -474,6 +545,7 @@ function main(need)
 		item.shape=item.body:shape(...)
 		item.shape:friction(bf)
 		item.shape:elasticity(be)
+		
 		return item
 	end
 
@@ -593,15 +665,12 @@ function main(need)
 		end,
 	},0x3001) -- loot things (pickups)
 	
-	local players_colors={30,14,18,7,3,22}
-	local players={}
-	local loots={}
+	local players_start={0,0}
 	for y,line in pairs(map) do
 		for x,tile in pairs(line) do
 
 			if tile.loot then
-				local loot={}
-				loots[#loots+1]=loot
+				local loot=add_loot()
 
 				local shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
 				shape:collision_type(0x3001)
@@ -612,8 +681,7 @@ function main(need)
 				loot.active=true
 			end
 			if tile.item then
-				local item={}
-				items[#items+1]=item
+				local item=add_item()
 				
 				item.sprite=names.cannon_ball
 				item.h=24
@@ -629,15 +697,16 @@ function main(need)
 			end
 			if tile[5]=="start" then
 			
-				players.start={x*8+4,y*8+4} --  remember start point
+				players_start={x*8+4,y*8+4} --  remember start point
 			end
 		end
 	end
 
 	
+	local players_colors={30,14,18,7,3,22}
 	for i=1,6 do
-		local p={}
-		players[i]=p
+		local p=verse_add{caste="player"}
+
 		p.idx=i
 		p.score=0
 		
@@ -658,7 +727,7 @@ function main(need)
 			p.bubble_active=true
 
 			p.bubble_body=space:body(1,1)
-			p.bubble_body:position(players.start[1]+i,players.start[2]-i)
+			p.bubble_body:position(players_start[1]+i,players_start[2]-i)
 
 			p.bubble_shape=p.bubble_body:shape("circle",6,0,0)
 			p.bubble_shape:friction(0.5)
@@ -679,7 +748,7 @@ function main(need)
 		
 		p.join=function()
 		
-			local px,py=players.start[1]+i,players.start[2]
+			local px,py=players_start[1]+i,players_start[2]
 			local vx,vy=0,0
 
 			if p.bubble_active then -- pop bubble
@@ -727,12 +796,189 @@ function main(need)
 			space:remove(p.body)
 			
 			local it
-			it=add_item(names.body_p1,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=p.color
-			it=add_item(names.body_p2,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=p.color
-			it=add_item(names.body_p3,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=p.color
+			it=add_detritus(names.body_p1,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=p.color
+			it=add_detritus(names.body_p2,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=p.color
+			it=add_detritus(names.body_p3,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=p.color
 
 		end
 		
+		p.update=function()
+			local up=ups(p.idx) -- the controls for this player
+			
+			p.move=false
+			p.jump=up.button("fire") -- right
+			if up.button("left") and up.button("right") then -- jump
+				p.move=p.move_last
+				p.jump=true
+			elseif up.button("left") then -- left
+				p.move_last="left"
+				p.move="left"
+			elseif up.button("right") then -- right
+				p.move_last="right"
+				p.move="right"
+			end
+			
+			if p.call then -- a callback requested
+				p[p.call](p)
+				p.call=nil
+			end
+			
+			if not p.bubble_active and not p.active then -- can add as bubble
+				if up.button("up") or up.button("down") or up.button("left") or up.button("right") or up.button("fire") then
+					p.bubble() -- add bubble
+				end
+			end
+
+			if p.bubble_active then
+				if not p.active then
+					if not p.joined and p.jump then -- first join is free
+						p.joined=true
+						p:join() -- join for real and remove bubble
+					end
+				end
+			end
+			
+			if p.bubble_active then
+			
+				local px,py=p.bubble_body:position()
+
+				if up.button("left") then
+					
+					p.bubble_body:apply_force(-120,0,px,py,"world")
+					p.dir=-1
+					p.frame=p.frame+1
+					
+				elseif  up.button("right") then
+
+					p.bubble_body:apply_force(120,0,px,py,"world")
+					p.dir= 1
+					p.frame=p.frame+1
+
+				elseif up.button("up") then
+					
+					p.bubble_body:apply_force(0,-120,px,py,"world")
+					
+				elseif  up.button("down") then
+
+					p.bubble_body:apply_force(0,120,px,py,"world")
+
+				end
+
+			elseif p.active then
+			
+				local jump=200 -- up velocity we want when jumoing
+				local speed=60 -- required x velocity
+				local airforce=speed*2 -- replaces surface velocity
+				local groundforce=speed/2 -- helps surface velocity
+				
+				if ( game_time-p.body.floor_time < 0.125 ) or ( p.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
+				
+					p.floor_time=game_time -- last time we had some floor
+
+					p.shape:friction(1)
+
+					if p.jump then
+
+						local vx,vy=p.body:velocity()
+
+						if vy>-20 then -- only when pushing against the ground a little
+
+							vy=-jump
+							p.body:velocity(vx,vy)
+							
+							p.body.floor_time=0
+							
+						end
+
+					end
+
+					if p.move=="left" then
+						
+						local vx,vy=p.body:velocity()
+						if vx>0 then p.body:velocity(0,vy) end
+						
+						p.shape:surface_velocity(speed,0)
+						if vx>-speed then p.body:apply_force(-groundforce,0,0,0) end
+						p.dir=-1
+						p.frame=p.frame+1
+						
+					elseif p.move=="right" then
+
+						local vx,vy=p.body:velocity()
+						if vx<0 then p.body:velocity(0,vy) end
+
+						p.shape:surface_velocity(-speed,0)
+						if vx<speed then p.body:apply_force(groundforce,0,0,0) end
+						p.dir= 1
+						p.frame=p.frame+1
+
+					else
+
+						p.shape:surface_velocity(0,0)
+
+					end
+					
+				else -- in air
+
+					p.shape:friction(0)
+
+					if p.move=="left" then
+						
+						local vx,vy=p.body:velocity()
+						if vx>0 then p.body:velocity(0,vy) end
+
+						if vx>-speed then p.body:apply_force(-airforce,0,0,0) end
+						p.shape:surface_velocity(speed,0)
+						p.dir=-1
+						p.frame=p.frame+1
+						
+					elseif  p.move=="right" then
+
+						local vx,vy=p.body:velocity()
+						if vx<0 then p.body:velocity(0,vy) end
+
+						if vx<speed then p.body:apply_force(airforce,0,0,0) end
+						p.shape:surface_velocity(-speed,0)
+						p.dir= 1
+						p.frame=p.frame+1
+
+					else
+
+						p.shape:surface_velocity(0,0)
+
+					end
+
+				end
+			end
+		end
+		
+
+		p.draw=function()
+			if p.bubble_active then
+
+				local px,py=p.bubble_body:position()
+				local rz=p.bubble_body:angle()
+				p.frame=p.frame%16
+				local t=p.frames[1+math.floor(p.frame/4)]
+				
+				csprites.list_add({t=t,h=24,px=px,py=py,sx=(p.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=p.color})
+				
+				csprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
+
+			elseif p.active then
+				local px,py=p.body:position()
+				local rz=p.body:angle()
+				p.frame=p.frame%16
+				local t=p.frames[1+math.floor(p.frame/4)]
+				
+				csprites.list_add({t=t,h=24,px=px,py=py,sx=p.dir,sy=1,rz=180*rz/math.pi,color=p.color})
+
+
+				local s=string.format("%d",p.score)
+				ctext.text_print(s,math.floor(p.up_text_x-(#s/2)),0,p.color.idx)
+				
+			end
+		end
 	end
 	
 	ups(1).touch="left_right" -- request this touch control scheme for player 0 only
@@ -745,162 +991,19 @@ function main(need)
 		need=coroutine.yield()
 		if need.update then
 		
-			for _,p in ipairs(players) do
-				local up=ups(p.idx) -- the controls for this player
-				
-				p.move=false
-				p.jump=up.button("fire") -- right
-				if up.button("left") and up.button("right") then -- jump
-					p.move=p.move_last
-					p.jump=true
-				elseif up.button("left") then -- left
-					p.move_last="left"
-					p.move="left"
-				elseif up.button("right") then -- right
-					p.move_last="right"
-					p.move="right"
-				end
-				
-				if p.call then -- a callback requested
-					p[p.call](p)
-					p.call=nil
-				end
-				
-				if not p.bubble_active and not p.active then -- can add as bubble
-					if up.button("up") or up.button("down") or up.button("left") or up.button("right") or up.button("fire") then
-						p.bubble() -- add bubble
-					end
-				end
-
-				if p.bubble_active then
-					if not p.active then
-						if not p.joined and p.jump then -- first join is free
-							p.joined=true
-							p:join() -- join for real and remove bubble
-						end
-					end
-				end
-				
-				if p.bubble_active then
-				
-					local px,py=p.bubble_body:position()
-
-					if up.button("left") then
-						
-						p.bubble_body:apply_force(-120,0,px,py,"world")
-						p.dir=-1
-						p.frame=p.frame+1
-						
-					elseif  up.button("right") then
-
-						p.bubble_body:apply_force(120,0,px,py,"world")
-						p.dir= 1
-						p.frame=p.frame+1
-
-					elseif up.button("up") then
-						
-						p.bubble_body:apply_force(0,-120,px,py,"world")
-						
-					elseif  up.button("down") then
-
-						p.bubble_body:apply_force(0,120,px,py,"world")
-
-					end
-
-				elseif p.active then
-				
-					local jump=200 -- up velocity we want when jumoing
-					local speed=60 -- required x velocity
-					local airforce=speed*2 -- replaces surface velocity
-					local groundforce=speed/2 -- helps surface velocity
+			verse_call("update")
 					
-					if ( game_time-p.body.floor_time < 0.125 ) or ( p.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
-					
-						p.floor_time=game_time -- last time we had some floor
-
-						p.shape:friction(1)
-
-						if p.jump then
-
-							local vx,vy=p.body:velocity()
-
-							if vy>-20 then -- only when pushing against the ground a little
-
-								vy=-jump
-								p.body:velocity(vx,vy)
-								
-								p.body.floor_time=0
-								
-							end
-
-						end
-
-						if p.move=="left" then
-							
-							local vx,vy=p.body:velocity()
-							if vx>0 then p.body:velocity(0,vy) end
-							
-							p.shape:surface_velocity(speed,0)
-							if vx>-speed then p.body:apply_force(-groundforce,0,0,0) end
-							p.dir=-1
-							p.frame=p.frame+1
-							
-						elseif p.move=="right" then
-
-							local vx,vy=p.body:velocity()
-							if vx<0 then p.body:velocity(0,vy) end
-
-							p.shape:surface_velocity(-speed,0)
-							if vx<speed then p.body:apply_force(groundforce,0,0,0) end
-							p.dir= 1
-							p.frame=p.frame+1
-
-						else
-
-							p.shape:surface_velocity(0,0)
-
-						end
-						
-					else -- in air
-
-						p.shape:friction(0)
-
-						if p.move=="left" then
-							
-							local vx,vy=p.body:velocity()
-							if vx>0 then p.body:velocity(0,vy) end
-
-							if vx>-speed then p.body:apply_force(-airforce,0,0,0) end
-							p.shape:surface_velocity(speed,0)
-							p.dir=-1
-							p.frame=p.frame+1
-							
-						elseif  p.move=="right" then
-
-							local vx,vy=p.body:velocity()
-							if vx<0 then p.body:velocity(0,vy) end
-
-							if vx<speed then p.body:apply_force(airforce,0,0,0) end
-							p.shape:surface_velocity(-speed,0)
-							p.dir= 1
-							p.frame=p.frame+1
-
-						else
-
-							p.shape:surface_velocity(0,0)
-
-						end
-
-					end
-
-				end
-			end
-			
 			space:step(1/fps)
-			game_time=game_time+1/fps
+			game_time=game_time+1/fps			
 
---			ctext.px=(ctext.px+1)%360 -- scroll text position
-			
+			local remain=0
+			for _,loot in ipairs( verse_items("loot") ) do
+				if loot.active then remain=remain+1 end -- count remaining loots
+			end
+			if remain==0 and not finish_time then -- done
+				finish_time=game_time
+			end
+
 		end
 		if need.draw then
 		
@@ -909,8 +1012,8 @@ function main(need)
 			ctext.text_clear(0x00000000)
 			
 
--- draw test menu
 --[[
+-- draw test menu
 for i=1,12 do
 
 	local s=(" "):rep(14)
@@ -925,6 +1028,7 @@ for i=1,10 do
 
 end
 ]]
+
 			local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
 			local ts=math.floor(t)
 			local tp=math.floor((t%1)*100)
@@ -933,59 +1037,9 @@ end
 			ctext.text_print(s,math.floor((ctext.tilemap_hx-#s)/2),0)
 
 			csprites.list_reset()
-			for _,p in ipairs(players) do
-				if p.bubble_active then
 
-					local px,py=p.bubble_body:position()
-					local rz=p.bubble_body:angle()
-					p.frame=p.frame%16
-					local t=p.frames[1+math.floor(p.frame/4)]
-					
-					csprites.list_add({t=t,h=24,px=px,py=py,sx=(p.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=p.color})
-					
-					csprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
+			verse_call("draw")
 
-				elseif p.active then
-					local px,py=p.body:position()
-					local rz=p.body:angle()
-					p.frame=p.frame%16
-					local t=p.frames[1+math.floor(p.frame/4)]
-					
-					csprites.list_add({t=t,h=24,px=px,py=py,sx=p.dir,sy=1,rz=180*rz/math.pi,color=p.color})
-
-
-					local s=string.format("%d",p.score)
-					ctext.text_print(s,math.floor(p.up_text_x-(#s/2)),0,p.color.idx)
-					
-				end
-			end
-			for _,item in ipairs(items) do
-				if item.active then
-					local px,py=item.body:position()
-					local rz=item.body:angle()
---					rz=0
-					csprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
-				end
-			end
-			local remain=0
-			for _,loot in ipairs(loots) do
-				if loot.active then
-					remain=remain+1
-					
-					local b=math.sin( (game_time*8 + (loot.px+loot.py)/16 ) )*2
-
-					csprites.list_add({t=0x0500,h=8,px=loot.px,py=loot.py+b})
-					
-					if loot.player then
-						loot.player.score=loot.player.score+1
-						loot.active=false
-						space:remove(loot.shape)
-					end
-				end
-			end
-			if remain==0 and not finish_time then -- done
-				finish_time=game_time
-			end
 
 --			ctext.text_window_center(30,10)
 --			ctext.text_clear(0x00000031)
