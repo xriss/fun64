@@ -25,8 +25,8 @@ hardware={
 		scale=ss,
 		fps=60,
 		drawlist={ -- draw components with a 2 pix *merged* drop shadow
-			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={0,0,0,0.5} , dx=2 , dy=2 },
+			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
 		}
 	},
@@ -67,8 +67,8 @@ hardware={
 		tilemap_size={math.ceil(hx/4),math.ceil(hy/8)},
 		drawtype="last",
 		drawlist={ -- draw components with a 2 pix *merged* drop shadow
-			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={0,0,0,0.5} , dx=2 , dy=2 },
+			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
 		}
 	},
@@ -454,28 +454,28 @@ function main(need)
 	space:damping(0.5)
 	
 
-	local verse -- a place to store everything that needs to be updated
-	local verse_info -- a place to store options or values
-	local verse_reset=function()
-		verse={}
-		verse_info={}
+	local entities -- a place to store everything that needs to be updated
+	local entities_info -- a place to store options or values
+	local entities_reset=function()
+		entities={}
+		entities_info={}
 	end
 -- get items for the given caste
-	local verse_items=function(caste)
-		if not verse[caste] then verse[caste]={} end -- create on use
-		return verse[caste]
+	local entities_items=function(caste)
+		if not entities[caste] then entities[caste]={} end -- create on use
+		return entities[caste]
 	end
 -- add an item to this caste
-	local verse_add=function(it,caste)
+	local entities_add=function(it,caste)
 		caste=caste or it.caste -- probably from item
-		local items=verse_items(caste)
+		local items=entities_items(caste)
 		items[ #items+1 ]=it -- add to end of array
 		return it
 	end
 -- call this functions on all items in every caste
-	local verse_call=function(fname,...)
+	local entities_call=function(fname,...)
 		local count=0
-		for caste,items in pairs(verse) do
+		for caste,items in pairs(entities) do
 			for idx=#items,1,-1 do -- call backwards so item can remove self
 				local it=items[idx]
 				if it[fname] then
@@ -486,11 +486,11 @@ function main(need)
 		end
 		return count -- number of items called
 	end
--- get/set info associated with this verse
-	local verse_get=function(name)       return verse_info[name]        end
-	local verse_set=function(name,value)        verse_info[name]=value	end
--- reset the verse
-	verse_reset()
+-- get/set info associated with this entities
+	local entities_info_get=function(name)       return entities_info[name]        end
+	local entities_info_set=function(name,value)        entities_info[name]=value	end
+-- reset the entities
+	entities_reset()
 
 -- mess around with low level setting that should not be messed with
 --	space:collision_slop(0)
@@ -500,7 +500,7 @@ function main(need)
 -- items, can be used for general detritus, IE just physics shapes no special actions
 
 	local add_item=function()
-		local item=verse_add{caste="item"}
+		local item=entities_add{caste="item"}
 		item.draw=function()
 			if item.active then
 				local px,py=item.body:position()
@@ -513,7 +513,7 @@ function main(need)
 	end
 
 	local add_loot=function()
-		local loot=verse_add{caste="loot"}
+		local loot=entities_add{caste="loot"}
 		loot.update=function()
 			if loot.active then				
 				if loot.player then
@@ -665,7 +665,6 @@ function main(need)
 		end,
 	},0x3001) -- loot things (pickups)
 	
-	local players_start={0,0}
 	for y,line in pairs(map) do
 		for x,tile in pairs(line) do
 
@@ -696,8 +695,7 @@ function main(need)
 
 			end
 			if tile[5]=="start" then
-			
-				players_start={x*8+4,y*8+4} --  remember start point
+				entities_info_set("players_start",{x*8+4,y*8+4}) --  remember start point
 			end
 		end
 	end
@@ -705,7 +703,7 @@ function main(need)
 	
 	local players_colors={30,14,18,7,3,22}
 	for i=1,6 do
-		local p=verse_add{caste="player"}
+		local p=entities_add{caste="player"}
 
 		p.idx=i
 		p.score=0
@@ -724,6 +722,7 @@ function main(need)
 		p.frames={0x0200,0x0203,0x0200,0x0206}
 
 		p.bubble=function()
+			local players_start=entities_info_get("players_start") or {64,64}
 			p.bubble_active=true
 
 			p.bubble_body=space:body(1,1)
@@ -739,14 +738,15 @@ function main(need)
 			p.bubble_body:velocity_func(function(body)
 				local px,py=body:position()
 				
-				body.gravity_x=(players.start[1]-px)*16
-				body.gravity_y=(players.start[2]-py)*16
+				body.gravity_x=(players_start[1]-px)*16
+				body.gravity_y=(players_start[2]-py)*16
 				return true
 			end)
 
 		end
 		
 		p.join=function()
+			local players_start=entities_info_get("players_start") or {64,64}
 		
 			local px,py=players_start[1]+i,players_start[2]
 			local vx,vy=0,0
@@ -807,15 +807,30 @@ function main(need)
 			
 			p.move=false
 			p.jump=up.button("fire") -- right
-			if up.button("left") and up.button("right") then -- jump
-				p.move=p.move_last
-				p.jump=true
-			elseif up.button("left") then -- left
-				p.move_last="left"
-				p.move="left"
-			elseif up.button("right") then -- right
-				p.move_last="right"
-				p.move="right"
+			
+			if use_only_two_keys then -- touch screen control test?
+
+				if up.button("left") and up.button("right") then -- jump
+					p.move=p.move_last
+					p.jump=true
+				elseif up.button("left") then -- left
+					p.move_last="left"
+					p.move="left"
+				elseif up.button("right") then -- right
+					p.move_last="right"
+					p.move="right"
+				end
+
+			else
+
+				if up.button("left") and up.button("right") then -- stop
+					p.move=nil
+				elseif up.button("left") then -- left
+					p.move="left"
+				elseif up.button("right") then -- right
+					p.move="right"
+				end
+
 			end
 			
 			if p.call then -- a callback requested
@@ -991,13 +1006,13 @@ function main(need)
 		need=coroutine.yield()
 		if need.update then
 		
-			verse_call("update")
+			entities_call("update")
 					
 			space:step(1/fps)
 			game_time=game_time+1/fps			
 
 			local remain=0
-			for _,loot in ipairs( verse_items("loot") ) do
+			for _,loot in ipairs( entities_items("loot") ) do
 				if loot.active then remain=remain+1 end -- count remaining loots
 			end
 			if remain==0 and not finish_time then -- done
@@ -1038,7 +1053,7 @@ end
 
 			csprites.list_reset()
 
-			verse_call("draw")
+			entities_call("draw")
 
 
 --			ctext.text_window_center(30,10)
