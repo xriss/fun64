@@ -703,39 +703,39 @@ function main(need)
 	
 	local players_colors={30,14,18,7,3,22}
 	for i=1,6 do
-		local p=entities_add{caste="player"}
+		local player=entities_add{caste="player"}
 
-		p.idx=i
-		p.score=0
+		player.idx=i
+		player.score=0
 		
 		local t=bitdown.cmap[ players_colors[i] ]
-		p.color={}
-		p.color.r=t[1]/255
-		p.color.g=t[2]/255
-		p.color.b=t[3]/255
-		p.color.a=t[4]/255
-		p.color.idx=players_colors[i]
+		player.color={}
+		player.color.r=t[1]/255
+		player.color.g=t[2]/255
+		player.color.b=t[3]/255
+		player.color.a=t[4]/255
+		player.color.idx=players_colors[i]
 		
-		p.up_text_x=math.ceil( (ctext.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
+		player.up_text_x=math.ceil( (ctext.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
 
-		p.frame=0
-		p.frames={0x0200,0x0203,0x0200,0x0206}
+		player.frame=0
+		player.frames={0x0200,0x0203,0x0200,0x0206}
 
-		p.bubble=function()
+		player.bubble=function()
 			local players_start=entities_info_get("players_start") or {64,64}
-			p.bubble_active=true
+			player.bubble_active=true
 
-			p.bubble_body=space:body(1,1)
-			p.bubble_body:position(players_start[1]+i,players_start[2]-i)
+			player.bubble_body=space:body(1,1)
+			player.bubble_body:position(players_start[1]+i,players_start[2]-i)
 
-			p.bubble_shape=p.bubble_body:shape("circle",6,0,0)
-			p.bubble_shape:friction(0.5)
-			p.bubble_shape:elasticity(1)
+			player.bubble_shape=player.bubble_body:shape("circle",6,0,0)
+			player.bubble_shape:friction(0.5)
+			player.bubble_shape:elasticity(1)
 
-			p.bubble_shape:collision_type(0x2002) -- bubble
-			p.bubble_shape.player=p
+			player.bubble_shape:collision_type(0x2002) -- bubble
+			player.bubble_shape.player=player
 
-			p.bubble_body:velocity_func(function(body)
+			player.bubble_body:velocity_func(function(body)
 				local px,py=body:position()
 				
 				body.gravity_x=(players_start[1]-px)*16
@@ -745,221 +745,221 @@ function main(need)
 
 		end
 		
-		p.join=function()
+		player.join=function()
 			local players_start=entities_info_get("players_start") or {64,64}
 		
 			local px,py=players_start[1]+i,players_start[2]
 			local vx,vy=0,0
 
-			if p.bubble_active then -- pop bubble
-				px,py=p.bubble_body:position()
-				vx,vy=p.bubble_body:velocity()
-				space:remove(p.bubble_shape) -- auto?
-				space:remove(p.bubble_body)
+			if player.bubble_active then -- pop bubble
+				px,py=player.bubble_body:position()
+				vx,vy=player.bubble_body:velocity()
+				space:remove(player.bubble_shape) -- auto?
+				space:remove(player.bubble_body)
 			end
 
-			p.bubble_active=false
-			p.active=true
-			p.body=space:body(1,math.huge)
-			p.body:position(px,py)
-			p.body:velocity(vx,vy)
-			p.body.headroom={}
+			player.bubble_active=false
+			player.active=true
+			player.body=space:body(1,math.huge)
+			player.body:position(px,py)
+			player.body:velocity(vx,vy)
+			player.body.headroom={}
 			
-			p.body:velocity_func(function(body)
+			player.body:velocity_func(function(body)
 --				body.gravity_x=-body.gravity_x
 --				body.gravity_y=-body.gravity_y
 				return true
 			end)
 						
-			p.floor_time=0 -- last time we had some floor
+			player.floor_time=0 -- last time we had some floor
 
-			p.shape=p.body:shape("segment",0,-4,0,4,4)
-			p.shape:friction(1)
-			p.shape:elasticity(0)
-			p.shape:collision_type(0x2001) -- walker
-			p.shape.player=p
+			player.shape=player.body:shape("segment",0,-4,0,4,4)
+			player.shape:friction(1)
+			player.shape:elasticity(0)
+			player.shape:collision_type(0x2001) -- walker
+			player.shape.player=player
 			
-			p.body.floor_time=0
+			player.body.floor_time=0
 			if not start_time then start_time=game_time end -- when the game started
 		end
 
-		p.die=function()
-			if not p.active then return end -- not alive
+		player.die=function()
+			if not player.active then return end -- not alive
 			
-			local px,py=p.body:position()
-			local vx,vy=p.body:velocity()
+			local px,py=player.body:position()
+			local vx,vy=player.body:velocity()
 
-			p.active=false -- die
---			p.dead=true
+			player.active=false -- die
+--			player.dead=true
 
-			space:remove(p.shape) -- auto?
-			space:remove(p.body)
+			space:remove(player.shape) -- auto?
+			space:remove(player.body)
 			
 			local it
-			it=add_detritus(names.body_p1,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=p.color
-			it=add_detritus(names.body_p2,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=p.color
-			it=add_detritus(names.body_p3,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=p.color
+			it=add_detritus(names.body_p1,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=player.color
+			it=add_detritus(names.body_p2,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=player.color
+			it=add_detritus(names.body_p3,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=player.color
 
 		end
 		
-		p.update=function()
-			local up=ups(p.idx) -- the controls for this player
+		player.update=function()
+			local up=ups(player.idx) -- the controls for this player
 			
-			p.move=false
-			p.jump=up.button("fire") -- right
+			player.move=false
+			player.jump=up.button("fire") -- right
 			
 			if use_only_two_keys then -- touch screen control test?
 
 				if up.button("left") and up.button("right") then -- jump
-					p.move=p.move_last
-					p.jump=true
+					player.move=player.move_last
+					player.jump=true
 				elseif up.button("left") then -- left
-					p.move_last="left"
-					p.move="left"
+					player.move_last="left"
+					player.move="left"
 				elseif up.button("right") then -- right
-					p.move_last="right"
-					p.move="right"
+					player.move_last="right"
+					player.move="right"
 				end
 
 			else
 
 				if up.button("left") and up.button("right") then -- stop
-					p.move=nil
+					player.move=nil
 				elseif up.button("left") then -- left
-					p.move="left"
+					player.move="left"
 				elseif up.button("right") then -- right
-					p.move="right"
+					player.move="right"
 				end
 
 			end
 			
-			if p.call then -- a callback requested
-				p[p.call](p)
-				p.call=nil
+			if player.call then -- a callback requested
+				player[player.call](player)
+				player.call=nil
 			end
 			
-			if not p.bubble_active and not p.active then -- can add as bubble
+			if not player.bubble_active and not player.active then -- can add as bubble
 				if up.button("up") or up.button("down") or up.button("left") or up.button("right") or up.button("fire") then
-					p.bubble() -- add bubble
+					player.bubble() -- add bubble
 				end
 			end
 
-			if p.bubble_active then
-				if not p.active then
-					if not p.joined and p.jump then -- first join is free
-						p.joined=true
-						p:join() -- join for real and remove bubble
+			if player.bubble_active then
+				if not player.active then
+					if not player.joined and player.jump then -- first join is free
+						player.joined=true
+						player:join() -- join for real and remove bubble
 					end
 				end
 			end
 			
-			if p.bubble_active then
+			if player.bubble_active then
 			
-				local px,py=p.bubble_body:position()
+				local px,py=player.bubble_body:position()
 
 				if up.button("left") then
 					
-					p.bubble_body:apply_force(-120,0,px,py,"world")
-					p.dir=-1
-					p.frame=p.frame+1
+					player.bubble_body:apply_force(-120,0,px,py,"world")
+					player.dir=-1
+					player.frame=player.frame+1
 					
 				elseif  up.button("right") then
 
-					p.bubble_body:apply_force(120,0,px,py,"world")
-					p.dir= 1
-					p.frame=p.frame+1
+					player.bubble_body:apply_force(120,0,px,py,"world")
+					player.dir= 1
+					player.frame=player.frame+1
 
 				elseif up.button("up") then
 					
-					p.bubble_body:apply_force(0,-120,px,py,"world")
+					player.bubble_body:apply_force(0,-120,px,py,"world")
 					
 				elseif  up.button("down") then
 
-					p.bubble_body:apply_force(0,120,px,py,"world")
+					player.bubble_body:apply_force(0,120,px,py,"world")
 
 				end
 
-			elseif p.active then
+			elseif player.active then
 			
 				local jump=200 -- up velocity we want when jumoing
 				local speed=60 -- required x velocity
 				local airforce=speed*2 -- replaces surface velocity
 				local groundforce=speed/2 -- helps surface velocity
 				
-				if ( game_time-p.body.floor_time < 0.125 ) or ( p.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
+				if ( game_time-player.body.floor_time < 0.125 ) or ( player.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
 				
-					p.floor_time=game_time -- last time we had some floor
+					player.floor_time=game_time -- last time we had some floor
 
-					p.shape:friction(1)
+					player.shape:friction(1)
 
-					if p.jump then
+					if player.jump then
 
-						local vx,vy=p.body:velocity()
+						local vx,vy=player.body:velocity()
 
 						if vy>-20 then -- only when pushing against the ground a little
 
 							vy=-jump
-							p.body:velocity(vx,vy)
+							player.body:velocity(vx,vy)
 							
-							p.body.floor_time=0
+							player.body.floor_time=0
 							
 						end
 
 					end
 
-					if p.move=="left" then
+					if player.move=="left" then
 						
-						local vx,vy=p.body:velocity()
-						if vx>0 then p.body:velocity(0,vy) end
+						local vx,vy=player.body:velocity()
+						if vx>0 then player.body:velocity(0,vy) end
 						
-						p.shape:surface_velocity(speed,0)
-						if vx>-speed then p.body:apply_force(-groundforce,0,0,0) end
-						p.dir=-1
-						p.frame=p.frame+1
+						player.shape:surface_velocity(speed,0)
+						if vx>-speed then player.body:apply_force(-groundforce,0,0,0) end
+						player.dir=-1
+						player.frame=player.frame+1
 						
-					elseif p.move=="right" then
+					elseif player.move=="right" then
 
-						local vx,vy=p.body:velocity()
-						if vx<0 then p.body:velocity(0,vy) end
+						local vx,vy=player.body:velocity()
+						if vx<0 then player.body:velocity(0,vy) end
 
-						p.shape:surface_velocity(-speed,0)
-						if vx<speed then p.body:apply_force(groundforce,0,0,0) end
-						p.dir= 1
-						p.frame=p.frame+1
+						player.shape:surface_velocity(-speed,0)
+						if vx<speed then player.body:apply_force(groundforce,0,0,0) end
+						player.dir= 1
+						player.frame=player.frame+1
 
 					else
 
-						p.shape:surface_velocity(0,0)
+						player.shape:surface_velocity(0,0)
 
 					end
 					
 				else -- in air
 
-					p.shape:friction(0)
+					player.shape:friction(0)
 
-					if p.move=="left" then
+					if player.move=="left" then
 						
-						local vx,vy=p.body:velocity()
-						if vx>0 then p.body:velocity(0,vy) end
+						local vx,vy=player.body:velocity()
+						if vx>0 then player.body:velocity(0,vy) end
 
-						if vx>-speed then p.body:apply_force(-airforce,0,0,0) end
-						p.shape:surface_velocity(speed,0)
-						p.dir=-1
-						p.frame=p.frame+1
+						if vx>-speed then player.body:apply_force(-airforce,0,0,0) end
+						player.shape:surface_velocity(speed,0)
+						player.dir=-1
+						player.frame=player.frame+1
 						
-					elseif  p.move=="right" then
+					elseif  player.move=="right" then
 
-						local vx,vy=p.body:velocity()
-						if vx<0 then p.body:velocity(0,vy) end
+						local vx,vy=player.body:velocity()
+						if vx<0 then player.body:velocity(0,vy) end
 
-						if vx<speed then p.body:apply_force(airforce,0,0,0) end
-						p.shape:surface_velocity(-speed,0)
-						p.dir= 1
-						p.frame=p.frame+1
+						if vx<speed then player.body:apply_force(airforce,0,0,0) end
+						player.shape:surface_velocity(-speed,0)
+						player.dir= 1
+						player.frame=player.frame+1
 
 					else
 
-						p.shape:surface_velocity(0,0)
+						player.shape:surface_velocity(0,0)
 
 					end
 
@@ -968,29 +968,29 @@ function main(need)
 		end
 		
 
-		p.draw=function()
-			if p.bubble_active then
+		player.draw=function()
+			if player.bubble_active then
 
-				local px,py=p.bubble_body:position()
-				local rz=p.bubble_body:angle()
-				p.frame=p.frame%16
-				local t=p.frames[1+math.floor(p.frame/4)]
+				local px,py=player.bubble_body:position()
+				local rz=player.bubble_body:angle()
+				player.frame=player.frame%16
+				local t=player.frames[1+math.floor(player.frame/4)]
 				
-				csprites.list_add({t=t,h=24,px=px,py=py,sx=(p.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=p.color})
+				csprites.list_add({t=t,h=24,px=px,py=py,sx=(player.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=player.color})
 				
 				csprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
 
-			elseif p.active then
-				local px,py=p.body:position()
-				local rz=p.body:angle()
-				p.frame=p.frame%16
-				local t=p.frames[1+math.floor(p.frame/4)]
+			elseif player.active then
+				local px,py=player.body:position()
+				local rz=player.body:angle()
+				player.frame=player.frame%16
+				local t=player.frames[1+math.floor(player.frame/4)]
 				
-				csprites.list_add({t=t,h=24,px=px,py=py,sx=p.dir,sy=1,rz=180*rz/math.pi,color=p.color})
+				csprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})
 
 
-				local s=string.format("%d",p.score)
-				ctext.text_print(s,math.floor(p.up_text_x-(#s/2)),0,p.color.idx)
+				local s=string.format("%d",player.score)
+				ctext.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
 				
 			end
 		end
