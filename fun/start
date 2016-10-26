@@ -1,2 +1,2 @@
 
-../bin/exe/gamecake -lfun $*
+../bin/exe/gamecake -lfun $* --console

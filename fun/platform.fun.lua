@@ -25,7 +25,7 @@ hardware={
 		scale=ss,
 		fps=60,
 		drawlist={ -- draw components with a 2 pix *merged* drop shadow
-			{ color={0,0,0,0.5} , dx=2 , dy=2 },
+			{ color={0,0,0,0.25} , dx=2 , dy=2 },
 			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
 		}
@@ -67,7 +67,7 @@ hardware={
 		tilemap_size={math.ceil(hx/4),math.ceil(hy/8)},
 		drawtype="last",
 		drawlist={ -- draw components with a 2 pix *merged* drop shadow
-			{ color={0,0,0,0.5} , dx=2 , dy=2 },
+			{ color={0,0,0,0.25} , dx=2 , dy=2 },
 			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
 		}
