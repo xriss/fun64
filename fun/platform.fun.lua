@@ -454,8 +454,8 @@ maps[0]=[[
 		return count -- number of items called
 	end
 -- get/set info associated with this entities
-	local entities_info_get=function(name)       return entities_info[name]			end
-	local entities_info_set=function(name,value)        entities_info[name]=value	end
+	local entities_info_get=function(name)       return entities_info[name]							end
+	local entities_info_set=function(name,value)        entities_info[name]=value	return value	end
 -- reset the entities
 	entities_reset()
 
@@ -481,7 +481,6 @@ local fat_controller=coroutine.create(function()
 	local csprites = system.components.sprites
 	local ctext    = system.components.text
 
-	local space -- physics space
 	local map
 
 	ctext.py=0
@@ -501,7 +500,7 @@ local fat_controller=coroutine.create(function()
 -- create space and handlers
 	function setup_space()
 	
-		space=chipmunk.space()
+		local space=entities_info_set("space", chipmunk.space() )
 		
 		space:gravity(0,700)
 		space:damping(0.5)
@@ -591,6 +590,7 @@ local fat_controller=coroutine.create(function()
 	
 -- items, can be used for general things, EG physics shapes with no special actions
 	local add_item=function()
+		local space=entities_info_get("space")
 		local item=entities_add{caste="item"}
 		item.draw=function()
 			if item.active then
@@ -605,6 +605,7 @@ local fat_controller=coroutine.create(function()
 
 -- a floating item that you can/must collect
 	local add_loot=function()
+		local space=entities_info_get("space")
 		local loot=entities_add{caste="loot"}
 		loot.update=function()
 			if loot.active then				
@@ -627,8 +628,9 @@ local fat_controller=coroutine.create(function()
 
 -- an item that just gets in the way
 	local add_detritus=function(sprite,h,px,py,bm,bi,bf,be,...)
+		local space=entities_info_get("space")
 		local item=add_item()
-		
+
 		item.sprite=sprite
 		item.h=h
 
@@ -784,6 +786,8 @@ end
 
 	local add_monster=function(opts)
 
+		local space=entities_info_get("space")
+
 		local monster=entities_add{caste="monster"}
 
 		monster.color=opts.color or {r=0,g=0,b=0,a=1}
@@ -867,6 +871,8 @@ end
 	
 	local add_player=function(i)
 		local players_colors={30,14,18,7,3,22}
+
+		local space=entities_info_get("space")
 
 		local player=entities_add{caste="player"}
 
@@ -1092,7 +1098,7 @@ end
 	
 -- init map and space
 
-		setup_space()
+		local space=setup_space()
 
 		map=bitdown.pix_tiles(  maps[idx],  tilemap )
 
@@ -1213,7 +1219,7 @@ end
 	
 		entities_call("update")
 
-		space:step(1/fps)
+		entities_info_get("space"):step(1/fps)
 
 		local time=entities_info_get("time")
 		time.game=time.game+(1/fps)
