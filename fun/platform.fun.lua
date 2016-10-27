@@ -601,7 +601,97 @@ end
 		return item
 	end
 
-	local add_character=function()
+-- move it like a player or monster based on
+-- it.move which is "left" or "right" or null to move 
+-- it.jump is true if we should jump
+	local char_controls=function(it)
+
+		local jump=200 -- up velocity we want when jumping
+		local speed=60 -- required x velocity
+		local airforce=speed*2 -- replaces surface velocity
+		local groundforce=speed/2 -- helps surface velocity
+		
+		if ( game_time-it.body.floor_time < 0.125 ) or ( it.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
+		
+			it.floor_time=game_time -- last time we had some floor
+
+			it.shape:friction(1)
+
+			if it.jump then
+
+				local vx,vy=it.body:velocity()
+
+				if vy>-20 then -- only when pushing against the ground a little
+
+					vy=-jump
+					it.body:velocity(vx,vy)
+					
+					it.body.floor_time=0
+					
+				end
+
+			end
+
+			if it.move=="left" then
+				
+				local vx,vy=it.body:velocity()
+				if vx>0 then it.body:velocity(0,vy) end
+				
+				it.shape:surface_velocity(speed,0)
+				if vx>-speed then it.body:apply_force(-groundforce,0,0,0) end
+				it.dir=-1
+				it.frame=it.frame+1
+				
+			elseif it.move=="right" then
+
+				local vx,vy=it.body:velocity()
+				if vx<0 then it.body:velocity(0,vy) end
+
+				it.shape:surface_velocity(-speed,0)
+				if vx<speed then it.body:apply_force(groundforce,0,0,0) end
+				it.dir= 1
+				it.frame=it.frame+1
+
+			else
+
+				it.shape:surface_velocity(0,0)
+
+			end
+			
+		else -- in air
+
+			it.shape:friction(0)
+
+			if it.move=="left" then
+				
+				local vx,vy=it.body:velocity()
+				if vx>0 then it.body:velocity(0,vy) end
+
+				if vx>-speed then it.body:apply_force(-airforce,0,0,0) end
+				it.shape:surface_velocity(speed,0)
+				it.dir=-1
+				it.frame=it.frame+1
+				
+			elseif  it.move=="right" then
+
+				local vx,vy=it.body:velocity()
+				if vx<0 then it.body:velocity(0,vy) end
+
+				if vx<speed then it.body:apply_force(airforce,0,0,0) end
+				it.shape:surface_velocity(-speed,0)
+				it.dir= 1
+				it.frame=it.frame+1
+
+			else
+
+				it.shape:surface_velocity(0,0)
+
+			end
+
+		end
+	end
+
+	local add_monster=function(opts)
 	end
 	
 	local add_player=function(i)
@@ -785,89 +875,8 @@ end
 
 			elseif player.active then
 			
-				local jump=200 -- up velocity we want when jumoing
-				local speed=60 -- required x velocity
-				local airforce=speed*2 -- replaces surface velocity
-				local groundforce=speed/2 -- helps surface velocity
-				
-				if ( game_time-player.body.floor_time < 0.125 ) or ( player.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
-				
-					player.floor_time=game_time -- last time we had some floor
-
-					player.shape:friction(1)
-
-					if player.jump then
-
-						local vx,vy=player.body:velocity()
-
-						if vy>-20 then -- only when pushing against the ground a little
-
-							vy=-jump
-							player.body:velocity(vx,vy)
-							
-							player.body.floor_time=0
-							
-						end
-
-					end
-
-					if player.move=="left" then
-						
-						local vx,vy=player.body:velocity()
-						if vx>0 then player.body:velocity(0,vy) end
-						
-						player.shape:surface_velocity(speed,0)
-						if vx>-speed then player.body:apply_force(-groundforce,0,0,0) end
-						player.dir=-1
-						player.frame=player.frame+1
-						
-					elseif player.move=="right" then
-
-						local vx,vy=player.body:velocity()
-						if vx<0 then player.body:velocity(0,vy) end
-
-						player.shape:surface_velocity(-speed,0)
-						if vx<speed then player.body:apply_force(groundforce,0,0,0) end
-						player.dir= 1
-						player.frame=player.frame+1
-
-					else
-
-						player.shape:surface_velocity(0,0)
-
-					end
-					
-				else -- in air
-
-					player.shape:friction(0)
-
-					if player.move=="left" then
-						
-						local vx,vy=player.body:velocity()
-						if vx>0 then player.body:velocity(0,vy) end
-
-						if vx>-speed then player.body:apply_force(-airforce,0,0,0) end
-						player.shape:surface_velocity(speed,0)
-						player.dir=-1
-						player.frame=player.frame+1
-						
-					elseif  player.move=="right" then
-
-						local vx,vy=player.body:velocity()
-						if vx<0 then player.body:velocity(0,vy) end
-
-						if vx<speed then player.body:apply_force(airforce,0,0,0) end
-						player.shape:surface_velocity(-speed,0)
-						player.dir= 1
-						player.frame=player.frame+1
-
-					else
-
-						player.shape:surface_velocity(0,0)
-
-					end
-
-				end
+				char_controls(player)
+			
 			end
 		end
 		
