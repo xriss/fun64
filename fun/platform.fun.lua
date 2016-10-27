@@ -416,43 +416,7 @@ maps[0]=[[
 ]]
 
 
-function main(need)
-
-	if not need.setup then need=coroutine.yield() end -- wait for setup request (should always be first call)
-
-	local game_time=0
-	local start_time -- set when we add a player
-	local finish_time -- set when all loot is collected
-
--- cache components in locals for less typing
-	local ctiles   = system.components.tiles
-	local ccopper  = system.components.copper
-	local cmap     = system.components.map
-	local csprites = system.components.sprites
-	local ctext    = system.components.text
-
-	ctext.py=0
-	
---	ccopper.shader_name="fun_copper_back_noise"
-
-
--- copy font data
-	ctiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
-
--- copy image data
-	bitdown.pixtab_tiles( tiles,    bitdown.cmap, ctiles   )
-
--- screen
-	bitdown.pix_grd(    maps[0],  tilemap,      cmap.tilemap_grd  )--,0,0,48,32)
-
--- map for collision etc
-	local map=bitdown.pix_tiles(  maps[0],  tilemap )
-	
-		
-	local space=chipmunk.space()
-	space:gravity(0,700)
-	space:damping(0.5)
-	
+-- handle tables of entities that need to be updated and drawn.
 
 	local entities -- a place to store everything that needs to be updated
 	local entities_info -- a place to store options or values
@@ -487,10 +451,60 @@ function main(need)
 		return count -- number of items called
 	end
 -- get/set info associated with this entities
-	local entities_info_get=function(name)       return entities_info[name]        end
+	local entities_info_get=function(name)       return entities_info[name]			end
 	local entities_info_set=function(name,value)        entities_info[name]=value	end
 -- reset the entities
 	entities_reset()
+
+
+-- call coroutine with traceback on error
+	local coroutine_resume_and_report_errors=function(co,...)
+		local a,b=coroutine.resume(co,...)
+		if a then return a,b end -- no error
+		error( b.."\nin coroutine\n"..debug.traceback(co) , 2 ) -- error
+	end
+
+
+-- create a fat controller coroutine that handles state changes, fills in entities etc etc etc
+
+
+local fat_controller=coroutine.create(function()
+
+-- cache components in locals for less typing from now on
+
+	local ctiles   = system.components.tiles
+	local ccopper  = system.components.copper
+	local cmap     = system.components.map
+	local csprites = system.components.sprites
+	local ctext    = system.components.text
+
+	local game_time=0
+	local start_time -- set when we add a player
+	local finish_time -- set when all loot is collected
+
+	ctext.py=0
+	
+--	ccopper.shader_name="fun_copper_back_noise"
+
+
+-- copy font data
+	ctiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
+
+-- copy image data
+	bitdown.pixtab_tiles( tiles,    bitdown.cmap, ctiles   )
+
+-- screen
+	bitdown.pix_grd(    maps[0],  tilemap,      cmap.tilemap_grd  )--,0,0,48,32)
+
+-- map for collision etc
+	local map=bitdown.pix_tiles(  maps[0],  tilemap )
+	
+		
+	local space=chipmunk.space()
+	space:gravity(0,700)
+	space:damping(0.5)
+	
+
 
 -- mess around with low level setting that should not be messed with
 --	space:collision_slop(0)
@@ -1006,67 +1020,74 @@ function main(need)
 	
 	ups(1).touch="left_right" -- request this touch control scheme for player 0 only
 
--- save png test
---system.save_fun_png()
 
--- after setup we should yield and then perform updates only if requested from yield
-	local done=false while not done do
-		need=coroutine.yield()
-		if need.update then
-		
-			entities_call("update")
-					
-			space:step(1/fps)
-			game_time=game_time+1/fps			
+-- busy loop
 
-			local remain=0
-			for _,loot in ipairs( entities_items("loot") ) do
-				if loot.active then remain=remain+1 end -- count remaining loots
-			end
-			if remain==0 and not finish_time then -- done
-				finish_time=game_time
-			end
+	while true do
+	
+		entities_call("update")
+				
+		space:step(1/fps)
+		game_time=game_time+1/fps			
 
+		local remain=0
+		for _,loot in ipairs( entities_items("loot") ) do
+			if loot.active then remain=remain+1 end -- count remaining loots
 		end
-		if need.draw then
+		if remain==0 and not finish_time then -- done
+			finish_time=game_time
+		end
+
+		ctext.dirty(true)
+		ctext.text_window()
+		ctext.text_clear(0x00000000)
 		
-			ctext.dirty(true)
-			ctext.text_window()
-			ctext.text_clear(0x00000000)
-			
 
 --[[
 -- draw test menu
 for i=1,12 do
 
-	local s=(" "):rep(14)
-	ctext.text_print(s,10-2,10-1+i,31,2)
+local s=(" "):rep(14)
+ctext.text_print(s,10-2,10-1+i,31,2)
 
 end
 for i=1,10 do
-	local s=string.format("%2dxx",i)
-	s=(" "):rep((10-#s)/2)..s
-	s=s..(" "):rep((10-#s))
-	ctext.text_print(s,10,10+i,31,1)
+local s=string.format("%2dxx",i)
+s=(" "):rep((10-#s)/2)..s
+s=s..(" "):rep((10-#s))
+ctext.text_print(s,10,10+i,31,1)
 
 end
 ]]
 
-			local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
-			local ts=math.floor(t)
-			local tp=math.floor((t%1)*100)
+		local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
+		local ts=math.floor(t)
+		local tp=math.floor((t%1)*100)
 
-			local s=string.format("%d.%02d",ts,tp)
-			ctext.text_print(s,math.floor((ctext.tilemap_hx-#s)/2),0)
+		local s=string.format("%d.%02d",ts,tp)
+		ctext.text_print(s,math.floor((ctext.tilemap_hx-#s)/2),0)
 
-			csprites.list_reset()
+		coroutine.yield()
+	end
 
+end)
+
+
+-- this is the main function, code below called repeatedly to update and draw
+
+function main(need)
+
+	if not need.setup then need=coroutine.yield() end -- wait for setup request (should always be first call)
+
+-- after setup we should yield and then perform updates only if requested from a yield
+	local done=false while not done do
+		need=coroutine.yield()
+		if need.update then
+			coroutine_resume_and_report_errors( fat_controller ) -- the main code runs in this coroutine
+		end
+		if need.draw then
+			system.components.sprites.list_reset() -- remove old sprites
 			entities_call("draw")
-
-
---			ctext.text_window_center(30,10)
---			ctext.text_clear(0x00000031)
-
 		end
 		if need.clean then done=true end -- cleanup requested
 	end
