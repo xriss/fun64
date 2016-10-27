@@ -484,10 +484,6 @@ local fat_controller=coroutine.create(function()
 	local space -- physics space
 	local map
 
-	local game_time=0
-	local start_time -- set when we add a player
-	local finish_time -- set when all loot is collected
-
 	ctext.py=0
 	
 --	ccopper.shader_name="fun_copper_back_noise"
@@ -563,7 +559,8 @@ local fat_controller=coroutine.create(function()
 			postsolve=function(it)
 				local points=it:points()
 				if points.normal_y>0.25 then -- on floor
-					it.shape_a.in_body.floor_time=game_time
+					local time=entities_info_get("time")
+					it.shape_a.in_body.floor_time=time.game
 					it.shape_a.in_body.floor=it.shape_b
 				end
 				return true
@@ -619,8 +616,9 @@ local fat_controller=coroutine.create(function()
 			end
 		end
 		loot.draw=function()
-			if loot.active then				
-				local b=math.sin( (game_time*8 + (loot.px+loot.py)/16 ) )*2
+			if loot.active then
+				local time=entities_info_get("time")
+				local b=math.sin( (time.game*8 + (loot.px+loot.py)/16 ) )*2
 				csprites.list_add({t=0x0500,h=8,px=loot.px,py=loot.py+b})				
 			end
 		end
@@ -650,12 +648,15 @@ local fat_controller=coroutine.create(function()
 		local item=entities_add{caste="gui"}
 
 		item.draw=function()
+		
+			local time=entities_info_get("time")
+		
 			local remain=0
 			for _,loot in ipairs( entities_items("loot") ) do
 				if loot.active then remain=remain+1 end -- count remaining loots
 			end
-			if remain==0 and not finish_time then -- done
-				finish_time=game_time
+			if remain==0 and not time.finish then -- done
+				time.finish=time.game
 			end
 		
 
@@ -676,7 +677,7 @@ ctext.text_print(s,10,10+i,31,1)
 end
 ]]
 
-			local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
+			local t=time.start and ( (time.finish or time.game) - ( time.start ) ) or 0
 			local ts=math.floor(t)
 			local tp=math.floor((t%1)*100)
 
@@ -694,14 +695,16 @@ end
 	local char_controls=function(it,fast)
 		fast=fast or 1
 
+		local time=entities_info_get("time")
+
 		local jump=fast*200 -- up velocity we want when jumping
 		local speed=fast*60 -- required x velocity
 		local airforce=speed*2 -- replaces surface velocity
 		local groundforce=speed/2 -- helps surface velocity
 		
-		if ( game_time-it.body.floor_time < 0.125 ) or ( it.floor_time-game_time > 10 ) then -- floor available recently or not for a very long time (stuck)
+		if ( time.game-it.body.floor_time < 0.125 ) or ( it.floor_time-time.game > 10 ) then -- floor available recently or not for a very long time (stuck)
 		
-			it.floor_time=game_time -- last time we had some floor
+			it.floor_time=time.game -- last time we had some floor
 
 			it.shape:friction(1)
 
@@ -829,7 +832,7 @@ end
 				end
 				
 				local px,py=monster.body:position()
-				local cx=math.floor((px+1)/2) -- round down a bit
+				local cx=math.floor((px+1)/2) -- if this number changes then we are moving
 				
 				if monster.last_cx == cx then -- not moving
 					monster.last_cx_count=monster.last_cx_count+1
@@ -942,8 +945,11 @@ end
 			player.shape.player=player
 			
 			player.body.floor_time=0
-			if not start_time then start_time=game_time end -- when the game started
-		end
+			local time=entities_info_get("time")
+			if not time.start then
+				time.start=time.game -- when the game started
+			end
+ 		end
 
 		player.die=function()
 			if not player.active then return end -- not alive
@@ -1084,9 +1090,6 @@ end
 
 	local setup_level=function(idx)
 	
-
-
-
 -- init map and space
 
 		setup_space()
@@ -1191,7 +1194,13 @@ end
 
 
 
--- setup	
+-- setup game
+
+	entities_reset()
+	
+	entities_info_set("time",{
+		game=0,
+	})
 	
 	setup_level(0) -- load map
 	add_score() -- gui fpr the score
@@ -1203,9 +1212,11 @@ end
 	while true do coroutine.yield()
 	
 		entities_call("update")
-				
+
 		space:step(1/fps)
-		game_time=game_time+(1/fps)
+
+		local time=entities_info_get("time")
+		time.game=time.game+(1/fps)
 
 	end
 
