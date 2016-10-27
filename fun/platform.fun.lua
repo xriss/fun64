@@ -473,25 +473,7 @@ maps[0]=[[
 
 local fat_controller=coroutine.create(function()
 
--- cache components in locals for less typing from now on
 
-	local ctiles   = system.components.tiles
-	local ccopper  = system.components.copper
-	local cmap     = system.components.map
-	local csprites = system.components.sprites
-	local ctext    = system.components.text
-
-
--- copy font data tiles
-	ctiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
-
--- copy image data tiles
-	bitdown.pixtab_tiles( tiles,    bitdown.cmap, ctiles   )
-
-
-
-
-	
 -- create space and handlers
 	function setup_space()
 	
@@ -592,7 +574,7 @@ local fat_controller=coroutine.create(function()
 				local px,py=item.body:position()
 				local rz=item.body:angle()
 --					rz=0
-				csprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
+				system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
 			end
 		end
 		return item
@@ -615,7 +597,7 @@ local fat_controller=coroutine.create(function()
 			if loot.active then
 				local time=entities_info_get("time")
 				local b=math.sin( (time.game*8 + (loot.px+loot.py)/16 ) )*2
-				csprites.list_add({t=0x0500,h=8,px=loot.px,py=loot.py+b})				
+				system.components.sprites.list_add({t=0x0500,h=8,px=loot.px,py=loot.py+b})				
 			end
 		end
 		return loot
@@ -662,14 +644,14 @@ local fat_controller=coroutine.create(function()
 for i=1,12 do
 
 local s=(" "):rep(14)
-ctext.text_print(s,10-2,10-1+i,31,2)
+system.components.text.text_print(s,10-2,10-1+i,31,2)
 
 end
 for i=1,10 do
 local s=string.format("%2dxx",i)
 s=(" "):rep((10-#s)/2)..s
 s=s..(" "):rep((10-#s))
-ctext.text_print(s,10,10+i,31,1)
+system.components.text.text_print(s,10,10+i,31,1)
 
 end
 ]]
@@ -679,7 +661,7 @@ end
 			local tp=math.floor((t%1)*100)
 
 			local s=string.format("%d.%02d",ts,tp)
-			ctext.text_print(s,math.floor((ctext.tilemap_hx-#s)/2),0)
+			system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),0)
 			
 		end
 		
@@ -858,7 +840,7 @@ end
 				monster.frame=monster.frame%16
 				local t=monster.frames[1+math.floor(monster.frame/4)]
 				
-				csprites.list_add({t=t,h=24,px=px,py=py,sx=monster.dir,sy=1,rz=180*rz/math.pi,color=monster.color})				
+				system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=monster.dir,sy=1,rz=180*rz/math.pi,color=monster.color})				
 			end
 		end
 
@@ -882,7 +864,7 @@ end
 		player.color.a=t[4]/255
 		player.color.idx=players_colors[i]
 		
-		player.up_text_x=math.ceil( (ctext.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
+		player.up_text_x=math.ceil( (system.components.text.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
 
 		player.frame=0
 		player.frames={0x0200,0x0203,0x0200,0x0206}
@@ -1064,9 +1046,9 @@ end
 				player.frame=player.frame%16
 				local t=player.frames[1+math.floor(player.frame/4)]
 				
-				csprites.list_add({t=t,h=24,px=px,py=py,sx=(player.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=player.color})
+				system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=(player.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=player.color})
 				
-				csprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
+				system.components.sprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
 
 			elseif player.active then
 				local px,py=player.body:position()
@@ -1074,11 +1056,11 @@ end
 				player.frame=player.frame%16
 				local t=player.frames[1+math.floor(player.frame/4)]
 				
-				csprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})
+				system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})
 
 
 				local s=string.format("%d",player.score)
-				ctext.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
+				system.components.text.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
 				
 			end
 		end
@@ -1096,7 +1078,8 @@ end
 		local space=setup_space()
 
 		local map=entities_info_set("map", bitdown.pix_tiles(  maps[idx],  tilemap ) )
-		bitdown.pix_grd(    maps[idx],  tilemap,      cmap.tilemap_grd  )
+		
+		bitdown.pix_grd(    maps[idx],  tilemap,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 		bitdown.map_build_collision_strips(map,function(tile)
 			if tile.coll then -- can break the collision types up some more by appending a code to this setting
@@ -1197,6 +1180,13 @@ end
 
 
 -- setup game
+
+-- copy font data tiles
+	system.components.tiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
+
+-- copy image data tiles
+	bitdown.pixtab_tiles( tiles,    bitdown.cmap, system.components.tiles   )
+
 
 	entities_reset()
 	
