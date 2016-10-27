@@ -481,21 +481,16 @@ local fat_controller=coroutine.create(function()
 	local csprites = system.components.sprites
 	local ctext    = system.components.text
 
-	local map
 
-	ctext.py=0
-	
---	ccopper.shader_name="fun_copper_back_noise"
-
-
--- copy font data
+-- copy font data tiles
 	ctiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
 
--- copy image data
+-- copy image data tiles
 	bitdown.pixtab_tiles( tiles,    bitdown.cmap, ctiles   )
 
--- screen
-	bitdown.pix_grd(    maps[0],  tilemap,      cmap.tilemap_grd  )--,0,0,48,32)
+
+
+
 	
 -- create space and handlers
 	function setup_space()
@@ -1100,7 +1095,8 @@ end
 
 		local space=setup_space()
 
-		map=bitdown.pix_tiles(  maps[idx],  tilemap )
+		local map=entities_info_set("map", bitdown.pix_tiles(  maps[idx],  tilemap ) )
+		bitdown.pix_grd(    maps[idx],  tilemap,      cmap.tilemap_grd  )
 
 		bitdown.map_build_collision_strips(map,function(tile)
 			if tile.coll then -- can break the collision types up some more by appending a code to this setting
