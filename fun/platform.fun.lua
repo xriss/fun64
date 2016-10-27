@@ -109,6 +109,7 @@ local tilemap={
 	["$ "]={  0,  1,  31,  0,	loot=1},
 	["? "]={  0,  1,  31,  0,	item=1},
 	["S "]={  0,  1,  31,  0,	"start"},
+	["M "]={  0,  1,  31,  0,	monster=1},
 }
 
 
@@ -405,7 +406,7 @@ maps[0]=[[
 1 . . . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . 1 
 1 . . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
 1 . . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . . . . . 1 
-1 . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . M . 1 
 1 . . . . . . . . . . . . . . . . . . . . . . 1 1 1 . . . . . ? . . . . . . . . . . . . . . . . . . . . 1 
 1 . . . . . . . . . . . . . . . . . $ . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
 1 . . . . 1 . . . . . 1 . . . . . . . . . 1 . . . . . . . . 1 1 1 . . . . $ . . . . . . . . . . . . . . 1 
@@ -602,12 +603,13 @@ end
 	end
 
 -- move it like a player or monster based on
--- it.move which is "left" or "right" or null to move 
--- it.jump is true if we should jump
-	local char_controls=function(it)
+-- it.move which is "left" or "right" to move 
+-- it.jump which is true if we should jump
+	local char_controls=function(it,fast)
+		fast=fast or 1
 
-		local jump=200 -- up velocity we want when jumping
-		local speed=60 -- required x velocity
+		local jump=fast*200 -- up velocity we want when jumping
+		local speed=fast*60 -- required x velocity
 		local airforce=speed*2 -- replaces surface velocity
 		local groundforce=speed/2 -- helps surface velocity
 		
@@ -692,6 +694,58 @@ end
 	end
 
 	local add_monster=function(opts)
+
+		local monster=entities_add{caste="monster"}
+
+		monster.color=opts.color or {r=0,g=0,b=0,a=1}
+		monster.dir=1		
+		monster.frame=0
+		monster.frames={0x0200,0x0203,0x0200,0x0206}
+
+		monster.active=true
+		monster.body=space:body(1,math.huge)
+		monster.body:position(opts.px,opts.py)
+		monster.body:velocity(opts.vx,opts.vy)
+		monster.body.headroom={}
+		
+		monster.body:velocity_func(function(body)
+--				body.gravity_x=-body.gravity_x
+--				body.gravity_y=-body.gravity_y
+			return true
+		end)
+					
+		monster.floor_time=0 -- last time we had some floor
+
+		monster.shape=monster.body:shape("segment",0,-4,0,4,4)
+		monster.shape:friction(1)
+		monster.shape:elasticity(0)
+		monster.shape:collision_type(0x2001) -- walker
+		monster.shape.monster=monster
+		
+		monster.body.floor_time=0
+
+
+		monster.update=function()
+			if monster.active then
+			
+				monster.move="left"
+			
+				char_controls(monster,0.5)
+			end
+		end
+
+
+		monster.draw=function()
+			if monster.active then
+				local px,py=monster.body:position()
+				local rz=monster.body:angle()
+				monster.frame=monster.frame%16
+				local t=monster.frames[1+math.floor(monster.frame/4)]
+				
+				csprites.list_add({t=t,h=24,px=px,py=py,sx=monster.dir,sy=1,rz=180*rz/math.pi,color=monster.color})				
+			end
+		end
+
 	end
 	
 	local add_player=function(i)
@@ -991,7 +1045,7 @@ end
 
 	space:add_handler({
 		presolve=function(it)
-			if it.shape_a.player and it.shape_b.player then
+			if it.shape_a.player and it.shape_b.player then -- two players touch
 				local pa=it.shape_a.player
 				local pb=it.shape_b.player
 				if pa.active then
@@ -1057,6 +1111,12 @@ end
 			end
 			if tile[5]=="start" then
 				entities_info_set("players_start",{x*8+4,y*8+4}) --  remember start point
+			end
+			if tile.monster then
+				local item=add_monster{
+					px=x*8+4,py=y*8+4,
+					vx=0,vy=0,
+				}
 			end
 		end
 	end
