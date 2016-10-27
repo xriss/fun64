@@ -481,6 +481,9 @@ local fat_controller=coroutine.create(function()
 	local csprites = system.components.sprites
 	local ctext    = system.components.text
 
+	local space -- physics space
+	local map
+
 	local game_time=0
 	local start_time -- set when we add a player
 	local finish_time -- set when all loot is collected
@@ -498,14 +501,95 @@ local fat_controller=coroutine.create(function()
 
 -- screen
 	bitdown.pix_grd(    maps[0],  tilemap,      cmap.tilemap_grd  )--,0,0,48,32)
-
--- map for collision etc
-	local map=bitdown.pix_tiles(  maps[0],  tilemap )
-
+	
+-- create space and handlers
+	function setup_space()
+	
+		space=chipmunk.space()
 		
-	local space=chipmunk.space()
-	space:gravity(0,700)
-	space:damping(0.5)
+		space:gravity(0,700)
+		space:damping(0.5)
+		
+		space:add_handler({
+			presolve=function(it)
+
+	--print(wstr.dump(it))
+				local points=it:points()
+
+	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+				if it.shape_b.in_body.headroom then
+					local headroom=false
+					for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+					if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+						it.shape_b.in_body.headroom[it.shape_a]=true
+						return it:ignore()
+					end
+				end
+				
+				return true
+			end,
+			separate=function(it)
+				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+			end
+		},0x1001) -- background tiles we can jump up through
+
+		space:add_handler({
+			presolve=function(it)
+				if it.shape_b.player then -- trigger die
+					it.shape_b.player.call="die"
+				end
+				return true
+			end,
+		},0x1002) -- deadly things
+
+		space:add_handler({
+			presolve=function(it)
+				if it.shape_a.player and it.shape_b.player then -- two players touch
+					local pa=it.shape_a.player
+					local pb=it.shape_b.player
+					if pa.active then
+						if pb.bubble_active and pb.joined then -- burst
+							pb.call="join"
+						end
+					end				
+					if pb.active then
+						if pa.bubble_active and pa.joined then -- burst
+							pa.call="join"
+						end
+					end				
+				end
+				return true
+			end,
+			postsolve=function(it)
+				local points=it:points()
+				if points.normal_y>0.25 then -- on floor
+					it.shape_a.in_body.floor_time=game_time
+					it.shape_a.in_body.floor=it.shape_b
+				end
+				return true
+			end,
+		},0x2001) -- walking things (players)
+
+		space:add_handler({
+			presolve=function(it)
+				if it.shape_a.loot and it.shape_b.player then -- trigger collect
+					it.shape_a.loot.player=it.shape_b.player
+				end
+				return false
+			end,
+		},0x3001) -- loot things (pickups)
+		
+		space:add_handler({
+			presolve=function(it)
+				if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
+					it.shape_b.triggered.triggered = it.shape_a.trigger
+				end
+				return false
+			end,
+		},0x4001) -- trigger things
+
+		return space
+	end
 	
 	
 -- items, can be used for general things, EG physics shapes with no special actions
@@ -995,189 +1079,126 @@ end
 		return player
 	end
 	
--- build collision strips for each tile with a solid or dense member
--- dense will be added for solid tiles that should be dense ( dense means can not jump up through)
-	bitdown.map_build_collision_strips(map,function(tile)
-		if tile.coll then -- can break the collision types up some more by appending a code to this
-		end
-	end)
+	
+	
 
-	for y,line in pairs(map) do
-		for x,tile in pairs(line) do
-			if tile.deadly then -- a deadly tile
+	local setup_level=function(idx)
+	
 
-				shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
-				shape:friction(1)
-				shape:elasticity(1)
-				shape.cx=x
-				shape.cy=y
-				shape:collision_type(0x1002) -- a tile that kills
 
-			elseif tile.solid and (not tile.parent) then -- if we have no parent then we are the master tile
-			
-				local l=1
-				local t=tile
-				while t.child do t=t.child l=l+1 end -- count length of strip
 
-				local shape
-				
-				if     tile.link==1 then -- x strip
-					shape=space.static:shape("box",x*8,y*8,(x+l)*8,(y+1)*8,0)
-				elseif tile.link==-1 then  -- y strip
-					shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+l)*8,0)
-				else -- single box
+-- init map and space
+
+		setup_space()
+
+		map=bitdown.pix_tiles(  maps[idx],  tilemap )
+
+		bitdown.map_build_collision_strips(map,function(tile)
+			if tile.coll then -- can break the collision types up some more by appending a code to this setting
+			end
+		end)
+
+		for y,line in pairs(map) do
+			for x,tile in pairs(line) do
+				if tile.deadly then -- a deadly tile
+
 					shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
-				end
+					shape:friction(1)
+					shape:elasticity(1)
+					shape.cx=x
+					shape.cy=y
+					shape:collision_type(0x1002) -- a tile that kills
 
-				shape:friction(tile.solid)
-				shape:elasticity(tile.solid)
-				shape.cx=x
-				shape.cy=y
-				shape.coll=tile.coll
-				if not tile.dense then 
-					shape:collision_type(0x1001) -- a tile we can jump up through
-				end
-			end
-		end
-	end
-
-	space:add_handler({
-		presolve=function(it)
-
---print(wstr.dump(it))
-			local points=it:points()
-
--- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
-			if it.shape_b.in_body.headroom then
-				local headroom=false
-				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
-				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
-					it.shape_b.in_body.headroom[it.shape_a]=true
-					return it:ignore()
-				end
-			end
-			
-			return true
-		end,
-		separate=function(it)
-			if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
-		end
-	},0x1001) -- background tiles we can jump up through
-
-	space:add_handler({
-		presolve=function(it)
-			if it.shape_b.player then -- trigger die
-				it.shape_b.player.call="die"
-			end
-			return true
-		end,
-	},0x1002) -- deadly things
-
-	space:add_handler({
-		presolve=function(it)
-			if it.shape_a.player and it.shape_b.player then -- two players touch
-				local pa=it.shape_a.player
-				local pb=it.shape_b.player
-				if pa.active then
-					if pb.bubble_active and pb.joined then -- burst
-						pb.call="join"
-					end
-				end				
-				if pb.active then
-					if pa.bubble_active and pa.joined then -- burst
-						pa.call="join"
-					end
-				end				
-			end
-			return true
-		end,
-		postsolve=function(it)
-			local points=it:points()
-			if points.normal_y>0.25 then -- on floor
-				it.shape_a.in_body.floor_time=game_time
-				it.shape_a.in_body.floor=it.shape_b
-			end
-			return true
-		end,
-	},0x2001) -- walking things (players)
-
-	space:add_handler({
-		presolve=function(it)
-			if it.shape_a.loot and it.shape_b.player then -- trigger collect
-				it.shape_a.loot.player=it.shape_b.player
-			end
-			return false
-		end,
-	},0x3001) -- loot things (pickups)
-	
-	space:add_handler({
-		presolve=function(it)
-			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
-				it.shape_b.triggered.triggered = it.shape_a.trigger
-			end
-			return false
-		end,
-	},0x4001) -- trigger things
-
-	for y,line in pairs(map) do
-		for x,tile in pairs(line) do
-
-			if tile.loot then
-				local loot=add_loot()
-
-				local shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
-				shape:collision_type(0x3001)
-				shape.loot=loot
-				loot.shape=shape
-				loot.px=x*8+4
-				loot.py=y*8+4
-				loot.active=true
-			end
-			if tile.item then
-				local item=add_item()
+				elseif tile.solid and (not tile.parent) then -- if we have no parent then we are the master tile
 				
-				item.sprite=names.cannon_ball
-				item.h=24
+					local l=1
+					local t=tile
+					while t.child do t=t.child l=l+1 end -- count length of strip
 
-				item.active=true
-				item.body=space:body(2,2)
-				item.body:position(x*8+4,y*8+4)
+					local shape
+					
+					if     tile.link==1 then -- x strip
+						shape=space.static:shape("box",x*8,y*8,(x+l)*8,(y+1)*8,0)
+					elseif tile.link==-1 then  -- y strip
+						shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+l)*8,0)
+					else -- single box
+						shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
+					end
 
-				item.shape=item.body:shape("circle",8,0,0)
-				item.shape:friction(0.5)
-				item.shape:elasticity(0.5)
-
+					shape:friction(tile.solid)
+					shape:elasticity(tile.solid)
+					shape.cx=x
+					shape.cy=y
+					shape.coll=tile.coll
+					if not tile.dense then 
+						shape:collision_type(0x1001) -- a tile we can jump up through
+					end
+				end
 			end
-			if tile[5]=="start" then
-				entities_info_set("players_start",{x*8+4,y*8+4}) --  remember start point
-			end
-			if tile.monster then
-				local item=add_monster{
-					px=x*8+4,py=y*8+4,
-					vx=0,vy=0,
-				}
-			end
-			if tile.trigger then
-				local item=add_item()
+		end
 
-				local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
-				item.shape=shape
-				
-				shape:collision_type(0x4001)
-				shape.trigger=tile
+
+		for y,line in pairs(map) do
+			for x,tile in pairs(line) do
+
+				if tile.loot then
+					local loot=add_loot()
+
+					local shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
+					shape:collision_type(0x3001)
+					shape.loot=loot
+					loot.shape=shape
+					loot.px=x*8+4
+					loot.py=y*8+4
+					loot.active=true
+				end
+				if tile.item then
+					local item=add_item()
+					
+					item.sprite=names.cannon_ball
+					item.h=24
+
+					item.active=true
+					item.body=space:body(2,2)
+					item.body:position(x*8+4,y*8+4)
+
+					item.shape=item.body:shape("circle",8,0,0)
+					item.shape:friction(0.5)
+					item.shape:elasticity(0.5)
+
+				end
+				if tile[5]=="start" then
+					entities_info_set("players_start",{x*8+4,y*8+4}) --  remember start point
+				end
+				if tile.monster then
+					local item=add_monster{
+						px=x*8+4,py=y*8+4,
+						vx=0,vy=0,
+					}
+				end
+				if tile.trigger then
+					local item=add_item()
+
+					local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
+					item.shape=shape
+					
+					shape:collision_type(0x4001)
+					shape.trigger=tile
+				end
 			end
 		end
 	end
 
+
+
+-- setup	
 	
-	add_score()
-	for i=1,6 do
-		add_player(i)
-	end
+	setup_level(0) -- load map
+	add_score() -- gui fpr the score
+	for i=1,6 do add_player(i) end -- players 1-6
 	ups(1).touch="left_right" -- request this touch control scheme for player 1 only
 
-
--- busy update loop
+-- update loop
 
 	while true do coroutine.yield()
 	
@@ -1187,6 +1208,7 @@ end
 		game_time=game_time+(1/fps)
 
 	end
+
 
 end)
 
