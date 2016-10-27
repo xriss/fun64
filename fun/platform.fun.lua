@@ -110,6 +110,8 @@ local tilemap={
 	["? "]={  0,  1,  31,  0,	item=1},
 	["S "]={  0,  1,  31,  0,	"start"},
 	["M "]={  0,  1,  31,  0,	monster=1},
+	["< "]={  0,  1,  31,  0,	trigger=-1},
+	["> "]={  0,  1,  31,  0,	trigger= 1},
 }
 
 
@@ -412,7 +414,7 @@ maps[0]=[[
 1 . . . . 1 . . . . . 1 . . . . . . . . . 1 . . . . . . . . 1 1 1 . . . . $ . . . . . . . . . . . . . . 1 
 1 . . . 1 1 . . . . . 1 . . . . . . . . . . . . . . . . . . 1 1 1 . . . . . . $ . . . . . . . . . . . . 1 
 1 1 . . 1 1 . . . . 1 1 1 . . . . . 1 . . . . . . . . . . . 1 1 1 . . . . . . . . $ . . . . . . . . . . 1 
-1 1 . . 1 1 . . . 1 1 1 1 1 . . . . 1 1 . . . . . . . . . . 1 1 1 . . . . . . . . . . . . . . . . . . . 1 
+1 1 . . 1 1 . . . 1 1 1 1 1 . . . . 1 1 . . . . . . . . . . 1 1 1 > . . . . . . . . . . . . . . . . . < 1 
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
 ]]
 
@@ -721,14 +723,42 @@ end
 		monster.shape:elasticity(0)
 		monster.shape:collision_type(0x2001) -- walker
 		monster.shape.monster=monster
+		monster.shape.triggered=monster
 		
 		monster.body.floor_time=0
 
 
+		monster.move="left"
+
+		monster.last_cx=0
+		monster.last_cx_count=0
+
 		monster.update=function()
 			if monster.active then
 			
-				monster.move="left"
+				if monster.triggered then
+					if     monster.triggered.trigger==-1 then
+						monster.move="left"
+					elseif monster.triggered.trigger== 1 then
+						monster.move="right"
+					end
+				end
+				
+				local px,py=monster.body:position()
+				local cx=math.floor((px+1)/2) -- round down a bit
+				
+				if monster.last_cx == cx then -- not moving
+					monster.last_cx_count=monster.last_cx_count+1
+					if monster.last_cx_count > 30 then
+						monster.triggered=nil
+						monster.last_cx_count=0
+						if monster.move=="left" then monster.move="right" else monster.move="left" end -- change dir
+					end
+				else -- moved
+					monster.last_cx=cx
+					monster.last_cx_count=0
+				end
+			
 			
 				char_controls(monster,0.5)
 			end
@@ -1080,6 +1110,15 @@ end
 		end,
 	},0x3001) -- loot things (pickups)
 	
+	space:add_handler({
+		presolve=function(it)
+			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
+				it.shape_b.triggered.triggered = it.shape_a.trigger
+			end
+			return false
+		end,
+	},0x4001) -- trigger things
+
 	for y,line in pairs(map) do
 		for x,tile in pairs(line) do
 
@@ -1117,6 +1156,15 @@ end
 					px=x*8+4,py=y*8+4,
 					vx=0,vy=0,
 				}
+			end
+			if tile.trigger then
+				local item=add_item()
+
+				local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
+				item.shape=shape
+				
+				shape:collision_type(0x4001)
+				shape.trigger=tile
 			end
 		end
 	end
