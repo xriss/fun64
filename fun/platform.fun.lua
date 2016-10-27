@@ -498,20 +498,13 @@ local fat_controller=coroutine.create(function()
 
 -- map for collision etc
 	local map=bitdown.pix_tiles(  maps[0],  tilemap )
-	
+
 		
 	local space=chipmunk.space()
 	space:gravity(0,700)
 	space:damping(0.5)
 	
-
-
--- mess around with low level setting that should not be messed with
---	space:collision_slop(0)
---	space:collision_bias(0)
---	space:iterations(10)
-
-
+	
 -- items, can be used for general things, EG physics shapes with no special actions
 	local add_item=function()
 		local item=entities_add{caste="item"}
@@ -564,7 +557,53 @@ local fat_controller=coroutine.create(function()
 		
 		return item
 	end
+	
+	local add_score=function()
 
+		local item=entities_add{caste="gui"}
+
+		item.draw=function()
+			local remain=0
+			for _,loot in ipairs( entities_items("loot") ) do
+				if loot.active then remain=remain+1 end -- count remaining loots
+			end
+			if remain==0 and not finish_time then -- done
+				finish_time=game_time
+			end
+		
+
+--[[
+-- draw test menu
+for i=1,12 do
+
+local s=(" "):rep(14)
+ctext.text_print(s,10-2,10-1+i,31,2)
+
+end
+for i=1,10 do
+local s=string.format("%2dxx",i)
+s=(" "):rep((10-#s)/2)..s
+s=s..(" "):rep((10-#s))
+ctext.text_print(s,10,10+i,31,1)
+
+end
+]]
+
+			local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
+			local ts=math.floor(t)
+			local tp=math.floor((t%1)*100)
+
+			local s=string.format("%d.%02d",ts,tp)
+			ctext.text_print(s,math.floor((ctext.tilemap_hx-#s)/2),0)
+			
+		end
+		
+		return item
+	end
+
+	local add_character=function()
+	end
+	
 	local add_player=function(i)
 		local players_colors={30,14,18,7,3,22}
 
@@ -1014,80 +1053,47 @@ local fat_controller=coroutine.create(function()
 	end
 
 	
+	add_score()
 	for i=1,6 do
 		add_player(i)
 	end
-	
-	ups(1).touch="left_right" -- request this touch control scheme for player 0 only
+	ups(1).touch="left_right" -- request this touch control scheme for player 1 only
 
 
--- busy loop
+-- busy update loop
 
-	while true do
+	while true do coroutine.yield()
 	
 		entities_call("update")
 				
 		space:step(1/fps)
-		game_time=game_time+1/fps			
+		game_time=game_time+(1/fps)
 
-		local remain=0
-		for _,loot in ipairs( entities_items("loot") ) do
-			if loot.active then remain=remain+1 end -- count remaining loots
-		end
-		if remain==0 and not finish_time then -- done
-			finish_time=game_time
-		end
-
-		ctext.dirty(true)
-		ctext.text_window()
-		ctext.text_clear(0x00000000)
-		
-
---[[
--- draw test menu
-for i=1,12 do
-
-local s=(" "):rep(14)
-ctext.text_print(s,10-2,10-1+i,31,2)
-
-end
-for i=1,10 do
-local s=string.format("%2dxx",i)
-s=(" "):rep((10-#s)/2)..s
-s=s..(" "):rep((10-#s))
-ctext.text_print(s,10,10+i,31,1)
-
-end
-]]
-
-		local t=start_time and ( (finish_time or game_time) - ( start_time ) ) or 0
-		local ts=math.floor(t)
-		local tp=math.floor((t%1)*100)
-
-		local s=string.format("%d.%02d",ts,tp)
-		ctext.text_print(s,math.floor((ctext.tilemap_hx-#s)/2),0)
-
-		coroutine.yield()
 	end
 
 end)
 
 
--- this is the main function, code below called repeatedly to update and draw
+-- this is the main function, code below called repeatedly to update and draw or pass in other messages
 
 function main(need)
 
 	if not need.setup then need=coroutine.yield() end -- wait for setup request (should always be first call)
 
+	coroutine_resume_and_report_errors( fat_controller ) -- setup
+
 -- after setup we should yield and then perform updates only if requested from a yield
 	local done=false while not done do
 		need=coroutine.yield()
 		if need.update then
-			coroutine_resume_and_report_errors( fat_controller ) -- the main code runs in this coroutine
+			coroutine_resume_and_report_errors( fat_controller ) -- update
 		end
 		if need.draw then
-			system.components.sprites.list_reset() -- remove old sprites
-			entities_call("draw")
+			system.components.text.dirty(true)
+			system.components.text.text_window()
+			system.components.text.text_clear(0x00000000)
+			system.components.sprites.list_reset() -- remove old sprites here
+			entities_call("draw") -- because we are going to add them all in again here
 		end
 		if need.clean then done=true end -- cleanup requested
 	end
