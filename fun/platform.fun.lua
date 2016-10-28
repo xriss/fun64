@@ -385,7 +385,7 @@ set_tile_name(0x0604,"body_p3",[[
 . . . . . . . . . . . . . . . . 
 ]])
 
-maps[0]=[[
+maps[-1]=[[
 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
 1 . . . . . . . . . . . . . . . . $ . X . . . . X . . . . . . . . . . . . . . . . . . ? . ? . ? . ? . . 1 
@@ -415,6 +415,39 @@ maps[0]=[[
 1 . . . 1 1 . . . . . 1 . . . . . . . . . . . . . . . . . . 1 1 1 . . . . . . $ . . . . . . . . . . . . 1 
 1 1 . . 1 1 . . . . 1 1 1 . . . . . 1 . . . . . . . . . . . 1 1 1 . . . . . . . . $ . . . . . . . . . . 1 
 1 1 . . 1 1 . . . 1 1 1 1 1 . . . . 1 1 . . . . . . . . . . 1 1 1 > . . . . . . . . . . . . . . . . . < 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+]]
+
+maps[0]=[[
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 . . . . X . $ . X . $ . X . . . . . . . X . . X . . . . . . . . . . . . . . . . . . . . . . . . . $ . 1 
+1 . . . . . . . . . . . . . . . . . . . . $ . . $ . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . ? . . . . . . . . . . . . . . . X $ . . X $ . . X $ . . . . . 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . . . . . . . . . . . . . . . . . 1 
+1 1 1 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ 1 
+1 1 1 1 1 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . 1 1 1 1 1 1 . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . > . . . . . M . . . . . < 1 1 1 1 1 1 . . $ X $ . . . . ? . . . . . . . . . . . 1 
+1 1 1 1 1 1 1 1 . . . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 1 1 1 1 1 
+1 . . . . . . . . . . . . . . . . . $ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 1 1 1 
+1 . . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 . . . . . . . . . . . . . . . . . X $ . . . . . ? . . . . . 1 1 1 1 1 1 . . . . . . . . . . . . . . . 1 
+1 . . . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . . . . . . . . . . . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . 1 
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
 ]]
 
@@ -485,8 +518,9 @@ function setup_space()
 -- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
 			if it.shape_b.in_body.headroom then
 				local headroom=false
-				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
-				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
 					it.shape_b.in_body.headroom[it.shape_a]=true
 					return it:ignore()
 				end
@@ -495,7 +529,9 @@ function setup_space()
 			return true
 		end,
 		separate=function(it)
-			if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+			end
 		end
 	},0x1001) -- background tiles we can jump up through
 
@@ -991,7 +1027,8 @@ local add_player=function(i)
 
 		if player.bubble_active then
 			if not player.active then
-				if not player.joined and player.jump then -- first join is free
+				if player.jump then
+					if player.joined then player.score=player.score-1 end-- first join is free, next join costs 1 point
 					player.joined=true
 					player:join() -- join for real and remove bubble
 				end
@@ -1050,13 +1087,14 @@ local add_player=function(i)
 			player.frame=player.frame%16
 			local t=player.frames[1+math.floor(player.frame/4)]
 			
-			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})
+			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})			
+		end
 
-
+		if player.joined then
 			local s=string.format("%d",player.score)
 			system.components.text.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
-			
 		end
+
 	end
 	
 	return player
