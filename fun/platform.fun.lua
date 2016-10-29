@@ -518,17 +518,14 @@ function setup_space()
 	space:gravity(0,700)
 	space:damping(0.5)
 	
-	space:add_handler({
-		presolve=function(it)
-
---print(wstr.dump(it))
+	local arbiter_pass={}  -- background tiles we can jump up through
+		arbiter_pass.presolve=function(it)
 			local points=it:points()
-
 -- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
 			if it.shape_b.in_body.headroom then
 				local headroom=false
---				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
---				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+--					for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+--					if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
 				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
 					it.shape_b.in_body.headroom[it.shape_a]=true
 					return it:ignore()
@@ -536,36 +533,33 @@ function setup_space()
 			end
 			
 			return true
-		end,
-		separate=function(it)
+		end
+		arbiter_pass.separate=function(it)
 			if it.shape_a and it.shape_b and it.shape_b.in_body then
 				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
 			end
 		end
-	},0x1001) -- background tiles we can jump up through
-
-	space:add_handler({
-		presolve=function(it)
+		space:add_handler(arbiter_pass,0x1001)
+	
+	local arbiter_deadly={} -- deadly things
+		arbiter_deadly.presolve=function(it)
 			local callbacks=entities_info_manifest("callbacks")
 			if it.shape_b.player then -- trigger die
 				local pb=it.shape_b.player
 				callbacks[#callbacks+1]=function() pb:die() end
 			end
 			return true
-		end,
-	},0x1002) -- deadly things
+		end
+		space:add_handler(arbiter_deadly,0x1002)
 
-	space:add_handler({
-		presolve=function(it)
-
---print(wstr.dump(it))
+	local arbiter_crumbling={} -- crumbling tiles
+		arbiter_crumbling.presolve=function(it)
 			local points=it:points()
-
--- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
 			if it.shape_b.in_body.headroom then
 				local headroom=false
---				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
---				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+	--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+	--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
 				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
 					it.shape_b.in_body.headroom[it.shape_a]=true
 					return it:ignore()
@@ -573,16 +567,16 @@ function setup_space()
 			end
 			
 			return true
-		end,
-		separate=function(it)
+		end
+		arbiter_crumbling.separate=function(it)
 			if it.shape_a and it.shape_b and it.shape_b.in_body then
 				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
 			end
 		end
-	},0x1003) -- crumbling tiles
+		space:add_handler(arbiter_crumbling,0x1003)
 
-	space:add_handler({
-		presolve=function(it)
+	local arbiter_walking={} -- walking things (players)
+		arbiter_walking.presolve=function(it)
 			local callbacks=entities_info_manifest("callbacks")
 			if it.shape_a.player and it.shape_b.monster then
 				local pa=it.shape_a.player
@@ -607,8 +601,8 @@ function setup_space()
 				end				
 			end
 			return true
-		end,
-		postsolve=function(it)
+		end
+		arbiter_walking.postsolve=function(it)
 			local points=it:points()
 			if points.normal_y>0.25 then -- on floor
 				local time=entities_info_get("time")
@@ -616,26 +610,26 @@ function setup_space()
 				it.shape_a.in_body.floor=it.shape_b
 			end
 			return true
-		end,
-	},0x2001) -- walking things (players)
+		end
+		space:add_handler(arbiter_walking,0x2001) -- walking things (players)
 
-	space:add_handler({
-		presolve=function(it)
+	local arbiter_loot={} -- loot things (pickups)
+		arbiter_loot.presolve=function(it)
 			if it.shape_a.loot and it.shape_b.player then -- trigger collect
 				it.shape_a.loot.player=it.shape_b.player
 			end
 			return false
-		end,
-	},0x3001) -- loot things (pickups)
+		end
+		space:add_handler(arbiter_loot,0x3001) 
 	
-	space:add_handler({
-		presolve=function(it)
+	local arbiter_trigger={} -- trigger things
+		arbiter_trigger.presolve=function(it)
 			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
 				it.shape_b.triggered.triggered = it.shape_a.trigger
 			end
 			return false
-		end,
-	},0x4001) -- trigger things
+		end
+		space:add_handler(arbiter_trigger,0x4001)
 
 	return space
 end
