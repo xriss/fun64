@@ -636,7 +636,7 @@ end
 
 
 -- items, can be used for general things, EG physics shapes with no special actions
-local add_item=function()
+function add_item()
 	local space=entities_info_get("space")
 	local item=entities_add{caste="item"}
 	item.draw=function()
@@ -651,7 +651,7 @@ local add_item=function()
 end
 
 -- a floating item that you can/must collect
-local add_loot=function()
+function add_loot()
 	local space=entities_info_get("space")
 	local loot=entities_add{caste="loot"}
 	loot.update=function()
@@ -674,7 +674,7 @@ local add_loot=function()
 end
 
 -- an item that just gets in the way
-local add_detritus=function(sprite,h,px,py,bm,bi,bf,be,...)
+function add_detritus(sprite,h,px,py,bm,bi,bf,be,...)
 	local space=entities_info_get("space")
 	local item=add_item()
 
@@ -693,11 +693,11 @@ local add_detritus=function(sprite,h,px,py,bm,bi,bf,be,...)
 end
 
 
-local setup_menu=function()
+function setup_menu()
 
-	local item=entities_add{caste="menu"}
+	local menu=entities_add{caste="menu"}
 
-	item.draw=function()	
+	menu.draw=function()	
 
 --[[
 -- draw test menu
@@ -717,14 +717,14 @@ end
 ]]
 	end
 	
-	return item
+	return menu
 end
 
-local setup_score=function()
+function setup_score()
 
-	local item=entities_add{caste="gui"}
+	local score=entities_add{caste="gui"}
 
-	item.draw=function()
+	score.draw=function()
 	
 		local time=entities_info_get("time")
 	
@@ -748,13 +748,13 @@ local setup_score=function()
 		
 	end
 	
-	return item
+	return score
 end
 
 -- move it like a player or monster based on
 -- it.move which is "left" or "right" to move 
 -- it.jump which is true if we should jump
-local char_controls=function(it,fast)
+function char_controls(it,fast)
 	fast=fast or 1
 
 	local time=entities_info_get("time")
@@ -844,7 +844,7 @@ local char_controls=function(it,fast)
 	end
 end
 
-local add_monster=function(opts)
+function add_monster(opts)
 
 	local space=entities_info_get("space")
 
@@ -929,7 +929,7 @@ local add_monster=function(opts)
 
 end
 
-local add_player=function(i)
+function add_player(i)
 	local players_colors={30,14,18,7,3,22}
 
 	local space=entities_info_get("space")
@@ -1151,7 +1151,7 @@ end
 
 
 
-local setup_level=function(idx)
+function setup_level(idx)
 
 -- init map and space
 
