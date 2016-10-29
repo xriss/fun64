@@ -16,7 +16,7 @@ local fps=60
 
 local cmap=bitdown.cmap -- use default swanky32 colors
 
---request this hardware setup before calling main
+--request this hardware setup !The components will not exist until after main has been called!
 hardware={
 	{
 		component="screen",
@@ -81,35 +81,26 @@ local names={} -- a name -> tile number lookup
 local maps={}
 
 local set_tile_name=function(tile,name,data)
+	if tiles[name] then print("WARNING REUSE OF NAME",name,tile) end
+	if tiles[tile] then print("WARNING REUSE OF TILE",name,tile) end
 	names[name]=tile
 	tiles[tile]=data
 end
 
-local tilemap={
-	[0]={0,1,0,0},
-
-	[". "]={  0,  1,  31,  0},
-	["00"]={  1,  1,  31,  0,	solid=1,dense=1},		-- black border
-	["0 "]={  0,  1,  31,  0,	solid=1,dense=1},		-- empty border
-
-	["||"]={  2,  1,  31,  0,	solid=1},				-- wall
-	["=="]={  3,  1,  31,  0,	solid=1},				-- floor
-	["<<"]={  4,  1,  31,  0,	solid=1,push=-1},		-- floor push left
-	[">>"]={  5,  1,  31,  0,	solid=1,push= 1},		-- floor push right
-	["--"]={  6,  1,  31,  0,	solid=1,collapse=1},	-- floor collapse
-
-	["X "]={ 16,  1,  31,  0,	deadly=1},				-- ceiling spike
-	["x "]={ 17,  1,  31,  0,	deadly=1},				-- floor spike
-
-
--- items not tiles, so display tile 0 and we will add a sprite for display
-	["$ "]={  0,  1,  31,  0,	loot=1},
-	["? "]={  0,  1,  31,  0,	item=1},
-	["S "]={  0,  1,  31,  0,	"start"},
-	["M "]={  0,  1,  31,  0,	monster=1},
-	["< "]={  0,  1,  31,  0,	trigger=-1},
-	["> "]={  0,  1,  31,  0,	trigger= 1},
-}
+local set_tilemap_from_names=function(tilemap)
+	for n,v in pairs(tilemap) do
+		if v.name then -- convert name to idx
+			v.idx=names[v.name]
+		end
+		if v.idx then -- convert idx to r,g,b,a
+			v[1]=(          (v.idx    )%256)
+			v[2]=(math.floor(v.idx/256)%256)
+			v[3]=31
+			v[4]=0
+		end
+	end
+	return tilemap
+end
 
 
 set_tile_name(0x0100,"char_empty",[[
@@ -203,6 +194,7 @@ set_tile_name(0x0111,"char_spike_up",[[
 R R 7 7 7 7 R R 
 R R 7 7 7 7 R R 
 ]])
+
 
 set_tile_name(0x0200,"player_f1",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -404,6 +396,33 @@ set_tile_name(0x0604,"body_p3",[[
 ]])
 
 
+local tilemap=set_tilemap_from_names{
+	[0]={0,1,0,0},
+
+	[". "]={ name="char_empty",	},
+	["00"]={ name="char_black",	solid=1, dense=1, },		-- black border
+	["0 "]={ name="char_empty",	solid=1, dense=1, },		-- empty border
+
+	["||"]={  2,  1,  31,  0,	solid=1},				-- wall
+	["=="]={  3,  1,  31,  0,	solid=1},				-- floor
+	["<<"]={  4,  1,  31,  0,	solid=1,push=-1},		-- floor push left
+	[">>"]={  5,  1,  31,  0,	solid=1,push= 1},		-- floor push right
+	["--"]={  6,  1,  31,  0,	solid=1,collapse=1},	-- floor collapse
+
+	["X "]={ 16,  1,  31,  0,	deadly=1},				-- ceiling spike
+	["x "]={ 17,  1,  31,  0,	deadly=1},				-- floor spike
+
+
+-- items not tiles, so display tile 0 and we will add a sprite for display
+	["$ "]={  0,  1,  31,  0,	loot=1},
+	["? "]={  0,  1,  31,  0,	item=1},
+	["S "]={  0,  1,  31,  0,	"start"},
+	["M "]={  0,  1,  31,  0,	monster=1},
+	["< "]={  0,  1,  31,  0,	trigger=-1},
+	["> "]={  0,  1,  31,  0,	trigger= 1},
+}
+
+
 maps[0]=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
 ||. . . . X . $ . X . $ . X . . . . . . . X . . X . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||
@@ -475,6 +494,10 @@ maps[0]=[[
 -- get/set info associated with this entities
 	local entities_info_get=function(name)       return entities_info[name]							end
 	local entities_info_set=function(name,value)        entities_info[name]=value	return value	end
+	local entities_info_manifest=function(name)
+		if not entities_info[name] then entities_info[name]={} end -- create empty
+		return entities_info[name]
+	end
 -- reset the entities
 	entities_reset()
 
@@ -523,8 +546,10 @@ function setup_space()
 
 	space:add_handler({
 		presolve=function(it)
+			local callbacks=entities_info_manifest("callbacks")
 			if it.shape_b.player then -- trigger die
-				it.shape_b.player.call="die"
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
 			end
 			return true
 		end,
@@ -532,17 +557,52 @@ function setup_space()
 
 	space:add_handler({
 		presolve=function(it)
+
+--print(wstr.dump(it))
+			local points=it:points()
+
+-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+			if it.shape_b.in_body.headroom then
+				local headroom=false
+--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
+					it.shape_b.in_body.headroom[it.shape_a]=true
+					return it:ignore()
+				end
+			end
+			
+			return true
+		end,
+		separate=function(it)
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+			end
+		end
+	},0x1003) -- crumbling tiles
+
+	space:add_handler({
+		presolve=function(it)
+			local callbacks=entities_info_manifest("callbacks")
+			if it.shape_a.player and it.shape_b.monster then
+				local pa=it.shape_a.player
+				callbacks[#callbacks+1]=function() pa:die() end
+			end
+			if it.shape_a.monster and it.shape_b.player then
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
+			end
 			if it.shape_a.player and it.shape_b.player then -- two players touch
 				local pa=it.shape_a.player
 				local pb=it.shape_b.player
 				if pa.active then
 					if pb.bubble_active and pb.joined then -- burst
-						pb.call="join"
+						callbacks[#callbacks+1]=function() pb:join() end
 					end
 				end				
 				if pb.active then
 					if pa.bubble_active and pa.joined then -- burst
-						pa.call="join"
+						callbacks[#callbacks+1]=function() pa:join() end
 					end
 				end				
 			end
@@ -638,22 +698,12 @@ local add_detritus=function(sprite,h,px,py,bm,bi,bf,be,...)
 	return item
 end
 
-local setup_score=function()
 
-	local item=entities_add{caste="gui"}
+local setup_menu=function()
 
-	item.draw=function()
-	
-		local time=entities_info_get("time")
-	
-		local remain=0
-		for _,loot in ipairs( entities_items("loot") ) do
-			if loot.active then remain=remain+1 end -- count remaining loots
-		end
-		if remain==0 and not time.finish then -- done
-			time.finish=time.game
-		end
-	
+	local item=entities_add{caste="menu"}
+
+	item.draw=function()	
 
 --[[
 -- draw test menu
@@ -671,6 +721,26 @@ system.components.text.text_print(s,10,10+i,31,1)
 
 end
 ]]
+	end
+	
+	return item
+end
+
+local setup_score=function()
+
+	local item=entities_add{caste="gui"}
+
+	item.draw=function()
+	
+		local time=entities_info_get("time")
+	
+		local remain=0
+		for _,loot in ipairs( entities_items("loot") ) do
+			if loot.active then remain=remain+1 end -- count remaining loots
+		end
+		if remain==0 and not time.finish then -- done
+			time.finish=time.game
+		end
 
 		local t=time.start and ( (time.finish or time.game) - ( time.start ) ) or 0
 		local ts=math.floor(t)
@@ -679,7 +749,7 @@ end
 		local s=string.format("%d.%02d",ts,tp)
 		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),0)
 
-		local s=" Central Cavern "
+		local s="A small cave, well, small for a cave."
 		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),system.components.text.tilemap_hy-1)
 		
 	end
@@ -1002,12 +1072,7 @@ local add_player=function(i)
 			end
 
 		end
-		
-		if player.call then -- a callback requested
-			player[player.call](player)
-			player.call=nil
-		end
-		
+				
 		if not player.bubble_active and not player.active then -- can add as bubble
 			if up.button("up") or up.button("down") or up.button("left") or up.button("right") or up.button("fire") then
 				player.bubble() -- add bubble
@@ -1238,8 +1303,13 @@ local fat_controller=coroutine.create(function()
 
 		entities_info_get("space"):step(1/fps)
 
+		-- run all the callbacks created by collisions 
+		for _,f in pairs(entities_info_manifest("callbacks")) do f() end
+		entities_info_set("callbacks",{}) -- and reset the list
+
 		local time=entities_info_get("time")
 		time.game=time.game+(1/fps)
+		
 
 	end
 
