@@ -397,29 +397,29 @@ set_tile_name(0x0604,"body_p3",[[
 
 
 local tilemap=set_tilemap_from_names{
-	[0]={0,1,0,0},
+	[0]={ name="char_empty",	},
 
-	[". "]={ name="char_empty",	},
-	["00"]={ name="char_black",	solid=1, dense=1, },		-- black border
-	["0 "]={ name="char_empty",	solid=1, dense=1, },		-- empty border
+	[". "]={ name="char_empty",				},
+	["00"]={ name="char_black",				solid=1, dense=1, },		-- black border
+	["0 "]={ name="char_empty",				solid=1, dense=1, },		-- empty border
 
-	["||"]={  2,  1,  31,  0,	solid=1},				-- wall
-	["=="]={  3,  1,  31,  0,	solid=1},				-- floor
-	["<<"]={  4,  1,  31,  0,	solid=1,push=-1},		-- floor push left
-	[">>"]={  5,  1,  31,  0,	solid=1,push= 1},		-- floor push right
-	["--"]={  6,  1,  31,  0,	solid=1,collapse=1},	-- floor collapse
+	["||"]={ name="char_wall",				solid=1},				-- wall
+	["=="]={ name="char_floor",				solid=1},				-- floor
+	["<<"]={ name="char_floor_left",		solid=1,push=-1},		-- floor push left
+	[">>"]={ name="char_floor_right",		solid=1,push= 1},		-- floor push right
+	["--"]={ name="char_floor_collapse",	solid=1,collapse=1},	-- floor collapse
 
-	["X "]={ 16,  1,  31,  0,	deadly=1},				-- ceiling spike
-	["x "]={ 17,  1,  31,  0,	deadly=1},				-- floor spike
+	["X "]={ name="char_spike_down",		deadly=1},				-- ceiling spike
+	["x "]={ name="char_spike_up",			deadly=1},				-- floor spike
 
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
-	["$ "]={  0,  1,  31,  0,	loot=1},
-	["? "]={  0,  1,  31,  0,	item=1},
-	["S "]={  0,  1,  31,  0,	"start"},
-	["M "]={  0,  1,  31,  0,	monster=1},
-	["< "]={  0,  1,  31,  0,	trigger=-1},
-	["> "]={  0,  1,  31,  0,	trigger= 1},
+	["$ "]={ name="char_empty",	loot=1,		},
+	["? "]={ name="char_empty",	item=1,		},
+	["S "]={ name="char_empty",	start=1,	},
+	["M "]={ name="char_empty",	monster=1,	},
+	["< "]={ name="char_empty",	trigger=-1,	},
+	["> "]={ name="char_empty",	trigger= 1,	},
 }
 
 
@@ -1240,7 +1240,7 @@ local setup_level=function(idx)
 				item.shape:elasticity(0.5)
 
 			end
-			if tile[5]=="start" then
+			if tile.start then
 				entities_info_set("players_start",{x*8+4,y*8+4}) --  remember start point
 			end
 			if tile.monster then
@@ -1311,7 +1311,7 @@ local fat_controller=coroutine.create(function()
 end)
 
 
--- this is the main function, code below called repeatedly to update and draw or pass in other messages
+-- this is the main function, code below called repeatedly to update and draw or handle other messages (eg mouse)
 
 function main(need)
 
