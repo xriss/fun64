@@ -539,7 +539,7 @@ function setup_space()
 				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
 			end
 		end
-		space:add_handler(arbiter_pass,0x1001)
+	space:add_handler(arbiter_pass,0x1001)
 	
 	local arbiter_deadly={} -- deadly things
 		arbiter_deadly.presolve=function(it)
@@ -550,7 +550,7 @@ function setup_space()
 			end
 			return true
 		end
-		space:add_handler(arbiter_deadly,0x1002)
+	space:add_handler(arbiter_deadly,0x1002)
 
 	local arbiter_crumbling={} -- crumbling tiles
 		arbiter_crumbling.presolve=function(it)
@@ -573,7 +573,7 @@ function setup_space()
 				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
 			end
 		end
-		space:add_handler(arbiter_crumbling,0x1003)
+	space:add_handler(arbiter_crumbling,0x1003)
 
 	local arbiter_walking={} -- walking things (players)
 		arbiter_walking.presolve=function(it)
@@ -611,7 +611,7 @@ function setup_space()
 			end
 			return true
 		end
-		space:add_handler(arbiter_walking,0x2001) -- walking things (players)
+	space:add_handler(arbiter_walking,0x2001) -- walking things (players)
 
 	local arbiter_loot={} -- loot things (pickups)
 		arbiter_loot.presolve=function(it)
@@ -620,7 +620,7 @@ function setup_space()
 			end
 			return false
 		end
-		space:add_handler(arbiter_loot,0x3001) 
+	space:add_handler(arbiter_loot,0x3001) 
 	
 	local arbiter_trigger={} -- trigger things
 		arbiter_trigger.presolve=function(it)
@@ -629,7 +629,7 @@ function setup_space()
 			end
 			return false
 		end
-		space:add_handler(arbiter_trigger,0x4001)
+	space:add_handler(arbiter_trigger,0x4001)
 
 	return space
 end
