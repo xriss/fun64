@@ -173,6 +173,36 @@ r . r . r . r .
 . . . . . r . . 
 . . . . . . . . 
 ]])
+set_tile_name(0x0107,"char_floor_collapse_1",[[
+. r . r . r . r 
+. r . r . r . r 
+r . . . . . r . 
+. . . r . r . . 
+. . r . r . . . 
+. . . . r . r . 
+. . . . . . . . 
+. . . . . . . . 
+]])
+set_tile_name(0x0108,"char_floor_collapse_2",[[
+. r . r . r . r 
+. . . r . . . . 
+r . . . . . . . 
+. . . . . r . . 
+. . r . . . . . 
+. . . . r . r . 
+. . . . . . . . 
+. . . . . . . . 
+]])
+set_tile_name(0x0109,"char_floor_collapse_3",[[
+. r . r . r . r 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+]])
 
 set_tile_name(0x0110,"char_spike_down",[[
 R R 7 7 7 7 R R 
@@ -564,13 +594,19 @@ function setup_space()
 					it.shape_b.in_body.headroom[it.shape_a]=true
 					return it:ignore()
 				end
+				local tile=it.shape_a.tile -- a humanoid is walking on this tile
+				if tile then
+					tile.level.updates[tile]=true -- start updates to animate this tile crumbling away
+				end
 			end
 			
 			return true
 		end
 		arbiter_crumbling.separate=function(it)
 			if it.shape_a and it.shape_b and it.shape_b.in_body then
-				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+				if it.shape_b.in_body.headroom then -- only players types will have headroom
+					it.shape_b.in_body.headroom[it.shape_a]=nil
+				end
 			end
 		end
 	space:add_handler(arbiter_crumbling,0x1003)
@@ -1153,11 +1189,22 @@ end
 
 function setup_level(idx)
 
+	local level=entities_add{caste="level"}
+
 -- init map and space
 
 	local space=setup_space()
 
 	local map=entities_info_set("map", bitdown.pix_tiles(  maps[idx],  tilemap ) )
+
+-- make sure we have x,y, hack delete this code when we bump the engine
+	for y=0,#map do
+		for x=0,#(map[y]) do
+			local c=map[y][x]
+			c.x=x -- add x,y of tile to the copied data
+			c.y=y
+		end
+	end	
 	
 	bitdown.pix_grd(    maps[idx],  tilemap,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
@@ -1173,6 +1220,7 @@ function setup_level(idx)
 
 	for y,line in pairs(map) do
 		for x,tile in pairs(line) do
+			local shape
 			if tile.deadly then -- a deadly tile
 
 				shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
@@ -1188,8 +1236,6 @@ function setup_level(idx)
 				local t=tile
 				while t.child do t=t.child l=l+1 end -- count length of strip
 
-				local shape
-				
 				if     tile.link==1 then -- x strip
 					shape=space.static:shape("box",x*8,y*8,(x+l)*8,(y+1)*8,0)
 				elseif tile.link==-1 then  -- y strip
@@ -1203,9 +1249,43 @@ function setup_level(idx)
 				shape.cx=x
 				shape.cy=y
 				shape.coll=tile.coll
-				if not tile.dense then 
+				if tile.collapse then
+					shape:collision_type(0x1003) -- a tile that collapses when we walk on it
+					tile.update=function(tile)
+						tile.anim=(tile.anim or 0) + 1
+			
+						if tile.anim > 60 then
+							space:remove( tile.shape )
+							tile.shape=nil
+							system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,{0,0,0,0})
+							system.components.map.dirty(true)
+							level.updates[tile]=nil
+						else
+							local name
+							if     tile.anim < 15 then name="char_floor_collapse"
+							elseif tile.anim < 30 then name="char_floor_collapse_1"
+							elseif tile.anim < 45 then name="char_floor_collapse_2"
+							else                       name="char_floor_collapse_3"
+							end
+							local idx=names[name]
+							local v={}
+							v[1]=(          (idx    )%256)
+							v[2]=(math.floor(idx/256)%256)
+							v[3]=31
+							v[4]=0
+							system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,v)
+							system.components.map.dirty(true)
+						end
+					end
+				elseif not tile.dense then 
 					shape:collision_type(0x1001) -- a tile we can jump up through
 				end
+			end
+			tile.map=map -- remember map
+			tile.level=level -- remember level
+			if shape then -- link shape and tile
+				shape.tile=tile
+				tile.shape=shape
 			end
 		end
 	end
@@ -1258,6 +1338,13 @@ function setup_level(idx)
 				shape:collision_type(0x4001)
 				shape.trigger=tile
 			end
+		end
+	end
+	
+	level.updates={} -- tiles to update (animate)
+	level.update=function()
+		for v,b in pairs(level.updates) do -- update these things
+			if v.update then v:update() end
 		end
 	end
 end
