@@ -1262,9 +1262,8 @@ function setup_level(idx)
 							level.updates[tile]=nil
 						else
 							local name
-							if     tile.anim < 15 then name="char_floor_collapse"
-							elseif tile.anim < 30 then name="char_floor_collapse_1"
-							elseif tile.anim < 45 then name="char_floor_collapse_2"
+							if     tile.anim < 20 then name="char_floor_collapse_1"
+							elseif tile.anim < 40 then name="char_floor_collapse_2"
 							else                       name="char_floor_collapse_3"
 							end
 							local idx=names[name]
