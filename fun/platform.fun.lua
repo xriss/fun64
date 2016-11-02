@@ -247,14 +247,14 @@ R R 7 7 7 7 R R
 
 
 set_tile_name(0x0120,"char_dust",[[
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . r R . . . 
-. . . R r . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
+r r r r R R R R 
+r r r r R R R R 
+r r r r R R R R 
+r r r r R R R R 
+R R R R r r r r 
+R R R R r r r r 
+R R R R r r r r 
+R R R R r r r r 
 ]])
 
 set_tile_name(0x0200,"player_f1",[[
@@ -803,6 +803,7 @@ function setup_dust()
 		it.sprite=it.sprite or names.char_dust
 		it.color=it.color or {r=1,g=1,b=1,a=1}		
 		it.h=it.h or 8
+		it.s=it.s or 1/4
 
 		it.body=space:body(it.mass or 0.1,it.inertia or 0.1)
 		it.body:position(it.px,it.py)
@@ -838,7 +839,7 @@ function setup_dust()
 
 			local px,py=it.body:position()
 			local rz=it.body:angle()
-			system.components.sprites.list_add({t=it.sprite,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color})
+			system.components.sprites.list_add({t=it.sprite,s=it.s,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color})
 			
 		end
 	end
