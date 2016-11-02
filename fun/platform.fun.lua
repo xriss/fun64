@@ -143,26 +143,6 @@ r r r r r r r r
 . . . . . r . . 
 . . . . . . . . 
 ]])
-set_tile_name(0x0104,"char_floor_left",[[
-R R R R R R R R 
-r r r r r r r r 
-r r r r r r r r 
-R R R R R R R R 
-r r r r r r r r 
-r r r r r r r r 
-R R R R R R R R 
-. . . . . . . . 
-]])
-set_tile_name(0x0105,"char_floor_right",[[
-R R R R R R R R 
-r r r r r r r r 
-r r r r r r r r 
-R R R R R R R R 
-r r r r r r r r 
-r r r r r r r r 
-R R R R R R R R 
-. . . . . . . . 
-]])
 set_tile_name(0x0106,"char_floor_collapse",[[
 R r R r R r R r 
 r r . r . r . r 
@@ -486,8 +466,8 @@ local tilemap=set_tilemap_from_names{
 
 	["||"]={ name="char_wall",				solid=1},				-- wall
 	["=="]={ name="char_floor",				solid=1},				-- floor
-	["<<"]={ name="char_floor_left",		solid=1,push=-1},		-- floor push left
-	[">>"]={ name="char_floor_right",		solid=1,push= 1},		-- floor push right
+	["<<"]={ name="char_floor_move_1",		solid=1,push=-1},		-- floor push left
+	[">>"]={ name="char_floor_move_3",		solid=1,push= 1},		-- floor push right
 	["--"]={ name="char_floor_collapse",	solid=1,collapse=1},	-- floor collapse
 
 	["X "]={ name="char_spike_down",		deadly=1},				-- ceiling spike
