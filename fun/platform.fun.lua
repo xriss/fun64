@@ -573,9 +573,9 @@ maps[0]=[[
 		return count -- number of items called
 	end
 -- get/set info associated with this entities
-	local entities_info_get=function(name)       return entities_info[name]							end
-	local entities_info_set=function(name,value)        entities_info[name]=value	return value	end
-	local entities_info_manifest=function(name)
+	local entities_get=function(name)       return entities_info[name]							end
+	local entities_set=function(name,value)        entities_info[name]=value	return value	end
+	local entities_manifest=function(name)
 		if not entities_info[name] then entities_info[name]={} end -- create empty
 		return entities_info[name]
 	end
@@ -594,7 +594,7 @@ maps[0]=[[
 -- create space and handlers
 function setup_space()
 
-	local space=entities_info_set("space", chipmunk.space() )
+	local space=entities_set("space", chipmunk.space() )
 	
 	space:gravity(0,700)
 	space:damping(0.5)
@@ -624,7 +624,7 @@ function setup_space()
 	
 	local arbiter_deadly={} -- deadly things
 		arbiter_deadly.presolve=function(it)
-			local callbacks=entities_info_manifest("callbacks")
+			local callbacks=entities_manifest("callbacks")
 			if it.shape_b.player then -- trigger die
 				local pb=it.shape_b.player
 				callbacks[#callbacks+1]=function() pb:die() end
@@ -664,7 +664,7 @@ function setup_space()
 
 	local arbiter_walking={} -- walking things (players)
 		arbiter_walking.presolve=function(it)
-			local callbacks=entities_info_manifest("callbacks")
+			local callbacks=entities_manifest("callbacks")
 			if it.shape_a.player and it.shape_b.monster then
 				local pa=it.shape_a.player
 				callbacks[#callbacks+1]=function() pa:die() end
@@ -692,7 +692,7 @@ function setup_space()
 		arbiter_walking.postsolve=function(it)
 			local points=it:points()
 			if points.normal_y>0.25 then -- on floor
-				local time=entities_info_get("time")
+				local time=entities_get("time")
 				it.shape_a.in_body.floor_time=time.game
 				it.shape_a.in_body.floor=it.shape_b
 			end
@@ -724,7 +724,7 @@ end
 
 -- items, can be used for general things, EG physics shapes with no special actions
 function add_item()
-	local space=entities_info_get("space")
+	local space=entities_get("space")
 	local item=entities_add{caste="item"}
 	item.draw=function()
 		if item.active then
@@ -739,7 +739,7 @@ end
 
 -- a floating item that you can/must collect
 function add_loot()
-	local space=entities_info_get("space")
+	local space=entities_get("space")
 	local loot=entities_add{caste="loot"}
 	loot.update=function()
 		if loot.active then				
@@ -752,7 +752,7 @@ function add_loot()
 	end
 	loot.draw=function()
 		if loot.active then
-			local time=entities_info_get("time")
+			local time=entities_get("time")
 			local b=math.sin( (time.game*8 + (loot.px+loot.py)/16 ) )*2
 			system.components.sprites.list_add({t=0x0500,h=8,px=loot.px,py=loot.py+b})				
 		end
@@ -762,7 +762,7 @@ end
 
 -- an item that just gets in the way
 function add_detritus(sprite,h,px,py,bm,bi,bf,be,...)
-	local space=entities_info_get("space")
+	local space=entities_get("space")
 	local item=add_item()
 
 	item.sprite=sprite
@@ -810,14 +810,14 @@ end
 function setup_dust()
 
 	local dust=entities_add{caste="particles"}
-	entities_info_set("dust",dust)
+	entities_set("dust",dust)
 	
 	dust.parts={}
 	
 	dust.add=function(it)
 		dust.parts[it]=true
 		
-		local space=entities_info_get("space")
+		local space=entities_get("space")
 
 		it.life=it.life or 60
 		it.sprite=it.sprite or names.char_dust
@@ -839,7 +839,7 @@ function setup_dust()
 	end
 
 	dust.update=function()
-		local space=entities_info_get("space")
+		local space=entities_get("space")
 		for it,_ in pairs(dust.parts) do
 		
 			it.life=it.life-1
@@ -872,7 +872,7 @@ function setup_score()
 
 	score.draw=function()
 	
-		local time=entities_info_get("time")
+		local time=entities_get("time")
 	
 		local remain=0
 		for _,loot in ipairs( entities_items("loot") ) do
@@ -903,7 +903,7 @@ end
 function char_controls(it,fast)
 	fast=fast or 1
 
-	local time=entities_info_get("time")
+	local time=entities_get("time")
 
 	local jump=fast*200 -- up velocity we want when jumping
 	local speed=fast*60 -- required x velocity
@@ -992,7 +992,7 @@ end
 
 function add_monster(opts)
 
-	local space=entities_info_get("space")
+	local space=entities_get("space")
 
 	local monster=entities_add{caste="monster"}
 
@@ -1078,7 +1078,7 @@ end
 function add_player(i)
 	local players_colors={30,14,18,7,3,22}
 
-	local space=entities_info_get("space")
+	local space=entities_get("space")
 
 	local player=entities_add{caste="player"}
 
@@ -1099,7 +1099,7 @@ function add_player(i)
 	player.frames={0x0200,0x0203,0x0200,0x0206}
 
 	player.bubble=function()
-		local players_start=entities_info_get("players_start") or {64,64}
+		local players_start=entities_get("players_start") or {64,64}
 		player.bubble_active=true
 
 		player.bubble_body=space:body(1,1)
@@ -1123,7 +1123,7 @@ function add_player(i)
 	end
 	
 	player.join=function()
-		local players_start=entities_info_get("players_start") or {64,64}
+		local players_start=entities_get("players_start") or {64,64}
 	
 		local px,py=players_start[1]+i,players_start[2]
 		local vx,vy=0,0
@@ -1157,7 +1157,7 @@ function add_player(i)
 		player.shape.player=player
 		
 		player.body.floor_time=0
-		local time=entities_info_get("time")
+		local time=entities_get("time")
 		if not time.start then
 			time.start=time.game -- when the game started
 		end
@@ -1312,7 +1312,7 @@ function setup_level(idx)
 
 	local space=setup_space()
 
-	local map=entities_info_set("map", bitdown.pix_tiles(  maps[idx],  tilemap ) )
+	local map=entities_set("map", bitdown.pix_tiles(  maps[idx],  tilemap ) )
 
 -- make sure we have x,y, hack delete this code when we bump the engine
 	for y=0,#map do
@@ -1372,7 +1372,7 @@ function setup_level(idx)
 						tile.anim=(tile.anim or 0) + 1
 						
 						if tile.anim%4==0 then
-							local dust=entities_info_get("dust")
+							local dust=entities_get("dust")
 							dust.add({
 								vx=0,
 								vy=0,
@@ -1475,7 +1475,7 @@ function setup_level(idx)
 
 			end
 			if tile.start then
-				entities_info_set("players_start",{x*8+4,y*8+4}) --  remember start point
+				entities_set("players_start",{x*8+4,y*8+4}) --  remember start point
 			end
 			if tile.monster then
 				local item=add_monster{
@@ -1514,7 +1514,7 @@ local fat_controller=coroutine.create(function()
 
 	entities_reset()
 	
-	entities_info_set("time",{
+	entities_set("time",{
 		game=0,
 	})
 
@@ -1533,13 +1533,13 @@ local fat_controller=coroutine.create(function()
 	
 		entities_call("update")
 
-		entities_info_get("space"):step(1/fps)
+		entities_get("space"):step(1/fps)
 
 		-- run all the callbacks created by collisions 
-		for _,f in pairs(entities_info_manifest("callbacks")) do f() end
-		entities_info_set("callbacks",{}) -- and reset the list
+		for _,f in pairs(entities_manifest("callbacks")) do f() end
+		entities_set("callbacks",{}) -- and reset the list
 
-		local time=entities_info_get("time")
+		local time=entities_get("time")
 		time.game=time.game+(1/fps)
 		
 
