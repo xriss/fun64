@@ -203,6 +203,46 @@ set_tile_name(0x0109,"char_floor_collapse_3",[[
 . . . . . . . . 
 . . . . . . . . 
 ]])
+set_tile_name(0x010a,"char_floor_move_1",[[
+R R R R R R R R 
+r r r r r r r r 
+. . R . . . R . 
+R R R R R R R R 
+R . . . R . . . 
+r r r r r r r r 
+R R R R R R R R 
+. . . . . . . . 
+]])
+set_tile_name(0x010b,"char_floor_move_2",[[
+R R R R R R R R 
+r r r r r r r r 
+. R . . . R . . 
+R R R R R R R R 
+. . . R . . . R 
+r r r r r r r r 
+R R R R R R R R 
+. . . . . . . . 
+]])
+set_tile_name(0x010c,"char_floor_move_3",[[
+R R R R R R R R 
+r r r r r r r r 
+R . . . R . . . 
+R R R R R R R R 
+. . R . . . R . 
+r r r r r r r r 
+R R R R R R R R 
+. . . . . . . . 
+]])
+set_tile_name(0x010d,"char_floor_move_4",[[
+R R R R R R R R 
+r r r r r r r r 
+. . . R . . . R 
+R R R R R R R R 
+. R . . . R . . 
+r r r r r r r r 
+R R R R R R R R 
+. . . . . . . . 
+]])
 
 set_tile_name(0x0110,"char_spike_down",[[
 R R 7 7 7 7 R R 
@@ -1261,6 +1301,13 @@ function setup_level(idx)
 
 	local level=entities_add{caste="level"}
 
+	level.updates={} -- tiles to update (animate)
+	level.update=function()
+		for v,b in pairs(level.updates) do -- update these things
+			if v.update then v:update() end
+		end
+	end
+
 -- init map and space
 
 	local space=setup_space()
@@ -1363,6 +1410,31 @@ function setup_level(idx)
 					shape:collision_type(0x1001) -- a tile we can jump up through
 				end
 			end
+			if tile.push then
+				if shape then
+					shape:surface_velocity(tile.push*12,0)
+				end
+				level.updates[tile]=true
+				tile.update=function(tile)
+					tile.anim=( (tile.anim or 0) + 1 )%20
+					
+					local name
+					if     tile.anim <  5 then name="char_floor_move_1"
+					elseif tile.anim < 10 then name="char_floor_move_2"
+					elseif tile.anim < 15 then name="char_floor_move_3"
+					else                       name="char_floor_move_4"
+					end
+					local idx=names[name]
+					local v={}
+					v[1]=(          (idx    )%256)
+					v[2]=(math.floor(idx/256)%256)
+					v[3]=31
+					v[4]=0
+					system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,v)
+					system.components.map.dirty(true)
+				end
+			end
+
 			tile.map=map -- remember map
 			tile.level=level -- remember level
 			if shape then -- link shape and tile
@@ -1423,12 +1495,6 @@ function setup_level(idx)
 		end
 	end
 	
-	level.updates={} -- tiles to update (animate)
-	level.update=function()
-		for v,b in pairs(level.updates) do -- update these things
-			if v.update then v:update() end
-		end
-	end
 end
 
 
