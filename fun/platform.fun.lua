@@ -226,6 +226,17 @@ R R 7 7 7 7 R R
 ]])
 
 
+set_tile_name(0x0120,"char_dust",[[
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . r R . . . 
+. . . R r . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+]])
+
 set_tile_name(0x0200,"player_f1",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
@@ -756,6 +767,65 @@ end
 	return menu
 end
 
+function setup_dust()
+
+	local dust=entities_add{caste="particles"}
+	entities_info_set("dust",dust)
+	
+	dust.parts={}
+	
+	dust.add=function(it)
+		dust.parts[it]=true
+		
+		local space=entities_info_get("space")
+
+		it.life=it.life or 60
+		it.sprite=it.sprite or names.char_dust
+		it.color=it.color or {r=1,g=1,b=1,a=1}		
+		it.h=it.h or 8
+
+		it.body=space:body(it.mass or 0.1,it.inertia or 0.1)
+		it.body:position(it.px,it.py)
+		it.body:velocity(it.vx,it.vy)
+
+		if it.shape_args then
+			it.shape=it.body:shape(unpack(it.shape_args))
+		else
+			it.shape=it.body:shape("circle",1,0,0)
+		end
+		it.shape:friction(it.friction or 0.5)
+		it.shape:elasticity(it.elasticity or 0.5)
+		
+	end
+
+	dust.update=function()
+		local space=entities_info_get("space")
+		for it,_ in pairs(dust.parts) do
+		
+			it.life=it.life-1
+			
+			if it.life<0 then
+				space:remove(it.shape) -- auto?
+				space:remove(it.body)
+				dust.parts[it]=nil
+			end
+			
+		end
+	end
+
+	dust.draw=function()
+		for it,_ in pairs(dust.parts) do
+
+			local px,py=it.body:position()
+			local rz=it.body:angle()
+			system.components.sprites.list_add({t=it.sprite,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color})
+			
+		end
+	end
+	
+	return dust
+end
+
 function setup_score()
 
 	local score=entities_add{caste="gui"}
@@ -1253,7 +1323,20 @@ function setup_level(idx)
 					shape:collision_type(0x1003) -- a tile that collapses when we walk on it
 					tile.update=function(tile)
 						tile.anim=(tile.anim or 0) + 1
-			
+						
+						if tile.anim%4==0 then
+							local dust=entities_info_get("dust")
+							dust.add({
+								vx=0,
+								vy=0,
+								px=(tile.x+math.random())*8,
+								py=(tile.y+math.random())*8,
+								life=60*2,
+								friction=1,
+								elasticity=0.75,
+							})
+						end
+
 						if tile.anim > 60 then
 							space:remove( tile.shape )
 							tile.shape=nil
@@ -1368,9 +1451,12 @@ local fat_controller=coroutine.create(function()
 	entities_info_set("time",{
 		game=0,
 	})
+
 	
 	setup_level(0) -- load map
 	setup_score() -- gui fpr the score
+
+	setup_dust() -- dust particles
 
 	for i=1,6 do add_player(i) end -- players 1-6
 	ups(1).touch="left_right" -- request this touch control scheme for player 1 only
