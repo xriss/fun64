@@ -858,7 +858,7 @@ function setup_menu()
 		for i=0,5 do -- any player, press a button, to control menu
 			local up=ups(i)
 			if up then
-				bfire =bfire  or up.button("fire_set")
+				bfire =bfire  or up.button("fire_clr")
 				bup   =bup    or up.button("up_set")
 				bdown =bdown  or up.button("down_set")
 				bleft =bleft  or up.button("left_set")
