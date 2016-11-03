@@ -762,26 +762,190 @@ end
 
 function setup_menu()
 
-	local menu=entities_add{caste="menu"}
+	local menu=entities_set("menu",entities_add{caste="menu"})
 
-	menu.draw=function()	
+	menu.stack={}
 
---[[
--- draw test menu
-for i=1,12 do
+	menu.width=64
+	menu.cursor=0
+	menu.cx=math.floor((106-menu.width)/2)
+	menu.cy=0
+	
+	-- set a menu to display
+	function menu.show(top)
+	
+		if #menu.stack>0 then
+			menu.stack[#menu.stack].cursor=menu.cursor -- remember cursor position
+		end
 
-local s=(" "):rep(14)
-system.components.text.text_print(s,10-2,10-1+i,31,2)
+		menu.stack[#menu.stack+1]=top --push
+		
+		if top.call then top.call(top) end -- refresh
+		
+		menu.display=top.display
+		menu.cursor=top.cursor or 1
+		
+	end
+	
+	-- go back to the previous menu
+	function menu.back()
 
-end
-for i=1,10 do
-local s=string.format("%2dxx",i)
-s=(" "):rep((10-#s)/2)..s
-s=s..(" "):rep((10-#s))
-system.components.text.text_print(s,10,10+i,31,1)
+		menu.stack[#menu.stack]=nil -- this was us
+		
+		if #menu.stack==0 then return menu.hide() end -- clear all menus
+		
+		local top=menu.stack[#menu.stack] -- pop up a menu
+		
+		if top.call then top.call(top) end -- refresh
+		
+		menu.display=top.display
+		menu.cursor=top.cursor or 1
+		
+	end
+	
+	-- stop showing all menus and clear the stack
 
-end
-]]
+	function menu.hide()
+		menu.stack={}
+		menu.display=nil
+	end
+
+
+	-- build a requester
+	function menu.build_request(t)
+	
+-- t[1++].text is the main body of text, t[1++].use is a call back function if this is
+-- selectable, if there is no callback then selecting that option just hides the menu
+
+		local lines={}
+		local pos=1
+		for id=1,#t do
+			local ls=wstr.smart_wrap(t[id].text,menu.width-8)
+			for i=1,#ls do lines[#lines+1]={s=ls[i],id=id,tab=t[id]} end
+		end
+		
+		return lines
+	end
+
+
+	function menu.show_test()
+		local top={}
+		top.title="This is a menu title!"
+		top.display=menu.build_request({
+			{text="This is a menu item."},
+			{text="This is a longer menu item that will hopefully wrap onto a second line because it is so long."},
+			{text="This is the last item."},
+			{text="You should press fire to start."},
+			})
+		menu.show(top)
+	end
+	
+	menu.show_test()
+	
+	menu.update=function()
+	
+		if not menu.display then return end
+
+		local getmenuitem=function()
+			local tab=menu.display[ menu.cursor ]		
+			if tab and tab.tab then tab=tab.tab end -- use this data
+			return tab
+		end
+
+
+		local bfire,bup,bdown,bleft,bright
+		
+		for i=0,5 do -- any player, press a button, to control menu
+			local up=ups(i)
+			if up then
+				bfire =bfire  or up.button("fire_set")
+				bup   =bup    or up.button("up_set")
+				bdown =bdown  or up.button("down_set")
+				bleft =bleft  or up.button("left_set")
+				bright=bright or up.button("right_set")
+			end
+		end
+		
+
+		if bfire then
+
+			local tab=getmenuitem()
+		
+			if tab.call then -- do this
+			
+				tab.call( tab )
+				
+			else -- just back by default
+			
+				menu.back()
+			
+			end
+		
+		end
+		
+--		if m.keyname=="back" then menu.hide() end
+		
+		if bleft or bup then
+		
+			local cacheid=getmenuitem()
+			repeat
+				menu.cursor=menu.cursor-1
+			until menu.cursor<1 or getmenuitem()~=cacheid
+			
+			if menu.cursor<1 then menu.cursor=#menu.display end --wrap
+
+			local cacheid=getmenuitem() -- move to top of item
+			while menu.cursor>0 and cacheid==getmenuitem() do
+				menu.cursor=menu.cursor-1
+			end
+			menu.cursor=menu.cursor+1
+
+		end
+		
+		if bright or bdown then
+			
+			local cacheid=getmenuitem()
+			repeat
+				menu.cursor=menu.cursor+1
+			until menu.cursor>#menu.display or getmenuitem()~=cacheid
+			
+			if menu.cursor>#menu.display then menu.cursor=1 end --wrap
+		
+		end
+	
+	end
+	
+	menu.draw=function()
+	
+		local tprint=system.components.text.text_print
+		local tgrd=system.components.text.tilemap_grd
+
+		if not menu.display then return end
+		
+		menu.cy=math.floor((30-(#menu.display+4))/2)
+		
+		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.display+4,1):clear(0x02000000)
+		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.display+4-2,1):clear(0x01000000)
+		
+		local top=menu.stack[#menu.stack]
+
+--		yarn_canvas.draw_box(0,0,menu.width,#menu.display+4)
+		
+		if top.title then
+			local title=" "..(top.title).." "
+			local wo2=math.floor(#title/2)
+--			yarn_canvas.print(20-wo2,0,title)
+			tprint(title,menu.cx+(menu.width/2)-wo2,menu.cy+0,31,2)
+		end
+		
+		for i,v in ipairs(menu.display) do
+			tprint(v.s,menu.cx+4,menu.cy+i+1,31,1)
+		end
+		
+		tprint(">",menu.cx+3,menu.cy+menu.cursor+1,31,1)
+
+		system.components.text.dirty(true)
+
 	end
 	
 	return menu
@@ -1507,14 +1671,19 @@ local fat_controller=coroutine.create(function()
 
 	for i=1,6 do add_player(i) end -- players 1-6
 	ups(1).touch="left_right" -- request this touch control scheme for player 1 only
+	
+	local menu=setup_menu()
 
 -- update loop
 
 	while true do coroutine.yield()
 	
-		entities_call("update")
-
-		entities_get("space"):step(1/fps)
+		if menu.display then -- menu only
+			menu.update()
+		else
+			entities_call("update")
+			entities_get("space"):step(1/fps)
+		end
 
 		-- run all the callbacks created by collisions 
 		for _,f in pairs(entities_manifest("callbacks")) do f() end
