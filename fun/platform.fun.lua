@@ -78,7 +78,7 @@ hardware={
 
 local tiles={}
 local names={} -- a name -> tile number lookup
-local maps={}
+local levels={}
 
 local set_tile_name=function(tile,name,data)
 	if tiles[name] then print("WARNING REUSE OF NAME",name,tile) end
@@ -481,10 +481,49 @@ local tilemap=set_tilemap_from_names{
 	["M "]={ name="char_empty",	monster=1,	},
 	["< "]={ name="char_empty",	trigger=-1,	},
 	["> "]={ name="char_empty",	trigger= 1,	},
+
+	["?1"]={ name="char_empty",	sign="HELLO",	},
+	["?2"]={ name="char_empty",	spill=1,	},
 }
 
 
-maps[0]=[[
+levels[0]={
+map=[[
+||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . ?2. . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . ?1. . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||======================================================================================================||
+||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
+]],
+}
+
+levels[1]={
+map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
 ||. . . . X . $ . X . $ . X . . . . . . . X . . X . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||
 ||. . . . . . . . . . . . . . . . . . . . $ . . $ . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -515,8 +554,8 @@ maps[0]=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||======================================================================================================||
 ||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
-]]
-
+]],
+}
 
 -- handle tables of entities that need to be updated and drawn.
 
@@ -528,12 +567,14 @@ maps[0]=[[
 	end
 -- get items for the given caste
 	local entities_items=function(caste)
+		caste=caste or "generic"
 		if not entities[caste] then entities[caste]={} end -- create on use
 		return entities[caste]
 	end
 -- add an item to this caste
 	local entities_add=function(it,caste)
 		caste=caste or it.caste -- probably from item
+		caste=caste or "generic"
 		local items=entities_items(caste)
 		items[ #items+1 ]=it -- add to end of array
 		return it
@@ -711,7 +752,7 @@ function add_item()
 			local px,py=item.body:position()
 			local rz=item.body:angle()
 --					rz=0
-			system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
+			system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,s=item.s,sx=item.sx,sy=item.sy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
 		end
 	end
 	return item
@@ -762,7 +803,7 @@ end
 
 function setup_menu()
 
-	local menu=entities_set("menu",entities_add{caste="menu"})
+	local menu=entities_set("menu",entities_add{})
 
 	menu.stack={}
 
@@ -953,8 +994,7 @@ end
 
 function setup_dust()
 
-	local dust=entities_add{caste="particles"}
-	entities_set("dust",dust)
+	local dust=entities_set("dust",entities_add{})
 	
 	dust.parts={}
 	
@@ -1013,7 +1053,7 @@ end
 
 function setup_score()
 
-	local score=entities_add{caste="gui"}
+	local score=entities_set("score",entities_add{})
 
 	score.draw=function()
 	
@@ -1444,7 +1484,7 @@ end
 
 function setup_level(idx)
 
-	local level=entities_add{caste="level"}
+	local level=entities_set("level",entities_add{})
 
 	level.updates={} -- tiles to update (animate)
 	level.update=function()
@@ -1457,7 +1497,7 @@ function setup_level(idx)
 
 	local space=setup_space()
 
-	local map=entities_set("map", bitdown.pix_tiles(  maps[idx],  tilemap ) )
+	local map=entities_set("map", bitdown.pix_tiles(  levels[idx].map,  tilemap ) )
 
 -- make sure we have x,y, hack delete this code when we bump the engine
 	for y=0,#map do
@@ -1468,7 +1508,7 @@ function setup_level(idx)
 		end
 	end	
 	
-	bitdown.pix_grd(    maps[idx],  tilemap,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
+	bitdown.pix_grd(    levels[idx].map,  tilemap,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 	local unique=0
 	bitdown.map_build_collision_strips(map,function(tile)
@@ -1636,6 +1676,50 @@ function setup_level(idx)
 				
 				shape:collision_type(0x4001)
 				shape.trigger=tile
+			end
+			if tile.sign then
+				local items={}
+				for i=1,#tile.sign do
+					local item=add_item()
+					items[i]=item
+
+					item.sprite=tile.sign:byte(i)/2
+					item.hx=4
+					item.hy=8
+					item.s=2
+
+					item.active=true
+					item.body=space:body(2,100)
+					item.body:position(x*8+i*8-4,y*8+8)
+
+					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
+					item.shape:friction(0.5)
+					item.shape:elasticity(0.5)
+					
+					if items[i-1] then -- link
+						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint",0,-8,0,-8)
+					end					
+				end
+				local item=items[1] -- first
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,x*8-4,y*8)
+
+				local item=items[#tile.sign] -- last
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,x*8+#tile.sign*8,y*8)
+			end
+			if tile.spill then
+				level.updates[tile]=true
+				tile.update=function(tile)
+					local dust=entities_get("dust")
+					dust.add({
+						vx=0,
+						vy=0,
+						px=(tile.x+math.random())*8,
+						py=(tile.y+math.random())*8,
+						life=60*2,
+						friction=1,
+						elasticity=0.75,
+					})
+				end
 			end
 		end
 	end
