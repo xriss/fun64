@@ -16,20 +16,22 @@ local fps=60
 
 local cmap=bitdown.cmap -- use default swanky32 colors
 
+local fatpix=true
+
 --request this hardware setup !The components will not exist until after main has been called!
 hardware={
 	{
 		component="screen",
 		size={hx,hy},
-		bloom=0.75,
-		filter="scanline",
+		bloom=fatpix and 0.75 or 0,
+		filter=fatpix and "scanline" or nil,
 		scale=ss,
 		fps=60,
-		drawlist={ -- draw components with a 2 pix *merged* drop shadow
+		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.25} , dx=2 , dy=2 },
 			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
-		}
+		} or nil
 	},
 	{
 		component="colors",
@@ -67,11 +69,11 @@ hardware={
 		tile_size={4,8}, -- use half width tiles for font
 		tilemap_size={math.ceil(hx/4),math.ceil(hy/8)},
 		drawtype="last",
-		drawlist={ -- draw components with a 2 pix *merged* drop shadow
+		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.25} , dx=2 , dy=2 },
 			{ color={0,0,0,0.5} , dx=1 , dy=1 },
 			{ color={1,1,1,1  } , dx=0 , dy=0 },
-		}
+		} or nil
 	},
 }
 
@@ -482,8 +484,8 @@ local tilemap=set_tilemap_from_names{
 	["< "]={ name="char_empty",	trigger=-1,	},
 	["> "]={ name="char_empty",	trigger= 1,	},
 
-	["?1"]={ name="char_empty",	sign="HELLO",	},
-	["?2"]={ name="char_empty",	spill=1,	},
+	["E "]={ name="char_empty",	exit=1, sign="EXIT", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
+	["?2"]={ name="char_empty",	spill=nil,	},
 }
 
 
@@ -514,8 +516,8 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . ?1. . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . . ||
+||. S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||======================================================================================================||
 ||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
@@ -1679,6 +1681,8 @@ function setup_level(idx)
 			end
 			if tile.sign then
 				local items={}
+				tile.items=items
+				local px,py=x*8-(#tile.sign)*4,y*8
 				for i=1,#tile.sign do
 					local item=add_item()
 					items[i]=item
@@ -1690,21 +1694,23 @@ function setup_level(idx)
 
 					item.active=true
 					item.body=space:body(2,100)
-					item.body:position(x*8+i*8-4,y*8+8)
+					item.body:position(px+i*8-4,py+8)
 
 					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
 					item.shape:friction(0.5)
 					item.shape:elasticity(0.5)
 					
+					if tile.colors then item.color=tile.colors[ ((i-1)%#tile.colors)+1 ] end
+										
 					if items[i-1] then -- link
 						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint",0,-8,0,-8)
 					end					
 				end
 				local item=items[1] -- first
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,x*8-4,y*8)
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,px-4,py)
 
 				local item=items[#tile.sign] -- last
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,x*8+#tile.sign*8,y*8)
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,px+#tile.sign*8,py)
 			end
 			if tile.spill then
 				level.updates[tile]=true
@@ -1733,6 +1739,26 @@ end
 local fat_controller=coroutine.create(function()
 
 -- setup game
+
+	if fatpix then -- do something funky
+		local it=system.components.copper
+		it.shader_name="fun_copper_back_y5"
+		it.shader_uniforms.cy0={ 0.5  , 0    , 0.0  , 1   }
+		it.shader_uniforms.cy1={ 0    , 0    , 1.0  , 1   }
+		it.shader_uniforms.cy2={ 0.125, 0.125, 1.0  , 1   }
+		it.shader_uniforms.cy3={ 0    , 0    , 1.0  , 1   }
+		it.shader_uniforms.cy4={ 0    , 0.5  , 0.0  , 1   }
+
+	else -- just pick a background color
+		local it=system.components.copper
+		it.shader_name="fun_copper_back_y5"
+		it.shader_uniforms.cy0={ 0    , 0    , 1.0/4  , 1   }
+		it.shader_uniforms.cy1={ 0    , 0    , 1.0/4  , 1   }
+		it.shader_uniforms.cy2={ 0    , 0    , 1.0/4  , 1   }
+		it.shader_uniforms.cy3={ 0    , 0    , 1.0/4  , 1   }
+		it.shader_uniforms.cy4={ 0    , 0    , 1.0/4  , 1   }
+
+	end
 
 -- copy font data tiles
 	system.components.tiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
