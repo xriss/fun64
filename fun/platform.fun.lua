@@ -528,7 +528,7 @@ local default_legend={
 	["> "]={ name="char_empty",	trigger= 1,	},
 
 	["E "]={ name="char_empty",	exit=1, sign="EXIT", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
-	["?1"]={ name="char_empty",	exit=1, sign="Testing 123", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
+	["?1"]={ name="char_empty",	sign="Testing#123", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
 	["?2"]={ name="char_empty",	spill=nil,	},
 }
 
@@ -1811,8 +1811,7 @@ local fat_controller=coroutine.create(function()
 -- upload graphics
 	system.components.tiles.upload_tiles( graphics )
 
-
--- setup game
+-- setup background
 
 	if fatpix then -- do something funky
 		local it=system.components.copper
@@ -1834,6 +1833,7 @@ local fat_controller=coroutine.create(function()
 
 	end
 
+-- setup game
 	entities_reset()
 	
 	entities_set("time",{
@@ -1842,12 +1842,12 @@ local fat_controller=coroutine.create(function()
 
 	
 	setup_level(0) -- load map
-	setup_score() -- gui fpr the score
+	setup_score() -- gui for the score
 
 	setup_dust() -- dust particles
 
 	for i=1,6 do add_player(i) end -- players 1-6
-	ups(1).touch="left_right" -- request this touch control scheme for player 1 only
+	ups(1).touch="left_fire_right" -- request this touch control scheme for player 1 only
 	
 	local menu=setup_menu()
 
