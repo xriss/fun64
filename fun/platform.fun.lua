@@ -16,7 +16,7 @@ local fps=60
 
 local cmap=bitdown.cmap -- use default swanky32 colors
 
-local fatpix=true
+local fatpix=not(args and args.pixel or false) -- pass --pixel on command line to turn off pixel filters
 
 --request this hardware setup !The components will not exist until after main has been called!
 hardware={
@@ -29,8 +29,8 @@ hardware={
 		fps=60,
 		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.25} , dx=2 , dy=2 },
-			{ color={0,0,0,0.5} , dx=1 , dy=1 },
-			{ color={1,1,1,1  } , dx=0 , dy=0 },
+			{ color={0,0,0,0.5 } , dx=1 , dy=1 },
+			{ color={1,1,1,1   } , dx=0 , dy=0 },
 		} or nil
 	},
 	{
@@ -71,41 +71,19 @@ hardware={
 		drawtype="last",
 		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.25} , dx=2 , dy=2 },
-			{ color={0,0,0,0.5} , dx=1 , dy=1 },
-			{ color={1,1,1,1  } , dx=0 , dy=0 },
+			{ color={0,0,0,0.5 } , dx=1 , dy=1 },
+			{ color={1,1,1,1   } , dx=0 , dy=0 },
 		} or nil
 	},
 }
 
 
-local tiles={}
-local names={} -- a name -> tile number lookup
-local levels={}
+-- define all graphics in this global, we will convert and upload to tiles at setup
+-- allthough you can change tiles during a game, we try and only upload graphics
+-- during initial setup so we have a nice looking sprite sheet to be edited by artists
 
-local set_tile_name=function(tile,name,data)
-	if tiles[name] then print("WARNING REUSE OF NAME",name,tile) end
-	if tiles[tile] then print("WARNING REUSE OF TILE",name,tile) end
-	names[name]=tile
-	tiles[tile]=data
-end
-
-local set_tilemap_from_names=function(tilemap)
-	for n,v in pairs(tilemap) do
-		if v.name then -- convert name to idx
-			v.idx=names[v.name]
-		end
-		if v.idx then -- convert idx to r,g,b,a
-			v[1]=(          (v.idx    )%256)
-			v[2]=(math.floor(v.idx/256)%256)
-			v[3]=31
-			v[4]=0
-		end
-	end
-	return tilemap
-end
-
-
-set_tile_name(0x0100,"char_empty",[[
+graphics={
+{0x0100,"char_empty",[[
 . . . . . . . . 
 . . . . . . . . 
 . . . . . . . . 
@@ -114,8 +92,8 @@ set_tile_name(0x0100,"char_empty",[[
 . . . . . . . . 
 . . . . . . . . 
 . . . . . . . . 
-]])
-set_tile_name(0x0101,"char_black",[[
+]]},
+{0x0101,"char_black",[[
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
@@ -124,8 +102,8 @@ set_tile_name(0x0101,"char_black",[[
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
-]])
-set_tile_name(0x0102,"char_wall",[[
+]]},
+{0x0102,"char_wall",[[
 O O R R R R O O 
 O O R R R R O O 
 r r r r o o o o 
@@ -134,8 +112,8 @@ R R O O O O R R
 R R O O O O R R 
 o o o o r r r r 
 o o o o r r r r 
-]])
-set_tile_name(0x0103,"char_floor",[[
+]]},
+{0x0103,"char_floor",[[
 R R R R R R R R 
 r r r r r r r r 
 r r r r r r r r 
@@ -144,8 +122,8 @@ r r r r r r r r
 . . . . r r . . 
 . . . . . r . . 
 . . . . . . . . 
-]])
-set_tile_name(0x0106,"char_floor_collapse",[[
+]]},
+{0x0106,"char_floor_collapse",[[
 R r R r R r R r 
 r r . r . r . r 
 r . r . r . r . 
@@ -154,8 +132,8 @@ r . r . r . r .
 . . . . r . r . 
 . . . . . r . . 
 . . . . . . . . 
-]])
-set_tile_name(0x0107,"char_floor_collapse_1",[[
+]]},
+{0x0107,"char_floor_collapse_1",[[
 . r . r . r . r 
 . r . r . r . r 
 r . . . . . r . 
@@ -164,8 +142,8 @@ r . . . . . r .
 . . . . r . r . 
 . . . . . . . . 
 . . . . . . . . 
-]])
-set_tile_name(0x0108,"char_floor_collapse_2",[[
+]]},
+{0x0108,"char_floor_collapse_2",[[
 . r . r . r . r 
 . . . r . . . . 
 r . . . . . . . 
@@ -174,8 +152,8 @@ r . . . . . . .
 . . . . r . r . 
 . . . . . . . . 
 . . . . . . . . 
-]])
-set_tile_name(0x0109,"char_floor_collapse_3",[[
+]]},
+{0x0109,"char_floor_collapse_3",[[
 . r . r . r . r 
 . . . . . . . . 
 . . . . . . . . 
@@ -184,8 +162,8 @@ set_tile_name(0x0109,"char_floor_collapse_3",[[
 . . . . . . . . 
 . . . . . . . . 
 . . . . . . . . 
-]])
-set_tile_name(0x010a,"char_floor_move_1",[[
+]]},
+{0x010a,"char_floor_move_1",[[
 R R R R R R R R 
 r r r r r r r r 
 . . R . . . R . 
@@ -194,8 +172,8 @@ R . . . R . . .
 r r r r r r r r 
 R R R R R R R R 
 . . . . . . . . 
-]])
-set_tile_name(0x010b,"char_floor_move_2",[[
+]]},
+{0x010b,"char_floor_move_2",[[
 R R R R R R R R 
 r r r r r r r r 
 . R . . . R . . 
@@ -204,8 +182,8 @@ R R R R R R R R
 r r r r r r r r 
 R R R R R R R R 
 . . . . . . . . 
-]])
-set_tile_name(0x010c,"char_floor_move_3",[[
+]]},
+{0x010c,"char_floor_move_3",[[
 R R R R R R R R 
 r r r r r r r r 
 R . . . R . . . 
@@ -214,8 +192,8 @@ R R R R R R R R
 r r r r r r r r 
 R R R R R R R R 
 . . . . . . . . 
-]])
-set_tile_name(0x010d,"char_floor_move_4",[[
+]]},
+{0x010d,"char_floor_move_4",[[
 R R R R R R R R 
 r r r r r r r r 
 . . . R . . . R 
@@ -224,9 +202,9 @@ R R R R R R R R
 r r r r r r r r 
 R R R R R R R R 
 . . . . . . . . 
-]])
+]]},
 
-set_tile_name(0x0110,"char_spike_down",[[
+{0x0110,"char_spike_down",[[
 R R 7 7 7 7 R R 
 R R 7 7 7 7 R R 
 . R R 7 7 R R . 
@@ -235,8 +213,8 @@ R R 7 7 7 7 R R
 . . R R R R . . 
 . . . R R . . . 
 . . . R R . . . 
-]])
-set_tile_name(0x0111,"char_spike_up",[[
+]]},
+{0x0111,"char_spike_up",[[
 . . . R R . . . 
 . . . R R . . . 
 . . R R R R . . 
@@ -245,10 +223,10 @@ set_tile_name(0x0111,"char_spike_up",[[
 . R R 7 7 R R . 
 R R 7 7 7 7 R R 
 R R 7 7 7 7 R R 
-]])
+]]},
 
 
-set_tile_name(0x0120,"char_dust",[[
+{0x0120,"char_dust",[[
 r r r r R R R R 
 r r r r R R R R 
 r r r r R R R R 
@@ -257,9 +235,9 @@ R R R R r r r r
 R R R R r r r r 
 R R R R r r r r 
 R R R R r r r r 
-]])
+]]},
 
-set_tile_name(0x0200,"player_f1",[[
+{0x0200,"player_f1",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
 . . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
@@ -284,8 +262,8 @@ set_tile_name(0x0200,"player_f1",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
-]])
-set_tile_name(0x0203,"player_f2",[[
+]]},
+{0x0203,"player_f2",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
 . . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
@@ -310,8 +288,8 @@ set_tile_name(0x0203,"player_f2",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
-]])
-set_tile_name(0x0206,"player_f3",[[
+]]},
+{0x0206,"player_f3",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
 . . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
@@ -336,8 +314,8 @@ set_tile_name(0x0206,"player_f3",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
-]])
-set_tile_name(0x0209,"cannon_ball",[[
+]]},
+{0x0209,"cannon_ball",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -362,8 +340,8 @@ set_tile_name(0x0209,"cannon_ball",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
-]])
-set_tile_name(0x020C,"bubble",[[
+]]},
+{0x020C,"bubble",[[
 . . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
 . . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
 . . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
@@ -388,9 +366,9 @@ set_tile_name(0x020C,"bubble",[[
 . . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
 . . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
 . . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-]])
+]]},
 
-set_tile_name(0x0500,"coin",[[
+{0x0500,"coin",[[
 . . . . . . . . 
 . . Y Y Y Y . . 
 . Y Y 0 0 Y Y . 
@@ -399,9 +377,9 @@ Y Y Y 0 0 Y Y Y
 Y Y 0 Y Y 0 Y Y 
 . Y Y 0 0 Y Y . 
 . . Y Y Y Y . . 
-]])
+]]},
 
-set_tile_name(0x0600,"body_p1",[[
+{0x0600,"body_p1",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -418,9 +396,9 @@ set_tile_name(0x0600,"body_p1",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-]])
+]]},
 
-set_tile_name(0x0602,"body_p2",[[
+{0x0602,"body_p2",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -437,9 +415,9 @@ set_tile_name(0x0602,"body_p2",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-]])
+]]},
 
-set_tile_name(0x0604,"body_p3",[[
+{0x0604,"body_p3",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -456,10 +434,75 @@ set_tile_name(0x0604,"body_p3",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-]])
+]]},
+
+{0x0800,"exit_shut",[[
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
+. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
+. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
+. . . 7 . . . 7 7 . . . . . . . . . . . 7 . . . 
+. . 7 . . . 7 . . . . . . . . . . . . . . 7 . . 
+. . 7 . . 7 . . . . . . . . . . . . . . . 7 . . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. . 7 . . . . . . . . . . . . . . . 7 . . 7 . . 
+. . 7 . . . . . . . . . . . . . . 7 . . . 7 . . 
+. . . 7 . . . . . . . . . . . 7 7 . . . 7 . . . 
+. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
+. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
+. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+]]},
+
+{0x0803,"exit_open",[[
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
+. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
+. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
+. . . 7 . . . 7 7 . . . . . . . . . . . 7 . . . 
+. . 7 . . . 7 . . . . . . . . . . . . . . 7 . . 
+. . 7 . . 7 . . . . . . . . . . . . . . . 7 . . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. . 7 . . . . . . . . . . . . . . . 7 . . 7 . . 
+. . 7 . . . . . . . . . . . . . . 7 . . . 7 . . 
+. . . 7 . . . . . . . . . . . 7 7 . . . 7 . . . 
+. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
+. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
+. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+]]},
+}
 
 
-local tilemap=set_tilemap_from_names{
+local combine_legends=function(...)
+	local legend={}
+	for _,t in ipairs{...} do -- merge all
+		for n,v in pairs(t) do -- shallow copy, right side values overwrite left
+			legend[n]=v
+		end
+	end
+	return legend
+end
+
+local default_legend={
 	[0]={ name="char_empty",	},
 
 	[". "]={ name="char_empty",				},
@@ -485,11 +528,15 @@ local tilemap=set_tilemap_from_names{
 	["> "]={ name="char_empty",	trigger= 1,	},
 
 	["E "]={ name="char_empty",	exit=1, sign="EXIT", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
+	["?1"]={ name="char_empty",	exit=1, sign="Testing 123", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
 	["?2"]={ name="char_empty",	spill=nil,	},
 }
 
-
+levels={}
 levels[0]={
+legend=combine_legends(default_legend,{
+	["?0"]={ name="char_empty" },
+}),
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -511,11 +558,11 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . ?1. . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . . ||
 ||. S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -525,6 +572,9 @@ map=[[
 }
 
 levels[1]={
+legend=combine_legends(default_legend,{
+	["?0"]={ name="char_empty" },
+}),
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
 ||. . . . X . $ . X . $ . X . . . . . . . X . . X . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||
@@ -559,59 +609,60 @@ map=[[
 ]],
 }
 
+
 -- handle tables of entities that need to be updated and drawn.
 
-	local entities -- a place to store everything that needs to be updated
-	local entities_info -- a place to store options or values
-	local entities_reset=function()
-		entities={}
-		entities_info={}
-	end
+local entities -- a place to store everything that needs to be updated
+local entities_info -- a place to store options or values
+local entities_reset=function()
+	entities={}
+	entities_info={}
+end
 -- get items for the given caste
-	local entities_items=function(caste)
-		caste=caste or "generic"
-		if not entities[caste] then entities[caste]={} end -- create on use
-		return entities[caste]
-	end
+local entities_items=function(caste)
+	caste=caste or "generic"
+	if not entities[caste] then entities[caste]={} end -- create on use
+	return entities[caste]
+end
 -- add an item to this caste
-	local entities_add=function(it,caste)
-		caste=caste or it.caste -- probably from item
-		caste=caste or "generic"
-		local items=entities_items(caste)
-		items[ #items+1 ]=it -- add to end of array
-		return it
-	end
+local entities_add=function(it,caste)
+	caste=caste or it.caste -- probably from item
+	caste=caste or "generic"
+	local items=entities_items(caste)
+	items[ #items+1 ]=it -- add to end of array
+	return it
+end
 -- call this functions on all items in every caste
-	local entities_call=function(fname,...)
-		local count=0
-		for caste,items in pairs(entities) do
-			for idx=#items,1,-1 do -- call backwards so item can remove self
-				local it=items[idx]
-				if it[fname] then
-					it[fname](it,...)
-					count=count+1
-				end
-			end			
-		end
-		return count -- number of items called
+local entities_call=function(fname,...)
+	local count=0
+	for caste,items in pairs(entities) do
+		for idx=#items,1,-1 do -- call backwards so item can remove self
+			local it=items[idx]
+			if it[fname] then
+				it[fname](it,...)
+				count=count+1
+			end
+		end			
 	end
+	return count -- number of items called
+end
 -- get/set info associated with this entities
-	local entities_get=function(name)       return entities_info[name]							end
-	local entities_set=function(name,value)        entities_info[name]=value	return value	end
-	local entities_manifest=function(name)
-		if not entities_info[name] then entities_info[name]={} end -- create empty
-		return entities_info[name]
-	end
+local entities_get=function(name)       return entities_info[name]							end
+local entities_set=function(name,value)        entities_info[name]=value	return value	end
+local entities_manifest=function(name)
+	if not entities_info[name] then entities_info[name]={} end -- create empty
+	return entities_info[name]
+end
 -- reset the entities
-	entities_reset()
+entities_reset()
 
 
 -- call coroutine with traceback on error
-	local coroutine_resume_and_report_errors=function(co,...)
-		local a,b=coroutine.resume(co,...)
-		if a then return a,b end -- no error
-		error( b.."\nin coroutine\n"..debug.traceback(co) , 2 ) -- error
-	end
+local coroutine_resume_and_report_errors=function(co,...)
+	local a,b=coroutine.resume(co,...)
+	if a then return a,b end -- no error
+	error( b.."\nin coroutine\n"..debug.traceback(co) , 2 ) -- error
+end
 
 
 -- create space and handlers
@@ -996,6 +1047,7 @@ end
 
 function setup_dust()
 
+	local names=system.components.tiles.names
 	local dust=entities_set("dust",entities_add{})
 	
 	dust.parts={}
@@ -1006,7 +1058,7 @@ function setup_dust()
 		local space=entities_get("space")
 
 		it.life=it.life or 60
-		it.sprite=it.sprite or names.char_dust
+		it.sprite=it.sprite or names.char_dust.idx
 		it.color=it.color or {r=1,g=1,b=1,a=1}		
 		it.h=it.h or 8
 		it.s=it.s or 1/4
@@ -1265,6 +1317,7 @@ end
 function add_player(i)
 	local players_colors={30,14,18,7,3,22}
 
+	local names=system.components.tiles.names
 	local space=entities_get("space")
 
 	local player=entities_add{caste="player"}
@@ -1363,9 +1416,9 @@ function add_player(i)
 		space:remove(player.body)
 		
 		local it
-		it=add_detritus(names.body_p1,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=player.color
-		it=add_detritus(names.body_p2,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=player.color
-		it=add_detritus(names.body_p3,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=player.color
+		it=add_detritus(names.body_p1.idx,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=player.color
+		it=add_detritus(names.body_p2.idx,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=player.color
+		it=add_detritus(names.body_p3.idx,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=player.color
 
 	end
 	
@@ -1460,7 +1513,7 @@ function add_player(i)
 			
 			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=(player.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=player.color})
 			
-			system.components.sprites.list_add({t=names.bubble,h=24,px=px,py=py,s=1})
+			system.components.sprites.list_add({t=names.bubble.idx,h=24,px=px,py=py,s=1})
 
 		elseif player.active then
 			local px,py=player.body:position()
@@ -1488,6 +1541,8 @@ function setup_level(idx)
 
 	local level=entities_set("level",entities_add{})
 
+	local names=system.components.tiles.names
+
 	level.updates={} -- tiles to update (animate)
 	level.update=function()
 		for v,b in pairs(level.updates) do -- update these things
@@ -1499,7 +1554,19 @@ function setup_level(idx)
 
 	local space=setup_space()
 
-	local map=entities_set("map", bitdown.pix_tiles(  levels[idx].map,  tilemap ) )
+	for n,v in pairs( levels[idx].legend ) do -- fixup missing values (this will slightly change your legend data)
+		if v.name then -- convert name to tile idx
+			v.idx=names[v.name].idx
+		end
+		if v.idx then -- convert idx to r,g,b,a
+			v[1]=(          (v.idx    )%256)
+			v[2]=(math.floor(v.idx/256)%256)
+			v[3]=31
+			v[4]=0
+		end
+	end
+
+	local map=entities_set("map", bitdown.pix_tiles(  levels[idx].map,  levels[idx].legend ) )
 
 -- make sure we have x,y, hack delete this code when we bump the engine
 	for y=0,#map do
@@ -1510,7 +1577,7 @@ function setup_level(idx)
 		end
 	end	
 	
-	bitdown.pix_grd(    levels[idx].map,  tilemap,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
+	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 	local unique=0
 	bitdown.map_build_collision_strips(map,function(tile)
@@ -1583,7 +1650,7 @@ function setup_level(idx)
 							elseif tile.anim < 40 then name="char_floor_collapse_2"
 							else                       name="char_floor_collapse_3"
 							end
-							local idx=names[name]
+							local idx=names[name].idx
 							local v={}
 							v[1]=(          (idx    )%256)
 							v[2]=(math.floor(idx/256)%256)
@@ -1611,7 +1678,7 @@ function setup_level(idx)
 					elseif tile.anim < 15 then name="char_floor_move_3"
 					else                       name="char_floor_move_4"
 					end
-					local idx=names[name]
+					local idx=names[name].idx
 					local v={}
 					v[1]=(          (idx    )%256)
 					v[2]=(math.floor(idx/256)%256)
@@ -1649,7 +1716,7 @@ function setup_level(idx)
 			if tile.item then
 				local item=add_item()
 				
-				item.sprite=names.cannon_ball
+				item.sprite=names.cannon_ball.idx
 				item.h=24
 
 				item.active=true
@@ -1693,7 +1760,7 @@ function setup_level(idx)
 					item.s=2
 
 					item.active=true
-					item.body=space:body(2,100)
+					item.body=space:body(1,100)
 					item.body:position(px+i*8-4,py+8)
 
 					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
@@ -1703,14 +1770,14 @@ function setup_level(idx)
 					if tile.colors then item.color=tile.colors[ ((i-1)%#tile.colors)+1 ] end
 										
 					if items[i-1] then -- link
-						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint",0,-8,0,-8)
+						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint", 0,-8 , 0,-8 )
 					end					
 				end
 				local item=items[1] -- first
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,px-4,py)
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px-4,py )
 
 				local item=items[#tile.sign] -- last
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint",0,-8,px+#tile.sign*8,py)
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px+#tile.sign*8,py )
 			end
 			if tile.spill then
 				level.updates[tile]=true
@@ -1738,6 +1805,13 @@ end
 
 local fat_controller=coroutine.create(function()
 
+-- copy font data tiles into top line
+	system.components.tiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
+
+-- upload graphics
+	system.components.tiles.upload_tiles( graphics )
+
+
 -- setup game
 
 	if fatpix then -- do something funky
@@ -1759,13 +1833,6 @@ local fat_controller=coroutine.create(function()
 		it.shader_uniforms.cy4={ 0    , 0    , 1.0/4  , 1   }
 
 	end
-
--- copy font data tiles
-	system.components.tiles.bitmap_grd:pixels(0,0,128*4,8, bitdown_font_4x8.grd_mask:pixels(0,0,128*4,8,"") )
-
--- copy image data tiles
-	bitdown.pixtab_tiles( tiles,    bitdown.cmap, system.components.tiles   )
-
 
 	entities_reset()
 	
