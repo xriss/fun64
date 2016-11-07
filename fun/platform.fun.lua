@@ -528,14 +528,13 @@ local default_legend={
 	["> "]={ name="char_empty",	trigger= 1,	},
 
 	["E "]={ name="char_empty",	exit=1, sign="EXIT", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
-	["?1"]={ name="char_empty",	sign="Testing#123", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
 	["?2"]={ name="char_empty",	spill=nil,	},
 }
 
 levels={}
 levels[0]={
 legend=combine_legends(default_legend,{
-	["?0"]={ name="char_empty" },
+	["?0"]={ name="char_empty",	sign="Don't walk through me bro!", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
 }),
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
@@ -558,10 +557,10 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . ?1. . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . ?0. . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . . ||
 ||. S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -1771,6 +1770,7 @@ function setup_level(idx)
 										
 					if items[i-1] then -- link
 						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint", 0,-8 , 0,-8 )
+						item.constraint:collide_bodies(false)
 					end					
 				end
 				local item=items[1] -- first
