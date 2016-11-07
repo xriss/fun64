@@ -515,8 +515,8 @@ local default_legend={
 	[">>"]={ name="char_floor_move_3",		solid=1,push= 1},		-- floor push right
 	["--"]={ name="char_floor_collapse",	solid=1,collapse=1},	-- floor collapse
 
-	["X "]={ name="char_spike_down",		deadly=1},				-- ceiling spike
-	["x "]={ name="char_spike_up",			deadly=1},				-- floor spike
+	["X "]={ name="char_spike_down",		deadly= 1},				-- ceiling spike
+	["x "]={ name="char_spike_up",			deadly=-1},				-- floor spike
 
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
@@ -1593,7 +1593,11 @@ function setup_level(idx)
 			local shape
 			if tile.deadly then -- a deadly tile
 
-				shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
+				if tile.deadly==1 then
+					shape=space.static:shape("poly",{x*8+4,y*8+8,(x+1)*8,(y+0)*8,(x+0)*8,(y+0)*8},0)
+				else
+					shape=space.static:shape("poly",{x*8+4,y*8,(x+1)*8,(y+1)*8,(x+0)*8,(y+1)*8},0)
+				end
 				shape:friction(1)
 				shape:elasticity(1)
 				shape.cx=x
@@ -1841,7 +1845,7 @@ local fat_controller=coroutine.create(function()
 	})
 
 	
-	setup_level(0) -- load map
+	setup_level(1) -- load map
 	setup_score() -- gui for the score
 
 	setup_dust() -- dust particles
