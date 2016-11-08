@@ -11,22 +11,19 @@ local chipmunk=require("wetgenes.chipmunk")
 
 local ls=function(...) print(wstr.dump(...)) end
 
-local hx,hy,ss=424,240,3
-local fps=60
-
 local cmap=bitdown.cmap -- use default swanky32 colors
-
 local fatpix=not(args and args.pixel or false) -- pass --pixel on command line to turn off pixel filters
 
 --request this hardware setup !The components will not exist until after main has been called!
+screen={hx=424,hy=240,ss=3,fps=60}
 hardware={
 	{
 		component="screen",
-		size={hx,hy},
+		size={screen.hx,screen.hy},
 		bloom=fatpix and 0.75 or 0,
 		filter=fatpix and "scanline" or nil,
-		scale=ss,
-		fps=60,
+		scale=screen.ss,
+		fps=screen.fps,
 		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.25} , dx=2 , dy=2 },
 			{ color={0,0,0,0.5 } , dx=1 , dy=1 },
@@ -46,14 +43,14 @@ hardware={
 	{
 		component="copper",
 		name="copper",
-		size={hx,hy},
+		size={screen.hx,screen.hy},
 		drawtype="first",
 	},
 	{
 		component="tilemap",
 		name="map",
 		tiles="tiles",
-		tilemap_size={math.ceil(hx/8),math.ceil(hy/8)},
+		tilemap_size={math.ceil(screen.hx/8),math.ceil(screen.hy/8)},
 		drawtype="merge",
 	},
 	{
@@ -67,7 +64,7 @@ hardware={
 		name="text",
 		tiles="tiles",
 		tile_size={4,8}, -- use half width tiles for font
-		tilemap_size={math.ceil(hx/4),math.ceil(hy/8)},
+		tilemap_size={math.ceil(screen.hx/4),math.ceil(screen.hy/8)},
 		drawtype="last",
 		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
 			{ color={0,0,0,0.25} , dx=2 , dy=2 },
@@ -599,9 +596,9 @@ map=[[
 ||. . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||||||||||||--------====--------==========||
-||. . . . . . . . . . . . . . . . . x $ . . . . . ? . . . . . ||||||||||||. . . . . . . . . . . . . . . ||
-||. . . . . . . ==========================================================. . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . ||
+||. . . . . . . . . . . . . . . . . x $ . . . . . ? . . . . . ||||||||||||. . . . . . . . . . . . . $ . ||
+||. . . . . . . ==========================================================. . . . . . . . . . . . $ . $ ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||======================================================================================================||
 ||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
@@ -1535,6 +1532,11 @@ end
 
 
 
+function change_level(idx)
+
+	setup_level(idx)
+	
+end
 
 function setup_level(idx)
 
@@ -1567,14 +1569,6 @@ function setup_level(idx)
 
 	local map=entities_set("map", bitdown.pix_tiles(  levels[idx].map,  levels[idx].legend ) )
 
--- make sure we have x,y, hack delete this code when we bump the engine
-	for y=0,#map do
-		for x=0,#(map[y]) do
-			local c=map[y][x]
-			c.x=x -- add x,y of tile to the copied data
-			c.y=y
-		end
-	end	
 	
 	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
@@ -1767,7 +1761,7 @@ function setup_level(idx)
 					item.body:position(px+i*8-4,py+8)
 
 					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
-					item.shape:friction(0.5)
+					item.shape:friction(1)
 					item.shape:elasticity(0.5)
 					
 					if tile.colors then item.color=tile.colors[ ((i-1)%#tile.colors)+1 ] end
@@ -1781,7 +1775,7 @@ function setup_level(idx)
 				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px-4,py )
 
 				local item=items[#tile.sign] -- last
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px+#tile.sign*8,py )
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px+#tile.sign*8+4,py )
 			end
 			if tile.spill then
 				level.updates[tile]=true
@@ -1863,7 +1857,7 @@ local fat_controller=coroutine.create(function()
 			menu.update()
 		else
 			entities_call("update")
-			entities_get("space"):step(1/fps)
+			entities_get("space"):step(1/screen.fps)
 		end
 
 		-- run all the callbacks created by collisions 
@@ -1871,8 +1865,7 @@ local fat_controller=coroutine.create(function()
 		entities_set("callbacks",{}) -- and reset the list
 
 		local time=entities_get("time")
-		time.game=time.game+(1/fps)
-		
+		time.game=time.game+(1/screen.fps)
 
 	end
 
