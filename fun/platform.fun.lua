@@ -527,11 +527,21 @@ local default_legend={
 	["E "]={ name="char_empty",	exit=1, sign="EXIT", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
 	["?2"]={ name="char_empty",	spill=nil,	},
 }
-
+	
 levels={}
 levels[0]={
 legend=combine_legends(default_legend,{
-	["?0"]={ name="char_empty",	sign="Don't walk through me bro!", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue} },
+	["?0"]={ name="char_empty",	sign="Level 1", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue},
+		menu={
+			title="This is a menu title!",
+			items={
+				{text="This is a menu item."},
+				{text="This is a longer menu item that will hopefully wrap onto a second line because it is so long."},
+				{text="This is the last item."},
+				{text="You should press fire to start."},
+			}
+		},
+	},
 }),
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
@@ -557,9 +567,9 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . ?0. . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . ?0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . E . . ||
 ||. S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||======================================================================================================||
@@ -1104,6 +1114,12 @@ end
 function setup_score()
 
 	local score=entities_set("score",entities_add{})
+	
+	
+	score.update=function()
+		local time=entities_get("time")
+		time.game=time.game+(1/screen.fps)
+	end
 
 	score.draw=function()
 	
@@ -1819,6 +1835,9 @@ local fat_controller=coroutine.create(function()
 		it.shader_uniforms.cy2={ 0.125, 0.125, 1.0  , 1   }
 		it.shader_uniforms.cy3={ 0    , 0    , 1.0  , 1   }
 		it.shader_uniforms.cy4={ 0    , 0.5  , 0.0  , 1   }
+		
+		it.shader_name="fun_copper_back_wave"
+		
 
 	else -- just pick a background color
 		local it=system.components.copper
@@ -1863,9 +1882,6 @@ local fat_controller=coroutine.create(function()
 		-- run all the callbacks created by collisions 
 		for _,f in pairs(entities_manifest("callbacks")) do f() end
 		entities_set("callbacks",{}) -- and reset the list
-
-		local time=entities_get("time")
-		time.game=time.game+(1/screen.fps)
 
 	end
 
