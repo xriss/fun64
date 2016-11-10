@@ -1,4 +1,4 @@
 [submodule "bin"]
 	path = bin
-	url = git@github.com:xriss/fun64.git
+	url = https://github.com/xriss/fun64.git
 	branch = bin
