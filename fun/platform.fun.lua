@@ -543,6 +543,7 @@ legend=combine_legends(default_legend,{
 		},
 	},
 }),
+title="The start of something.",
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -581,6 +582,7 @@ levels[1]={
 legend=combine_legends(default_legend,{
 	["?0"]={ name="char_empty" },
 }),
+title="A small cave full of treasures.",
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
 ||. . . . X . $ . X . $ . X . . . . . . . X . . X . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||
@@ -1125,7 +1127,18 @@ function setup_score()
 		local s=string.format("%d.%02d",ts,tp)
 		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),0)
 
-		local s="A small cave, well, small for a cave."
+		local s=""
+		
+		local level=entities_get("level")
+		
+		s=level.title or s
+
+		for i,player in pairs(entities_items("player")) do
+			if player.near_menu then
+				s=player.near_menu.title
+			end
+		end
+
 		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),system.components.text.tilemap_hy-1)
 		
 	end
@@ -1583,7 +1596,8 @@ function setup_level(idx)
 	end
 
 	local map=entities_set("map", bitdown.pix_tiles(  levels[idx].map,  levels[idx].legend ) )
-
+	
+	level.title=levels[idx].title
 	
 	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
