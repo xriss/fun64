@@ -8,4 +8,8 @@ Be sure to clone with submodules as the engine binaries live in a perminantly or
 
 	git clone --recursive https://github.com/xriss/fun64.git
 
+and the same when you pull updates.
+
+	git pull --recurse
+
 
