@@ -798,6 +798,21 @@ function setup_space()
 		end
 	space:add_handler(arbiter_trigger,0x4001)
 
+	local arbiter_menu={} -- menu things
+		arbiter_menu.presolve=function(it)
+			if it.shape_a.menu and it.shape_b.player then -- remember menu
+				it.shape_b.player.near_menu=it.shape_a.menu
+			end
+			return false
+		end
+		arbiter_menu.separate=function(it)
+			if it.shape_a.menu and it.shape_b.player then -- forget menu
+				it.shape_b.player.near_menu=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_menu,0x4002)
+
 	return space
 end
 
@@ -871,20 +886,33 @@ function setup_menu()
 	menu.cx=math.floor((106-menu.width)/2)
 	menu.cy=0
 	
+	-- go back to the previous menu
+	function menu.update_items(it)
+
+		if it.call then top.call(it) end -- refresh
+		
+		menu.items=it.items
+		menu.cursor=it.cursor or 1
+		
+		menu.lines={}
+		for id=1,#it.items do
+			local ls=wstr.smart_wrap(it.items[id].text,menu.width-8)
+			for i=1,#ls do menu.lines[#menu.lines+1]={s=(i>1 and " " or "")..ls[i],id=id,item=it.items[id]} end
+		end
+
+	end
+
 	-- set a menu to display
-	function menu.show(top)
+	function menu.show(it)
 	
 		if #menu.stack>0 then
 			menu.stack[#menu.stack].cursor=menu.cursor -- remember cursor position
 		end
 
-		menu.stack[#menu.stack+1]=top --push
-		
-		if top.call then top.call(top) end -- refresh
-		
-		menu.display=top.display
-		menu.cursor=top.cursor or 1
-		
+		menu.stack[#menu.stack+1]=it --push
+
+		menu.update_items(it)
+
 	end
 	
 	-- go back to the previous menu
@@ -894,64 +922,23 @@ function setup_menu()
 		
 		if #menu.stack==0 then return menu.hide() end -- clear all menus
 		
-		local top=menu.stack[#menu.stack] -- pop up a menu
+		local it=menu.stack[#menu.stack] -- pop up a menu
 		
-		if top.call then top.call(top) end -- refresh
-		
-		menu.display=top.display
-		menu.cursor=top.cursor or 1
-		
+		menu.update_items(it)
+				
 	end
 	
 	-- stop showing all menus and clear the stack
 
 	function menu.hide()
 		menu.stack={}
-		menu.display=nil
+		menu.items=nil
+		menu.lines=nil
 	end
-
-
-	-- build a requester
-	function menu.build_request(t)
-	
--- t[1++].text is the main body of text, t[1++].use is a call back function if this is
--- selectable, if there is no callback then selecting that option just hides the menu
-
-		local lines={}
-		local pos=1
-		for id=1,#t do
-			local ls=wstr.smart_wrap(t[id].text,menu.width-8)
-			for i=1,#ls do lines[#lines+1]={s=ls[i],id=id,tab=t[id]} end
-		end
-		
-		return lines
-	end
-
-
-	function menu.show_test()
-		local top={}
-		top.title="This is a menu title!"
-		top.display=menu.build_request({
-			{text="This is a menu item."},
-			{text="This is a longer menu item that will hopefully wrap onto a second line because it is so long."},
-			{text="This is the last item."},
-			{text="You should press fire to start."},
-			})
-		menu.show(top)
-	end
-	
-	menu.show_test()
 	
 	menu.update=function()
 	
-		if not menu.display then return end
-
-		local getmenuitem=function()
-			local tab=menu.display[ menu.cursor ]		
-			if tab and tab.tab then tab=tab.tab end -- use this data
-			return tab
-		end
-
+		if not menu.items then return end
 
 		local bfire,bup,bdown,bleft,bright
 		
@@ -969,11 +956,11 @@ function setup_menu()
 
 		if bfire then
 
-			local tab=getmenuitem()
+			local it=menu.items[ menu.cursor ]	
 		
-			if tab.call then -- do this
+			if it.call then -- do this
 			
-				tab.call( tab )
+				it.call( it )
 				
 			else -- just back by default
 			
@@ -987,29 +974,15 @@ function setup_menu()
 		
 		if bleft or bup then
 		
-			local cacheid=getmenuitem()
-			repeat
-				menu.cursor=menu.cursor-1
-			until menu.cursor<1 or getmenuitem()~=cacheid
-			
-			if menu.cursor<1 then menu.cursor=#menu.display end --wrap
-
-			local cacheid=getmenuitem() -- move to top of item
-			while menu.cursor>0 and cacheid==getmenuitem() do
-				menu.cursor=menu.cursor-1
-			end
-			menu.cursor=menu.cursor+1
+			menu.cursor=menu.cursor-1
+			if menu.cursor<1 then menu.cursor=#menu.items end
 
 		end
 		
 		if bright or bdown then
 			
-			local cacheid=getmenuitem()
-			repeat
-				menu.cursor=menu.cursor+1
-			until menu.cursor>#menu.display or getmenuitem()~=cacheid
-			
-			if menu.cursor>#menu.display then menu.cursor=1 end --wrap
+			menu.cursor=menu.cursor+1
+			if menu.cursor>#menu.items then menu.cursor=1 end
 		
 		end
 	
@@ -1020,29 +993,38 @@ function setup_menu()
 		local tprint=system.components.text.text_print
 		local tgrd=system.components.text.tilemap_grd
 
-		if not menu.display then return end
+		if not menu.lines then return end
 		
-		menu.cy=math.floor((30-(#menu.display+4))/2)
+		menu.cy=math.floor((30-(#menu.lines+4))/2)
 		
-		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.display+4,1):clear(0x02000000)
-		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.display+4-2,1):clear(0x01000000)
+		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.lines+4,1):clear(0x02000000)
+		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.lines+4-2,1):clear(0x01000000)
 		
 		local top=menu.stack[#menu.stack]
 
---		yarn_canvas.draw_box(0,0,menu.width,#menu.display+4)
+--		yarn_canvas.draw_box(0,0,menu.width,#menu.lines+4)
 		
 		if top.title then
 			local title=" "..(top.title).." "
 			local wo2=math.floor(#title/2)
---			yarn_canvas.print(20-wo2,0,title)
 			tprint(title,menu.cx+(menu.width/2)-wo2,menu.cy+0,31,2)
 		end
 		
-		for i,v in ipairs(menu.display) do
+		for i,v in ipairs(menu.lines) do
 			tprint(v.s,menu.cx+4,menu.cy+i+1,31,1)
 		end
 		
-		tprint(">",menu.cx+3,menu.cy+menu.cursor+1,31,1)
+		local it=nil
+		for i=1,#menu.lines do
+			if it~=menu.lines[i].item then -- first line only
+				it=menu.lines[i].item
+				if it == menu.items[menu.cursor] then
+					tprint(">",menu.cx+3,menu.cy+i+1,31,1)
+				else
+--					tprint(".",menu.cx+3,menu.cy+i+1,31,1)
+				end
+			end
+		end
 
 		system.components.text.dirty(true)
 
@@ -1170,16 +1152,29 @@ function char_controls(it,fast)
 
 		it.shape:friction(1)
 
+		if it.jump_clr and it.near_menu then
+			local menu=entities_get("menu")
+			local near_menu=it.near_menu
+			local callbacks=entities_manifest("callbacks")
+			callbacks[#callbacks+1]=function() menu.show(near_menu) end -- call later so we do not process menu input this frame
+		end
+
 		if it.jump then
 
 			local vx,vy=it.body:velocity()
 
 			if vy>-20 then -- only when pushing against the ground a little
 
-				vy=-jump
-				it.body:velocity(vx,vy)
+				if it.near_menu then -- no jump
 				
-				it.body.floor_time=0
+				else
+				
+					vy=-jump
+					it.body:velocity(vx,vy)
+					
+					it.body.floor_time=0
+				
+				end
 				
 			end
 
@@ -1441,8 +1436,9 @@ function add_player(i)
 		local up=ups(player.idx) -- the controls for this player
 		
 		player.move=false
-		player.jump=up.button("fire") -- right
-		
+		player.jump=up.button("fire")
+		player.jump_clr=up.button("fire_clr")
+
 		if use_only_two_keys then -- touch screen control test?
 
 			if up.button("left") and up.button("right") then -- jump
@@ -1762,6 +1758,14 @@ function setup_level(idx)
 				shape:collision_type(0x4001)
 				shape.trigger=tile
 			end
+			if tile.menu then
+				local item=add_item()
+
+				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
+				
+				item.shape:collision_type(0x4002)
+				item.shape.menu=tile.menu
+			end
 			if tile.sign then
 				local items={}
 				tile.items=items
@@ -1856,7 +1860,7 @@ local fat_controller=coroutine.create(function()
 -- setup game
 	entities_reset()
 
-	setup_level(1) -- load map
+	setup_level(0) -- load map
 	setup_score() -- gui for the score
 
 	setup_dust() -- dust particles
@@ -1870,7 +1874,7 @@ local fat_controller=coroutine.create(function()
 
 	while true do coroutine.yield()
 	
-		if menu.display then -- menu only
+		if menu.lines then -- menu only
 			menu.update()
 		else
 			entities_call("update")
