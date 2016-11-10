@@ -1,4 +1,0 @@
-cd `dirname $0`
-cp -r ../../../hg/bin/exe .
-cp ../../../hg/bin/gamecake .
-rm exe/pagecake*
