@@ -1115,6 +1115,9 @@ function setup_score()
 
 	local score=entities_set("score",entities_add{})
 	
+	entities_set("time",{
+		game=0,
+	})
 	
 	score.update=function()
 		local time=entities_get("time")
@@ -1836,28 +1839,23 @@ local fat_controller=coroutine.create(function()
 		it.shader_uniforms.cy3={ 0    , 0    , 1.0  , 1   }
 		it.shader_uniforms.cy4={ 0    , 0.5  , 0.0  , 1   }
 		
-		it.shader_name="fun_copper_back_wave"
+--		it.shader_name="fun_copper_back_wave"
 		
 
 	else -- just pick a background color
 		local it=system.components.copper
 		it.shader_name="fun_copper_back_y5"
-		it.shader_uniforms.cy0={ 0    , 0    , 1.0/4  , 1   }
-		it.shader_uniforms.cy1={ 0    , 0    , 1.0/4  , 1   }
-		it.shader_uniforms.cy2={ 0    , 0    , 1.0/4  , 1   }
-		it.shader_uniforms.cy3={ 0    , 0    , 1.0/4  , 1   }
-		it.shader_uniforms.cy4={ 0    , 0    , 1.0/4  , 1   }
+		it.shader_uniforms.cy0={ 0    , 0    , 1/4  , 1   }
+		it.shader_uniforms.cy1={ 0    , 0    , 1/4  , 1   }
+		it.shader_uniforms.cy2={ 0    , 0    , 1/4  , 1   }
+		it.shader_uniforms.cy3={ 0    , 0    , 1/4  , 1   }
+		it.shader_uniforms.cy4={ 0    , 0    , 1/4  , 1   }
 
 	end
 
 -- setup game
 	entities_reset()
-	
-	entities_set("time",{
-		game=0,
-	})
 
-	
 	setup_level(1) -- load map
 	setup_score() -- gui for the score
 
