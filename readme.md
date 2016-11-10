@@ -4,7 +4,7 @@ Try the live html version of the example projects here
 
 https://xriss.github.io/fun64
 
-Be sure to clone with submodules RG
+Be sure to clone with submodules as the engine binaries live in a perminantly orphaned branch.
 
 	git clone --recursive https://github.com/xriss/fun64.git
 
