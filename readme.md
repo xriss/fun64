@@ -10,6 +10,6 @@ Be sure to clone with submodules as the engine binaries live in a perminantly or
 
 and the same when you pull updates.
 
-	git pull --recurse
+	git pull --recurse && git submodule update --recursive --remote
 
 
