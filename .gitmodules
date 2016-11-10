@@ -1,4 +1,4 @@
 [submodule "bin"]
 	path = bin
-	url = ./
+	url = ./../fun64.git
 	branch = bin
