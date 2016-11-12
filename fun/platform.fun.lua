@@ -443,59 +443,33 @@ Y Y 0 Y Y 0 Y Y
 . . . . . . . . . . . . . . . . 
 ]]},
 
-{0x0800,"exit_shut",[[
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
-. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
-. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
-. . . 7 . . . 7 7 . . . . . . . . . . . 7 . . . 
-. . 7 . . . 7 . . . . . . . . . . . . . . 7 . . 
-. . 7 . . 7 . . . . . . . . . . . . . . . 7 . . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. . 7 . . . . . . . . . . . . . . . 7 . . 7 . . 
-. . 7 . . . . . . . . . . . . . . 7 . . . 7 . . 
-. . . 7 . . . . . . . . . . . 7 7 . . . 7 . . . 
-. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
-. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
-. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+{0x0800,"door_open",[[
+. . . . . . . . . 0 0 0 0 0 0 . . . . . . . . . 
+. . . . . . . 0 0 0 0 0 0 0 0 0 0 . . . . . . . 
+. . . . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . . . 
+. . . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
+. . . 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . . . 
 ]]},
 
-{0x0803,"exit_open",[[
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
-. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
-. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
-. . . 7 . . . 7 7 . . . . . . . . . . . 7 . . . 
-. . 7 . . . 7 . . . . . . . . . . . . . . 7 . . 
-. . 7 . . 7 . . . . . . . . . . . . . . . 7 . . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. . 7 . . . . . . . . . . . . . . . 7 . . 7 . . 
-. . 7 . . . . . . . . . . . . . . 7 . . . 7 . . 
-. . . 7 . . . . . . . . . . . 7 7 . . . 7 . . . 
-. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
-. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
-. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-]]},
 }
 
 
@@ -544,16 +518,45 @@ local default_legend={
 levels={}
 levels[0]={
 legend=combine_legends(default_legend,{
-	["?0"]={ name="char_empty",	sign="Level 1", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue},
+	["D0"]={ name="char_empty",	sign_y=-24, sign="Level 1", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue},
 		menu={
-			title="This is a menu title!",
+			title="level 1",
 			items={
-				{text="This is a menu item."},
-				{text="This is a longer menu item that will hopefully wrap onto a second line because it is so long."},
-				{text="This is the last item."},
-				{text="You should press fire to start."},
+				{text="Back"},
+				{text="Jump to Level 1"},
 			}
 		},
+		sprite="door_open",
+	},
+	["D1"]={ name="char_empty",	sign_y=-24, sign="Level 2", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue},
+		menu={
+			title="level 2",
+			items={
+				{text="Back"},
+				{text="Jump to Level 2"},
+			}
+		},
+		sprite="door_open",
+	},
+	["D2"]={ name="char_empty",	sign_y=-24, sign="Level 3", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue},
+		menu={
+			title="level 3",
+			items={
+				{text="Back"},
+				{text="Jump to Level 3"},
+			}
+		},
+		sprite="door_open",
+	},
+	["D3"]={ name="char_empty",	sign_y=-24, sign="Level 4", colors={cmap.red,cmap.orange,cmap.yellow,cmap.green,cmap.blue},
+		menu={
+			title="level 4",
+			items={
+				{text="Back"},
+				{text="Jump to Level 4"},
+			}
+		},
+		sprite="door_open",
 	},
 }),
 title="Let's make a journey to the cave of monsters!",
@@ -566,25 +569,25 @@ map=[[
 //. . . . $ . . . . . . . . . . . . . $ $ . . . . . . . . . . $ $ . . . . . . . . . . . . . . $ . . . . //
 //. . . . . . . . . . . . . . . . . . $ $ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
-//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
+//. . . . . . . . . . . . . . . . . . . . . . . . D3. . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //////////////////. . . . . //////////////////////////////////////////////////. . . . . //////////////////
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
-//. $ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
+//. $ . . . . . . . . . . . . . . . . . . . . . . D2. . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //////////////////. . . . . //////////////////////////////////////////////////. . . . . //////////////////
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . . //
-//. . . . . . $ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
+//. . . . . . $ . . . . . . . . . . . . . . . . . D1. . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //////////////////. . . . . //////////////////////////////////////////////////. . . . . //////////////////
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ //
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
-//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . //
+//. . . . . . . . . . . . . . . . . . . . . . . . D0. . . . . . . . . . . . . . . . . . . . . . . . . . //
 //. . . . . . . . . . ?3. . . . . . . . . . . . . . . . . . . . . . . . . . . . . ?4. . . . . . . . . . //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //
@@ -693,6 +696,8 @@ function setup_space()
 	
 	space:gravity(0,700)
 	space:damping(0.5)
+	space:sleep_time_threshold(1)
+	space:idle_speed_threshold(10)
 	
 	local arbiter_pass={}  -- background tiles we can jump up through
 		arbiter_pass.presolve=function(it)
@@ -821,7 +826,7 @@ function setup_space()
 			return false
 		end
 		arbiter_menu.separate=function(it)
-			if it.shape_a.menu and it.shape_b.player then -- forget menu
+			if it.shape_a and it.shape_a.menu and it.shape_b and it.shape_b.player then -- forget menu
 				it.shape_b.player.near_menu=false
 			end
 			return true
@@ -834,13 +839,15 @@ end
 
 -- items, can be used for general things, EG physics shapes with no special actions
 function add_item()
-	local space=entities_get("space")
 	local item=entities_add{caste="item"}
 	item.draw=function()
 		if item.active then
-			local px,py=item.body:position()
-			local rz=item.body:angle()
---					rz=0
+			local px,py,rz=item.px,item.py,item.rz
+			if item.body then -- from fizix
+				px,py=item.body:position()
+				rz=item.body:angle()
+			end
+			rz=item.draw_rz or rz -- always face up?
 			system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,s=item.s,sx=item.sx,sy=item.sy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
 		end
 	end
@@ -1111,6 +1118,7 @@ function setup_dust()
 
 			local px,py=it.body:position()
 			local rz=it.body:angle()
+			rz=it.draw_rz or rz -- always face up?
 			system.components.sprites.list_add({t=it.sprite,s=it.s,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color})
 			
 		end
@@ -1807,7 +1815,7 @@ function setup_level(idx)
 			if tile.sign then
 				local items={}
 				tile.items=items
-				local px,py=x*8-(#tile.sign)*4,y*8
+				local px,py=x*8-(#tile.sign)*4 + (tile.sign_x or 0) ,y*8 + (tile.sign_y or 0)
 				for i=1,#tile.sign do
 					local item=add_item()
 					items[i]=item
@@ -1819,7 +1827,7 @@ function setup_level(idx)
 
 					item.active=true
 					item.body=space:body(1,100)
-					item.body:position(px+i*8-4,py+8)
+					item.body:position(px+i*8-4 ,py+8 )
 
 					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
 					item.shape:friction(1)
@@ -1865,7 +1873,7 @@ function setup_level(idx)
 							px=(tile.x+math.random())*8,
 							py=(tile.y+math.random())*8,
 							sprite = names.bubble.idx,
-							mass=1/64,inertia=math.huge,
+							mass=1/64,inertia=1,
 							h=24,
 							s=1,
 							shape_args={"circle",12,0,0},
@@ -1873,9 +1881,20 @@ function setup_level(idx)
 							friction=0,
 							elasticity=15/16,
 							gravity={0,-64},
+							draw_rz=0,
 						})
 					end
 				end
+			end
+			if tile.sprite then
+				local item=add_item()
+				item.active=true
+				item.px=tile.x*8+4
+				item.py=tile.y*8+4
+				item.sprite = names.door_open.idx
+				item.h=24
+				item.s=1
+				item.draw_rz=0
 			end
 		end
 	end
