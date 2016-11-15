@@ -11,10 +11,10 @@ local chipmunk=require("wetgenes.chipmunk")
 
 local ls=function(...) print(wstr.dump(...)) end
 
-local cmap=bitdown.cmap -- use default swanky32 colors
-local fatpix=not(args and args.pixel or false) -- pass --pixel on command line to turn off pixel filters
+local fatpix=not(args and args.pixel or false) -- pass --pixel on command line to turn off fat pixel filters
 
 --request this hardware setup !The components will not exist until after main has been called!
+cmap=bitdown.cmap -- use default swanky32 colors
 screen={hx=424,hy=240,ss=3,fps=60}
 hardware={
 	{
@@ -24,11 +24,7 @@ hardware={
 		filter=fatpix and "scanline" or nil,
 		scale=screen.ss,
 		fps=screen.fps,
-		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
-			{ color={0,0,0,0.25} , dx=2 , dy=2 },
-			{ color={0,0,0,0.5 } , dx=1 , dy=1 },
-			{ color={1,1,1,1   } , dx=0 , dy=0 },
-		} or nil
+		layers=3,
 	},
 	{
 		component="colors",
@@ -44,20 +40,20 @@ hardware={
 		component="copper",
 		name="copper",
 		size={screen.hx,screen.hy},
-		drawtype="first",
+		layer=1,
 	},
 	{
 		component="tilemap",
 		name="map",
 		tiles="tiles",
 		tilemap_size={math.ceil(screen.hx/8),math.ceil(screen.hy/8)},
-		drawtype="merge",
+		layer=2,
 	},
 	{
 		component="sprites",
 		name="sprites",
 		tiles="tiles",
-		drawtype="merge",
+		layer=2,
 	},
 	{
 		component="tilemap",
@@ -65,18 +61,13 @@ hardware={
 		tiles="tiles",
 		tile_size={4,8}, -- use half width tiles for font
 		tilemap_size={math.ceil(screen.hx/4),math.ceil(screen.hy/8)},
-		drawtype="last",
-		drawlist=fatpix and { -- draw components with a 2 pix *merged* drop shadow
-			{ color={0,0,0,0.25} , dx=2 , dy=2 },
-			{ color={0,0,0,0.5 } , dx=1 , dy=1 },
-			{ color={1,1,1,1   } , dx=0 , dy=0 },
-		} or nil
+		layer=3,
 	},
 }
 
 
 -- define all graphics in this global, we will convert and upload to tiles at setup
--- allthough you can change tiles during a game, we try and only upload graphics
+-- although you can change tiles during a game, we try and only upload graphics
 -- during initial setup so we have a nice looking sprite sheet to be edited by artists
 
 graphics={
@@ -848,7 +839,7 @@ function add_item()
 				rz=item.body:angle()
 			end
 			rz=item.draw_rz or rz -- always face up?
-			system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,s=item.s,sx=item.sx,sy=item.sy,px=px,py=py,rz=180*rz/math.pi,color=item.color})
+			system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,s=item.s,sx=item.sx,sy=item.sy,px=px,py=py,rz=180*rz/math.pi,color=item.color,pz=item.pz})
 		end
 	end
 	return item
@@ -1119,7 +1110,7 @@ function setup_dust()
 			local px,py=it.body:position()
 			local rz=it.body:angle()
 			rz=it.draw_rz or rz -- always face up?
-			system.components.sprites.list_add({t=it.sprite,s=it.s,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color})
+			system.components.sprites.list_add({t=it.sprite,s=it.s,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color,pz=it.pz})
 			
 		end
 	end
@@ -1895,6 +1886,7 @@ function setup_level(idx)
 				item.h=24
 				item.s=1
 				item.draw_rz=0
+				item.pz=-1
 			end
 		end
 	end
