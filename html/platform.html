@@ -86,9 +86,14 @@
 				resize();
 			};
 			Module["preInit"] = function() {
+				FS.mkdir("/lua");
+//				FS.mkdir("/lua/wetgenes");
+//				FS.mkdir("/lua/wetgenes/gamecake");
+//				FS.mkdir("/lua/wetgenes/gamecake/fun");
 				FS.createPreloadedFile('/', "start.fun.lua", "../fun/platform.fun.lua", true, false);
 				FS.createPreloadedFile('/', "start.fun.glsl", "../fun/platform.fun.glsl", true, false);
-				FS.mkdir("/lua");
+//				FS.createPreloadedFile('/', "lua/wetgenes/gamecake/fun/sprites.lua", "../lua/wetgenes/gamecake/fun/sprites.lua", true, false);
+//				FS.createPreloadedFile('/', "lua/wetgenes/gamecake/fun/sprites.glsl", "../lua/wetgenes/gamecake/fun/sprites.glsl", true, false);
 				FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 
 			};
