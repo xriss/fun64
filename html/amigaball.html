@@ -291,7 +291,7 @@ gamecake_pulse=pulse
 			Module={};
 			Module.canvas=document.getElementById("gamecake_canvas");
 			Module.canvas_resize=resize;
-			Module.memoryInitializerPrefixURL="../bin/exe/";
+			Module.memoryInitializerPrefixURL="../exe/";
 			Module['_main'] = function() {
 				gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 				gamecake_start();
@@ -303,7 +303,7 @@ gamecake_pulse=pulse
 			Module["monitorRunDependencies"]=show_progress;
 
 		</script>
-		<script type="text/javascript" src="../bin/exe/gamecake.js"></script>
+		<script type="text/javascript" src="../exe/gamecake.js"></script>
 	</div>
 </body>
 </html>

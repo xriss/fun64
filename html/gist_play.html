@@ -2,7 +2,7 @@
 <head>
 	<title>fun64 gist player</title>
 	<script data-pace-options='{ "eventLag": false }' src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
-	<script src="../bin/exe/jquery.min.js"></script>
+	<script src="../exe/jquery.min.js"></script>
 	<style>
 .pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
 .pace-inactive { display:none; }
@@ -91,7 +91,7 @@
 			Module={};
 			Module.canvas=document.getElementById("gamecake_canvas");
 			Module.canvas_resize=resize;
-			Module.memoryInitializerPrefixURL="../bin/exe/";
+			Module.memoryInitializerPrefixURL="../exe/";
 			Module['_main'] = function() {
 				gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 				gamecake_start();
@@ -107,7 +107,7 @@
 
 
 		</script>
-		<script type="text/javascript" src="../bin/exe/gamecake.js"></script>
+		<script type="text/javascript" src="../exe/gamecake.js"></script>
 	</div>
 </body>
 </html>
