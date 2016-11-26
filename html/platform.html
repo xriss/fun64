@@ -87,6 +87,7 @@
 			};
 			Module["preInit"] = function() {
 				FS.createPreloadedFile('/', "start.fun.lua", "../fun/platform.fun.lua", true, false);
+				FS.createPreloadedFile('/', "start.fun.glsl", "../fun/platform.fun.glsl", true, false);
 				FS.mkdir("/lua");
 				FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 

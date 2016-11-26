@@ -1,11 +1,22 @@
 
 #shader "fun_copper_back_wave"
 
-#ifdef VERTEX_SHADER
-
 uniform mat4 modelview;
 uniform mat4 projection;
 uniform vec4 color;
+uniform vec3      iResolution;           // viewport resolution (in pixels)
+uniform float     iGlobalTime;           // shader playback time (in seconds)
+uniform float     iTimeDelta;            // render time (in seconds)
+uniform int       iFrame;                // shader playback frame
+uniform float     iChannelTime[4];       // channel playback time (in seconds)
+uniform vec3      iChannelResolution[4]; // channel resolution (in pixels)
+uniform vec4      iMouse;                // mouse pixel coords. xy: current (if MLB down), zw: click
+uniform sampler2D iChannel0;             // input channel. XX = 2D/Cube
+uniform vec4      iDate;                 // (year, month, day, time in seconds)
+uniform float     iSampleRate;           // sound sample rate (i.e., 44100)
+
+
+#ifdef VERTEX_SHADER
 
 attribute vec3 a_vertex;
 attribute vec2 a_texcoord;
@@ -32,17 +43,6 @@ precision highp float; /* really need better numbers if possible */
 varying vec2  v_texcoord;
 varying vec4  v_color;
 
-
-uniform vec3      iResolution;           // viewport resolution (in pixels)
-uniform float     iGlobalTime;           // shader playback time (in seconds)
-uniform float     iTimeDelta;            // render time (in seconds)
-uniform int       iFrame;                // shader playback frame
-uniform float     iChannelTime[4];       // channel playback time (in seconds)
-uniform vec3      iChannelResolution[4]; // channel resolution (in pixels)
-uniform vec4      iMouse;                // mouse pixel coords. xy: current (if MLB down), zw: click
-uniform sampler2D iChannel0;             // input channel. XX = 2D/Cube
-uniform vec4      iDate;                 // (year, month, day, time in seconds)
-uniform float     iSampleRate;           // sound sample rate (i.e., 44100)
 void mainImage( out vec4 fragColor, in vec2 fragCoord );
 
 void main(void)
