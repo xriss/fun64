@@ -236,6 +236,17 @@ R R R R r r r r
 R R R R r r r r 
 ]]},
 
+{0x0121,"char_dust_white",[[
+6 6 6 6 7 7 7 7 
+6 6 6 6 7 7 7 7 
+6 6 6 6 7 7 7 7 
+6 6 6 6 7 7 7 7 
+7 7 7 7 6 6 6 6 
+7 7 7 7 6 6 6 6 
+7 7 7 7 6 6 6 6 
+7 7 7 7 6 6 6 6 
+]]},
+
 {0x0200,"player_f1",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
@@ -1097,6 +1108,7 @@ function setup_dust()
 			it.life=it.life-1
 			
 			if it.life<0 then
+				if it.ondie then it.ondie(it) end
 				space:remove(it.shape) -- auto?
 				space:remove(it.body)
 				dust.parts[it]=nil
@@ -1874,6 +1886,24 @@ function setup_level(idx)
 							elasticity=15/16,
 							gravity={0,-64},
 							draw_rz=0,
+							ondie=function(it) -- burst
+								local px,py=it.body:position()
+								for i=1,4 do
+									local r=math.random(math.pi*2000)/1000
+									dust.add({
+										mass=1/16384,
+										vx=math.sin(r)*100,
+										vy=math.cos(r)*100,
+										px=px,
+										py=py,
+										life=60*2,
+										friction=0,
+										elasticity=0.75,
+										sprite= names.char_dust_white.idx,
+										life=15*(2+i),
+									})
+								end
+							end
 						})
 					end
 				end
