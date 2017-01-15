@@ -1094,6 +1094,10 @@ function setup_dust()
 			it.body:velocity_func(function(body)
 				body.gravity_x=gravity_x
 				body.gravity_y=gravity_y
+				if it.die_speed then
+					local vx,vy=body:velocity()
+					if (vx*vx+vy*vy) > it.die_speed*it.die_speed then it.life=0 end
+				end
 				return true
 			end)
 
@@ -1106,9 +1110,8 @@ function setup_dust()
 		for it,_ in pairs(dust.parts) do
 		
 			it.life=it.life-1
-			
 			if it.life<0 then
-				if it.ondie then it.ondie(it) end
+				if it.on_die then it.on_die(it) end
 				space:remove(it.shape) -- auto?
 				space:remove(it.body)
 				dust.parts[it]=nil
@@ -1123,7 +1126,18 @@ function setup_dust()
 			local px,py=it.body:position()
 			local rz=it.body:angle()
 			rz=it.draw_rz or rz -- always face up?
-			system.components.sprites.list_add({t=it.sprite,s=it.s,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=it.color,pz=it.pz})
+			local color=it.color
+			if it.fade then
+				local a=it.life/it.fade
+				color={}
+				color.r=it.color.r*a
+				color.g=it.color.g*a
+				color.b=it.color.b*a
+				color.a=a
+				
+			end
+			
+			system.components.sprites.list_add({t=it.sprite,s=it.s,h=it.h,hx=it.hx,hy=it.hy,px=px,py=py,rz=180*rz/math.pi,color=color,pz=it.pz})
 			
 		end
 	end
@@ -1886,17 +1900,20 @@ function setup_level(idx)
 							elasticity=15/16,
 							gravity={0,-64},
 							draw_rz=0,
-							ondie=function(it) -- burst
+							die_speed=128,
+							on_die=function(it) -- burst
 								local px,py=it.body:position()
-								for i=1,4 do
+								for i=1,16 do
 									local r=math.random(math.pi*2000)/1000
+									local vx=math.sin(r)
+									local vy=math.cos(r)
 									dust.add({
+										gravity={0,-64},
 										mass=1/16384,
-										vx=math.sin(r)*100,
-										vy=math.cos(r)*100,
-										px=px,
-										py=py,
-										life=60*2,
+										vx=vx*100,
+										vy=vy*100,
+										px=px+vx*8,
+										py=py+vy*8,
 										friction=0,
 										elasticity=0.75,
 										sprite= names.char_dust_white.idx,
@@ -1982,7 +1999,9 @@ local fat_controller=coroutine.create(function()
 			menu.update()
 		else
 			entities_call("update")
-			entities_get("space"):step(1/screen.fps)
+			local space=entities_get("space")
+			space:step(1/(screen.fps*2)) -- double step for increased stability, allows faster velocities.
+			space:step(1/(screen.fps*2))
 		end
 
 		-- run all the callbacks created by collisions 
