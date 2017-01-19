@@ -2,3 +2,7 @@ cd `dirname $0`
 
 git pull --recurse && git submodule update --recursive --remote
 
+cd exe
+git checkout exe
+cd ..
+
