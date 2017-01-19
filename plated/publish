@@ -24,9 +24,9 @@ git push --set-upstream origin -f gh-pages
 echo "updating reference to new published pages"
 
 cd ..
-#git commit -a -m"publish bump"
-#git pull
-#git push
+git commit -a -m"publish bump"
+git pull
+git push
 
 
 
