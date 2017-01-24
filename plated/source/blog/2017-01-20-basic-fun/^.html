@@ -31,7 +31,7 @@ the resolution of screen and tilemaps and sprite layers to display.
 			component="screen",
 			size={424,240}, -- lowrez with a 1920x1080 aspect
 			scale=3, -- draw in a window at 3 times scale
-			fps=60, -- 60 fps please a
+			fps=60, -- 60 fps please
 		},
 		...
 	}
@@ -39,10 +39,12 @@ the resolution of screen and tilemaps and sprite layers to display.
 This requests the virtual hardware that will be setup before main is 
 called.
 
-The second is a main function which will be called as a co-routine with 
-a need message at start and after every yield. Use the basic skeleton 
-below to receive need.setup/update/draw requests. As you can see it is 
-possible to have multiple needs in a single call.
+The second is a main function which will be called as a yield-able 
+co-routine with a table that should be treated as an incoming message. 
+Use the basic skeleton below to receive need.setup/update/draw 
+requests. As you can see it is possible to have multiple needs at once 
+and this call structure allows for a setup, repeat update/draw then cleanup 
+flow of code within this co-routine.
 
 	function main(need)
 		if not need.setup then need=coroutine.yield() end -- wait for setup request
@@ -66,6 +68,9 @@ possible to have multiple needs in a single call.
 			
 			if need.clean then done=true end -- cleanup requested
 		end
-	}
+
+		-- perform cleanup
+
+	end
 
 
