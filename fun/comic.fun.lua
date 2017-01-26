@@ -302,6 +302,44 @@ g g g g g g g g g g g g g g g g g g g g g g g g
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 ]]},
 
+{0x0b00,"laptop_poly",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . 
+. 0 0 0 0 0 0 7 7 0 0 0 0 0 0 . 
+. 0 0 0 0 0 7 7 0 0 0 0 0 0 0 . 
+. 0 0 0 0 0 0 7 7 0 0 0 0 0 0 . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 C 0 . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 R 0 . 
+. 0 0 0 0 0 0 0 0 0 0 0 0 0 0 . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+
+{0x0b02,"laptop_morf",[[
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 1 7 7 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 7 1 1 1 7 7 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 7 1 1 7 7 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 7 1 1 1 7 7 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 1 7 7 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 C 1 . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 R 1 . . . 
+. . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
 }
 
 
@@ -544,8 +582,9 @@ local fat_controller=coroutine.create(function()
 		local panel
 		local talking
 
+		local tprint=system.components.text.text_print
+
 		local speach=function(tab,x,y,w)
-			local tprint=system.components.text.text_print
 			for idx,it in ipairs(tab) do
 				if letters<=0 then return end -- no more to draw
 				local ls=wstr.smart_wrap(it,w or 27)
@@ -575,7 +614,7 @@ local fat_controller=coroutine.create(function()
 
 		if letters>0 then panel=1 end
 		speach({[[
-I think we may have just released another game.
+I think we may have just released another one of them game things.
 
 ]],[[
 Well, you know what they say...
@@ -597,6 +636,9 @@ Not those voices!
 
 ]]},62,1)
 
+		tprint("Post naval depression.",2,0,25,0)
+		tprint("4lfa.com",82,15,25,0)
+
 		system.components.text.dirty(true)
 
 		system.components.sprites1.list_reset() -- remove old sprites here
@@ -611,8 +653,13 @@ Not those voices!
 				if talking==1 then pt=math.floor(ticks/8)%2 end
 				if talking==0 then mt=math.floor(ticks/8)%2 end
 			end
+
+			system.components["sprites"..i].list_add({t=names.laptop_poly.idx,ox=0,oy=0,hx=2*8,hy=3*8,px= 2*8,py=12*8})
+			system.components["sprites"..i].list_add({t=names.laptop_morf.idx,ox=0,oy=0,hx=3*8,hy=3*8,px= 9*8,py=12*8})
+
 			system.components["sprites"..i].list_add({t=names.poly.idx+(pt*2),ox=0,oy=0,hx=2*8,hy=3*8,px= 2*8,py=10*8})
 			system.components["sprites"..i].list_add({t=names.morf.idx+(mt*3),ox=0,oy=0,hx=3*8,hy=6*8,px= 9*8,py= 7*8})
+
 		end
 
 	end
