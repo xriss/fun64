@@ -27,9 +27,9 @@ hardware={
 		fps=screen.fps,
 		layers={
 			{ }, -- background
-			{ clip={8  ,8,112,112} }, -- panel 1
-			{ clip={128,8,112,112} }, -- panel 2
-			{ clip={244,8,112,112} }, -- panel 3
+			{ clip={8  ,8,112,112}, scroll={  -8,-8}, size={112,112}, }, -- panel 1
+			{ clip={128,8,112,112}, scroll={-128,-8}, size={112,112}, }, -- panel 2
+			{ clip={248,8,112,112}, scroll={-248,-8}, size={112,112}, }, -- panel 3
 			{ }, -- text
 		},
 	},
@@ -41,7 +41,7 @@ hardware={
 		component="tiles",
 		name="tiles",
 		tile_size={8,8},
-		bitmap_size={64,16},
+		bitmap_size={64,64},
 	},
 	{
 		component="tilemap",
@@ -144,6 +144,164 @@ graphics={
 . . . . . . . . 
 . . . . . . . . 
 ]]},
+
+
+{0x0200,"poly",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 0 0 0 2 2 2 2 0 0 0 2 2 2 
+2 2 2 0 0 0 2 2 2 2 0 0 0 2 2 2 
+2 2 2 0 0 0 2 2 2 2 0 0 0 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+]]},
+
+{0x0202,"poly_open",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 0 0 0 2 2 2 2 0 0 0 2 2 2 
+2 2 2 0 0 0 2 2 2 2 0 0 0 2 2 2 
+2 2 2 0 0 0 2 2 2 2 0 0 0 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+]]},
+
+{0x0500,"morf",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 
+0 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 
+0 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+]]},
+
+{0x0503,"morf_open",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . . g g . . . . . . g g . . . . . . g g . . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. . g g g g . . . . g g g g . . . . g g g g . . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+. g g g g g g . . g g g g g g . . g g g g g g . 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+g g g g g g g g g g g g g g g g g g g g g g g g 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 
+0 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 
+0 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+]]},
+
 }
 
 
@@ -382,14 +540,17 @@ local fat_controller=coroutine.create(function()
 		entities_set("callbacks",{}) -- and reset the list
 		
 		local letters=math.floor(ticks/4)
+		
+		local panel
+		local talking
 
 		local speach=function(tab,x,y,w)
 			local tprint=system.components.text.text_print
 			for idx,it in ipairs(tab) do
-				if letters<=0 then break end -- no more to draw
+				if letters<=0 then return end -- no more to draw
 				local ls=wstr.smart_wrap(it,w or 27)
 				for i=1,#ls do local s=ls[i]
-					if letters<=0 then break end -- no more to draw
+					if letters<=0 then return end -- no more to draw
 					if #s > letters then
 						s=s:sub(1,letters)
 					end
@@ -399,16 +560,20 @@ local fat_controller=coroutine.create(function()
 						tprint(s,x+28-#ls[i],y,31-2,0)
 					end
 					y=y+1
-					if #s==0 then
+					if #s==0 then -- pause on white space
 						letters=letters-8
+						talking=nil
 					else
 						letters=letters-#s
+						talking=idx%2
 					end
 				end
 			end
+			panel=nil
 		end
 
 
+		if letters>0 then panel=1 end
 		speach({[[
 I think we may have just released another game.
 
@@ -417,12 +582,14 @@ Well, you know what they say...
 
 ]],},2,1)
 
+		if letters>0 then panel=2 end
 		speach({[[
-Uhm, "What doesn't kill you slowly chips away at your soul until you willingly embrace the sweet release of death."?
+Uhm, "What doesn't kill you slowly chips away at your soul until you finally choose the sweet release of death."?
 
 ]]},32,1)
 
 
+		if letters>0 then panel=3 end
 		speach({"",[[
 No!
 
@@ -430,7 +597,23 @@ Not those voices!
 
 ]]},62,1)
 
-	system.components.text.dirty(true)
+		system.components.text.dirty(true)
+
+		system.components.sprites1.list_reset() -- remove old sprites here
+		system.components.sprites2.list_reset() -- remove old sprites here
+		system.components.sprites3.list_reset() -- remove old sprites here
+
+		local names=system.components.tiles.names
+
+		for i=1,3 do
+			local pt,mt=0,0
+			if panel==i then
+				if talking==1 then pt=math.floor(ticks/8)%2 end
+				if talking==0 then mt=math.floor(ticks/8)%2 end
+			end
+			system.components["sprites"..i].list_add({t=names.poly.idx+(pt*2),ox=0,oy=0,hx=2*8,hy=3*8,px= 2*8,py=10*8})
+			system.components["sprites"..i].list_add({t=names.morf.idx+(mt*3),ox=0,oy=0,hx=3*8,hy=6*8,px= 9*8,py= 7*8})
+		end
 
 	end
 

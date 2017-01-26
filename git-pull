@@ -2,9 +2,7 @@ cd `dirname $0`
 
 git pull --recurse && git submodule update --recursive --remote
 
-echo " FORCE fixing local exe branch to track origin "
+echo " fixing local exe branch to track origin "
 cd exe
 git reset --hard origin/exe
-git branch -D exe
-git checkout exe
 cd ..
