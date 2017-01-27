@@ -46,11 +46,21 @@ hardware={
 		tile_size={8,8},
 		bitmap_size={64,64},
 	},
+--[[
 	{
 		component="tilemap",
 		name="map",
 		tiles="tiles",
 		tilemap_size={math.ceil(screen.hx/8),math.ceil(screen.hy/8)},
+		layer=1,
+	},
+]]
+	{
+		component="tilemap",
+		name="text_back",
+		tiles="tiles",
+		tile_size={4,8}, -- use half width tiles for font
+		tilemap_size={math.ceil(screen.hx/4),math.ceil(screen.hy/8)},
 		layer=1,
 	},
 	{
@@ -93,6 +103,7 @@ hardware={
 		tile_size={4,8}, -- use half width tiles for font
 		tilemap_size={math.ceil(screen.hx/4),math.ceil(screen.hy/8)},
 		layer=8,
+		scroll={0,-4},
 	},
 }
 
@@ -587,7 +598,7 @@ function setup_level(idx)
 	
 	level.title=levels[idx].title
 
-	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
+--	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 	bitdown.map_build_collision_strips(map,function(tile)
 		if tile.coll then -- can break the collision types up some more by appending a code to this setting
@@ -689,7 +700,7 @@ local fat_controller=coroutine.create(function()
 		local speach=function(tab,x,y,w)
 			for idx,it in ipairs(tab) do
 				if letters<=0 then return end -- no more to draw
-				local ls=wstr.smart_wrap(it,w or 27)
+				local ls=wstr.smart_wrap(it,w or 25)
 				for i=1,#ls do local s=ls[i]
 					if letters<=0 then return end -- no more to draw
 					if #s > letters then
@@ -698,7 +709,7 @@ local fat_controller=coroutine.create(function()
 					if idx%2==1 then
 						tprint(s,x,y,31,0)
 					else
-						tprint(s,x+28-#ls[i],y,31-2,0)
+						tprint(s,x+26-#ls[i],y,31-2,0)
 					end
 					y=y+1
 					if #s==0 then -- pause on white space
@@ -721,27 +732,29 @@ I think we may have just released another one of them game things.
 ]],[[
 Well, you know what they say...
 
-]],},2,1)
+]],},2+1,1)
 
 		if letters>0 then panel=2 end
 		speach({[[
 Uhm, "What doesn't kill you slowly chips away at your soul until you finally choose the sweet embrace of death."?
 
 ]],[[
-NO!
-
-]],},32,1)
+]],},32+1,1)
 
 
 		if letters>0 then panel=3 end
 		speach({"",[[
+NO!
+
 Not those voices...
 
-]]},62,1)
+]]},62+1,1)
 
-		tprint("Post naval depression.",2,0,25,0)
-		tprint("4lfa.com",82,15,25,0)
+		local bprint=system.components.text_back.text_print
+		bprint("Post naval depression.",2,0,25,0)
+		bprint("4lfa.com",82,15,25,0)
 
+		system.components.text_back.dirty(true)
 		system.components.text.dirty(true)
 
 		system.components.sprites1.list_reset() -- remove old sprites here
@@ -1038,11 +1051,28 @@ vec2 cellular(vec3 P) {
 // main
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 
-	float f=cellular( vec3(fragCoord,iGlobalTime*8.0)/8.0 ).x;
+	float fa=cellular( vec3(fragCoord,iGlobalTime*3.0)/8.0 ).x;
+	float fb=cellular( vec3(fragCoord,127.0+iGlobalTime*7.0)/8.0 ).x;
+	float f=fa*fb;	
+//	f=f*f;
 
-	float w=(3.0+f*2.0)/16.0;
-
-    fragColor = vec4( w , w , w , 1.0 );
+	vec3 color=vec3(
+		(3.0+ f*f*2.0)/16.0 ,
+		(3.0+ f*f*2.0)/16.0 ,
+		(3.0+ f  *1.0)/16.0 );
+	
+	float p= ((fragCoord.y-16.0)/24.0) ;
+	
+	if(p>=0)
+	{
+		p=clamp( abs(p) , 0.0 , 1.0 );
+		fragColor = vec4( mix( vec3(5.0/16.0) , color , vec3(p) ) , 1.0 );
+	}
+	else
+	{
+		p=clamp( abs(p) , 0.0 , 1.0 );
+		fragColor = vec4( mix( vec3(3.0/16.0) , vec3(10.0/16.0) , vec3(p) ) , 1.0 );
+	}
 
 }
 
