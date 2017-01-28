@@ -812,8 +812,6 @@ end
 -- Include GLSL code inside a comment
 -- The GLSL handler will pickup the #shader directive and use all the code following it until the next #shader directive.
 --[=[
-
-
 #shader "fun_copper_back_comic"
 
 #ifdef VERTEX_SHADER
@@ -1081,7 +1079,4 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 #endif
 
 #shader
-
-This test will be ignored
-
 //]=]

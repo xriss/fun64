@@ -1,5 +1,5 @@
 #^title trim=ends
-plated^ updates
+Fun64 updates
 
 
 #^------------------------------
@@ -12,7 +12,7 @@ plated^ updates
 #^------------------------------
 #^_blog_page_body
 #^------------------------------
-<div class="nav">You are reading: <span>plated^ dev blog</span></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
+<div class="nav">You are reading: <span>Fun64 dev blog</span></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
 
 {_list:blog_list}
 
@@ -39,8 +39,10 @@ plated^ updates
 #^-This is a single blog post viewed on its own page
 #^_blog_post_body_one
 #^------------------------------
-<div class="nav">You are reading: <a href="{_root}blog">plated^ dev blog</a></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
+<div class="nav">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
 <div class="blog_wrap">{_blog_post_body}</div>
+
+{_blog_post_json.fun_file&fun_blog_embed}
 
 <div>{_blog_post_older:link_older_post} {_blog_post_newer:link_newer_post}</div>
 
@@ -53,6 +55,7 @@ Some comments belong here
 <div class="blog_wrap">
 	<div class="blog_info"><a href="{_dirname}">{_blog_post_json.title}</a> by {_blog_post_json.author} on {_blog_post_json.datedash}</div>
 	{_blog_post_body}
+	{_blog_post_json.fun_file&fun_blog_link}
 </div>
 
 #^------------------------------
@@ -64,3 +67,116 @@ Some comments belong here
 #^link_newer_post
 #^------------------------------
 <a href="{_it}">Newer post</a>
+
+
+#^------------------------------
+#^fun_blog_link
+#^------------------------------
+
+Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> and view the output <a href="{_dirname}">here</a>.
+
+#^------------------------------
+#^fun_blog_embed
+#^------------------------------
+
+Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> and view the output below.
+
+<div style="width:100%;height:{_blog_post_json.fun_height};overflow:hidden;"><div style="width:100%;height:{_blog_post_json.fun_height};position:relative;">
+	
+<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
+
+	local hx,hy,ss=128,128,3
+
+	local opts={
+		times=true, -- request simple time keeping samples
+
+		width=hx*ss,	-- display basics
+		height=hy*ss,
+		screen_scale=ss,
+	--	show="full",
+		title="fun",
+		start="wetgenes.gamecake.fun.main",
+		fun="start",
+		fps=60,
+		... -- include commandline opts
+	}
+
+	math.randomseed( os.time() ) -- try and randomise a little bit better
+
+	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+
+	return oven:serv()
+
+--]]></script>
+
+
+<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
+	<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
+	<script type="text/javascript">
+		
+		var gamecake_post;
+		var Module;
+		
+		var resize=function(){
+			var e=document.getElementById("gamecake_container");
+			var w=parseFloat(window.getComputedStyle(e).width);
+			var h=parseFloat(window.getComputedStyle(e).height);
+			Module.setCanvasSize(w,h);
+			if(gamecake_post)
+			{
+				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+			}
+		};
+
+		var gamecake_start=function() {
+
+//initialise lua
+			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+
+// create a pulse function and call it every frame
+			var pulse;
+			var resize_wait=16;
+			pulse=function() {
+				requestAnimationFrame(pulse); // we need to always ask to be called again
+				gamecake_post('cmd=lua\n','return gamecake_pulse()');
+				if(resize_wait>0)
+				{
+					if(--resize_wait==0)
+					{
+						console.log("resioz");
+						resize();
+					}
+				}
+			};
+			requestAnimationFrame(pulse); // start the updates
+		}
+
+		var show_progress=function(n)
+		{
+			window.show_progress_max=window.show_progress_max || 0;
+			if(window.show_progress_max<n) { window.show_progress_max=n; }
+			var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+			console.log("GameCake Loading "+pct+"%");
+		};
+		window.addEventListener("resize",resize);
+		Module={};
+		Module.canvas=document.getElementById("gamecake_canvas");
+		Module.canvas_resize=resize;
+		Module.memoryInitializerPrefixURL="{_root}exe/";
+		Module['_main'] = function() {
+			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+			gamecake_start();
+			resize();
+		};
+		Module["preInit"] = function() {
+			FS.mkdir("/lua");
+			FS.createPreloadedFile('/', "start.fun.lua", "{_dirname}/{_blog_post_json.fun_file}", true, false);
+			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+		};
+		Module["monitorRunDependencies"]=show_progress;
+
+
+	</script>
+	<script type="text/javascript" src="{_root}exe/gamecake.js"></script>
+</div>
+</div></div>
