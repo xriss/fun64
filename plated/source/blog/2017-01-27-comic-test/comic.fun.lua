@@ -736,7 +736,7 @@ Well, you know what they say...
 
 		if letters>0 then panel=2 end
 		speach({[[
-Uhm, "What doesn't kill you slowly chips away at your soul until you finally choose the sweet embrace of death."?
+Uhm, "What doesn't kill you slowly chips away at your soul until you finally seek the sweet release of death."?
 
 ]],[[
 ]],},32+1,1)
