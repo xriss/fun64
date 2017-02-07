@@ -6,3 +6,8 @@ echo " fixing local exe branch to track origin "
 cd exe
 git reset --hard origin/exe
 cd ..
+
+echo " forcing local gh-pages branch to track origin "
+cd pages
+git reset --hard origin/gh-pages
+cd ..
