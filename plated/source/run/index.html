@@ -1,0 +1,152 @@
+<html>
+<head>
+	<title>fun64 gist player</title>
+	<script data-pace-options='{ "eventLag": false }' src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+	<script src="../exe/jquery.min.js"></script>
+	<style>
+.pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
+.pace-inactive { display:none; }
+.pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+
+*		{box-sizing:border-box;}
+body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px;}
+h1		{font-size:4em; font-weight:normal; color:#1400ff;}
+h2		{font-size:2em; font-weight:normal;}
+
+a		{color:#88f;}
+
+	</style>
+</head>
+<body">
+
+<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
+
+	local hx,hy,ss=424,240,3
+
+	local opts={
+		times=true, -- request simple time keeping samples
+
+		width=hx*ss,	-- display basics
+		height=hy*ss,
+		screen_scale=ss,
+	--	show="full",
+		title="fun",
+		start="wetgenes.gamecake.fun.main",
+		fun="start",
+		fps=60,
+		... -- include commandline opts
+	}
+
+	math.randomseed( os.time() ) -- try and randomise a little bit better
+
+	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+
+	return oven:serv()
+
+--]]></script>
+
+
+	<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
+		<div id="gamecake_div_input" style="width:70%;display:block;margin:256px auto;" >
+			<p>Paste in the address of a fun64 <a href="https://gist.github.com/" target="_blank">gist</a> and press return to run it.</p>
+			<input type=text id="gamecake_text_input" style="width:100%;font-size:x-large">
+		</div>
+		<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
+
+		<script type="text/javascript">
+			
+			var show_progress=function(n)
+			{
+				window.show_progress_max=window.show_progress_max || 0;
+				if(window.show_progress_max<n) { window.show_progress_max=n; }
+				var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+				console.log("GameCake Loading "+pct+"%");
+			};
+
+			var gamecake_load_fun_url=function(url)
+			{
+				var aa=url.split("/");
+				if(aa[2]=="gist.github.com") // convert gist page into raw link
+				{
+					url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
+				}
+
+				var resize=function(){
+					var e=document.getElementById("gamecake_container");
+					var w=parseFloat(window.getComputedStyle(e).width);
+					var h=parseFloat(window.getComputedStyle(e).height);
+					Module.setCanvasSize(w,h);
+					if(gamecake_post)
+					{
+						gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+					}
+				};
+
+				window.addEventListener("resize",resize);
+				Module={};
+				Module.canvas=document.getElementById("gamecake_canvas");
+				Module.canvas_resize=resize;
+				Module.memoryInitializerPrefixURL="../exe/";
+				Module['_main'] = function() {
+					gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+
+					gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+
+// create a pulse function and call it every frame
+					var pulse;
+					pulse=function() {
+						requestAnimationFrame(pulse); // we need to always ask to be called again
+						gamecake_post('cmd=lua\n','return gamecake_pulse()');
+					};
+					requestAnimationFrame(pulse); // start the updates
+
+					setTimeout(resize,200); // call resize in a little while
+
+				};
+				Module["preInit"] = function() {
+					FS.createPreloadedFile('/', "start.fun.lua", url, true, false);
+					FS.mkdir("/lua");
+					FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+
+				};
+				Module["monitorRunDependencies"]=show_progress;
+
+				(function(d, script) {
+					script = d.createElement('script');
+					script.type = 'text/javascript';
+					script.async = true;
+					script.src = '../exe/gamecake.js';
+					d.getElementsByTagName('head')[0].appendChild(script);
+				}(document));
+			}
+
+			var params={};
+			window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+				function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+			
+			if(!params.url) // display simple UI for pasting URL into
+			{
+				$("#gamecake_canvas").hide();
+				$("#gamecake_div_input").show();
+
+				$("#gamecake_text_input").keyup(function(e){
+					if(e.keyCode == 13)
+					{
+						params.url=$("#gamecake_text_input").val();
+						window.location.search="?"+$.param(params);
+					}
+				});
+
+			}
+			else
+			{
+				$("#gamecake_canvas").show();
+				$("#gamecake_div_input").hide();
+
+				gamecake_load_fun_url(params.url);
+			}
+			
+		</script>
+	</div>
+</body>
+</html>
