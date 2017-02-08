@@ -82,10 +82,10 @@ a		{color:#88f;}
 					}
 				};
 
-				window.addEventListener("resize",resize);
+				window.addEventListener("resize",function(){setTimeout(resize,200);});
 				Module={};
 				Module.canvas=document.getElementById("gamecake_canvas");
-				Module.canvas_resize=resize;
+				Module.canvas_resize=function(){setTimeout(resize,200);};
 				Module.memoryInitializerPrefixURL="../exe/";
 				Module['_main'] = function() {
 					gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
