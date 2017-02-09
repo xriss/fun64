@@ -83,6 +83,7 @@ Checkout the Fun64 <a href="{_dirname}/{_blog_post_json.fun_file}">lua source fi
 <script>
 	$.get("{_dirname}/{_blog_post_json.fun_file}", function(data){
 		$("[id=\"code{_dirname}\"]").text(data).addClass("prettyprint");
+		PR.prettyPrint();
 	});
 </script>
 
