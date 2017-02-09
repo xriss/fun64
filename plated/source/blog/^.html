@@ -73,13 +73,25 @@ Some comments belong here
 #^fun_blog_link
 #^------------------------------
 
-Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> and view the output <a href="{_dirname}">here</a>.
+Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
+{fun_blog_code}
+
+#^------------------------------
+#^fun_blog_code
+#^------------------------------
+<pre id="code{_dirname}"class="prettyprint lang-lua" style="height:512px;overflow:scroll;margin:16px;"></pre>
+<script>
+	$.get("{_dirname}/{_blog_post_json.fun_file}", function(data){
+		$("[id=\"code{_dirname}\"]").text(data);
+	});
+</script>
 
 #^------------------------------
 #^fun_blog_embed
 #^------------------------------
 
-Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> and view the output below.
+Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
+{fun_blog_code}
 
 <div style="width:100%;height:{_blog_post_json.fun_height};overflow:hidden;"><div style="width:100%;height:{_blog_post_json.fun_height};position:relative;">
 	
