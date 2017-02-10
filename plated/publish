@@ -1,5 +1,7 @@
 cd `dirname $0`
 
+./build
+
 source settings
 
 cd ../pages
