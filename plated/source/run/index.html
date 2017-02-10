@@ -83,10 +83,10 @@ a		{color:#88f;}
 					}
 				};
 
-				window.addEventListener("resize",function(){setTimeout(resize,200);});
+				window.addEventListener("resize",function(){setTimeout(resize,500);});
 				Module={};
 				Module.canvas=document.getElementById("gamecake_canvas");
-				Module.canvas_resize=function(){setTimeout(resize,200);};
+				Module.canvas_resize=function(){setTimeout(resize,500);};
 				Module.memoryInitializerPrefixURL="../exe/";
 				Module['_main'] = function() {
 					gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
@@ -101,7 +101,7 @@ a		{color:#88f;}
 					};
 					requestAnimationFrame(pulse); // start the updates
 
-					setTimeout(resize,200); // call resize in a little while
+					setTimeout(resize,500); // call resize in a little while
 
 				};
 				Module["preInit"] = function() {
