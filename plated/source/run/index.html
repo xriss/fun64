@@ -49,8 +49,15 @@ a		{color:#88f;}
 
 	<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
 		<div id="gamecake_div_input" style="width:70%;display:block;margin:256px auto;" >
-			<p>Paste in the address of a fun64 <a href="https://gist.github.com/" target="_blank">gist</a> or fun.lua file and press return to run it.</p>
-			<input type=text id="gamecake_text_input" style="width:100%;font-size:x-large">
+			<div id="div_page_url">
+				<p>Paste in the address of a fun64 <a href="https://gist.github.com/" target="_blank">gist</a> or fun.lua file and press return to run it.</p>
+				<input type=text id="gamecake_text_input" style="width:100%;font-size:x-large">
+				<p>or show <a href="javascript: $('#div_page_url').hide(); $('#div_page_copypasta').show(); " id="show_copypasta" >copypasta</a> to paste and run singleshot code.</p>
+			</div>
+			<div id="div_page_copypasta" style="display:none;">
+				<p>Paste your fun64 code bellow then click <a id="run_copypasta" href="#">RUN</a>.</p>
+				<textarea id="gamecake_textarea" style="width:100%;height:50%;"></textarea>
+			</div>
 		</div>
 		<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
 
@@ -64,14 +71,11 @@ a		{color:#88f;}
 				console.log("GameCake Loading "+pct+"%");
 			};
 
-			var gamecake_load_fun_url=function(url)
+			var gamecake_load_fun=function(tab)
 			{
-				var aa=url.split("/");
-				if(aa[2]=="gist.github.com") // convert gist page into raw link
-				{
-					url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
-				}
-
+				var url=tab.url;
+				var copypasta=tab.copypasta;
+				
 				var resize=function(){
 					var e=document.getElementById("gamecake_container");
 					var w=parseFloat(window.getComputedStyle(e).width);
@@ -105,7 +109,19 @@ a		{color:#88f;}
 
 				};
 				Module["preInit"] = function() {
-					FS.createPreloadedFile('/', "start.fun.lua", url, true, false);
+					if(url)
+					{
+						var aa=url.split("/");
+						if(aa[2]=="gist.github.com") // convert gist page into raw link
+						{
+							url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
+						}
+						FS.createPreloadedFile('/', "start.fun.lua", url, true, false);
+					}
+					else
+					{
+						FS.writeFile("/start.fun.lua", copypasta,  { encoding: "utf8" } );
+					}
 					FS.mkdir("/lua");
 					FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 
@@ -120,6 +136,8 @@ a		{color:#88f;}
 					d.getElementsByTagName('head')[0].appendChild(script);
 				}(document));
 			}
+			var gamecake_load_fun_copypasta=function(copypasta){ return gamecake_load_fun({copypasta:copypasta}) };
+			var gamecake_load_fun_url=function(url){ return gamecake_load_fun({url:url}) };
 
 			var params={};
 			window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -136,6 +154,12 @@ a		{color:#88f;}
 						params.url=$("#gamecake_text_input").val();
 						window.location.search="?"+$.param(params);
 					}
+				});
+				
+				$("#run_copypasta").click(function(){
+					$("#gamecake_canvas").show();
+					$("#gamecake_div_input").hide();
+					gamecake_load_fun_copypasta($("#gamecake_textarea").val());
 				});
 
 			}
