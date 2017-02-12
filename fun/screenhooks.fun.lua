@@ -1,4 +1,10 @@
 
+hardware,main=system.configurator({
+	mode="fun64",
+	graphics=function() return graphics end,
+	update=function() update() end,
+})
+
 graphics={
 
 {0x0100,"char_empty",[[
@@ -24,19 +30,6 @@ graphics={
 ]]},
 
 }
-
-hardware,main=system.configurator({
-	mode="fun64",
-	graphics=graphics,
-	update=function() update() end,
-})
-
-local wpack=require("wetgenes.pack")		-- raw memory packing
-
-local cake=oven.cake
-local canvas=cake.canvas
-local flat=canvas.flat
-
 
 -- an amiga ball
 
@@ -81,7 +74,7 @@ local function ball_create()
 
 	function ball.draw(color,part)
 		gl.Color(unpack(color))
-		flat.tristrip("xyz",ball.vdats[part])
+		oven.cake.canvas.flat.tristrip("xyz",ball.vdats[part])
 	end
 
 	return ball

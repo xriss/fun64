@@ -1,4 +1,10 @@
 
+hardware,main=system.configurator({
+	mode="fun64",
+	graphics=function() return graphics end,
+	update=function() update() end,
+})
+
 graphics={
 
 {0x0100,"char_empty",[[
@@ -24,12 +30,6 @@ graphics={
 ]]},
 
 }
-
-hardware,main=system.configurator({
-	mode="fun64",
-	graphics=graphics,
-	update=function() update() end,
-})
 
 local setup_done=false
 
