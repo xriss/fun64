@@ -1,0 +1,50 @@
+
+#^------------------------------
+#^title trim=ends
+#^------------------------------
+{_blog_post_json.title}
+
+#^------------------------------
+#^_blog_post_json
+#^------------------------------
+{
+	"title":"Hello World!",
+	"author":"xriss",
+	"fun_height":"512px",
+	"fun_file":"helloworld.fun.lua",
+}
+
+#^------------------------------
+#^_blog_post_body form=markdown
+#^------------------------------
+
+{_blog_post_json.title}
+-------
+
+Apparently if your hello world example is longer than a couple of lines 
+then you are open to ridicule.
+
+I suspect people who say this are blissfully unaware exactly what 
+_main gets up to and lets not think about C++.
+
+Still it helps to remove as much gubbins as possible so the code that's 
+running becomes obvious. Fun64 is built around the idea that you should 
+define the hardware before the program runs so lets hide all that away 
+inside a builtin function that will set you up a basic looking screen 
+to work with.
+
+Introducing the configurator, this function will provide various setups 
+depending on the mode requested and also provide a main function that 
+will allow you to provide a single update function rather than dealing 
+with more complexities. A single update function is less optimal but a 
+perfectly reasonable way to write short bits of test code.
+
+So far the only mode we have is "fun64" which will get you a 60fps 
+320x240 screen with three layers and the Swanky32 palette. The three 
+layers gives us a copper background, a tile+sprite foreground and 
+finally a text overlay on the very top. For graphical memory we have a 
+64x64 area of 8x8 tiles (4096 in total) and we auto upload the 4x8 
+fun64 font to the very first line for use by the text layer.
+
+If you clobber this top line all your text will go funny, just like on 
+real hardware.
