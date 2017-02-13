@@ -24,8 +24,8 @@
 Apparently if your hello world example is longer than a couple of lines 
 then you are open to ridicule.
 
-I suspect people who say this are blissfully unaware exactly what 
-_main gets up to and lets not think about C++.
+I suspect people who say this are blissfully unaware exactly what _main 
+gets up to before your code runs and lets not even think about C++.
 
 Still it helps to remove as much gubbins as possible so the code that's 
 running becomes obvious. Fun64 is built around the idea that you should 
@@ -46,5 +46,10 @@ finally a text overlay on the very top. For graphical memory we have a
 64x64 area of 8x8 tiles (4096 in total) and we auto upload the 4x8 
 fun64 font to the very first line for use by the text layer.
 
-If you clobber this top line all your text will go funny, just like on 
-real hardware.
+NB: If you clobber this top line all your text will go funny, just like 
+on real hardware.
+
+The main point of the layers is so we can have drop shadows between 
+them, the text layer on top gives us some very cheap 80s looking text 
+menus when used with solid blocks of background color.
+
