@@ -274,6 +274,23 @@ local parse_chats=function(str)
 
 end
 
+local replace_proxies=function(text,proxies)
+
+	if not text then return nil end
+	if not proxies then return text end
+
+	local ret=text
+	for sanity=0,100 do
+		local last=ret
+		ret=ret:gsub("{([^}%s]+)}",function(a)
+			return proxies[a] or "{"..a.."}"
+		end)
+		if last==ret then break end -- no change
+	end
+
+	return ret
+end
+
 local dotnames=function(name)
 	local n,r=name,name
 	local f=function(a,b)
@@ -299,6 +316,10 @@ local init_chat=function(chats,chat_name,response_name)
 		chat.description_name=name	
 		chat.description=chat.chats[name]
 		chat.responses=chat.description.responses
+		
+		for n,v in pairs(chat.description.proxies or {}) do
+			chat.proxies[n]=v
+		end
 
 	end
 
@@ -323,7 +344,7 @@ local init_chat=function(chats,chat_name,response_name)
 			if i>1 then
 				items[#items+1]={text="",chat=chat} -- blank line
 			end
-			items[#items+1]={text=v,chat=chat}
+			items[#items+1]={text=replace_proxies(v,chat.proxies)or"",chat=chat}
 		end
 
 		for i,v in ipairs(chat.response and chat.response.requests or {}) do
@@ -340,11 +361,15 @@ local init_chat=function(chats,chat_name,response_name)
 
 					chat.set_response(item.request.name)
 
+					for n,v in pairs(item.request.proxies or {}) do
+						chat.proxies[n]=v
+					end
+
 					menu.show(chat.get_menu_items())
 
 				end
 			end
-			items[#items+1]={text=ss[1],chat=chat,request=v,cursor=i,call=f} -- only show first line
+			items[#items+1]={text=replace_proxies(ss[1],chat.proxies)or"",chat=chat,request=v,cursor=i,call=f} -- only show first line
 			items.cursor_max=i
 		end
 
@@ -491,7 +516,7 @@ setup=function()
 
 	menu=setup_menu()
 	chats=parse_chats(str)
-	chat=init_chat(chats,"control.colson","welcome.1")
+	chat=init_chat(chats,"control.colson","welcome")
 
 
 	--print(require("wetgenes.string").dump(chats))
