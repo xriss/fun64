@@ -313,7 +313,7 @@ local init_chat=function(chats,chat_name,response_name)
 	chat.set_description(chat_name)
 	chat.set_response(response_name)
 	
-	chat.get_display_list=function()
+	chat.get_menu_items=function()
 		local items={cursor=1,cursor_max=0}
 		
 		items.title=chat.description_name
@@ -340,7 +340,7 @@ local init_chat=function(chats,chat_name,response_name)
 
 					chat.set_response(item.request.name)
 
-					menu.show(chat.get_display_list())
+					menu.show(chat.get_menu_items())
 
 				end
 			end
@@ -474,8 +474,6 @@ function setup_menu()
 				it=menu.lines[i].item
 				if it.cursor == menu.cursor then
 					tprint(">",menu.cx+3,menu.cy+i+1,31,1)
-				else
---					tprint(".",menu.cx+3,menu.cy+i+1,31,1)
 				end
 			end
 		end
@@ -499,7 +497,7 @@ setup=function()
 	--print(require("wetgenes.string").dump(chats))
 	--menu.show{items={s="sometext"}}
 
-	menu.show(chat.get_display_list())
+	menu.show(chat.get_menu_items())
 
 end
 
