@@ -88,6 +88,20 @@ controller you know.
 
 ]]
 
+-----------------------------------------------------------------------------
+--[[#parse_chats
+
+	chats = parse_chats(text)
+
+Parse text from flat text chatdown format into heirachical chat data, 
+something that can be output easily as json.
+
+This gives us a readonly data structure that can be used to control 
+what text is displayed during a chat session.
+
+
+]]
+-----------------------------------------------------------------------------
 local parse_chats=function(str)
 
 	local function text_to_trimed_lines(str)
@@ -274,35 +288,49 @@ local parse_chats=function(str)
 
 end
 
-local replace_proxies=function(text,proxies)
 
-	if not text then return nil end
-	if not proxies then return text end
 
-	local ret=text
-	for sanity=0,100 do
-		local last=ret
-		ret=ret:gsub("{([^}%s]+)}",function(a)
-			return proxies[a] or "{"..a.."}"
-		end)
-		if last==ret then break end -- no change
-	end
+-----------------------------------------------------------------------------
+--[[#init_chat
 
-	return ret
-end
+	chat = init_chat(chats)
 
-local dotnames=function(name)
-	local n,r=name,name
-	local f=function(a,b)
-		r=n -- start with the full string
-		n=n and n:match("^(.+)(%..+)$") -- prepare the parent string
-		return r
-	end
-	return f
-end
---for n in dotnames("control.colson.2") do print(n) end
+Setup the state for a chat using this array of chats as text data to be 
+displayed.
 
+We manage proxy data and callbacks from decisions here.
+
+]]
+-----------------------------------------------------------------------------
 local init_chat=function(chats,chat_name,response_name)
+
+	local replace_proxies=function(text,proxies)
+
+		if not text then return nil end
+		if not proxies then return text end
+
+		local ret=text
+		for sanity=0,100 do
+			local last=ret
+			ret=ret:gsub("{([^}%s]+)}",function(a)
+				return proxies[a] or "{"..a.."}"
+			end)
+			if last==ret then break end -- no change
+		end
+
+		return ret
+	end
+
+	local dotnames=function(name)
+		local n,r=name,name
+		local f=function(a,b)
+			r=n -- start with the full string
+			n=n and n:match("^(.+)(%..+)$") -- prepare the parent string
+			return r
+		end
+		return f
+	end
+	--for n in dotnames("control.colson.2") do print(n) end
 
 	local chat={}
 	
@@ -380,7 +408,20 @@ local init_chat=function(chats,chat_name,response_name)
 end
 
 
--- manage a menu
+-----------------------------------------------------------------------------
+--[[#setup_menu
+
+	menu = setup_menu()
+
+Create a displayable and controllable menu system that can be fed chat 
+data for user display.
+
+After setup, provide it with menu items to display using 
+menu.show(items) then call update and draw each frame.
+
+
+]]
+-----------------------------------------------------------------------------
 function setup_menu()
 
 	local wstr=require("wetgenes.string")
@@ -511,8 +552,19 @@ function setup_menu()
 end
 
 
+-----------------------------------------------------------------------------
+--[[#setup
+
+	setup()
+
+Initialise all the above systems, once only.
+
+]]
+-----------------------------------------------------------------------------
 setup=function()
 	if setup_done then return else setup_done=true end
+
+-- these are globals
 
 	menu=setup_menu()
 	chats=parse_chats(str)
@@ -526,7 +578,15 @@ setup=function()
 
 end
 
--- updates are run at 60fps
+-----------------------------------------------------------------------------
+--[[#update
+
+	update()
+
+Update and draw loop.
+
+]]
+-----------------------------------------------------------------------------
 update=function()
 
 	setup()
