@@ -1,0 +1,29 @@
+
+#^------------------------------
+#^title trim=ends
+#^------------------------------
+{_blog_post_json.title}
+
+#^------------------------------
+#^_blog_post_json
+#^------------------------------
+{
+	"title":"Chatdown",
+	"author":"xriss",
+	"fun_height":"512px",
+	"fun_file":"chatdown.fun.lua",
+}
+
+#^------------------------------
+#^_blog_post_body form=markdown
+#^------------------------------
+
+{_blog_post_json.title}
+-------
+
+Testing a markdown like text format for describing conversation trees, 
+the idea is to have all the logic somewhere else and just use this for 
+describing the relationship and hierarchy of the text.
+
+The bad news is this means you have to label everything with reasonable 
+names so the code can find it.
