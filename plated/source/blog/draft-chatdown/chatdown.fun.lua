@@ -13,7 +13,7 @@ local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
 
-local str=[[
+local chat_text=[[
 
 
 #control.colson		Andy Colson
@@ -109,14 +109,14 @@ what text is displayed during a chat session.
 
 ]]
 -----------------------------------------------------------------------------
-local parse_chats=function(str)
+local parse_chats=function(chat_text)
 
-	local function text_to_trimed_lines(str)
+	local function text_to_trimed_lines(text)
 
 		local lines={}
 		local i=1
 		
-		for s in string.gmatch(str, "([^\n]*)\n?") do
+		for s in string.gmatch(text, "([^\n]*)\n?") do
 			s=s:match("^%s*(.-)%s*$")
 			lines[i]=s
 			i=i+1
@@ -126,7 +126,7 @@ local parse_chats=function(str)
 	end
 
 
-	local lines=text_to_trimed_lines(str)
+	local lines=text_to_trimed_lines(chat_text)
 
 	local text={}
 
@@ -345,6 +345,7 @@ local setup_chat=function(chats,chat_name,response_name)
 	local chat={}
 	
 	chat.chats=chats
+	chat.data=chats.data
 	chat.proxies={}
 	chat.viewed={}
 
@@ -374,7 +375,7 @@ local setup_chat=function(chats,chat_name,response_name)
 		chat.responses={} -- chat.description.responses
 		
 		for n in dotnames(name) do -- inherit chunks data
-			local v=chat.chats[n]
+			local v=chat.data[n]
 			if v then
 				for n2,v2 in pairs(v) do -- merge base settings
 					chat.description[n2]=chat.description[n2] or v2
@@ -485,6 +486,42 @@ end
 
 
 -----------------------------------------------------------------------------
+--[[#setup_chats
+
+	chats = setup_chats(chat_text)
+
+parse and initialise state data fpr every chat chunk
+
+]]
+-----------------------------------------------------------------------------
+local setup_chats=function(chat_text)
+
+	local chats={}
+
+	chats.data=parse_chats(chat_text)
+	
+	chats.names={}
+	
+	chats.get=function(name)
+		return chats.names[name]
+	end
+	
+	for n,v in pairs(chats.data) do -- setup each chat
+	
+		chats.names[n]=setup_chat(chats,n,"welcome")
+		
+	end
+
+	chats.get_menu_items=function(name)
+	
+		return chats.get(name).get_menu_items()
+	end
+	
+	return chats
+end
+
+
+-----------------------------------------------------------------------------
 --[[#setup_menu
 
 	menu = setup_menu()
@@ -498,7 +535,7 @@ menu.show(items) then call update and draw each frame.
 
 ]]
 -----------------------------------------------------------------------------
-function setup_menu()
+function setup_menu(items)
 
 	local wstr=require("wetgenes.string")
 
@@ -624,6 +661,8 @@ function setup_menu()
 
 	end
 	
+
+	if items then menu.show(items) end	
 	return menu
 end
 
@@ -642,11 +681,9 @@ setup=function()
 
 -- these are *globals*
 
-	menu=setup_menu()
-	chats=parse_chats(str)
-	chat=setup_chat(chats,"control.colson","welcome")
+	chats=setup_chats(chat_text)
 
-	menu.show(chat.get_menu_items())
+	menu=setup_menu( chats.get_menu_items("control.colson") )
 
 end
 
