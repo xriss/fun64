@@ -75,7 +75,6 @@ controller you know.
 	
 	>pack
 		Thank you!
-	>exit
 
 .pack
 
@@ -340,15 +339,16 @@ local setup_chat=function(chats,chat_name,response_name)
 	
 	chat.chats=chats
 	chat.proxies={}
+	chat.viewed={}
 
 -- hook, replace to be notified of changes, by default we print debuging information
 	chat.changes=function(change,...)
 		local a,b=...
 
-		if     change=="description" then			print(change,a.name)
-		elseif change=="response"    then			print(change,a.name)
-		elseif change=="request"     then			print(change,a.name)
-		elseif change=="proxy"       then			print(change,a,b)
+		if     change=="description" then			print("description",a.name)
+		elseif change=="response"    then			print("response   ",a.name)
+		elseif change=="request"     then			print("request    ",a.name)
+		elseif change=="proxy"       then			print("proxy      ",a,b)
 		end
 		
 	end
@@ -385,6 +385,8 @@ local setup_chat=function(chats,chat_name,response_name)
 	end
 
 	chat.set_response=function(name)
+	
+		chat.viewed[name]=(chat.viewed[name] or 0) + 1 -- keep track of what responses have been viewed
 	
 		chat.response_name=name
 		chat.response={} -- chat.responses[name]
@@ -439,6 +441,9 @@ local setup_chat=function(chats,chat_name,response_name)
 
 			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
+			local color=31
+			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this request
+			
 			local f=function(item,menu)
 
 				if item.request and item.request.name then
@@ -453,7 +458,8 @@ local setup_chat=function(chats,chat_name,response_name)
 
 				end
 			end
-			items[#items+1]={text=replace_proxies(ss[1],chat.proxies)or"",chat=chat,request=v,cursor=i,call=f} -- only show first line
+			
+			items[#items+1]={text=replace_proxies(ss[1],chat.proxies)or"",chat=chat,request=v,cursor=i,call=f,color=color} -- only show first line
 			items.cursor_max=i
 		end
 
@@ -508,7 +514,7 @@ function setup_menu()
 				for i=1,#ls do
 					local prefix=""--(i>1 and " " or "")
 					if item.cursor then prefix=" " end -- indent options
-					menu.lines[#menu.lines+1]={s=prefix..ls[i],idx=idx,item=item,cursor=item.cursor}
+					menu.lines[#menu.lines+1]={s=prefix..ls[i],idx=idx,item=item,cursor=item.cursor,color=item.color}
 				end
 			end
 		end
@@ -587,7 +593,7 @@ function setup_menu()
 		end
 		
 		for i,v in ipairs(menu.lines) do
-			tprint(v.s,menu.cx+4,menu.cy+i+1,31,1)
+			tprint(v.s,menu.cx+4,menu.cy+i+1,v.color or 31,1)
 		end
 		
 		local it=nil
