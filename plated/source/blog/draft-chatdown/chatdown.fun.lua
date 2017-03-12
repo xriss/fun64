@@ -40,10 +40,17 @@ controller you know.
 	>welcome.1
 		Restart.
 
+.exit.apple
+
+	Welcome to the apple dimension:
+
+	>welcome.1
+		Restart.
+
 .welcome
 
 	>exit
-		This is the menu exit entry text.
+		This is added to the menu exit entry text if there is no other exit.
 
 		Longer request text, eg the spoken response after selecting the 
 		first line above as the written response.
@@ -61,7 +68,7 @@ controller you know.
 
 	Gas. CO2, 10,000 watts.
 	
-	>exit
+	>exit.{fruit}
 		WOW! You boys take your elevator shafts pretty seriously.
 		
 	>cig
@@ -394,6 +401,8 @@ local setup_chat=function(chats,chat_name,response_name)
 		
 		local merged_proxies={}
 
+		local request_names={} -- keep track of previously seen exit nodes
+
 		for n in dotnames(name) do -- inherit responses data
 			local v=chat.responses[n]
 			if v then
@@ -407,7 +416,11 @@ local setup_chat=function(chats,chat_name,response_name)
 					local r={}
 					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
 					r.name=replace_proxies(r.name or "",chat.proxies) -- can use proxies in name
-					chat.requests[#chat.requests+1]=r
+					
+					if not request_names[r.name] then -- only add unique requests
+						chat.requests[#chat.requests+1]=r
+					end
+					request_names[r.name]=true
 				end 
 			end
 
@@ -436,7 +449,7 @@ local setup_chat=function(chats,chat_name,response_name)
 			items[#items+1]={text=replace_proxies(v,chat.proxies)or"",chat=chat}
 		end
 
-		for i,v in ipairs(chat.response and chat.response.requests or {}) do
+		for i,v in ipairs(chat.requests or {}) do
 
 			items[#items+1]={text="",chat=chat} -- blank line before each request
 
