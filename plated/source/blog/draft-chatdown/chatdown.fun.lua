@@ -106,6 +106,12 @@ something that can be output easily as json.
 This gives us a readonly data structure that can be used to control 
 what text is displayed during a chat session.
 
+This is intended to be descriptive and logic less, any decision logic 
+should be added using a real language that operates on this data and 
+gets triggered by the names used. EG, filter out requests unless 
+certain conditions are met or change responses to redirect to an 
+alternative.
+
 
 ]]
 -----------------------------------------------------------------------------
