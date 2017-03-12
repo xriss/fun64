@@ -406,6 +406,7 @@ local setup_chat=function(chats,chat_name,response_name)
 				for n2,v2 in ipairs(v.requests or {}) do -- join all requests
 					local r={}
 					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
+					r.name=replace_proxies(r.name or "",chat.proxies) -- can use proxies in name
 					chat.requests[#chat.requests+1]=r
 				end 
 			end
