@@ -173,6 +173,22 @@ local parse_chats=function(str)
 				
 			end
 
+		elseif code=="." then -- .response
+
+			name,v=v:match("%.(%S*)%s*(.*)$")
+
+			text={}
+			requests={}
+			proxies={}
+			response={text=text,name=name,requests=requests,proxies=proxies}
+
+			if name~="" then -- ignore empty names
+			
+				assert( not responses[name] , "response name used twice on line "..i.." : "..name )
+				responses[name]=response
+			
+			end
+
 		elseif code==">" then -- >request
 		
 			name,v=v:match("%>(%S*)%s*(.*)$")
@@ -182,22 +198,6 @@ local parse_chats=function(str)
 			request={text=text,name=name,proxies=proxies}
 
 			requests[#requests+1]=request
-
-		elseif code=="." then -- .response
-
-			name,v=v:match("%.(%S*)%s*(.*)$")
-
-			text={}
-			requests={}
-			proxies={}
-			response={text=text,requests=requests,proxies=proxies}
-
-			if name~="" then -- ignore empty names
-			
-				assert( not responses[name] , "response name used twice on line "..i.." : "..name )
-				responses[name]=response
-			
-			end
 
 		elseif code=="=" then -- =proxy
 		
@@ -295,9 +295,9 @@ end
 
 
 -----------------------------------------------------------------------------
---[[#init_chat
+--[[#setup_chat
 
-	chat = init_chat(chats,chat_name,response_name)
+	chat = setup_chat(chats,chat_name,response_name)
 
 Setup the state for a chat using this array of chats as text data to be 
 displayed.
@@ -306,7 +306,7 @@ We manage proxy data and callbacks from decisions here.
 
 ]]
 -----------------------------------------------------------------------------
-local init_chat=function(chats,chat_name,response_name)
+local setup_chat=function(chats,chat_name,response_name)
 
 	local replace_proxies=function(text,proxies)
 
@@ -340,16 +340,26 @@ local init_chat=function(chats,chat_name,response_name)
 	
 	chat.chats=chats
 	chat.proxies={}
-	
-	chat.gui={}
+
+-- hook, replace to be notified of changes, by default we print debuging information
+	chat.changes=function(change,...)
+		local a,b=...
+
+		if     change=="description" then			print(change,a.name)
+		elseif change=="response"    then			print(change,a.name)
+		elseif change=="request"     then			print(change,a.name)
+		elseif change=="proxy"       then			print(change,a,b)
+		end
+		
+	end
 
 	chat.set_proxies=function(proxies)
 		for n,v in pairs(proxies or {}) do
-print("proxy",n,"=",v) -- help to debug proxy changes
+			chat.changes("proxy",n,v)
 			chat.proxies[n]=v
 		end
     end
-    
+	
 	chat.set_description=function(name)
 	
 		chat.description_name=name	
@@ -367,6 +377,8 @@ print("proxy",n,"=",v) -- help to debug proxy changes
 				end
 			end
 		end
+
+		chat.changes("description",chat.description)
 
 		chat.set_proxies(chat.description.proxies)
 
@@ -398,6 +410,8 @@ print("proxy",n,"=",v) -- help to debug proxy changes
 
 		end
 		
+		chat.changes("response",chat.response)
+
 		chat.set_proxies(merged_proxies)
 
 	end
@@ -428,6 +442,8 @@ print("proxy",n,"=",v) -- help to debug proxy changes
 			local f=function(item,menu)
 
 				if item.request and item.request.name then
+
+					chat.changes("request",item.request)
 
 					chat.set_response(item.request.name)
 
@@ -470,7 +486,7 @@ function setup_menu()
 
 	menu.stack={}
 
-	menu.width=64
+	menu.width=80-4
 	menu.cursor=0
 	menu.cx=math.floor((80-menu.width)/2)
 	menu.cy=0
@@ -608,7 +624,7 @@ setup=function()
 
 	menu=setup_menu()
 	chats=parse_chats(str)
-	chat=init_chat(chats,"control.colson","welcome")
+	chat=setup_chat(chats,"control.colson","welcome")
 
 	menu.show(chat.get_menu_items())
 
