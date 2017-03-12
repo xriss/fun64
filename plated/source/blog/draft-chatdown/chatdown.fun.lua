@@ -314,23 +314,6 @@ We manage proxy data and callbacks from decisions here.
 -----------------------------------------------------------------------------
 local setup_chat=function(chats,chat_name,response_name)
 
-	local replace_proxies=function(text,proxies)
-
-		if not text then return nil end
-		if not proxies then return text end
-
-		local ret=text
-		for sanity=0,100 do
-			local last=ret
-			ret=ret:gsub("{([^}%s]+)}",function(a)
-				return proxies[a] or "{"..a.."}"
-			end)
-			if last==ret then break end -- no change
-		end
-
-		return ret
-	end
-
 	local dotnames=function(name)
 		local n,r=name,name
 		local f=function(a,b)
@@ -345,6 +328,7 @@ local setup_chat=function(chats,chat_name,response_name)
 	local chat={}
 	
 	chat.chats=chats
+	chat.name=chat_name
 	chat.data=chats.data
 	chat.proxies={}
 	chat.viewed={}
@@ -359,6 +343,10 @@ local setup_chat=function(chats,chat_name,response_name)
 		elseif change=="proxy"       then			print("proxy      ",a,b)
 		end
 		
+	end
+	
+	chat.replace_proxies=function(text)
+		return chats.replace_proxies(text,chat.name)
 	end
 
 	chat.set_proxies=function(proxies)
@@ -416,7 +404,7 @@ local setup_chat=function(chats,chat_name,response_name)
 				for n2,v2 in ipairs(v.requests or {}) do -- join all requests
 					local r={}
 					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
-					r.name=replace_proxies(r.name or "",chat.proxies) -- can use proxies in name
+					r.name=chat.replace_proxies(r.name) -- can use proxies in name
 					
 					if not request_names[r.name] then -- only add unique requests
 						chat.requests[#chat.requests+1]=r
@@ -447,7 +435,7 @@ local setup_chat=function(chats,chat_name,response_name)
 			if i>1 then
 				items[#items+1]={text="",chat=chat} -- blank line
 			end
-			items[#items+1]={text=replace_proxies(v,chat.proxies)or"",chat=chat}
+			items[#items+1]={text=chat.replace_proxies(v)or"",chat=chat}
 		end
 
 		for i,v in ipairs(chat.requests or {}) do
@@ -474,7 +462,7 @@ local setup_chat=function(chats,chat_name,response_name)
 				end
 			end
 			
-			items[#items+1]={text=replace_proxies(ss[1],chat.proxies)or"",chat=chat,request=v,cursor=i,call=f,color=color} -- only show first line
+			items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,request=v,cursor=i,call=f,color=color} -- only show first line
 			items.cursor_max=i
 		end
 
@@ -506,17 +494,38 @@ local setup_chats=function(chat_text)
 		return chats.names[name]
 	end
 	
+	chats.get_menu_items=function(name)
+	
+		return chats.get(name).get_menu_items()
+	end
+	
+	chats.replace_proxies=function(text,default_root)
+
+		if not text then return nil end
+--		if not proxies then return text end
+
+		local ret=text
+		for sanity=0,100 do
+			local last=ret
+			ret=ret:gsub("{([^}%s]+)}",function(a)
+				local root,proxy=a:match("(.+)/(.+)") -- is a root given?
+				if not root then root,proxy=default_root,a end -- no root use full string as proxy name
+				local proxies=(chats.get(root) or {}).proxies or {} -- get root proxies or empty table
+				return proxies[a] or "{"..a.."}"
+			end)
+			if last==ret then break end -- no change
+		end
+
+		return ret
+	end
+
+
 	for n,v in pairs(chats.data) do -- setup each chat
 	
 		chats.names[n]=setup_chat(chats,n,"welcome")
 		
 	end
 
-	chats.get_menu_items=function(name)
-	
-		return chats.get(name).get_menu_items()
-	end
-	
 	return chats
 end
 
