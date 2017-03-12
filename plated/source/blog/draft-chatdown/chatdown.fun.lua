@@ -342,7 +342,14 @@ local init_chat=function(chats,chat_name,response_name)
 	chat.proxies={}
 	
 	chat.gui={}
-    	
+
+	chat.set_proxies=function(proxies)
+		for n,v in pairs(proxies or {}) do
+print("proxy",n,"=",v) -- help to debug proxy changes
+			chat.proxies[n]=v
+		end
+    end
+    
 	chat.set_description=function(name)
 	
 		chat.description_name=name	
@@ -361,9 +368,7 @@ local init_chat=function(chats,chat_name,response_name)
 			end
 		end
 
-		for n,v in pairs(chat.description.proxies or {}) do
-			chat.proxies[n]=v
-		end
+		chat.set_proxies(chat.description.proxies)
 
 	end
 
@@ -393,9 +398,7 @@ local init_chat=function(chats,chat_name,response_name)
 
 		end
 		
-		for np,vp in pairs(merged_proxies or {}) do -- apply proxy change
-			chat.proxies[np]=vp
-		end
+		chat.set_proxies(merged_proxies)
 
 	end
 
@@ -428,9 +431,7 @@ local init_chat=function(chats,chat_name,response_name)
 
 					chat.set_response(item.request.name)
 
-					for n,v in pairs(item.request.proxies or {}) do
-						chat.proxies[n]=v
-					end
+					chat.set_proxies(item.request.proxies)
 
 					menu.show(chat.get_menu_items())
 
