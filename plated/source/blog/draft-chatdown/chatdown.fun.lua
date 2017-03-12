@@ -7,6 +7,8 @@ hardware,main=system.configurator({
 	update=function() update() end, -- called repeatedly to update+draw
 })
 
+-- debug text dump
+local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
 
@@ -31,21 +33,20 @@ controller you know.
 =fruits		bananas
 
 -- default response texts, used if no special response text is given in the dialogue tree
->exit
+.exit
 
-	Default exit request if no explicit text is given.
-	
-	
-	Longer request text, eg the spoken response after selecting the 
-	first line above as the written response.
+	Welcome to the exit would you like to:
 
 	>welcome.1
-		Restart...
+		Restart.
 
 .welcome
 
 	>exit
-		This is a test inheritance.
+		This is the menu exit entry text.
+
+		Longer request text, eg the spoken response after selecting the 
+		first line above as the written response.
 
 .welcome.1
 
@@ -177,7 +178,8 @@ local parse_chats=function(str)
 			name,v=v:match("%>(%S*)%s*(.*)$")
 		
 			text={}
-			request={text=text,name=name}
+			proxies={}
+			request={text=text,name=name,proxies=proxies}
 
 			requests[#requests+1]=request
 
@@ -269,6 +271,7 @@ local parse_chats=function(str)
 		for id,request in pairs(chat.requests) do
 
 			request.text=cleanup_text(request.text)
+			request.proxies=cleanup_proxies(request.proxies)
 		end
 
 		for id,response in pairs(chat.responses) do
@@ -279,6 +282,7 @@ local parse_chats=function(str)
 			for id,request in pairs(response.requests) do
 
 				request.text=cleanup_text(request.text)
+				request.proxies=cleanup_proxies(request.proxies)
 			end
 		end
 
@@ -293,7 +297,7 @@ end
 -----------------------------------------------------------------------------
 --[[#init_chat
 
-	chat = init_chat(chats)
+	chat = init_chat(chats,chat_name,response_name)
 
 Setup the state for a chat using this array of chats as text data to be 
 displayed.
@@ -342,9 +346,21 @@ local init_chat=function(chats,chat_name,response_name)
 	chat.set_description=function(name)
 	
 		chat.description_name=name	
-		chat.description=chat.chats[name]
-		chat.responses=chat.description.responses
+		chat.description={} -- chat.chats[name]
+		chat.responses={} -- chat.description.responses
 		
+		for n in dotnames(name) do -- inherit chunks data
+			local v=chat.chats[n]
+			if v then
+				for n2,v2 in pairs(v) do -- merge base settings
+					chat.description[n2]=chat.description[n2] or v2
+				end 
+				for n2,v2 in pairs(v.responses or {}) do -- merge responses
+					chat.responses[n2]=chat.responses[n2] or v2
+				end
+			end
+		end
+
 		for n,v in pairs(chat.description.proxies or {}) do
 			chat.proxies[n]=v
 		end
@@ -354,8 +370,33 @@ local init_chat=function(chats,chat_name,response_name)
 	chat.set_response=function(name)
 	
 		chat.response_name=name
-		chat.response=chat.responses[name]
-		chat.requests=chat.response and chat.response.requests
+		chat.response={} -- chat.responses[name]
+		chat.requests={} -- chat.response and chat.response.requests
+		
+		local merged_proxies={}
+
+		for n in dotnames(name) do -- inherit responses data
+			local v=chat.responses[n]
+			if v then
+				for n2,v2 in pairs(v) do -- merge base settings
+					chat.response[n2]=chat.response[n2] or v2
+				end 
+				for np,vp in pairs(v.proxies or {}) do -- merge proxy changes
+					merged_proxies[np]=merged_proxies[np] or vp
+				end
+				for n2,v2 in ipairs(v.requests or {}) do -- join all requests
+					local r={}
+					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
+					chat.requests[#chat.requests+1]=r
+				end 
+			end
+
+		end
+		
+		for np,vp in pairs(merged_proxies or {}) do -- apply proxy change
+			chat.proxies[np]=vp
+		end
+
 	end
 
 	
@@ -382,8 +423,6 @@ local init_chat=function(chats,chat_name,response_name)
 			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
 			local f=function(item,menu)
-
-				print(item.text)
 
 				if item.request and item.request.name then
 
@@ -564,15 +603,11 @@ Initialise all the above systems, once only.
 setup=function()
 	if setup_done then return else setup_done=true end
 
--- these are globals
+-- these are *globals*
 
 	menu=setup_menu()
 	chats=parse_chats(str)
 	chat=init_chat(chats,"control.colson","welcome")
-
-
-	--print(require("wetgenes.string").dump(chats))
-	--menu.show{items={s="sometext"}}
 
 	menu.show(chat.get_menu_items())
 
