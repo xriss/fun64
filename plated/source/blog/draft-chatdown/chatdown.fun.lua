@@ -489,8 +489,8 @@ function setup_menu()
 				local ls=wstr.smart_wrap(text,menu.width-8)
 				if #ls==0 then ls={""} end -- blank line
 				for i=1,#ls do
-					local prefix=(i>1 and " " or "")
-					if not item.cursor then prefix="" end -- do not indent or allow selection
+					local prefix=""--(i>1 and " " or "")
+					if item.cursor then prefix=" " end -- indent options
 					menu.lines[#menu.lines+1]={s=prefix..ls[i],idx=idx,item=item,cursor=item.cursor}
 				end
 			end
@@ -578,7 +578,7 @@ function setup_menu()
 			if it~=menu.lines[i].item then -- first line only
 				it=menu.lines[i].item
 				if it.cursor == menu.cursor then
-					tprint(">",menu.cx+3,menu.cy+i+1,31,1)
+					tprint(">",menu.cx+4,menu.cy+i+1,31,1)
 				end
 			end
 		end
