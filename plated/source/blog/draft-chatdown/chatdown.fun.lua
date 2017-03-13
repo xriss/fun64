@@ -26,7 +26,7 @@ controller you know.
 #. dot
 #> morethan
 
--- initial proxy values, can be changed by response or code.
+-- initial proxy values, can be changed in response/option or code.
 =fruit		banana
 =fruits		bananas
 
@@ -34,7 +34,7 @@ controller you know.
 	>welcome.1
 		Restart.
 
--- default response texts, used if no special response text is given in the dialogue tree
+-- default exit texts
 .exit
 
 	Welcome to the exit would you like to:
