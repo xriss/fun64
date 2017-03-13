@@ -482,7 +482,7 @@ end
 
 	chats = setup_chats(chat_text)
 
-parse and initialise state data fpr every chat chunk
+parse and initialise state data for every chat chunk
 
 ]]
 -----------------------------------------------------------------------------
@@ -681,41 +681,23 @@ end
 
 
 -----------------------------------------------------------------------------
---[[#setup
-
-	setup()
-
-Initialise all the above systems, once only.
-
-]]
------------------------------------------------------------------------------
-setup=function()
-	if setup_done then return else setup_done=true end
-
--- these are *globals*
-
-	chats=setup_chats(chat_text)
-
-	menu=setup_menu( chats.get_menu_items("control.colson") )
-
-end
-
------------------------------------------------------------------------------
 --[[#update
 
 	update()
 
-Update and draw loop.
+Update and draw loop, called every frame.
 
 ]]
 -----------------------------------------------------------------------------
 update=function()
 
-	setup()
+	if not setup_done then
+		chats=setup_chats(chat_text)
+		menu=setup_menu( chats.get_menu_items("control.colson") )
+		setup_done=true
+	end
 	
 	menu.update()
 	menu.draw()
-
---	system.components.text.text_print("Hello World!",5,2,31,0) -- (text,x,y,color,background)
 	
 end
