@@ -30,6 +30,7 @@ controller you know.
 =fruit		banana
 =fruits		bananas
 
+-- provide default text for options here
 	>welcome.1
 		Restart.
 
