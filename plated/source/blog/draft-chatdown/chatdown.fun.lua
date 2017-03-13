@@ -30,22 +30,25 @@ controller you know.
 =fruit		banana
 =fruits		bananas
 
+	>welcome.1
+		Restart.
+
 -- default response texts, used if no special response text is given in the dialogue tree
 .exit
 
 	Welcome to the exit would you like to:
 
 	>welcome.1
-		Restart.
 
 .exit.apple
 
 	Welcome to the apple dimension:
 
 	>welcome.1
-		Restart.
 
 .welcome
+	
+	Hello!
 
 	>exit
 		This is added to the menu exit entry text if there is no other exit.
@@ -165,8 +168,8 @@ local parse_chats=function(chat_text)
 				name,v=v:match("%#(%S*)%s*(.*)$")
 				
 				text={}
-				options={}
 				responses={}
+				options={}
 				proxies={}
 				chat={text=text,options=options,proxies=proxies,responses=responses}
 				
@@ -417,6 +420,18 @@ local setup_chat=function(chats,chat_name,response_name)
 				end 
 			end
 
+		end
+		
+		for i,v in ipairs(chat.options) do -- cleanup options
+			if not v.text then -- use text from decription prototype options
+				for i,p in ipairs(chat.description.options or {} ) do
+					if p.name==v.name then
+						v.text=p.text
+						break
+					end
+				end
+			end
+		
 		end
 		
 		chat.changes("response",chat.response)
