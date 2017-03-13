@@ -13,7 +13,99 @@ local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 local chat_text=[[
 
+#example Conversation NPC
 
+	A rare bread of NPC who will fulfil all your conversational desires for 
+	a very good price.
+
+	=sir sir
+
+	>convo
+
+		Is this the right room for a conversation?
+		
+	>welcome
+	
+		...ERROR...EOF...PLEASE...RESTART...
+
+<welcome
+
+	Good Morning {sir},
+	
+	>morning
+
+		Good morning to you too.
+
+	>afternoon
+
+		I think you will find it is now afternoon.
+
+	>sir
+
+		How dare you call me {sir}!
+
+<sir
+
+	My apologise, I am afraid that I am but an NPC with very little 
+	brain, how might I address you?
+	
+	>welcome.1
+
+		You may address me as Madam.
+
+		=sir madam
+
+	>welcome.2
+
+		You may address me as God.
+
+		=sir God
+
+	>welcome.3
+
+		You may address me as Sir.
+
+		=sir sir
+
+<afternoon
+	
+	Then good afternoon {sir},
+	
+	>convo
+
+<morning
+	
+	and how may I help {sir} today?
+	
+	>convo
+
+
+<convo
+
+	Indeed it is, would you like the full conversation or just the quick natter?
+
+	>convo_full
+	
+		How long is the full conversation?
+
+	>convo_quick
+
+		A quick natter sounds just perfect.
+
+<convo_full
+
+	...
+	
+	>welcome
+
+<convo_quick
+
+	...
+	
+	>welcome
+
+-- this test description is heavy on the magic characters and strange options
+-- most chat descriptions will not have to be so complicated
 #control.colson		Andy Colson
 
 This fat, balding controller looks exactly like another fat, balding 
@@ -23,7 +115,7 @@ controller you know.
 -escape special chars at start of line with a hash
 ## hash
 #- minus
-#. dot
+#< lessthan
 #> morethan
 
 -- initial proxy values, can be changed in response/option or code.
@@ -35,19 +127,19 @@ controller you know.
 		Restart.
 
 -- default exit texts
-.exit
+<exit
 
 	Welcome to the exit would you like to:
 
 	>welcome.1
 
-.exit.apple
+<exit.apple
 
 	Welcome to the apple dimension:
 
 	>welcome.1
 
-.welcome
+<welcome
 	
 	Hello!
 
@@ -57,7 +149,7 @@ controller you know.
 		Longer option text, eg the spoken response after selecting the 
 		first line above as the written response.
 
-.welcome.1
+<welcome.1
 
 	The only way to get down to the first level right now is through 
 	the elevator and we can't even open the doors from up here. The 
@@ -66,7 +158,7 @@ controller you know.
 	>welcome.2
 		Infrared or gas discharge?
 
-.welcome.2
+<welcome.2
 
 	Gas. CO2, 10,000 watts.
 	
@@ -78,14 +170,14 @@ controller you know.
 		=fruit		apple
 		=fruits		apples
 
-.cig
+<cig
 
 	Oh sure.
 	
 	>pack
 		Thank you!
 
-.pack
+<pack
 
 	Take the whole pack why don't ya?
 	
@@ -160,7 +252,7 @@ local parse_chats=function(chat_text)
 
 			local c=v:sub(2,2)
 			
-			if c=="#" or c=="." or c=="=" or c==">" or c=="-" then -- escape codes
+			if c=="#" or c=="<" or c=="=" or c==">" or c=="-" then -- escape codes
 
 				v=v:sub(2) -- just remove hash from start of line
 			
@@ -187,9 +279,9 @@ local parse_chats=function(chat_text)
 				
 			end
 
-		elseif code=="." then -- .response
+		elseif code=="<" then -- <response
 
-			name,v=v:match("%.(%S*)%s*(.*)$")
+			name,v=v:match("%<(%S*)%s*(.*)$")
 
 			text={}
 			options={}
@@ -459,7 +551,7 @@ local setup_chat=function(chats,chat_name,response_name)
 
 			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
-			local color=31
+			local color=30
 			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this option
 			
 			local f=function(item,menu)
@@ -704,7 +796,7 @@ update=function()
 
 	if not setup_done then
 		chats=setup_chats(chat_text)
-		menu=setup_menu( chats.get_menu_items("control.colson") )
+		menu=setup_menu( chats.get_menu_items("example") )
 		setup_done=true
 	end
 	
