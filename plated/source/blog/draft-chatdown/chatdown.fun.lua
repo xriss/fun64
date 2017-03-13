@@ -1,6 +1,4 @@
 
-local ls=function(t) print(require("wetgenes.string").dump(t)) end
-
 
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
@@ -52,7 +50,7 @@ controller you know.
 	>exit
 		This is added to the menu exit entry text if there is no other exit.
 
-		Longer request text, eg the spoken response after selecting the 
+		Longer option text, eg the spoken response after selecting the 
 		first line above as the written response.
 
 .welcome.1
@@ -108,7 +106,7 @@ what text is displayed during a chat session.
 
 This is intended to be descriptive and logic less, any decision logic 
 should be added using a real language that operates on this data and 
-gets triggered by the names used. EG, filter out requests unless 
+gets triggered by the names used. EG, filter out options unless 
 certain conditions are met or change responses to redirect to an 
 alternative.
 
@@ -139,8 +137,8 @@ local parse_chats=function(chat_text)
 	local chats={}
 	local chat={}
 
-	local requests={}
-	local request={}
+	local options={}
+	local option={}
 
 	local responces={}
 	local responce={}
@@ -167,10 +165,10 @@ local parse_chats=function(chat_text)
 				name,v=v:match("%#(%S*)%s*(.*)$")
 				
 				text={}
-				requests={}
+				options={}
 				responses={}
 				proxies={}
-				chat={text=text,requests=requests,proxies=proxies,responses=responses}
+				chat={text=text,options=options,proxies=proxies,responses=responses}
 				
 				
 				chat.name=name
@@ -190,9 +188,9 @@ local parse_chats=function(chat_text)
 			name,v=v:match("%.(%S*)%s*(.*)$")
 
 			text={}
-			requests={}
+			options={}
 			proxies={}
-			response={text=text,name=name,requests=requests,proxies=proxies}
+			response={text=text,name=name,options=options,proxies=proxies}
 
 			if name~="" then -- ignore empty names
 			
@@ -201,15 +199,15 @@ local parse_chats=function(chat_text)
 			
 			end
 
-		elseif code==">" then -- >request
+		elseif code==">" then -- >option
 		
 			name,v=v:match("%>(%S*)%s*(.*)$")
 		
 			text={}
 			proxies={}
-			request={text=text,name=name,proxies=proxies}
+			option={text=text,name=name,proxies=proxies}
 
-			requests[#requests+1]=request
+			options[#options+1]=option
 
 		elseif code=="=" then -- =proxy
 		
@@ -280,10 +278,10 @@ local parse_chats=function(chat_text)
 		chat.text=cleanup_text(chat.text)
 		chat.proxies=cleanup_proxies(chat.proxies)
 
-		for id,request in pairs(chat.requests) do
+		for id,option in pairs(chat.options) do
 
-			request.text=cleanup_text(request.text)
-			request.proxies=cleanup_proxies(request.proxies)
+			option.text=cleanup_text(option.text)
+			option.proxies=cleanup_proxies(option.proxies)
 		end
 
 		for id,response in pairs(chat.responses) do
@@ -291,10 +289,10 @@ local parse_chats=function(chat_text)
 			response.text=cleanup_text(response.text)
 			response.proxies=cleanup_proxies(response.proxies)
 
-			for id,request in pairs(response.requests) do
+			for id,option in pairs(response.options) do
 
-				request.text=cleanup_text(request.text)
-				request.proxies=cleanup_proxies(request.proxies)
+				option.text=cleanup_text(option.text)
+				option.proxies=cleanup_proxies(option.proxies)
 			end
 		end
 
@@ -345,7 +343,7 @@ local setup_chat=function(chats,chat_name,response_name)
 
 		if     change=="description" then			print("description",a.name)
 		elseif change=="response"    then			print("response   ",a.name)
-		elseif change=="request"     then			print("request    ",a.name)
+		elseif change=="option"     then			print("option    ",a.name)
 		elseif change=="proxy"       then			print("proxy      ",a,b)
 		end
 		
@@ -392,11 +390,11 @@ local setup_chat=function(chats,chat_name,response_name)
 	
 		chat.response_name=name
 		chat.response={} -- chat.responses[name]
-		chat.requests={} -- chat.response and chat.response.requests
+		chat.options={} -- chat.response and chat.response.options
 		
 		local merged_proxies={}
 
-		local request_names={} -- keep track of previously seen exit nodes
+		local option_names={} -- keep track of previously seen exit nodes
 
 		for n in dotnames(name) do -- inherit responses data
 			local v=chat.responses[n]
@@ -407,15 +405,15 @@ local setup_chat=function(chats,chat_name,response_name)
 				for np,vp in pairs(v.proxies or {}) do -- merge proxy changes
 					merged_proxies[np]=merged_proxies[np] or vp
 				end
-				for n2,v2 in ipairs(v.requests or {}) do -- join all requests
+				for n2,v2 in ipairs(v.options or {}) do -- join all options
 					local r={}
 					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
 					r.name=chat.replace_proxies(r.name) -- can use proxies in name
 					
-					if not request_names[r.name] then -- only add unique requests
-						chat.requests[#chat.requests+1]=r
+					if not option_names[r.name] then -- only add unique options
+						chat.options[#chat.options+1]=r
 					end
-					request_names[r.name]=true
+					option_names[r.name]=true
 				end 
 			end
 
@@ -444,31 +442,31 @@ local setup_chat=function(chats,chat_name,response_name)
 			items[#items+1]={text=chat.replace_proxies(v)or"",chat=chat}
 		end
 
-		for i,v in ipairs(chat.requests or {}) do
+		for i,v in ipairs(chat.options or {}) do
 
-			items[#items+1]={text="",chat=chat} -- blank line before each request
+			items[#items+1]={text="",chat=chat} -- blank line before each option
 
 			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
 			local color=31
-			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this request
+			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this option
 			
 			local f=function(item,menu)
 
-				if item.request and item.request.name then
+				if item.option and item.option.name then
 
-					chat.changes("request",item.request)
+					chat.changes("option",item.option)
 
-					chat.set_response(item.request.name)
+					chat.set_response(item.option.name)
 
-					chat.set_proxies(item.request.proxies)
+					chat.set_proxies(item.option.proxies)
 
 					menu.show(chat.get_menu_items())
 
 				end
 			end
 			
-			items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,request=v,cursor=i,call=f,color=color} -- only show first line
+			items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,option=v,cursor=i,call=f,color=color} -- only show first line
 			items.cursor_max=i
 		end
 
