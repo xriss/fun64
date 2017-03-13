@@ -412,6 +412,13 @@ local setup_chat=function(chats,chat_name,response_name)
 				for n2,v2 in ipairs(v.options or {}) do -- join all options
 					local r={}
 					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
+
+					if not r.text then -- use text from description prototype options
+						for i,p in ipairs(chat.description.options or {} ) do -- search
+							if r.name==p.name then r.text=p.text break end -- found and used
+						end
+					end
+
 					r.name=chat.replace_proxies(r.name) -- can use proxies in name
 					
 					if not option_names[r.name] then -- only add unique options
@@ -421,18 +428,6 @@ local setup_chat=function(chats,chat_name,response_name)
 				end 
 			end
 
-		end
-		
-		for i,v in ipairs(chat.options) do -- cleanup options
-			if not v.text then -- use text from decription prototype options
-				for i,p in ipairs(chat.description.options or {} ) do
-					if p.name==v.name then
-						v.text=p.text
-						break
-					end
-				end
-			end
-		
 		end
 		
 		chat.changes("response",chat.response)
