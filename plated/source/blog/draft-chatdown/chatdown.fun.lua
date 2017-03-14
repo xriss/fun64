@@ -49,19 +49,19 @@ local chat_text=[[
 	My apologise, I am afraid that I am but an NPC with very little 
 	brain, how might I address you?
 	
-	>welcome.1
+	>welcome.1?sir!=madam
 
 		You may address me as Madam.
 
 		=sir madam
 
-	>welcome.2
+	>welcome.2?sir!=God
 
 		You may address me as God.
 
 		=sir God
 
-	>welcome.3
+	>welcome.3?sir!=sir
 
 		You may address me as Sir.
 
@@ -412,7 +412,7 @@ We manage proxy data and callbacks from decisions here.
 
 ]]
 -----------------------------------------------------------------------------
-local setup_chat=function(chats,chat_name,response_name)
+local setup_chat=function(chat,chats,chat_name,response_name)
 
 	local dotnames=function(name)
 		local n,r=name,name
@@ -425,7 +425,7 @@ local setup_chat=function(chats,chat_name,response_name)
 	end
 	--for n in dotnames("control.colson.2") do print(n) end
 
-	local chat={}
+	local chat=chat or {}
 	
 	chat.chats=chats
 	chat.name=chat_name
@@ -445,6 +445,14 @@ local setup_chat=function(chats,chat_name,response_name)
 		
 	end
 	
+	chat.get_proxy=function(text)
+		return chats.get_proxy(text,chat.name)
+	end
+	
+	chat.set_proxy=function(text,val)
+		return chats.set_proxy(text,val,chat.name)
+	end
+
 	chat.replace_proxies=function(text)
 		return chats.replace_proxies(text,chat.name)
 	end
@@ -452,7 +460,7 @@ local setup_chat=function(chats,chat_name,response_name)
 	chat.set_proxies=function(proxies)
 		for n,v in pairs(proxies or {}) do
 			chat.changes("proxy",n,v)
-			chat.proxies[n]=v
+			chat.set_proxy(n,v)
 		end
     end
 	
@@ -510,11 +518,63 @@ local setup_chat=function(chats,chat_name,response_name)
 							if r.name==p.name then r.text=p.text break end -- found and used
 						end
 					end
+					
+					local result=true
+					if r.name:find("?") then -- query string
+						r.name,r.query=r.name:match("(.+)?(.+)")
+						
+						local t={}
+						r.query:gsub("([^&|!=<>]*)([&|=<>!]*)",function(a,b) if a~="" then t[#t+1]=a end if b~="" then t[#t+1]=b end end)
+						
+						local do_test=function(a,b,c)
 
+							local a=chat.get_proxy(a)
+
+							if     b=="<" then					return ( tonumber(a) < tonumber(c) )
+							elseif b==">" then					return ( tonumber(a) > tonumber(c) )
+							elseif b=="<=" then					return ( tonumber(a) <= tonumber(c) )
+							elseif b==">=" then					return ( tonumber(a) >= tonumber(c) )
+							elseif b=="=" or b=="==" then		return ( tostring(a) == c )
+							elseif b=="!=" then					return ( tostring(a) ~= c )
+							elseif not b then					return a and true or false
+							end
+							
+							return false
+						end
+						
+						local test={"|"}
+						local tests={test}
+						for i,v in ipairs(t) do
+							if v=="&" or v=="|" then
+								test={v}
+								tests[#tests+1]=test
+							elseif v=="&!" or v=="|!" then
+								test={v:sub(1,1),v:sub(2,2)}
+								tests[#tests+1]=test
+							else
+								test[#test+1]=v
+							end
+						end
+
+						result=false
+						for i,v in ipairs(tests) do
+						
+							local t
+							if v[2]=="!" then t= not do_test(v[3],v[4],v[5]) else t=do_test(v[2],v[3],v[4]) end
+							
+							if v[1]=="|" then result=result or  t end
+							if v[1]=="&" then result=result and t end
+						
+						end
+
+					end
+					
 					r.name=chat.replace_proxies(r.name) -- can use proxies in name
 					
 					if not option_names[r.name] then -- only add unique options
-						chat.options[#chat.options+1]=r
+						if result then -- should we show this one?
+							chat.options[#chat.options+1]=r
+						end
 					end
 					option_names[r.name]=true
 				end 
@@ -606,6 +666,33 @@ local setup_chats=function(chat_text)
 		return chats.get(name).get_menu_items()
 	end
 	
+	chats.get_proxy=function(s,default_root)
+		local root,proxy=s:match("(.+)/(.+)") -- is a root given?
+		if not root then root,proxy=default_root,s end -- no root use full string as proxy name
+		local proxies=(chats.get(root) or {}).proxies or {} -- get root proxies or empty table
+		return proxies[proxy]
+	end
+
+	chats.set_proxy=function(s,v,default_root)
+		local root,proxy=s:match("(.+)/(.+)") -- is a root given?
+		if not root then root,proxy=default_root,s end -- no root use full string as proxy name
+		local proxies=(chats.get(root) or {}).proxies or {} -- get root proxies or empty table
+
+-- add inc/dec operators here?
+		local t=v:sub(1,1)
+		if t=="-" then
+			local n=tonumber(v:sub(2))
+			proxies[proxy]=(proxies[proxy] or 0 ) + n
+		elseif t=="+" then
+			local n=tonumber(v:sub(2))
+			proxies[proxy]=(proxies[proxy] or 0 ) - n
+		else
+			proxies[proxy]=v
+		end
+		
+		return proxies[proxy]
+	end
+
 	chats.replace_proxies=function(text,default_root)
 
 		if not text then return nil end
@@ -615,10 +702,7 @@ local setup_chats=function(chat_text)
 		for sanity=0,100 do
 			local last=ret
 			ret=ret:gsub("{([^}%s]+)}",function(a)
-				local root,proxy=a:match("(.+)/(.+)") -- is a root given?
-				if not root then root,proxy=default_root,a end -- no root use full string as proxy name
-				local proxies=(chats.get(root) or {}).proxies or {} -- get root proxies or empty table
-				return proxies[a] or "{"..a.."}"
+				return chats.get_proxy(a,default_root) or "{"..a.."}"
 			end)
 			if last==ret then break end -- no change
 		end
@@ -629,7 +713,9 @@ local setup_chats=function(chat_text)
 
 	for n,v in pairs(chats.data) do -- setup each chat
 	
-		chats.names[n]=setup_chat(chats,n,"welcome")
+		local chat={}
+		chats.names[n]=chat
+		setup_chat(chat,chats,n,"welcome")
 		
 	end
 
