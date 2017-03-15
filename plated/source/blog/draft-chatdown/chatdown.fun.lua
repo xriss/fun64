@@ -94,7 +94,17 @@ local chat_text=[[
 
 <convo_full
 
-	...
+	The full conversation is very full and long so much so that you 
+	will have to page through many pages before you get to make a 
+	decision
+	
+	>
+		Like this?
+	<
+	
+	Yes just like this. In fact I think you can see that we are already 
+	doing it.
+			
 	
 	>welcome
 
@@ -142,6 +152,8 @@ local parse_chats=function(chat_text)
 		return lines
 	end
 
+	local last_name=""
+	local last_count=1
 
 	local lines=text_to_trimed_lines(chat_text)
 
@@ -199,6 +211,10 @@ local parse_chats=function(chat_text)
 		elseif code=="<" then -- <response
 
 			name,v=v:match("%<(%S*)%s*(.*)$")
+			
+			-- if name is empty then we use an auto reverence to the last noname option
+			if name=="" then name=last_name.."__"..last_count	-- use reference 
+			else last_name=name last_count=1 end -- reset reference
 
 			text={}
 			options={}
@@ -215,6 +231,9 @@ local parse_chats=function(chat_text)
 		elseif code==">" then -- >option
 		
 			name,v=v:match("%>(%S*)%s*(.*)$")
+
+			-- if name is empty then we use an auto reverence to the next nonmame response
+			if name=="" then last_count=last_count+1 name=last_name.."__"..last_count end -- increment reference
 		
 			text={}
 			proxies={}
