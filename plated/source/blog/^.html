@@ -192,6 +192,13 @@ Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a>
 		Module["monitorRunDependencies"]=show_progress;
 
 
+		window.addEventListener("keydown", function(e) {
+			// space and arrow keys
+			if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+				e.preventDefault();
+			}
+		}, false);
+
 	</script>
 	<script type="text/javascript" src="{_root}exe/gamecake.js"></script>
 </div>
