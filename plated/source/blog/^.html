@@ -15,11 +15,14 @@ Fun64 updates
 #^------------------------------
 #^_blog_page_body
 #^------------------------------
-<div class="nav">You are reading: <span>Fun64 dev blog</span></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
+<div class="nav_wrap">
+	<div class="nav">You are reading: <span>Fun64 dev blog</span></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
+</div>
 
-{_list:blog_list}
+<div class="blog_list_wrap">{_list:blog_list}</div>
 
 <div>{_blog_page_older:link_older_page} {_blog_page_newer:link_newer_page}</div>
+
 
 #^------------------------------
 #^-Paging for main blog list page
@@ -42,8 +45,15 @@ Fun64 updates
 #^-This is a single blog post viewed on its own page
 #^_blog_post_body_one
 #^------------------------------
-<div class="nav">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
-<div class="blog_wrap">{_blog_post_body}</div>
+<div class="nav_wrap"><div class="nav">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div><div class="nav"><a href="{_root}" class="bar">Home</a></div></div>
+<div class="blog_wrap">
+	<span class="blog_post_user">
+		<span>~ {_blog_post_json.author}</span>
+		<span><i>{_blog_post_json.datedash}</i></span>
+	</span>
+	<span class="blog_post_title">{_blog_post_json.title}</span>
+	{_blog_post_body}	
+</div>
 
 {_blog_post_json.fun_file&fun_blog_embed}
 
@@ -55,6 +65,17 @@ Some comments belong here
 #^-This is for the blog list
 #^_blog_post_body_many
 #^------------------------------
+<a href="{_dirname}" class="blog_post_link">
+	<span class="blog_post_title">{_blog_post_json.title}</span>
+	<span class="blog_post_snip">{_blog_post_body}</span>
+	<span class="blog_post_user">
+		<span>~ {_blog_post_json.author}</span>
+		<span><i>{_blog_post_json.datedash}</i></span>
+	</span>
+</a>
+
+
+#^this_chunk_is_not_used
 <div class="blog_wrap">
 	<div class="blog_info"><a href="{_dirname}">{_blog_post_json.title}</a> by {_blog_post_json.author} on {_blog_post_json.datedash}</div>
 	{_blog_post_body}
@@ -76,12 +97,17 @@ Some comments belong here
 #^fun_blog_link
 #^------------------------------
 
-Checkout the Fun64 <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
-{fun_blog_code}
+<div class="blog_link_wrap">
+	<div class="blog_embed_head">
+		Checkout the Fun64 <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
+	</div>
+	{fun_blog_code}
+</div>
 
 #^------------------------------
 #^fun_blog_code
 #^------------------------------
+<div class="blog_code_wrap">
 <pre id="code{_dirname}"class="lang-lua" style="height:512px;overflow:scroll;padding:16px;"></pre>
 <script>
 	$.get("{_dirname}/{_blog_post_json.fun_file}", function(data){
@@ -89,117 +115,126 @@ Checkout the Fun64 <a href="{_dirname}/{_blog_post_json.fun_file}">lua source fi
 		PR.prettyPrint();
 	});
 </script>
+</div>
 
 #^------------------------------
 #^fun_blog_embed
 #^------------------------------
 
-Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
-{fun_blog_code}
+<div class="blog_embed_wrap">
+	<div class="blog_embed_head">
+		Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
+	</div>
+	{fun_blog_code}
 
-<div style="width:100%;height:{_blog_post_json.fun_height};overflow:hidden;"><div style="width:100%;height:{_blog_post_json.fun_height};position:relative;">
-	
-<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
-
-	local hx,hy,ss=128,128,3
-
-	local opts={
-		times=true, -- request simple time keeping samples
-
-		width=hx*ss,	-- display basics
-		height=hy*ss,
-		screen_scale=ss,
-	--	show="full",
-		title="fun",
-		start="wetgenes.gamecake.fun.main",
-		fun="start",
-		fps=60,
-		... -- include commandline opts
-	}
-
-	math.randomseed( os.time() ) -- try and randomise a little bit better
-
-	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
-
-	return oven:serv()
-
---]]></script>
-
-
-<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
-	<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
-	<script type="text/javascript">
+	<div style="width:100%;height:{_blog_post_json.fun_height};overflow:hidden;">
+		<div style="width:100%;height:{_blog_post_json.fun_height};position:relative;">
 		
-		var gamecake_post;
-		var Module;
-		
-		var resize=function(){
-			var e=document.getElementById("gamecake_container");
-			var w=parseFloat(window.getComputedStyle(e).width);
-			var h=parseFloat(window.getComputedStyle(e).height);
-			Module.setCanvasSize(w,h);
-			if(gamecake_post)
-			{
-				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
-			}
-		};
+		<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
 
-		var gamecake_start=function() {
+		local hx,hy,ss=128,128,3
 
-//initialise lua
-			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+		local opts={
+			times=true, -- request simple time keeping samples
 
-// create a pulse function and call it every frame
-			var pulse;
-			var resize_wait=16;
-			pulse=function() {
-				requestAnimationFrame(pulse); // we need to always ask to be called again
-				gamecake_post('cmd=lua\n','return gamecake_pulse()');
-				if(resize_wait>0)
-				{
-					if(--resize_wait==0)
-					{
-						console.log("resioz");
-						resize();
-					}
-				}
-			};
-			requestAnimationFrame(pulse); // start the updates
+			width=hx*ss,	-- display basics
+			height=hy*ss,
+			screen_scale=ss,
+		--	show="full",
+			title="fun",
+			start="wetgenes.gamecake.fun.main",
+			fun="start",
+			fps=60,
+			... -- include commandline opts
 		}
 
-		var show_progress=function(n)
-		{
-			window.show_progress_max=window.show_progress_max || 0;
-			if(window.show_progress_max<n) { window.show_progress_max=n; }
-			var pct=Math.floor(100*(1-(n/window.show_progress_max)));
-			console.log("GameCake Loading "+pct+"%");
-		};
-		window.addEventListener("resize",resize);
-		Module={};
-		Module.canvas=document.getElementById("gamecake_canvas");
-		Module.canvas_resize=resize;
-		Module.memoryInitializerPrefixURL="{_root}exe/";
-		Module['_main'] = function() {
-			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
-			gamecake_start();
-			resize();
-		};
-		Module["preInit"] = function() {
-			FS.mkdir("/lua");
-			FS.createPreloadedFile('/', "start.fun.lua", "{_dirname}/{_blog_post_json.fun_file}", true, false);
-			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
-		};
-		Module["monitorRunDependencies"]=show_progress;
+		math.randomseed( os.time() ) -- try and randomise a little bit better
+
+		oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+
+		return oven:serv()
+
+	--]]></script>
 
 
-		window.addEventListener("keydown", function(e) {
-			// space and arrow keys
-			if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-				e.preventDefault();
-			}
-		}, false);
+		<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
+			<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
+			<script type="text/javascript">
+				
+				var gamecake_post;
+				var Module;
+				
+				var resize=function(){
+					var e=document.getElementById("gamecake_container");
+					var w=parseFloat(window.getComputedStyle(e).width);
+					var h=parseFloat(window.getComputedStyle(e).height);
+					Module.setCanvasSize(w,h);
+					if(gamecake_post)
+					{
+						gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+					}
+				};
 
-	</script>
-	<script type="text/javascript" src="{_root}exe/gamecake.js"></script>
+				var gamecake_start=function() {
+
+		//initialise lua
+					gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+
+		// create a pulse function and call it every frame
+					var pulse;
+					var resize_wait=16;
+					pulse=function() {
+						requestAnimationFrame(pulse); // we need to always ask to be called again
+						gamecake_post('cmd=lua\n','return gamecake_pulse()');
+						if(resize_wait>0)
+						{
+							if(--resize_wait==0)
+							{
+								console.log("resioz");
+								resize();
+							}
+						}
+					};
+					requestAnimationFrame(pulse); // start the updates
+				}
+
+				var show_progress=function(n)
+				{
+					window.show_progress_max=window.show_progress_max || 0;
+					if(window.show_progress_max<n) { window.show_progress_max=n; }
+					var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+					console.log("GameCake Loading "+pct+"%");
+				};
+				window.addEventListener("resize",resize);
+				Module={};
+				Module.canvas=document.getElementById("gamecake_canvas");
+				Module.canvas_resize=resize;
+				Module.memoryInitializerPrefixURL="{_root}exe/";
+				Module['_main'] = function() {
+					gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+					gamecake_start();
+					resize();
+				};
+				Module["preInit"] = function() {
+					FS.mkdir("/lua");
+					FS.createPreloadedFile('/', "start.fun.lua", "{_dirname}/{_blog_post_json.fun_file}", true, false);
+					FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+				};
+				Module["monitorRunDependencies"]=show_progress;
+
+
+				window.addEventListener("keydown", function(e) {
+					// space and arrow keys
+					if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+						e.preventDefault();
+					}
+				}, false);
+
+			</script>
+			<script type="text/javascript" src="{_root}exe/gamecake.js"></script>
+		</div>
+		
+		</div>
+	</div>
+
 </div>
-</div></div>

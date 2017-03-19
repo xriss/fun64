@@ -5,7 +5,7 @@
 
 <html>
 <head>{head}</head>
-<body>{body}</body>
+<body>{body}{footer}</body>
 </html>
 
 
@@ -33,3 +33,29 @@ Title is missing.
 #^------------------------------
 
 Body is missing.
+
+#^footer
+<div class="footer_wrap">
+	<div class="footer">
+		<p>
+			<a href="/" class="home">Fun64</a> is a simple game engine designed 
+			for single file game sketches.
+		</p>
+
+		<p>
+			See <a href="{_dirname}blog" class="home">dev blog</a> for updates and examples or 
+			find us on <a href="https://github.com/xriss/fun64" class="home">github</a>.
+		</p>
+	</div><div class="footer">
+		<p>
+			<a 
+			href="https://gist.github.com/search?q=fun64+lua" class="home">gists</a> are the perfect 
+			way of sharing fun64 files.
+		</p>
+
+		<p>
+			<a href="{_dirname}run" class="home">run</a> provides a way 
+			of playing them in a browser.
+		</p>
+	</div>
+</div>
