@@ -21,9 +21,53 @@
 {_blog_post_json.title}
 -------
 
-Testing a markdown like text format for describing conversation trees, 
-the idea is to have all the logic somewhere else and just use this for 
+Testing a markdown like text format for describing chat trees, the idea 
+is to have all the logic somewhere else and just use this for 
 describing the relationship and hierarchy of the text.
 
-The bad news is this means you have to label everything with reasonable 
-names so the code can find it.
+The bad news is this means you have to label each part of the chat with 
+reasonable ids so the code can find it. Naming things is hard and has
+to be done.
+
+Mostly the file is interpreted as text similar to markdowns paragraphs 
+separated by empty lines, between these paragraphs lines beginning with 
+special characters switch the mode, and assign where the next set of 
+paragraphs will be stored.
+
+A chat is started by beginning a line with a # this can be thought of 
+as the talky part of an NPCs brain.
+
+The first paragraph of a #chat is the display name of the NPC, the rest 
+of the paragraphs are a longer description. More data can also be 
+associated with the NPC here but I will go into that another time.
+
+Responses are started with a < and they belong to the current chat, 
+these are the things that an NPC says, for instance, <welcome is the 
+first thing an NPC says when you talk to them.
+
+Decisions are your choices that you can make after an NPC talks, 
+started with a > these are stored in the current response and are 
+essentially just links to another responses.
+
+With decisions the first paragraph is displayed and the remaining 
+paragraphs can be used as the spoken out loud dialogue when this 
+decision is selected. Some styles of dialogue writing use this 
+form, others only need one paragraph.
+
+Proxies are variables associated with this chat, they are assigned by 
+lines beginning with an = and all paragraphs following are given to 
+this proxy. Proxies way be set inside any of the other 3 states so 
+they can change as you travel through the chat.
+
+Proxies may be expanded inside paragraphs or even option names by using 
+squiggly brackets like so {proxyname}
+
+This is just an overview and its best we show some examples, the main 
+focus is to be written text associated with id labels and a minimum of 
+scary logic so the file could be handed to a translator as is.
+
+Take a look at the following chatdown example which you will find 
+embedded at the top of this fun64 file.The code to parse and display 
+this format is included, probably best you do not look too closely at 
+that bit :)
+
