@@ -94,7 +94,17 @@ local chat_text=[[
 
 <convo_full
 
-	...
+	The full conversation is very full and long so much so that you 
+	will have to page through many pages before you get to make a 
+	decision
+	
+	>
+		Like this?
+	<
+	
+	Yes just like this. In fact I think you can see that we are already 
+	doing it.
+			
 	
 	>welcome
 
@@ -119,7 +129,7 @@ what text is displayed during a chat session.
 
 This is intended to be descriptive and logic less, any decision logic 
 should be added using a real language that operates on this data and 
-gets triggered by the names used. EG, filter out options unless 
+gets triggered by the names used. EG, filter out decisions unless 
 certain conditions are met or change responses to redirect to an 
 alternative.
 
@@ -142,6 +152,8 @@ local parse_chats=function(chat_text)
 		return lines
 	end
 
+	local last_name=""
+	local last_count=1
 
 	local lines=text_to_trimed_lines(chat_text)
 
@@ -150,8 +162,8 @@ local parse_chats=function(chat_text)
 	local chats={}
 	local chat={}
 
-	local options={}
-	local option={}
+	local decisions={}
+	local decision={}
 
 	local responces={}
 	local responce={}
@@ -179,9 +191,9 @@ local parse_chats=function(chat_text)
 				
 				text={}
 				responses={}
-				options={}
+				decisions={}
 				proxies={}
-				chat={text=text,options=options,proxies=proxies,responses=responses}
+				chat={text=text,decisions=decisions,proxies=proxies,responses=responses}
 				
 				
 				chat.name=name
@@ -199,11 +211,15 @@ local parse_chats=function(chat_text)
 		elseif code=="<" then -- <response
 
 			name,v=v:match("%<(%S*)%s*(.*)$")
+			
+			-- if name is empty then we use an auto reverence to the last noname decision
+			if name=="" then name=last_name.."__"..last_count	-- use reference 
+			else last_name=name last_count=1 end -- reset reference
 
 			text={}
-			options={}
+			decisions={}
 			proxies={}
-			response={text=text,name=name,options=options,proxies=proxies}
+			response={text=text,name=name,decisions=decisions,proxies=proxies}
 
 			if name~="" then -- ignore empty names
 			
@@ -212,15 +228,18 @@ local parse_chats=function(chat_text)
 			
 			end
 
-		elseif code==">" then -- >option
+		elseif code==">" then -- >decision
 		
 			name,v=v:match("%>(%S*)%s*(.*)$")
+
+			-- if name is empty then we use an auto reverence to the next nonmame response
+			if name=="" then last_count=last_count+1 name=last_name.."__"..last_count end -- increment reference
 		
 			text={}
 			proxies={}
-			option={text=text,name=name,proxies=proxies}
+			decision={text=text,name=name,proxies=proxies}
 
-			options[#options+1]=option
+			decisions[#decisions+1]=decision
 
 		elseif code=="=" then -- =proxy
 		
@@ -291,10 +310,10 @@ local parse_chats=function(chat_text)
 		chat.text=cleanup_text(chat.text)
 		chat.proxies=cleanup_proxies(chat.proxies)
 
-		for id,option in pairs(chat.options) do
+		for id,decision in pairs(chat.decisions) do
 
-			option.text=cleanup_text(option.text)
-			option.proxies=cleanup_proxies(option.proxies)
+			decision.text=cleanup_text(decision.text)
+			decision.proxies=cleanup_proxies(decision.proxies)
 		end
 
 		for id,response in pairs(chat.responses) do
@@ -302,10 +321,10 @@ local parse_chats=function(chat_text)
 			response.text=cleanup_text(response.text)
 			response.proxies=cleanup_proxies(response.proxies)
 
-			for id,option in pairs(response.options) do
+			for id,decision in pairs(response.decisions) do
 
-				option.text=cleanup_text(option.text)
-				option.proxies=cleanup_proxies(option.proxies)
+				decision.text=cleanup_text(decision.text)
+				decision.proxies=cleanup_proxies(decision.proxies)
 			end
 		end
 
@@ -356,7 +375,7 @@ local setup_chat=function(chat,chats,chat_name,response_name)
 
 		if     change=="description" then			print("description",a.name)
 		elseif change=="response"    then			print("response   ",a.name)
-		elseif change=="option"     then			print("option    ",a.name)
+		elseif change=="decision"     then			print("decision    ",a.name)
 		elseif change=="proxy"       then			print("proxy      ",a,b)
 		end
 		
@@ -411,11 +430,11 @@ local setup_chat=function(chat,chats,chat_name,response_name)
 	
 		chat.response_name=name
 		chat.response={} -- chat.responses[name]
-		chat.options={} -- chat.response and chat.response.options
+		chat.decisions={} -- chat.response and chat.response.decisions
 		
 		local merged_proxies={}
 
-		local option_names={} -- keep track of previously seen exit nodes
+		local decision_names={} -- keep track of previously seen exit nodes
 
 		for n in dotnames(name) do -- inherit responses data
 			local v=chat.responses[n]
@@ -426,12 +445,12 @@ local setup_chat=function(chat,chats,chat_name,response_name)
 				for np,vp in pairs(v.proxies or {}) do -- merge proxy changes
 					merged_proxies[np]=merged_proxies[np] or vp
 				end
-				for n2,v2 in ipairs(v.options or {}) do -- join all options
+				for n2,v2 in ipairs(v.decisions or {}) do -- join all decisions
 					local r={}
 					for n3,v3 in pairs(v2) do r[n3]=v3 end -- copy
 
-					if not r.text then -- use text from description prototype options
-						for i,p in ipairs(chat.description.options or {} ) do -- search
+					if not r.text then -- use text from description prototype decisions
+						for i,p in ipairs(chat.description.decisions or {} ) do -- search
 							if r.name==p.name then r.text=p.text break end -- found and used
 						end
 					end
@@ -488,12 +507,12 @@ local setup_chat=function(chat,chats,chat_name,response_name)
 					
 					r.name=chat.replace_proxies(r.name) -- can use proxies in name
 					
-					if not option_names[r.name] then -- only add unique options
+					if not decision_names[r.name] then -- only add unique decisions
 						if result then -- should we show this one?
-							chat.options[#chat.options+1]=r
+							chat.decisions[#chat.decisions+1]=r
 						end
 					end
-					option_names[r.name]=true
+					decision_names[r.name]=true
 				end 
 			end
 
@@ -522,31 +541,31 @@ local setup_chat=function(chat,chats,chat_name,response_name)
 			items[#items+1]={text=chat.replace_proxies(v)or"",chat=chat}
 		end
 
-		for i,v in ipairs(chat.options or {}) do
+		for i,v in ipairs(chat.decisions or {}) do
 
-			items[#items+1]={text="",chat=chat} -- blank line before each option
+			items[#items+1]={text="",chat=chat} -- blank line before each decision
 
 			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
 			local color=30
-			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this option
+			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this decision
 			
 			local f=function(item,menu)
 
-				if item.option and item.option.name then
+				if item.decision and item.decision.name then
 
-					chat.changes("option",item.option)
+					chat.changes("decision",item.decision)
 
-					chat.set_response(item.option.name)
+					chat.set_response(item.decision.name)
 
-					chat.set_proxies(item.option.proxies)
+					chat.set_proxies(item.decision.proxies)
 
 					menu.show(chat.get_menu_items())
 
 				end
 			end
 			
-			items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,option=v,cursor=i,call=f,color=color} -- only show first line
+			items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,decision=v,cursor=i,call=f,color=color} -- only show first line
 			items.cursor_max=i
 		end
 
@@ -683,7 +702,7 @@ function setup_menu(items)
 				if #ls==0 then ls={""} end -- blank line
 				for i=1,#ls do
 					local prefix=""--(i>1 and " " or "")
-					if item.cursor then prefix=" " end -- indent options
+					if item.cursor then prefix=" " end -- indent decisions
 					menu.lines[#menu.lines+1]={s=prefix..ls[i],idx=idx,item=item,cursor=item.cursor,color=item.color}
 				end
 			end

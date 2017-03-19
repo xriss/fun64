@@ -1,0 +1,81 @@
+
+#^------------------------------
+#^title trim=ends
+#^------------------------------
+{_blog_post_json.title}
+
+#^------------------------------
+#^_blog_post_json
+#^------------------------------
+{
+	"title":"Chatdown",
+	"author":"xriss",
+	"fun_height":"512px",
+	"fun_file":"chatdown.fun.lua",
+}
+
+#^------------------------------
+#^_blog_post_body form=markdown
+#^------------------------------
+
+{_blog_post_json.title}
+-------
+
+Chatdown is  a markdown like text format for describing chat trees, the 
+idea is to have all the logic somewhere else and just use this for 
+describing the relationship and hierarchy of the text.
+
+The bad news is this means you have to label each part of the chat with 
+reasonable ids so the code can find it. Naming things is hard and has
+to be done.
+
+Mostly the file is interpreted as paragraphs similar to markdowns 
+paragraphs separated by empty lines, between these paragraphs lines 
+beginning with one of the special characters #<>= switch the mode, and 
+assign where the next set of paragraphs will be stored.
+
+Following immediately on from these special characters with no white 
+space in between are the id labels, these are used to name each set of 
+paragraphs and allow references between them. This is the most complex 
+part of the chatdown format.
+
+A chat is started by beginning a line with a # this can be thought of 
+as the talky part of an NPCs brain and a chatdown file contains 
+multiple chats. These chats can reference each other, for example one 
+NPC can check what you have told another NPC.
+
+The first paragraph of a #chat is the display name of the NPC, the rest 
+of the paragraphs are a longer description. More data can also be 
+associated with the NPC here but I will go into that another time.
+
+Responses are started with a < and they belong to the current chat, 
+these are the things that an NPC says, for instance, <welcome is the 
+first thing an NPC says when you talk to them.
+
+Decisions are your choices that can be made after an NPC talks, started 
+with a > these are stored in the current response and are primarily 
+links to another response.
+
+With decisions the first paragraph is displayed and the remaining 
+paragraphs can be used as the spoken out loud dialogue. Some styles of 
+dialogue writing use this form, others only need the first paragraph.
+
+Proxies are variables associated with this chat, they are assigned by 
+lines beginning with an = and all paragraphs following are given to 
+this proxy. Proxies way be set inside any of the other states and the 
+change will happen as you progress through the chat. This allows us to 
+track decisions by changing a proxy inside the decision.
+
+Proxies may be expanded inside paragraphs or even option names by using 
+squiggly brackets like so {proxyname}, more complicated expansions will 
+be added later if needed.
+
+This is just an overview and its best we explain with some code, so 
+take a look at the following chatdown example which you will find 
+embedded at the top of this fun64 file. The code to parse and display 
+this format is included, probably best you do not look too closely at 
+that bit :)
+
+Since chatdown took some time to formalise, it is also going to take 
+more than one short post to explain, expect a follow up with a more 
+complex example.
