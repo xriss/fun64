@@ -748,6 +748,9 @@ NO!
 
 Not those voices...
 
+]],[[
+What do you mean? What other voices are there?
+
 ]]},62+1,1)
 
 		local bprint=system.components.text_back.text_print
