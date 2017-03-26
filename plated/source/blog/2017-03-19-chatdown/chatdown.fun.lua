@@ -18,7 +18,7 @@ local chat_text=[[
 	A rare bread of NPC who will fulfil all your conversational desires for 
 	a very good price.
 
-	=sir sir
+	=sir sir/madam
 
 	>convo
 
@@ -46,7 +46,7 @@ local chat_text=[[
 
 <sir
 
-	My apologise, I am afraid that I am but an NPC with very little 
+	My apologies, I am afraid that I am but an NPC with very little 
 	brain, how might I address you?
 	
 	>welcome.1?sir!=madam
@@ -375,7 +375,7 @@ local setup_chat=function(chat,chats,chat_name,response_name)
 
 		if     change=="description" then			print("description",a.name)
 		elseif change=="response"    then			print("response   ",a.name)
-		elseif change=="decision"     then			print("decision    ",a.name)
+		elseif change=="decision"    then			print("decision   ",a.name)
 		elseif change=="proxy"       then			print("proxy      ",a,b)
 		end
 		
