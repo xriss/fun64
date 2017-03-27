@@ -8,11 +8,14 @@ h2		{font-size:2em; font-weight:normal;}
 a		{color:#1400ff;}
 
 a.bar		{color:#f7f4fd; background-color:#3a3a3a; border-radius:4px; padding:5px; text-decoration:none; border-bottom:none;}
-a.bar:hover	{background-color:#1400ff; border-bottom:none;}
+a.bar:hover	{background-color:#1400ff; border-bottom:none; cursor:pointer;}
 
 .nav_wrap	{width:1024px; margin:auto;}
 .nav		{display:inline-block; vertical-align:top; width:50%; border-bottom:1px dashed #1400ff; padding-bottom:20px;}
 .nav:nth-of-type(2)	{text-align:right;}
+
+.page_link	{display:inline-block; width:50%; vertical-align:top; margin-top:80px;}
+.page_link:nth-of-type(2)	{text-align:right;}
 
 
 /*	INDEX styles
@@ -46,9 +49,6 @@ span.blog_post_user	{display:block; font-size:12px; margin-bottom:20px;}
 
 .blog_wrap			{width:700px; margin:auto; margin-top:40px; font-size:18px; line-height:26px; border:0;}
 
-.blog_embed_wrap	{margin:0 auto; margin-top:40px;}
-.blog_embed_head	{width:700px; margin:auto;}
-
 
 /*	BLOG post styles
 	============================================= */
@@ -61,6 +61,26 @@ a.blog_post_link:hover	{background-color:rgba(0,0,0,0.4); color:#fff;}
 a.blog_post_link span.blog_post_title	{display:block; font-size:21px; line-height:30px; font-weight:bold;}
 a.blog_post_link span.blog_post_snip	{display:block; height:180px; overflow:hidden;}
 a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}
+
+
+/*	CODE EMBED
+	============================================= */
+
+.blog_embed_wrap	{margin:0 auto; margin-top:40px;}
+.blog_embed_head	{width:700px; margin:auto;}
+.blog_embed_head div{width:50%; display:inline-block; vertical-align:top; border-top:1px dashed #1400ff; padding-top:40px; margin-bottom:20px;}
+.blog_embed_head div:nth-of-type(2)	{text-align:right;}
+
+
+.blog_code_wrap		{width:1024px; font-size:14px; margin:0 auto; position:relative;}
+pre.lang-lua		{height:100%; overflow:scroll; padding:16px; padding-top:0;}
+a.raw_src			{display:block; position:absolute; right:15px; top:0; color:#444; text-decoration:none; background-color:#fff; padding:5px 10px; text-align:center; z-index:666;}
+a.raw_src:hover		{color:#1400ff;}
+
+#gamecake_container, #gamecake_canvas	{width:100%; height:100%; position:absolute;}
+.code_embed_wrap	{width:1024px; height:100%; overflow:hidden; margin:0 auto; margin-top:14px;}
+.code_embed			{width:100%; height:100%; position:relative; background-color:#000;}
+.loading			{position:absolute; top:40px; right:50%; color:#fff;}
 
 
 /*	MOBILE post styles

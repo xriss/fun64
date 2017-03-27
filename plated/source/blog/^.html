@@ -9,7 +9,7 @@ Fun64 updates
 #^_blog_json
 #^------------------------------
 {
-	posts_per_page:5,
+	posts_per_page:12,
 }
 
 #^------------------------------
@@ -21,7 +21,9 @@ Fun64 updates
 
 <div class="blog_list_wrap">{_list:blog_list}</div>
 
-<div>{_blog_page_older:link_older_page} {_blog_page_newer:link_newer_page}</div>
+<div class="nav_wrap">
+	<div class="page_link">{_blog_page_older:link_older_page}</div><div class="page_link">{_blog_page_newer:link_newer_page}</div>
+</div>
 
 
 #^------------------------------
@@ -57,9 +59,10 @@ Fun64 updates
 
 {_blog_post_json.fun_file&fun_blog_embed}
 
-<div>{_blog_post_older:link_older_post} {_blog_post_newer:link_newer_post}</div>
+<div class="nav_wrap">
+	<div class="page_link">{_blog_post_older:link_older_post}</div><div class="page_link">{_blog_post_newer:link_newer_post}</div>
+</div>
 
-Some comments belong here
 
 #^------------------------------
 #^-This is for the blog list
@@ -93,7 +96,7 @@ Some comments belong here
 <a href="{_it}">Newer post</a>
 
 
-#^------------------------------
+#^------------------------------(used in lists)
 #^fun_blog_link
 #^------------------------------
 
@@ -104,135 +107,179 @@ Some comments belong here
 	{fun_blog_code}
 </div>
 
-#^------------------------------
+#^------------------------------(used in lists)
 #^fun_blog_code
 #^------------------------------
-<div class="blog_code_wrap">
-<pre id="code{_dirname}"class="lang-lua" style="height:100%;overflow:scroll;padding:16px;"></pre>
-<script>
-	$.get("{_dirname}/{_blog_post_json.fun_file}", function(data){
-		$("[id=\"code{_dirname}\"]").text(data).addClass("prettyprint");
-		PR.prettyPrint();
-	});
-</script>
+<div class="blog_code_wrap" id="code_src" style="display:none;">
+	<a href="{_dirname}/{_blog_post_json.fun_file}" class="raw_src">View raw lua source</a>
+	<pre id="code{_dirname}" class="lang-lua"></pre>
+	<script>
+		$.get("{_dirname}/{_blog_post_json.fun_file}", function(data){
+			$("[id=\"code{_dirname}\"]").text(data).addClass("prettyprint");
+			PR.prettyPrint();
+		});
+	</script>
 </div>
 
-#^------------------------------
+#^------------------------------(used in single post)
 #^fun_blog_embed
 #^------------------------------
 
 <div class="blog_embed_wrap">
+
 	<div class="blog_embed_head">
-		Checkout the <a href="{_dirname}/{_blog_post_json.fun_file}">lua source file</a> or view the result <a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}">fullscreen</a>.
+		<div><a class="bar" onclick="toggle_code()">Toggle sourcecode</a></div><div><a class="bar" onclick="toggle_fun()">Run program</a></div>
 	</div>
+	
+	<script>
+		function toggle_code() {
+			
+			var x = document.getElementById('code_src');
+			var y = document.getElementById('code_fun');
+			if (x.style.display === 'none') {
+				x.style.display = 'block';
+				y.style.display = 'none';
+			} else {
+				x.style.display = 'none';
+			}
+		}
+		
+		function toggle_fun() {
+			
+			var x = document.getElementById('code_fun');
+			var y = document.getElementById('code_src');
+			if (x.style.display === 'none') {
+				x.style.display = 'block';
+				y.style.display = 'none';
+				load_fun();
+			} else {
+				x.style.display = 'none';
+			}
+		}
+	</script>
+	
+	
 	{fun_blog_code}
 
-	<div style="width:100%;height:100%;overflow:hidden;">
-		<div style="width:100%;height:100%;position:relative;">
-		
-		<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
+	<div class="code_embed_wrap" id="code_fun" style="display:none;"><!--	run program	-->
+		<div class="code_embed">
+			<a href="{_root}run/?url={_dirname}/{_blog_post_json.fun_file}" class="raw_src">View fullscreen</a>
+			<div class="loading" id="loading_pct">Loading...Please wait...^.^=</div>
+			<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
 
-		local hx,hy,ss=128,128,3
+			local hx,hy,ss=128,128,3
 
-		local opts={
-			times=true, -- request simple time keeping samples
+			local opts={
+				times=true, -- request simple time keeping samples
 
-			width=hx*ss,	-- display basics
-			height=hy*ss,
-			screen_scale=ss,
-		--	show="full",
-			title="fun",
-			start="wetgenes.gamecake.fun.main",
-			fun="start",
-			fps=60,
-			... -- include commandline opts
-		}
+				width=hx*ss,	-- display basics
+				height=hy*ss,
+				screen_scale=ss,
+			--	show="full",
+				title="fun",
+				start="wetgenes.gamecake.fun.main",
+				fun="start",
+				fps=60,
+				... -- include commandline opts
+			}
 
-		math.randomseed( os.time() ) -- try and randomise a little bit better
+			math.randomseed( os.time() ) -- try and randomise a little bit better
 
-		oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+			oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
 
-		return oven:serv()
+			return oven:serv()
 
-	--]]></script>
+		--]]></script>
 
 
-		<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
-			<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
-			<script type="text/javascript">
-				
-				var gamecake_post;
-				var Module;
-				
-				var resize=function(){
-					var e=document.getElementById("gamecake_container");
-					var w=parseFloat(window.getComputedStyle(e).width);
-					var h=parseFloat(window.getComputedStyle(e).height);
-					Module.setCanvasSize(w,h);
-					if(gamecake_post)
-					{
-						gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
-					}
-				};
-
-				var gamecake_start=function() {
-
-		//initialise lua
-					gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
-
-		// create a pulse function and call it every frame
-					var pulse;
-					var resize_wait=16;
-					pulse=function() {
-						requestAnimationFrame(pulse); // we need to always ask to be called again
-						gamecake_post('cmd=lua\n','return gamecake_pulse()');
-						if(resize_wait>0)
-						{
-							if(--resize_wait==0)
+			<div id="gamecake_container">
+				<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()"></canvas>
+				<script type="text/javascript">
+					
+						var gamecake_post;
+						var Module;
+						
+						var resize=function(){
+							var e=document.getElementById("gamecake_container");
+							var w=parseFloat(window.getComputedStyle(e).width);
+							var h=parseFloat(window.getComputedStyle(e).height);
+							Module.setCanvasSize(w,h);
+							if(gamecake_post)
 							{
-								console.log("resioz");
-								resize();
+								gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
 							}
+						};
+
+						var gamecake_start=function() {
+
+				//initialise lua
+							gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+
+				// create a pulse function and call it every frame
+							var pulse;
+							var resize_wait=16;
+							pulse=function() {
+								requestAnimationFrame(pulse); // we need to always ask to be called again
+								gamecake_post('cmd=lua\n','return gamecake_pulse()');
+								if(resize_wait>0)
+								{
+									if(--resize_wait==0)
+									{
+										console.log("resioz");
+										resize();
+									}
+								}
+							};
+							requestAnimationFrame(pulse); // start the updates
 						}
-					};
-					requestAnimationFrame(pulse); // start the updates
-				}
 
-				var show_progress=function(n)
-				{
-					window.show_progress_max=window.show_progress_max || 0;
-					if(window.show_progress_max<n) { window.show_progress_max=n; }
-					var pct=Math.floor(100*(1-(n/window.show_progress_max)));
-					console.log("GameCake Loading "+pct+"%");
-				};
-				window.addEventListener("resize",resize);
-				Module={};
-				Module.canvas=document.getElementById("gamecake_canvas");
-				Module.canvas_resize=resize;
-				Module.memoryInitializerPrefixURL="{_root}exe/";
-				Module['_main'] = function() {
-					gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
-					gamecake_start();
-					resize();
-				};
-				Module["preInit"] = function() {
-					FS.mkdir("/lua");
-					FS.createPreloadedFile('/', "start.fun.lua", "{_dirname}/{_blog_post_json.fun_file}", true, false);
-					FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
-				};
-				Module["monitorRunDependencies"]=show_progress;
+						var show_progress=function(n)
+						{
+							window.show_progress_max=window.show_progress_max || 0;
+							if(window.show_progress_max<n) { window.show_progress_max=n; }
+							var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+							console.log("GameCake Loading "+pct+"%");
+//							var x = document.getElementById('loading_pct');
+//							x.innerHTML = "GameCake Loading "+pct+"%";
+						};
+						
+						function load_fun() {
+							load_fun=function(){
+								resize();
+							};
+							window.addEventListener("resize",resize);
+							Module={};
+							Module.canvas=document.getElementById("gamecake_canvas");
+							Module.canvas_resize=resize;
+							Module.memoryInitializerPrefixURL="{_root}exe/";
+							Module['_main'] = function() {
+								gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+								gamecake_start();
+								resize();
+							};
+							Module["preInit"] = function() {
+								FS.mkdir("/lua");
+								FS.createPreloadedFile('/', "start.fun.lua", "{_dirname}/{_blog_post_json.fun_file}", true, false);
+								FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+							};
+							Module["monitorRunDependencies"]=show_progress;
 
 
-				window.addEventListener("keydown", function(e) {
-					// space and arrow keys
-					if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-						e.preventDefault();
-					}
-				}, false);
+							window.addEventListener("keydown", function(e) {
+								// space and arrow keys
+								if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+									e.preventDefault();
+								}
+							}, false);
+							
+							var script = document.createElement('script');
+							script.src = "{_root}exe/gamecake.js";
 
-			</script>
-			<script type="text/javascript" src="{_root}exe/gamecake.js"></script>
-		</div>
+							document.head.appendChild(script);
+						}
+					
+				</script>
+			</div>
 		
 		</div>
 	</div>
