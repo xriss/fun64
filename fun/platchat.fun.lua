@@ -14,6 +14,113 @@ hardware,main=system.configurator({
 local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
+local chat_text=[[
+
+#example Conversation NPC
+
+	A rare bread of NPC who will fulfil all your conversational desires for 
+	a very good price.
+
+	=sir sir/madam
+
+	>convo
+
+		Is this the right room for a conversation?
+		
+	>welcome
+	
+		...ERROR...EOF...PLEASE...RESTART...
+
+<welcome
+
+	Good Morning {sir},
+	
+	>morning
+
+		Good morning to you too.
+
+	>afternoon
+
+		I think you will find it is now afternoon.
+
+	>sir
+
+		How dare you call me {sir}!
+
+<sir
+
+	My apologies, I am afraid that I am but an NPC with very little 
+	brain, how might I address you?
+	
+	>welcome.1?sir!=madam
+
+		You may address me as Madam.
+
+		=sir madam
+
+	>welcome.2?sir!=God
+
+		You may address me as God.
+
+		=sir God
+
+	>welcome.3?sir!=sir
+
+		You may address me as Sir.
+
+		=sir sir
+
+<afternoon
+	
+	Then good afternoon {sir},
+	
+	>convo
+
+<morning
+	
+	and how may I help {sir} today?
+	
+	>convo
+
+
+<convo
+
+	Indeed it is, would you like the full conversation or just the quick natter?
+
+	>convo_full
+	
+		How long is the full conversation?
+
+	>convo_quick
+
+		A quick natter sounds just perfect.
+
+<convo_full
+
+	The full conversation is very full and long so much so that you 
+	will have to page through many pages before you get to make a 
+	decision
+	
+	>
+		Like this?
+	<
+	
+	Yes just like this. In fact I think you can see that we are already 
+	doing it.
+			
+	
+	>welcome
+
+<convo_quick
+
+	...
+	
+	>welcome
+
+]]
+
+
+
 -- define all graphics in this global, we will convert and upload to tiles at setup
 -- although you can change tiles during a game, we try and only upload graphics
 -- during initial setup so we have a nice looking sprite sheet to be edited by artists
@@ -176,113 +283,90 @@ Y Y 0 Y Y 0 Y Y
 ]]},
 
 
+{0x0800,"npc_f1",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
+. . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
+. . . . . . . . . 4 7 2 1 7 4 . . . . . . . . . 
+. . . . . . . . 4 7 7 1 2 7 7 4 . . . . . . . . 
+. . . . . . . 4 7 7 1 7 7 2 7 7 4 . . . . . . . 
+. . . . . . . 4 4 4 4 4 4 4 4 4 4 . . . . . . . 
+. . . . . . . . . . 7 7 0 7 . . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . . . 7 7 . . . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . 7 7 7 7 . 7 7 7 . . . . . . . . 
+. . . . . . . . 7 7 7 7 7 . 7 7 . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . 7 7 7 . 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 7 . 7 7 7 . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+{0x0803,"npc_f2",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
+. . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
+. . . . . . . . . 4 7 2 1 7 4 . . . . . . . . . 
+. . . . . . . . 4 7 7 1 2 7 7 4 . . . . . . . . 
+. . . . . . . 4 7 7 1 7 7 2 7 7 4 . . . . . . . 
+. . . . . . . 4 4 4 4 4 4 4 4 4 4 . . . . . . . 
+. . . . . . . . . . 7 7 0 7 . . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . . . 7 7 . . . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 7 . 7 7 . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . . . 7 7 . . . . . . . . . . . 
+. . . . . . . . . . . 7 7 . . . . . . . . . . . 
+. . . . . . . . . . . 7 7 7 . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+{0x0806,"npc_f3",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
+. . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
+. . . . . . . . . 4 7 2 1 7 4 . . . . . . . . . 
+. . . . . . . . 4 7 7 1 2 7 7 4 . . . . . . . . 
+. . . . . . . 4 7 7 1 7 7 2 7 7 4 . . . . . . . 
+. . . . . . . 4 4 4 4 4 4 4 4 4 4 . . . . . . . 
+. . . . . . . . . . 7 7 0 7 . . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . . . 7 7 . . . . . . . . . . . 
+. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . 7 7 7 7 7 7 7 7 . . . . . . . . 
+. . . . . . . 7 7 7 7 7 7 7 7 7 7 . . . . . . . 
+. . . . . . . 7 7 . 7 7 7 7 . 7 7 . . . . . . . 
+. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . . . 7 7 7 . 7 7 . 7 . . . . . . . 
+. . . . . . . . 7 7 . . . . 7 7 7 . . . . . . . 
+. . . . . . . . 7 7 7 . . . 7 7 . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
 }
 
 
-local chat_text=[[
-
-#example Conversation NPC
-
-	A rare bread of NPC who will fulfil all your conversational desires for 
-	a very good price.
-
-	=sir sir/madam
-
-	>convo
-
-		Is this the right room for a conversation?
-		
-	>welcome
-	
-		...ERROR...EOF...PLEASE...RESTART...
-
-<welcome
-
-	Good Morning {sir},
-	
-	>morning
-
-		Good morning to you too.
-
-	>afternoon
-
-		I think you will find it is now afternoon.
-
-	>sir
-
-		How dare you call me {sir}!
-
-<sir
-
-	My apologies, I am afraid that I am but an NPC with very little 
-	brain, how might I address you?
-	
-	>welcome.1?sir!=madam
-
-		You may address me as Madam.
-
-		=sir madam
-
-	>welcome.2?sir!=God
-
-		You may address me as God.
-
-		=sir God
-
-	>welcome.3?sir!=sir
-
-		You may address me as Sir.
-
-		=sir sir
-
-<afternoon
-	
-	Then good afternoon {sir},
-	
-	>convo
-
-<morning
-	
-	and how may I help {sir} today?
-	
-	>convo
-
-
-<convo
-
-	Indeed it is, would you like the full conversation or just the quick natter?
-
-	>convo_full
-	
-		How long is the full conversation?
-
-	>convo_quick
-
-		A quick natter sounds just perfect.
-
-<convo_full
-
-	The full conversation is very full and long so much so that you 
-	will have to page through many pages before you get to make a 
-	decision
-	
-	>
-		Like this?
-	<
-	
-	Yes just like this. In fact I think you can see that we are already 
-	doing it.
-			
-	
-	>welcome
-
-<convo_quick
-
-	...
-	
-	>welcome
-
-]]
 
 local combine_legends=function(...)
 	local legend={}
@@ -306,7 +390,7 @@ local default_legend={
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
 	["S "]={ name="char_empty",	start=1,	},
-	["N "]={ name="char_empty",	npc=1,		},
+	["N "]={ name="char_empty",	npc=1,				sprite="npc_f1", },
 
 }
 	
@@ -551,6 +635,21 @@ function setup_space()
 		end
 	space:add_handler(arbiter_menu,0x4002)
 
+	local arbiter_npc={} -- menu things
+		arbiter_npc.presolve=function(it)
+			if it.shape_a.menu and it.shape_b.player then -- remember menu
+				it.shape_b.player.near_npc=it.shape_a.npc
+			end
+			return false
+		end
+		arbiter_npc.separate=function(it)
+			if it.shape_a and it.shape_a.menu and it.shape_b and it.shape_b.player then -- forget menu
+				it.shape_b.player.near_npc=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_npc,0x4003)
+
 	return space
 end
 
@@ -648,6 +747,17 @@ function char_controls(it,fast)
 			local near_menu=it.near_menu
 			local callbacks=entities_manifest("callbacks")
 			callbacks[#callbacks+1]=function() menu.show(near_menu) end -- call later so we do not process menu input this frame
+		end
+
+		if it.jump_clr and it.near_npc then
+print("menu")
+
+--[[
+			local menu=entities_get("menu")
+			local near_menu=it.near_menu
+			local callbacks=entities_manifest("callbacks")
+			callbacks[#callbacks+1]=function() menu.show(near_menu) end -- call later so we do not process menu input this frame
+]]
 		end
 
 		if it.jump then
@@ -754,43 +864,12 @@ function add_player(i)
 
 	player.frame=0
 	player.frames={0x0200,0x0203,0x0200,0x0206}
-
-	player.bubble=function()
-		local players_start=entities_get("players_start") or {64,64}
-		player.bubble_active=true
-
-		player.bubble_body=space:body(1,1)
-		player.bubble_body:position(players_start[1]+i,players_start[2]-i)
-
-		player.bubble_shape=player.bubble_body:shape("circle",6,0,0)
-		player.bubble_shape:friction(0.5)
-		player.bubble_shape:elasticity(1)
-
-		player.bubble_shape:collision_type(0x2002) -- bubble
-		player.bubble_shape.player=player
-
-		player.bubble_body:velocity_func(function(body)
-			local px,py=body:position()
-			
-			body.gravity_x=(players_start[1]-px)*16
-			body.gravity_y=(players_start[2]-py)*16
-			return true
-		end)
-
-	end
 	
 	player.join=function()
 		local players_start=entities_get("players_start") or {64,64}
 	
 		local px,py=players_start[1]+i,players_start[2]
 		local vx,vy=0,0
-
-		if player.bubble_active then -- pop bubble
-			px,py=player.bubble_body:position()
-			vx,vy=player.bubble_body:velocity()
-			space:remove(player.bubble_shape) -- auto?
-			space:remove(player.bubble_body)
-		end
 
 		player.bubble_active=false
 		player.active=true
@@ -818,25 +897,6 @@ function add_player(i)
 		if not time.start then
 			time.start=time.game -- when the game started
 		end
-	end
-
-	player.die=function()
-		if not player.active then return end -- not alive
-		
-		local px,py=player.body:position()
-		local vx,vy=player.body:velocity()
-
-		player.active=false -- die
---			player.dead=true
-
-		space:remove(player.shape) -- auto?
-		space:remove(player.body)
-		
-		local it
-		it=add_detritus(names.body_p1.idx,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=player.color
-		it=add_detritus(names.body_p2.idx,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=player.color
-		it=add_detritus(names.body_p3.idx,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=player.color
-
 	end
 	
 	player.update=function()
@@ -870,50 +930,14 @@ function add_player(i)
 			end
 
 		end
-				
-		if not player.bubble_active and not player.active then -- can add as bubble
-			if up.button("up") or up.button("down") or up.button("left") or up.button("right") or up.button("fire") then
-				player.bubble() -- add bubble
-			end
+
+
+		if not player.joined then
+			player.joined=true
+			player:join() -- join for real and remove bubble
 		end
 
-		if player.bubble_active then
-			if not player.active then
-				if player.jump then
-					if player.joined then player.score=player.score-1 end-- first join is free, next join costs 1 point
-					player.joined=true
-					player:join() -- join for real and remove bubble
-				end
-			end
-		end
-		
-		if player.bubble_active then
-		
-			local px,py=player.bubble_body:position()
-
-			if up.button("left") then
-				
-				player.bubble_body:apply_force(-120,0,px,py,"world")
-				player.dir=-1
-				player.frame=player.frame+1
-				
-			elseif  up.button("right") then
-
-				player.bubble_body:apply_force(120,0,px,py,"world")
-				player.dir= 1
-				player.frame=player.frame+1
-
-			elseif up.button("up") then
-				
-				player.bubble_body:apply_force(0,-120,px,py,"world")
-				
-			elseif  up.button("down") then
-
-				player.bubble_body:apply_force(0,120,px,py,"world")
-
-			end
-
-		elseif player.active then
+		if player.active then
 		
 			char_controls(player)
 		
@@ -1272,11 +1296,19 @@ function setup_level(idx)
 				item.active=true
 				item.px=tile.x*8+4
 				item.py=tile.y*8+4
-				item.sprite = names.door_open.idx
+				item.sprite = names[tile.sprite].idx
 				item.h=24
 				item.s=1
 				item.draw_rz=0
 				item.pz=-1
+			end
+			if tile.npc then
+				local item=add_item()
+
+				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
+				
+				item.shape:collision_type(0x4002)
+				item.shape.npc=tile.npc
 			end
 		end
 	end
@@ -1445,7 +1477,7 @@ update=function()
 		entities_reset()
 
 		chats=chatdown.setup(chat_text)
-		menu=setup_menu( chats.get_menu_items("example") )
+		menu=setup_menu() -- chats.get_menu_items("example") )
 
 		setup_score()
 		
@@ -1456,15 +1488,15 @@ update=function()
 		setup_done=true
 	end
 	
---	if menu.lines then -- menu only, pause the entities
---		menu.update()
---		menu.draw()
---	else
+	if menu.lines then -- menu only, pause the entities
+		menu.update()
+		menu.draw()
+	else
 		entities_call("update")
 		local space=entities_get("space")
 		space:step(1/(60*2)) -- double step for increased stability, allows faster velocities.
 		space:step(1/(60*2))
---	end
+	end
 
 	-- run all the callbacks created by collisions 
 	for _,f in pairs(entities_manifest("callbacks")) do f() end
