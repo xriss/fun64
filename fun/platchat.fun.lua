@@ -1,8 +1,12 @@
 
 local chatdown=require("wetgenes.gamecake.fun.chatdown")
+local bitdown=require("wetgenes.gamecake.fun.bitdown")
+local chipmunk=require("wetgenes.chipmunk")
+
 
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
+	graphics=function() return graphics end,
 	update=function() update() end, -- called repeatedly to update+draw
 })
 
@@ -348,7 +352,886 @@ map=[[
 }
 
 
+-- handle tables of entities that need to be updated and drawn.
 
+local entities -- a place to store everything that needs to be updated
+local entities_info -- a place to store options or values
+local entities_reset=function()
+	entities={}
+	entities_info={}
+end
+-- get items for the given caste
+local entities_items=function(caste)
+	caste=caste or "generic"
+	if not entities[caste] then entities[caste]={} end -- create on use
+	return entities[caste]
+end
+-- add an item to this caste
+local entities_add=function(it,caste)
+	caste=caste or it.caste -- probably from item
+	caste=caste or "generic"
+	local items=entities_items(caste)
+	items[ #items+1 ]=it -- add to end of array
+	return it
+end
+-- call this functions on all items in every caste
+local entities_call=function(fname,...)
+	local count=0
+	for caste,items in pairs(entities) do
+		for idx=#items,1,-1 do -- call backwards so item can remove self
+			local it=items[idx]
+			if it[fname] then
+				it[fname](it,...)
+				count=count+1
+			end
+		end			
+	end
+	return count -- number of items called
+end
+-- get/set info associated with this entities
+local entities_get=function(name)       return entities_info[name]							end
+local entities_set=function(name,value)        entities_info[name]=value	return value	end
+local entities_manifest=function(name)
+	if not entities_info[name] then entities_info[name]={} end -- create empty
+	return entities_info[name]
+end
+-- reset the entities
+entities_reset()
+
+
+-- call coroutine with traceback on error
+local coroutine_resume_and_report_errors=function(co,...)
+	local a,b=coroutine.resume(co,...)
+	if a then return a,b end -- no error
+	error( b.."\nin coroutine\n"..debug.traceback(co) , 2 ) -- error
+end
+
+
+-- create space and handlers
+function setup_space()
+
+	local space=entities_set("space", chipmunk.space() )
+	
+	space:gravity(0,700)
+	space:damping(0.5)
+	space:sleep_time_threshold(1)
+	space:idle_speed_threshold(10)
+	
+	local arbiter_pass={}  -- background tiles we can jump up through
+		arbiter_pass.presolve=function(it)
+			local points=it:points()
+-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+			if it.shape_b.in_body.headroom then
+				local headroom=false
+--					for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+--					if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
+					it.shape_b.in_body.headroom[it.shape_a]=true
+					return it:ignore()
+				end
+			end
+			
+			return true
+		end
+		arbiter_pass.separate=function(it)
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+			end
+		end
+	space:add_handler(arbiter_pass,0x1001)
+	
+	local arbiter_deadly={} -- deadly things
+		arbiter_deadly.presolve=function(it)
+			local callbacks=entities_manifest("callbacks")
+			if it.shape_b.player then -- trigger die
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
+			end
+			return true
+		end
+	space:add_handler(arbiter_deadly,0x1002)
+
+	local arbiter_crumbling={} -- crumbling tiles
+		arbiter_crumbling.presolve=function(it)
+			local points=it:points()
+	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+			if it.shape_b.in_body.headroom then
+				local headroom=false
+	--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+	--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
+					it.shape_b.in_body.headroom[it.shape_a]=true
+					return it:ignore()
+				end
+				local tile=it.shape_a.tile -- a humanoid is walking on this tile
+				if tile then
+					tile.level.updates[tile]=true -- start updates to animate this tile crumbling away
+				end
+			end
+			
+			return true
+		end
+		arbiter_crumbling.separate=function(it)
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then -- only players types will have headroom
+					it.shape_b.in_body.headroom[it.shape_a]=nil
+				end
+			end
+		end
+	space:add_handler(arbiter_crumbling,0x1003)
+
+	local arbiter_walking={} -- walking things (players)
+		arbiter_walking.presolve=function(it)
+			local callbacks=entities_manifest("callbacks")
+			if it.shape_a.player and it.shape_b.monster then
+				local pa=it.shape_a.player
+				callbacks[#callbacks+1]=function() pa:die() end
+			end
+			if it.shape_a.monster and it.shape_b.player then
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
+			end
+			if it.shape_a.player and it.shape_b.player then -- two players touch
+				local pa=it.shape_a.player
+				local pb=it.shape_b.player
+				if pa.active then
+					if pb.bubble_active and pb.joined then -- burst
+						callbacks[#callbacks+1]=function() pb:join() end
+					end
+				end				
+				if pb.active then
+					if pa.bubble_active and pa.joined then -- burst
+						callbacks[#callbacks+1]=function() pa:join() end
+					end
+				end				
+			end
+			return true
+		end
+		arbiter_walking.postsolve=function(it)
+			local points=it:points()
+			if points.normal_y>0.25 then -- on floor
+				local time=entities_get("time")
+				it.shape_a.in_body.floor_time=time.game
+				it.shape_a.in_body.floor=it.shape_b
+			end
+			return true
+		end
+	space:add_handler(arbiter_walking,0x2001) -- walking things (players)
+
+	local arbiter_loot={} -- loot things (pickups)
+		arbiter_loot.presolve=function(it)
+			if it.shape_a.loot and it.shape_b.player then -- trigger collect
+				it.shape_a.loot.player=it.shape_b.player
+			end
+			return false
+		end
+	space:add_handler(arbiter_loot,0x3001) 
+	
+	local arbiter_trigger={} -- trigger things
+		arbiter_trigger.presolve=function(it)
+			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
+				it.shape_b.triggered.triggered = it.shape_a.trigger
+			end
+			return false
+		end
+	space:add_handler(arbiter_trigger,0x4001)
+
+	local arbiter_menu={} -- menu things
+		arbiter_menu.presolve=function(it)
+			if it.shape_a.menu and it.shape_b.player then -- remember menu
+				it.shape_b.player.near_menu=it.shape_a.menu
+			end
+			return false
+		end
+		arbiter_menu.separate=function(it)
+			if it.shape_a and it.shape_a.menu and it.shape_b and it.shape_b.player then -- forget menu
+				it.shape_b.player.near_menu=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_menu,0x4002)
+
+	return space
+end
+
+
+-- items, can be used for general things, EG physics shapes with no special actions
+function add_item()
+	local item=entities_add{caste="item"}
+	item.draw=function()
+		if item.active then
+			local px,py,rz=item.px,item.py,item.rz
+			if item.body then -- from fizix
+				px,py=item.body:position()
+				rz=item.body:angle()
+			end
+			rz=item.draw_rz or rz -- always face up?
+			system.components.sprites.list_add({t=item.sprite,h=item.h,hx=item.hx,hy=item.hy,s=item.s,sx=item.sx,sy=item.sy,px=px,py=py,rz=180*rz/math.pi,color=item.color,pz=item.pz})
+		end
+	end
+	return item
+end
+
+
+
+-- move it like a player or monster based on
+-- it.move which is "left" or "right" to move 
+-- it.jump which is true if we should jump
+function char_controls(it,fast)
+	fast=fast or 1
+
+	local time=entities_get("time")
+
+	local jump=fast*200 -- up velocity we want when jumping
+	local speed=fast*60 -- required x velocity
+	local airforce=speed*2 -- replaces surface velocity
+	local groundforce=speed/2 -- helps surface velocity
+	
+	if ( time.game-it.body.floor_time < 0.125 ) or ( it.floor_time-time.game > 10 ) then -- floor available recently or not for a very long time (stuck)
+	
+		it.floor_time=time.game -- last time we had some floor
+
+		it.shape:friction(1)
+
+		if it.jump_clr and it.near_menu then
+			local menu=entities_get("menu")
+			local near_menu=it.near_menu
+			local callbacks=entities_manifest("callbacks")
+			callbacks[#callbacks+1]=function() menu.show(near_menu) end -- call later so we do not process menu input this frame
+		end
+
+		if it.jump then
+
+			local vx,vy=it.body:velocity()
+
+			if vy>-20 then -- only when pushing against the ground a little
+
+				if it.near_menu then -- no jump
+				
+				else
+				
+					vy=-jump
+					it.body:velocity(vx,vy)
+					
+					it.body.floor_time=0
+				
+				end
+				
+			end
+
+		end
+
+		if it.move=="left" then
+			
+			local vx,vy=it.body:velocity()
+			if vx>0 then it.body:velocity(0,vy) end
+			
+			it.shape:surface_velocity(speed,0)
+			if vx>-speed then it.body:apply_force(-groundforce,0,0,0) end
+			it.dir=-1
+			it.frame=it.frame+1
+			
+		elseif it.move=="right" then
+
+			local vx,vy=it.body:velocity()
+			if vx<0 then it.body:velocity(0,vy) end
+
+			it.shape:surface_velocity(-speed,0)
+			if vx<speed then it.body:apply_force(groundforce,0,0,0) end
+			it.dir= 1
+			it.frame=it.frame+1
+
+		else
+
+			it.shape:surface_velocity(0,0)
+
+		end
+		
+	else -- in air
+
+		it.shape:friction(0)
+
+		if it.move=="left" then
+			
+			local vx,vy=it.body:velocity()
+			if vx>0 then it.body:velocity(0,vy) end
+
+			if vx>-speed then it.body:apply_force(-airforce,0,0,0) end
+			it.shape:surface_velocity(speed,0)
+			it.dir=-1
+			it.frame=it.frame+1
+			
+		elseif  it.move=="right" then
+
+			local vx,vy=it.body:velocity()
+			if vx<0 then it.body:velocity(0,vy) end
+
+			if vx<speed then it.body:apply_force(airforce,0,0,0) end
+			it.shape:surface_velocity(-speed,0)
+			it.dir= 1
+			it.frame=it.frame+1
+
+		else
+
+			it.shape:surface_velocity(0,0)
+
+		end
+
+	end
+end
+
+
+function add_player(i)
+	local players_colors={30,14,18,7,3,22}
+
+	local names=system.components.tiles.names
+	local space=entities_get("space")
+
+	local player=entities_add{caste="player"}
+
+	player.idx=i
+	player.score=0
+	
+	local t=bitdown.cmap[ players_colors[i] ]
+	player.color={}
+	player.color.r=t[1]/255
+	player.color.g=t[2]/255
+	player.color.b=t[3]/255
+	player.color.a=t[4]/255
+	player.color.idx=players_colors[i]
+	
+	player.up_text_x=math.ceil( (system.components.text.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
+
+	player.frame=0
+	player.frames={0x0200,0x0203,0x0200,0x0206}
+
+	player.bubble=function()
+		local players_start=entities_get("players_start") or {64,64}
+		player.bubble_active=true
+
+		player.bubble_body=space:body(1,1)
+		player.bubble_body:position(players_start[1]+i,players_start[2]-i)
+
+		player.bubble_shape=player.bubble_body:shape("circle",6,0,0)
+		player.bubble_shape:friction(0.5)
+		player.bubble_shape:elasticity(1)
+
+		player.bubble_shape:collision_type(0x2002) -- bubble
+		player.bubble_shape.player=player
+
+		player.bubble_body:velocity_func(function(body)
+			local px,py=body:position()
+			
+			body.gravity_x=(players_start[1]-px)*16
+			body.gravity_y=(players_start[2]-py)*16
+			return true
+		end)
+
+	end
+	
+	player.join=function()
+		local players_start=entities_get("players_start") or {64,64}
+	
+		local px,py=players_start[1]+i,players_start[2]
+		local vx,vy=0,0
+
+		if player.bubble_active then -- pop bubble
+			px,py=player.bubble_body:position()
+			vx,vy=player.bubble_body:velocity()
+			space:remove(player.bubble_shape) -- auto?
+			space:remove(player.bubble_body)
+		end
+
+		player.bubble_active=false
+		player.active=true
+		player.body=space:body(1,math.huge)
+		player.body:position(px,py)
+		player.body:velocity(vx,vy)
+		player.body.headroom={}
+		
+		player.body:velocity_func(function(body)
+--				body.gravity_x=-body.gravity_x
+--				body.gravity_y=-body.gravity_y
+			return true
+		end)
+					
+		player.floor_time=0 -- last time we had some floor
+
+		player.shape=player.body:shape("segment",0,-4,0,4,4)
+		player.shape:friction(1)
+		player.shape:elasticity(0)
+		player.shape:collision_type(0x2001) -- walker
+		player.shape.player=player
+		
+		player.body.floor_time=0
+		local time=entities_get("time")
+		if not time.start then
+			time.start=time.game -- when the game started
+		end
+	end
+
+	player.die=function()
+		if not player.active then return end -- not alive
+		
+		local px,py=player.body:position()
+		local vx,vy=player.body:velocity()
+
+		player.active=false -- die
+--			player.dead=true
+
+		space:remove(player.shape) -- auto?
+		space:remove(player.body)
+		
+		local it
+		it=add_detritus(names.body_p1.idx,16,px,py-4,0.25,16,0.1,0.5,"box",-4,-3,4,3,0) it.body:velocity(vx*3,vy*3) it.color=player.color
+		it=add_detritus(names.body_p2.idx,16,px,py+0,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*2,vy*2) it.color=player.color
+		it=add_detritus(names.body_p3.idx,16,px,py+4,0.25,16,0.1,0.5,"box",-3,-2,3,2,0) it.body:velocity(vx*1,vy*1) it.color=player.color
+
+	end
+	
+	player.update=function()
+		local up=ups(player.idx) -- the controls for this player
+		
+		player.move=false
+		player.jump=up.button("fire")
+		player.jump_clr=up.button("fire_clr")
+
+		if use_only_two_keys then -- touch screen control test?
+
+			if up.button("left") and up.button("right") then -- jump
+				player.move=player.move_last
+				player.jump=true
+			elseif up.button("left") then -- left
+				player.move_last="left"
+				player.move="left"
+			elseif up.button("right") then -- right
+				player.move_last="right"
+				player.move="right"
+			end
+
+		else
+
+			if up.button("left") and up.button("right") then -- stop
+				player.move=nil
+			elseif up.button("left") then -- left
+				player.move="left"
+			elseif up.button("right") then -- right
+				player.move="right"
+			end
+
+		end
+				
+		if not player.bubble_active and not player.active then -- can add as bubble
+			if up.button("up") or up.button("down") or up.button("left") or up.button("right") or up.button("fire") then
+				player.bubble() -- add bubble
+			end
+		end
+
+		if player.bubble_active then
+			if not player.active then
+				if player.jump then
+					if player.joined then player.score=player.score-1 end-- first join is free, next join costs 1 point
+					player.joined=true
+					player:join() -- join for real and remove bubble
+				end
+			end
+		end
+		
+		if player.bubble_active then
+		
+			local px,py=player.bubble_body:position()
+
+			if up.button("left") then
+				
+				player.bubble_body:apply_force(-120,0,px,py,"world")
+				player.dir=-1
+				player.frame=player.frame+1
+				
+			elseif  up.button("right") then
+
+				player.bubble_body:apply_force(120,0,px,py,"world")
+				player.dir= 1
+				player.frame=player.frame+1
+
+			elseif up.button("up") then
+				
+				player.bubble_body:apply_force(0,-120,px,py,"world")
+				
+			elseif  up.button("down") then
+
+				player.bubble_body:apply_force(0,120,px,py,"world")
+
+			end
+
+		elseif player.active then
+		
+			char_controls(player)
+		
+		end
+	end
+	
+
+	player.draw=function()
+		if player.bubble_active then
+
+			local px,py=player.bubble_body:position()
+			local rz=player.bubble_body:angle()
+			player.frame=player.frame%16
+			local t=player.frames[1+math.floor(player.frame/4)]
+			
+			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=(player.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=player.color})
+			
+			system.components.sprites.list_add({t=names.bubble.idx,h=24,px=px,py=py,s=1})
+
+		elseif player.active then
+			local px,py=player.body:position()
+			local rz=player.body:angle()
+			player.frame=player.frame%16
+			local t=player.frames[1+math.floor(player.frame/4)]
+			
+			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})			
+		end
+
+		if player.joined then
+			local s=string.format("%d",player.score)
+			system.components.text.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
+		end
+
+	end
+	
+	return player
+end
+
+function change_level(idx)
+
+	setup_level(idx)
+	
+end
+
+function setup_level(idx)
+
+	local level=entities_set("level",entities_add{})
+
+	local names=system.components.tiles.names
+
+	level.updates={} -- tiles to update (animate)
+	level.update=function()
+		for v,b in pairs(level.updates) do -- update these things
+			if v.update then v:update() end
+		end
+	end
+
+-- init map and space
+
+	local space=setup_space()
+
+	for n,v in pairs( levels[idx].legend ) do -- fixup missing values (this will slightly change your legend data)
+		if v.name then -- convert name to tile idx
+			v.idx=names[v.name].idx
+		end
+		if v.idx then -- convert idx to r,g,b,a
+			v[1]=(          (v.idx    )%256)
+			v[2]=(math.floor(v.idx/256)%256)
+			v[3]=31
+			v[4]=0
+		end
+	end
+
+	local map=entities_set("map", bitdown.pix_tiles(  levels[idx].map,  levels[idx].legend ) )
+	
+	level.title=levels[idx].title
+	
+	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
+
+	local unique=0
+	bitdown.map_build_collision_strips(map,function(tile)
+		unique=unique+1
+		if tile.coll then -- can break the collision types up some more by appending a code to this setting
+			if tile.collapse then -- make unique
+				tile.coll=tile.coll..unique
+			end
+		end
+	end)
+
+	for y,line in pairs(map) do
+		for x,tile in pairs(line) do
+			local shape
+			if tile.deadly then -- a deadly tile
+
+				if tile.deadly==1 then
+					shape=space.static:shape("poly",{x*8+4,y*8+8,(x+1)*8,(y+0)*8,(x+0)*8,(y+0)*8},0)
+				else
+					shape=space.static:shape("poly",{x*8+4,y*8,(x+1)*8,(y+1)*8,(x+0)*8,(y+1)*8},0)
+				end
+				shape:friction(1)
+				shape:elasticity(1)
+				shape.cx=x
+				shape.cy=y
+				shape:collision_type(0x1002) -- a tile that kills
+
+			elseif tile.solid and (not tile.parent) then -- if we have no parent then we are the master tile
+			
+				local l=1
+				local t=tile
+				while t.child do t=t.child l=l+1 end -- count length of strip
+
+				if     tile.link==1 then -- x strip
+					shape=space.static:shape("box",x*8,y*8,(x+l)*8,(y+1)*8,0)
+				elseif tile.link==-1 then  -- y strip
+					shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+l)*8,0)
+				else -- single box
+					shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
+				end
+
+				shape:friction(tile.solid)
+				shape:elasticity(tile.solid)
+				shape.cx=x
+				shape.cy=y
+				shape.coll=tile.coll
+				if tile.collapse then
+					shape:collision_type(0x1003) -- a tile that collapses when we walk on it
+					tile.update=function(tile)
+						tile.anim=(tile.anim or 0) + 1
+						
+						if tile.anim%4==0 then
+							local dust=entities_get("dust")
+							dust.add({
+								vx=0,
+								vy=0,
+								px=(tile.x+math.random())*8,
+								py=(tile.y+math.random())*8,
+								life=60*2,
+								friction=1,
+								elasticity=0.75,
+							})
+						end
+
+						if tile.anim > 60 then
+							space:remove( tile.shape )
+							tile.shape=nil
+							system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,{0,0,0,0})
+							system.components.map.dirty(true)
+							level.updates[tile]=nil
+						else
+							local name
+							if     tile.anim < 20 then name="char_floor_collapse_1"
+							elseif tile.anim < 40 then name="char_floor_collapse_2"
+							else                       name="char_floor_collapse_3"
+							end
+							local idx=names[name].idx
+							local v={}
+							v[1]=(          (idx    )%256)
+							v[2]=(math.floor(idx/256)%256)
+							v[3]=31
+							v[4]=0
+							system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,v)
+							system.components.map.dirty(true)
+						end
+					end
+				elseif not tile.dense then 
+					shape:collision_type(0x1001) -- a tile we can jump up through
+				end
+			end
+			if tile.push then
+				if shape then
+					shape:surface_velocity(tile.push*12,0)
+				end
+				level.updates[tile]=true
+				tile.update=function(tile)
+					tile.anim=( (tile.anim or 0) + 1 )%20
+					
+					local name
+					if     tile.anim <  5 then name="char_floor_move_1"
+					elseif tile.anim < 10 then name="char_floor_move_2"
+					elseif tile.anim < 15 then name="char_floor_move_3"
+					else                       name="char_floor_move_4"
+					end
+					local idx=names[name].idx
+					local v={}
+					v[1]=(          (idx    )%256)
+					v[2]=(math.floor(idx/256)%256)
+					v[3]=31
+					v[4]=0
+					system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,v)
+					system.components.map.dirty(true)
+				end
+			end
+
+			tile.map=map -- remember map
+			tile.level=level -- remember level
+			if shape then -- link shape and tile
+				shape.tile=tile
+				tile.shape=shape
+			end
+		end
+	end
+
+
+	for y,line in pairs(map) do
+		for x,tile in pairs(line) do
+
+			if tile.loot then
+				local loot=add_loot()
+
+				local shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
+				shape:collision_type(0x3001)
+				shape.loot=loot
+				loot.shape=shape
+				loot.px=x*8+4
+				loot.py=y*8+4
+				loot.active=true
+			end
+			if tile.item then
+				local item=add_item()
+				
+				item.sprite=names.cannon_ball.idx
+				item.h=24
+
+				item.active=true
+				item.body=space:body(2,2)
+				item.body:position(x*8+4,y*8+4)
+
+				item.shape=item.body:shape("circle",8,0,0)
+				item.shape:friction(0.5)
+				item.shape:elasticity(0.5)
+
+			end
+			if tile.start then
+				entities_set("players_start",{x*8+4,y*8+4}) --  remember start point
+			end
+			if tile.monster then
+				local item=add_monster{
+					px=x*8+4,py=y*8+4,
+					vx=0,vy=0,
+				}
+			end
+			if tile.trigger then
+				local item=add_item()
+
+				local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
+				item.shape=shape
+				
+				shape:collision_type(0x4001)
+				shape.trigger=tile
+			end
+			if tile.menu then
+				local item=add_item()
+
+				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
+				
+				item.shape:collision_type(0x4002)
+				item.shape.menu=tile.menu
+			end
+			if tile.sign then
+				local items={}
+				tile.items=items
+				local px,py=x*8-(#tile.sign)*4 + (tile.sign_x or 0) ,y*8 + (tile.sign_y or 0)
+				for i=1,#tile.sign do
+					local item=add_item()
+					items[i]=item
+
+					item.sprite=tile.sign:byte(i)/2
+					item.hx=4
+					item.hy=8
+					item.s=2
+
+					item.active=true
+					item.body=space:body(1,100)
+					item.body:position(px+i*8-4 ,py+8 )
+
+					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
+					item.shape:friction(1)
+					item.shape:elasticity(0.5)
+					
+					if tile.colors then item.color=tile.colors[ ((i-1)%#tile.colors)+1 ] end
+										
+					if items[i-1] then -- link
+						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint", 0,-8 , 0,-8 )
+						item.constraint:collide_bodies(false)
+					end					
+				end
+				local item=items[1] -- first
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px-4,py )
+
+				local item=items[#tile.sign] -- last
+				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px+#tile.sign*8+4,py )
+			end
+			if tile.spill then
+				level.updates[tile]=true
+				tile.update=function(tile)
+					local dust=entities_get("dust")
+					dust.add({
+						vx=0,
+						vy=0,
+						px=(tile.x+math.random())*8,
+						py=(tile.y+math.random())*8,
+						life=60*2,
+						friction=1,
+						elasticity=0.75,
+					})
+				end
+			end
+			if tile.bubble then
+				level.updates[tile]=true
+				tile.update=function(tile)
+					tile.count=((tile.count or tile.bubble.start )+ 1)%tile.bubble.rate
+					if tile.count==0 then
+						local dust=entities_get("dust")
+						dust.add({
+							vx=0,
+							vy=0,
+							px=(tile.x+math.random())*8,
+							py=(tile.y+math.random())*8,
+							sprite = names.bubble.idx,
+							mass=1/64,inertia=1,
+							h=24,
+							s=1,
+							shape_args={"circle",12,0,0},
+							life=60*16,
+							friction=0,
+							elasticity=15/16,
+							gravity={0,-64},
+							draw_rz=0,
+							die_speed=128,
+							on_die=function(it) -- burst
+								local px,py=it.body:position()
+								for i=1,16 do
+									local r=math.random(math.pi*2000)/1000
+									local vx=math.sin(r)
+									local vy=math.cos(r)
+									dust.add({
+										gravity={0,-64},
+										mass=1/16384,
+										vx=vx*100,
+										vy=vy*100,
+										px=px+vx*8,
+										py=py+vy*8,
+										friction=0,
+										elasticity=0.75,
+										sprite= names.char_dust_white.idx,
+										life=15*(2+i),
+									})
+								end
+							end
+						})
+					end
+				end
+			end
+			if tile.sprite then
+				local item=add_item()
+				item.active=true
+				item.px=tile.x*8+4
+				item.py=tile.y*8+4
+				item.sprite = names.door_open.idx
+				item.h=24
+				item.s=1
+				item.draw_rz=0
+				item.pz=-1
+			end
+		end
+	end
+	
+end
 
 -----------------------------------------------------------------------------
 --[[#setup_menu
@@ -508,12 +1391,33 @@ Update and draw loop, called every frame.
 update=function()
 
 	if not setup_done then
+
+		entities_reset()
+
 		chats=chatdown.setup(chat_text)
 		menu=setup_menu( chats.get_menu_items("example") )
+
+		setup_level(1) -- load map
+		
+		add_player(1) -- add a player
+
 		setup_done=true
 	end
 	
-	menu.update()
-	menu.draw()
+	if menu.lines then -- menu only, pause the entities
+		menu.update()
+		menu.draw()
+	else
+		entities_call("update")
+		local space=entities_get("space")
+		space:step(1/(screen.fps*2)) -- double step for increased stability, allows faster velocities.
+		space:step(1/(screen.fps*2))
+	end
+
+	-- run all the callbacks created by collisions 
+	for _,f in pairs(entities_manifest("callbacks")) do f() end
+	entities_set("callbacks",{}) -- and reset the list
+
+	entities_call("draw") -- because we are going to add them all in again here
 	
 end
