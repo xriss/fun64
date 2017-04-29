@@ -27,7 +27,7 @@ local chat_text=[[
 
 		Is this the right room for a conversation?
 		
-	>welcome
+	>exit
 	
 		...ERROR...EOF...PLEASE...RESTART...
 
@@ -109,13 +109,13 @@ local chat_text=[[
 	doing it.
 			
 	
-	>welcome
+	>exit
 
 <convo_quick
 
 	...
 	
-	>welcome
+	>exit
 
 ]]
 
@@ -390,7 +390,7 @@ local default_legend={
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
 	["S "]={ name="char_empty",	start=1,	},
-	["N "]={ name="char_empty",	npc=1,				sprite="npc_f1", },
+	["N "]={ name="char_empty",	npc="example",				sprite="npc_f1", },
 
 }
 	
@@ -635,15 +635,15 @@ function setup_space()
 		end
 	space:add_handler(arbiter_menu,0x4002)
 
-	local arbiter_npc={} -- menu things
+	local arbiter_npc={} -- npc menu things
 		arbiter_npc.presolve=function(it)
-			if it.shape_a.menu and it.shape_b.player then -- remember menu
+			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
 				it.shape_b.player.near_npc=it.shape_a.npc
 			end
 			return false
 		end
 		arbiter_npc.separate=function(it)
-			if it.shape_a and it.shape_a.menu and it.shape_b and it.shape_b.player then -- forget menu
+			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
 				it.shape_b.player.near_npc=false
 			end
 			return true
@@ -750,14 +750,16 @@ function char_controls(it,fast)
 		end
 
 		if it.jump_clr and it.near_npc then
-print("menu")
 
---[[
-			local menu=entities_get("menu")
-			local near_menu=it.near_menu
 			local callbacks=entities_manifest("callbacks")
-			callbacks[#callbacks+1]=function() menu.show(near_menu) end -- call later so we do not process menu input this frame
-]]
+			callbacks[#callbacks+1]=function()
+
+				local chat=chats.get(it.near_npc)
+				chat.set_response("welcome")
+				menu.show( chat.get_menu_items() )
+
+			end -- call later so we do not process menu input this frame
+
 		end
 
 		if it.jump then
@@ -766,7 +768,7 @@ print("menu")
 
 			if vy>-20 then -- only when pushing against the ground a little
 
-				if it.near_menu then -- no jump
+				if it.near_menu or it.near_npc then -- no jump
 				
 				else
 				
@@ -1306,8 +1308,10 @@ function setup_level(idx)
 				local item=add_item()
 
 				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
-				
-				item.shape:collision_type(0x4002)
+
+-- print("npc",x,y)
+
+				item.shape:collision_type(0x4003)
 				item.shape.npc=tile.npc
 			end
 		end
@@ -1333,7 +1337,8 @@ function setup_menu(items)
 
 	local wstr=require("wetgenes.string")
 
-	local menu={}
+	local menu=entities_set("menu",entities_add{})
+--	local menu={}
 
 	menu.stack={}
 
@@ -1343,6 +1348,12 @@ function setup_menu(items)
 	menu.cy=0
 	
 	function menu.show(items)
+	
+		if not items then
+			menu.items=nil
+			menu.lines=nil
+			return
+		end
 
 		if items.call then items.call(items,menu) end -- refresh
 		
@@ -1394,8 +1405,11 @@ function setup_menu(items)
 			
 					if item.call then -- do this
 					
-						item.call( item , menu )
-											
+						if item and item.decision and item.decision.name=="exit" then --exit menu
+							menu.show()	-- hide
+						else
+							item.call( item , menu )
+						end
 					end
 					
 					break
@@ -1456,7 +1470,8 @@ function setup_menu(items)
 	end
 	
 
-	if items then menu.show(items) end	
+	if items then menu.show(items) end
+	
 	return menu
 end
 
