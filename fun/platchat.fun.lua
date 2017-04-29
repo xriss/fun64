@@ -573,6 +573,56 @@ function add_item()
 end
 
 
+function setup_score()
+
+	local score=entities_set("score",entities_add{})
+	
+	entities_set("time",{
+		game=0,
+	})
+	
+	score.update=function()
+		local time=entities_get("time")
+		time.game=time.game+(1/60)
+	end
+
+	score.draw=function()
+	
+		local time=entities_get("time")
+	
+		local remain=0
+		for _,loot in ipairs( entities_items("loot") ) do
+			if loot.active then remain=remain+1 end -- count remaining loots
+		end
+		if remain==0 and not time.finish then -- done
+			time.finish=time.game
+		end
+
+		local t=time.start and ( (time.finish or time.game) - ( time.start ) ) or 0
+		local ts=math.floor(t)
+		local tp=math.floor((t%1)*100)
+
+		local s=string.format("%d.%02d",ts,tp)
+		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),0)
+
+		local s=""
+		
+		local level=entities_get("level")
+		
+		s=level.title or s
+
+		for i,player in pairs(entities_items("player")) do
+			if player.near_menu then
+				s=player.near_menu.title
+			end
+		end
+
+		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),system.components.text.tilemap_hy-1)
+		
+	end
+	
+	return score
+end
 
 -- move it like a player or monster based on
 -- it.move which is "left" or "right" to move 
@@ -1397,6 +1447,8 @@ update=function()
 		chats=chatdown.setup(chat_text)
 		menu=setup_menu( chats.get_menu_items("example") )
 
+		setup_score()
+		
 		setup_level(1) -- load map
 		
 		add_player(1) -- add a player
@@ -1404,15 +1456,15 @@ update=function()
 		setup_done=true
 	end
 	
-	if menu.lines then -- menu only, pause the entities
-		menu.update()
-		menu.draw()
-	else
+--	if menu.lines then -- menu only, pause the entities
+--		menu.update()
+--		menu.draw()
+--	else
 		entities_call("update")
 		local space=entities_get("space")
-		space:step(1/(screen.fps*2)) -- double step for increased stability, allows faster velocities.
-		space:step(1/(screen.fps*2))
-	end
+		space:step(1/(60*2)) -- double step for increased stability, allows faster velocities.
+		space:step(1/(60*2))
+--	end
 
 	-- run all the callbacks created by collisions 
 	for _,f in pairs(entities_manifest("callbacks")) do f() end
