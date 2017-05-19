@@ -550,7 +550,7 @@ function setup_space()
 				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
 			end
 		end
-	space:add_handler(arbiter_pass,0x1001)
+	space:add_handler(arbiter_pass,space:type("pass"))
 	
 	local arbiter_deadly={} -- deadly things
 		arbiter_deadly.presolve=function(it)
@@ -561,7 +561,7 @@ function setup_space()
 			end
 			return true
 		end
-	space:add_handler(arbiter_deadly,0x1002)
+	space:add_handler(arbiter_deadly,space:type("deadly"))
 
 	local arbiter_crumbling={} -- crumbling tiles
 		arbiter_crumbling.presolve=function(it)
@@ -590,7 +590,7 @@ function setup_space()
 				end
 			end
 		end
-	space:add_handler(arbiter_crumbling,0x1003)
+	space:add_handler(arbiter_crumbling,space:type("crumbling"))
 
 	local arbiter_walking={} -- walking things (players)
 		arbiter_walking.presolve=function(it)
@@ -628,7 +628,7 @@ function setup_space()
 			end
 			return true
 		end
-	space:add_handler(arbiter_walking,0x2001) -- walking things (players)
+	space:add_handler(arbiter_walking,space:type("walking")) -- walking things (players)
 
 	local arbiter_loot={} -- loot things (pickups)
 		arbiter_loot.presolve=function(it)
@@ -637,7 +637,7 @@ function setup_space()
 			end
 			return false
 		end
-	space:add_handler(arbiter_loot,0x3001) 
+	space:add_handler(arbiter_loot,space:type("loot")) 
 	
 	local arbiter_trigger={} -- trigger things
 		arbiter_trigger.presolve=function(it)
@@ -646,7 +646,7 @@ function setup_space()
 			end
 			return false
 		end
-	space:add_handler(arbiter_trigger,0x4001)
+	space:add_handler(arbiter_trigger,space:type("trigger"))
 
 	local arbiter_menu={} -- menu things
 		arbiter_menu.presolve=function(it)
@@ -661,7 +661,7 @@ function setup_space()
 			end
 			return true
 		end
-	space:add_handler(arbiter_menu,0x4002)
+	space:add_handler(arbiter_menu,space:type("menu"))
 
 	local arbiter_npc={} -- npc menu things
 		arbiter_npc.presolve=function(it)
@@ -676,7 +676,7 @@ function setup_space()
 			end
 			return true
 		end
-	space:add_handler(arbiter_npc,0x4003)
+	space:add_handler(arbiter_npc,space:type("npc"))
 
 	return space
 end
@@ -919,7 +919,7 @@ function add_player(i)
 		player.shape=player.body:shape("segment",0,-4,0,4,4)
 		player.shape:friction(1)
 		player.shape:elasticity(0)
-		player.shape:collision_type(0x2001) -- walker
+		player.shape:collision_type(space:type("walking")) -- walker
 		player.shape.player=player
 		
 		player.body.floor_time=0
@@ -1071,7 +1071,7 @@ function setup_level(idx)
 				shape:elasticity(1)
 				shape.cx=x
 				shape.cy=y
-				shape:collision_type(0x1002) -- a tile that kills
+				shape:collision_type(space:type("deadly")) -- a tile that kills
 
 			elseif tile.solid and (not tile.parent) then -- if we have no parent then we are the master tile
 			
@@ -1093,7 +1093,7 @@ function setup_level(idx)
 				shape.cy=y
 				shape.coll=tile.coll
 				if tile.collapse then
-					shape:collision_type(0x1003) -- a tile that collapses when we walk on it
+					shape:collision_type(space:type("crumbling")) -- a tile that collapses when we walk on it
 					tile.update=function(tile)
 						tile.anim=(tile.anim or 0) + 1
 						
@@ -1133,7 +1133,7 @@ function setup_level(idx)
 						end
 					end
 				elseif not tile.dense then 
-					shape:collision_type(0x1001) -- a tile we can jump up through
+					shape:collision_type(space:type("pass")) -- a tile we can jump up through
 				end
 			end
 			if tile.push then
@@ -1178,7 +1178,7 @@ function setup_level(idx)
 				local loot=add_loot()
 
 				local shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
-				shape:collision_type(0x3001)
+				shape:collision_type(space:type("loot"))
 				shape.loot=loot
 				loot.shape=shape
 				loot.px=x*8+4
@@ -1215,7 +1215,7 @@ function setup_level(idx)
 				local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
 				item.shape=shape
 				
-				shape:collision_type(0x4001)
+				shape:collision_type(space:type("trigger"))
 				shape.trigger=tile
 			end
 			if tile.menu then
@@ -1223,7 +1223,7 @@ function setup_level(idx)
 
 				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
 				
-				item.shape:collision_type(0x4002)
+				item.shape:collision_type(space:type("menu"))
 				item.shape.menu=tile.menu
 			end
 			if tile.sign then
@@ -1339,7 +1339,7 @@ function setup_level(idx)
 
 -- print("npc",x,y)
 
-				item.shape:collision_type(0x4003)
+				item.shape:collision_type(space:type("npc"))
 				item.shape.npc=tile.npc
 			end
 		end
