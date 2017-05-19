@@ -72,6 +72,7 @@ hardware={
 -- during initial setup so we have a nice looking sprite sheet to be edited by artists
 
 graphics={
+{0x0000,"_font",0x0140}, -- allocate the font area
 {0x0100,"char_empty",[[
 . . . . . . . . 
 . . . . . . . . 
@@ -1633,15 +1634,10 @@ function setup_level(idx)
 
 	local space=setup_space()
 
-	for n,v in pairs( levels[idx].legend ) do -- fixup missing values (this will slightly change your legend data)
-		if v.name then -- convert name to tile idx
-			v.idx=names[v.name].idx
-		end
-		if v.idx then -- convert idx to r,g,b,a
-			v[1]=(          (v.idx    )%256)
-			v[2]=(math.floor(v.idx/256)%256)
-			v[3]=31
-			v[4]=0
+	local tilemap={}
+	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
+		if v.name then -- convert name to tile
+			tilemap[n]=names[v.name]
 		end
 	end
 
@@ -1649,7 +1645,7 @@ function setup_level(idx)
 	
 	level.title=levels[idx].title
 	
-	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
+	bitdown.tile_grd( levels[idx].map, tilemap, system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 	local unique=0
 	bitdown.map_build_collision_strips(map,function(tile)
