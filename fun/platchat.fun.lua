@@ -183,14 +183,14 @@ o o o o r r r r
 o o o o r r r r 
 ]]},
 {nil,"char_floor",[[
-R R R R R R R R 
-r r r r r r r r 
-r r r r r r r r 
-. r r r r r r . 
-. . r . r r . . 
-. . . . r r . . 
-. . . . . r . . 
-. . . . . . . . 
+j j j j j j j j j j j j j j j j j f f f f f f f f j j j j j j j j j j j j j j j 
+f f f F F F F f f f f f f f f f f F F F F F F F F f f f f f f j j j j j f f f f 
+F F F f f f f F F F F F F F F F F f f f f f f f f F F F F F F f f f f f F F F F 
+f f f f f f f f f f F F F F f f f f f f f f f f f f f f f f f F F F F F f f f f 
+f f f j j j j f f f f f f f f f f j j j j j j j j f f f f f f f f f f f f f f f 
+j j j f f f f j j j f f f f j j j f f f f f f f f j j j j j j f f f f f j j j j 
+f f f j j j j f f f j j j j f f f j j j j j j j j f f f f f f j j j j j f f f f 
+j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j 
 ]]},
 
 {nil,"player_f1",[[
@@ -391,22 +391,125 @@ Y Y 0 Y Y 0 Y Y
 ]]},
 
 {nil,"char_bigwall",[[
-O O R R R R O O O O R R R R O O O O R R R R O O 
-O O R R R R O O O O R R R R O O O O R R R R O O 
-0 0 0 0 o o o o r r r r o o o o r r r r o o o o 
-0 0 0 0 o o o o r r r r o o o o r r r r o o o o 
-R R O O O O R R R R O O O O R R R R O O O O R R 
-R R O O O O R R R R O O O O R R R R O O O O R R 
-o o o o r r r r 1 1 1 1 r r r r o o o o r r r r 
-o o o o r r r r 1 1 1 1 r r r r o o o o r r r r 
-O O R R R R O O O O R R R R O O O O R R R R O O 
-O O R R R R O O O O R R R R O O O O R R R R O O 
-r r r r 7 7 7 7 r r r r o o o o r r r r o o o o 
-r r r r 7 7 7 7 r r r r o o o o r r r r o o o o 
-R R O O O O R R R R O O O O R R R R 1 1 1 1 R R 
-R R O O O O R R R R O O O O R R R R 1 1 1 1 R R 
-o o o o r r r r o o o o r r r r o o o o r r r r 
-o o o o r r r r o o o o r r r r o o o o r r r r 
+j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
+j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
+O O R R R R j j j j O O O O r r r r O O O O f f f f F F F F O O O O f f f f O O 
+O O R R R R j j j j O O O O r Y Y r O O O O f Y f f F F F F O O O O f f f f O O 
+j j j j R R R R r r r r R R Y Y Y j j j R R R Y i i i i R R R R O O O O R R R R 
+j j j j R R R R r r r r R Y Y Y Y Y Y Y Y Y Y Y Y i i i R R R R O O O O R R R R 
+r r O O O O j j j j R R Y Y j Y Y Y Y Y Y R j Y Y Y R R R R j j j j R R R R r r 
+r r O O O O j j j j R R Y R j Y Y Y Y R R R j Y Y Y Y Y R R j j j j R R R R r r 
+i i i i f f f f r r r r f f f Y Y j j j r r r r i Y Y Y f f f f r r r r i i i i 
+i i i i f f f f r r r r f f f Y j j j j r r r r i Y Y Y Y f f f r r r r i i i i 
+f f F F F F O O O O f f f f O Y O O R R R R j j j j Y Y Y O r r r r O O O O f f 
+f f F F F F O O O O f f f f O Y O O R R R R j j j j O O O O r r r r O O O O f f 
+i i i i R R R R O O O O R R R R j j j j R R R R r r r r R R R R j j j j R R R R 
+i i i i R R R R O O O O R R R R j j j j R R R R r r r r R R R R j j j j R R R R 
+j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
+j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
+]]},
+
+{nil,"char_grass",[[
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. G . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+g G g . . . . . . . . . . . . . g . . . . . . . . g . g . . . . 
+g G G . G . g . g . G . . . . g . . . g g . g . . G . . g . . g 
+]]},
+
+{nil,"char_stump",[[
+. . F F F F . . 
+f F f f f f F f 
+j f F F F F f j 
+j j f f f j f j 
+j f f f j j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+]]},
+
+{nil,"char_sidewood",[[
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+]]},
+
+{nil,"char_stump",[[
+. . F F F F . . 
+f F f f f f F f 
+j f F F F F f j 
+j j f f f j f j 
+j f f f j j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+]]},
+
+{nil,"char_tree",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . j . . . . . . 
+. . . j . . . . . j . . . . . . 
+. . . . f . . . j . . . . . . . 
+. . . . f F . j . . . . . . . . 
+. . . . . f F j . . j . . . . . 
+. . . . . j f F . f . . . . . . 
+. . . . . . . f . j . . . . . . 
+. . . . . . . f F f . . . . . . 
+. . . . . j F f f f . . . . . . 
+. . . . . . f F j . . . . . . . 
+. . . . . . j F j . . . . . . . 
+. . . . . . j f j . . . . . . . 
+. . . . . . . F j . . . . . . . 
+. . . j F F . f f . . . . . . . 
+. . . . j F F j f j . . . . . . 
+. . . . . j f j f . . . . . . . 
+. . . . . . f f F f j j . . . . 
+. . . . . . j F f j . . . . . . 
+. . . . . . . f F . . . . . . . 
+. . . . . . . f f . . . . . . . 
+. . . . . . . j F . . . . . . . 
+. . . . . . f f F f . . . . . . 
 ]]},
 
 
@@ -431,7 +534,7 @@ local default_legend={
 	["00"]={ name="char_black",				solid=1, dense=1, },		-- black border
 	["0 "]={ name="char_empty",				solid=1, dense=1, },		-- empty border
 
-	["||"]={ name="char_wall",				solid=1},				-- wall
+	["||"]={ name="char_sidewood",				solid=1},				-- wall
 	["=="]={ name="char_floor",				solid=1},				-- floor
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
@@ -439,7 +542,10 @@ local default_legend={
 	["N1"]={ name="char_empty",	npc="npc1",				sprite="npc1", },
 	["N2"]={ name="char_empty",	npc="npc2",				sprite="npc2", },
 	["N3"]={ name="char_empty",	npc="npc3",				sprite="npc3", },
-	["WW"]={ name="char_bigwall", },
+	["WW"]={ name="char_bigwall", solid=1, },
+	[",,"]={ name="char_grass", },
+	["t."]={ name="char_tree", },
+	["S="]={ name="char_stump", solid=1, },
 
 }
 	
@@ -455,27 +561,27 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N3. . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . . N3. . . . ||
+||,,,,,,,,,,,,,,,,,,t.t.,,,,,,,,,,,,,,,,,,,,,,,,,,. . . . ,,,,,,,,,,,,,,,,,,,,||
 ||================================================. . . . ====================||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||======. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||==========. . . . . . . . . . . . . . . . . . WWWWWWWWWWWW. . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . WWWWWWWWWWWW. . . . N2. . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . WWWWWWWWWWWW. . . . . . . . . ||
+||,,,,,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||==========. . . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . t.t.. . . . . . WWWWWWWWWWWW. . . . N2. . . . ||
+||,,,,,,,,,,,,,,. . . . ,,,,,,,,t.t.,,,,,,,,,,,,WWWWWWWWWWWW,,,,,,,,,,,,,,,,,,||
 ||==============. . . . ======================================================||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||==. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N1. . ||
-||==. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ==============||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,. . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N1. . ||
+||==. . . . . . . . . . . . . . . . . . . . . . S=. . . . . . . ,,,,,,,,,,,,,,||
+||. . . . . . . . . . . . . . . . . . . S=. . . S=. . . . . . . ==============||
+||,,. . . . . . ,,,,,,,,,,S=,,,,,,,,,,,,S=,,,,,,S=,,,,,,,,,,,,,,,,,,. . . . . ||
 ||==. . . . . . ====================================================. . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
