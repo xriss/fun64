@@ -390,6 +390,26 @@ Y Y 0 Y Y 0 Y Y
 . . . . . . . . d d d . d d d . . . . . . . . . 
 ]]},
 
+{nil,"char_bigwall",[[
+O O R R R R O O O O R R R R O O O O R R R R O O 
+O O R R R R O O O O R R R R O O O O R R R R O O 
+0 0 0 0 o o o o r r r r o o o o r r r r o o o o 
+0 0 0 0 o o o o r r r r o o o o r r r r o o o o 
+R R O O O O R R R R O O O O R R R R O O O O R R 
+R R O O O O R R R R O O O O R R R R O O O O R R 
+o o o o r r r r 1 1 1 1 r r r r o o o o r r r r 
+o o o o r r r r 1 1 1 1 r r r r o o o o r r r r 
+O O R R R R O O O O R R R R O O O O R R R R O O 
+O O R R R R O O O O R R R R O O O O R R R R O O 
+r r r r 7 7 7 7 r r r r o o o o r r r r o o o o 
+r r r r 7 7 7 7 r r r r o o o o r r r r o o o o 
+R R O O O O R R R R O O O O R R R R 1 1 1 1 R R 
+R R O O O O R R R R O O O O R R R R 1 1 1 1 R R 
+o o o o r r r r o o o o r r r r o o o o r r r r 
+o o o o r r r r o o o o r r r r o o o o r r r r 
+]]},
+
+
 }
 
 
@@ -419,6 +439,7 @@ local default_legend={
 	["N1"]={ name="char_empty",	npc="npc1",				sprite="npc1", },
 	["N2"]={ name="char_empty",	npc="npc2",				sprite="npc2", },
 	["N3"]={ name="char_empty",	npc="npc3",				sprite="npc3", },
+	["WW"]={ name="char_bigwall", },
 
 }
 	
@@ -443,9 +464,9 @@ map=[[
 ||======. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||==========. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . ||||||||||||. . . . N2. . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . ||||||||||||. . . . . . . . . ||
+||==========. . . . . . . . . . . . . . . . . . WWWWWWWWWWWW. . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . WWWWWWWWWWWW. . . . N2. . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . WWWWWWWWWWWW. . . . . . . . . ||
 ||==============. . . . ======================================================||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -1029,15 +1050,10 @@ function setup_level(idx)
 
 	local space=setup_space()
 
-	for n,v in pairs( levels[idx].legend ) do -- fixup missing values (this will slightly change your legend data)
-		if v.name then -- convert name to tile idx
-			v.idx=names[v.name].idx
-		end
-		if v.idx then -- convert idx to r,g,b,a
-			v[1]=(          (v.idx    )%256)
-			v[2]=(math.floor(v.idx/256)%256)
-			v[3]=31
-			v[4]=0
+	local tilemap={}
+	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
+		if v.name then -- convert name to tile
+			tilemap[n]=names[v.name]
 		end
 	end
 
@@ -1045,7 +1061,7 @@ function setup_level(idx)
 	
 	level.title=levels[idx].title
 	
-	bitdown.pix_grd(    levels[idx].map,  levels[idx].legend,      system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
+	bitdown.tile_grd( levels[idx].map, tilemap, system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 	local unique=0
 	bitdown.map_build_collision_strips(map,function(tile)
