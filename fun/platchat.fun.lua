@@ -458,32 +458,6 @@ j f F f f j f j
 j f F f f j f j 
 ]]},
 
-{nil,"char_stump",[[
-. . F F F F . . 
-f F f f f f F f 
-j f F F F F f j 
-j j f f f j f j 
-j f f f j j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-]]},
 
 {nil,"char_tree",[[
 . . . . . . . . . . . . . . . . 
