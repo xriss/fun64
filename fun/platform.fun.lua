@@ -13,6 +13,8 @@ local ls=function(...) print(wstr.dump(...)) end
 
 local fatpix=not(args and args.pixel or false) -- pass --pixel on command line to turn off fat pixel filters
 
+local start_level
+
 --request this hardware setup !The components will not exist until after main has been called!
 cmap=bitdown.cmap -- use default swanky32 colors
 screen={hx=424,hy=240,ss=3,fps=60}
@@ -527,7 +529,7 @@ legend=combine_legends(default_legend,{
 			title="level 1",
 			items={
 				{text="Back"},
-				{text="Jump to Level 1"},
+				{text="Jump to Level 1",call=function(it) start_level(1) end},
 			}
 		},
 		sprite="door_open",
@@ -1974,18 +1976,24 @@ local fat_controller=coroutine.create(function()
 
 	end
 
--- setup game
-	entities_reset()
+	local menu
+	start_level=function(idx)
 
-	setup_level(0) -- load map
-	setup_score() -- gui for the score
+		entities_reset()
 
-	setup_dust() -- dust particles
+		setup_level(idx) -- load map
+		setup_score() -- gui for the score
 
-	for i=1,6 do add_player(i) end -- players 1-6
-	ups(1).touch="left_fire_right" -- request this touch control scheme for player 1 only
+		setup_dust() -- dust particles
+
+		for i=1,6 do add_player(i) end -- players 1-6
+		ups(1).touch="left_fire_right" -- request this touch control scheme for player 1 only
+		
+		menu=setup_menu()
+
+	end
 	
-	local menu=setup_menu()
+	start_level(0)
 
 -- update loop
 
