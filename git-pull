@@ -6,6 +6,7 @@ echo " fixing local exe branch to track origin "
 cd exe
 git stash -u
 git reset --hard origin/exe
+git branch -f --track exe origin/exe
 git checkout origin/exe
 cd ..
 
@@ -13,5 +14,6 @@ echo " forcing local gh-pages branch to track origin "
 cd pages
 git stash -u
 git reset --hard origin/gh-pages
+git branch -f --track gh-pages origin/gh-pages
 git checkout origin/gh-pages
 cd ..
