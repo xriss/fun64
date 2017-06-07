@@ -706,9 +706,20 @@ map=[[
 
 handle tables of entities that need to be updated and drawn.
 
+	entities.system(name,value)
+
+Register or find a global system, these are not cleared by reset and 
+should not contain any state data, just functions to create the actual 
+entity.
+
 ]]
 -----------------------------------------------------------------------------
-local entities={} -- a place to store everything that needs to be updated
+local entities={systems={}} -- a place to store everything that needs to be updated
+
+entities.system=function(name,value)
+	if value then entities.systems[name]=value end
+	return entities.systems[name]
+end
 
 entities.reset=function()
 	entities.data={}
@@ -759,15 +770,16 @@ entities.reset()
 
 
 -----------------------------------------------------------------------------
---[[#setup_space
+--[[#entities.systems.space.setup
 
-	space = setup_space()
+	space = entities.systems.space.setup()
 
 Create the space that simulates all of the physics.
 
 ]]
 -----------------------------------------------------------------------------
-function setup_space()
+entities.system("space",{
+setup=function()
 
 	local space=entities.set("space", chipmunk.space() )
 	
@@ -927,7 +939,7 @@ function setup_space()
 
 	return space
 end
-
+})
 
 -----------------------------------------------------------------------------
 --[[#add_item
@@ -1313,7 +1325,7 @@ function setup(idx)
 -- init map and space
 
 
-	local space=setup_space()
+	local space=entities.systems.space.setup()
 
 	local tilemap={}
 	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
@@ -1822,3 +1834,7 @@ update=function()
 	
 end
 
+-- setup graphics
+for n,v in pairs(entities.systems) do
+	if v.load then v:load() end
+end
