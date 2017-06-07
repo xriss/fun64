@@ -15,6 +15,83 @@ local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
 -----------------------------------------------------------------------------
+--[[#entities
+
+	entities.reset()
+	entities.items(caste)
+	entities.add(it,caste)
+	entities.call(fname,...)
+	entities.get(name)
+	entities.set(name,value)
+	entities.manifest(name,value)
+
+handle tables of entities that need to be updated and drawn.
+
+	entities.systems
+
+A table to register or find a global system, these are not cleared by 
+reset and should not contain any state data, just functions to create 
+the actual entity.
+
+]]
+-----------------------------------------------------------------------------
+entities={systems={}} -- a place to store everything that needs to be updated
+
+entities.system=function(name,value)
+	if value then entities.systems[name]=value end
+	return entities.systems[name]
+end
+
+entities.reset=function()
+	entities.data={}
+	entities.info={}
+end
+
+-- get items for the given caste
+entities.items=function(caste)
+	caste=caste or "generic"
+	if not entities.data[caste] then entities.data[caste]={} end -- create on use
+	return entities.data[caste]
+end
+
+-- add an item to this caste
+entities.add=function(it,caste)
+	caste=caste or it.caste -- probably from item
+	caste=caste or "generic"
+	local items=entities.items(caste)
+	items[ #items+1 ]=it -- add to end of array
+	return it
+end
+
+-- call this functions on all items in every caste
+entities.call=function(fname,...)
+	local count=0
+	for caste,items in pairs(entities.data) do
+		for idx=#items,1,-1 do -- call backwards so item can remove self
+			local it=items[idx]
+			if it[fname] then
+				it[fname](it,...)
+				count=count+1
+			end
+		end			
+	end
+	return count -- number of items called
+end
+
+-- get/set info associated with this entities
+entities.get=function(name)       return entities.info[name]							end
+entities.set=function(name,value)        entities.info[name]=value	return value	end
+entities.manifest=function(name,empty)
+	if not entities.info[name] then entities.info[name]=empty or {} end -- create empty
+	return entities.info[name]
+end
+
+-- also reset the entities right now
+entities.reset()
+
+
+
+-----------------------------------------------------------------------------
 --[[#chat_text
 
 Who says what and how, see chatdown for format
@@ -194,162 +271,6 @@ end
 
 
 graphics.loads{
-{nil,"char_empty",[[
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-. . . . . . . . 
-]]},
-{nil,"char_black",[[
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-0 0 0 0 0 0 0 0 
-]]},
-{nil,"char_wall",[[
-O O R R R R O O 
-O O R R R R O O 
-r r r r o o o o 
-r r r r o o o o 
-R R O O O O R R 
-R R O O O O R R 
-o o o o r r r r 
-o o o o r r r r 
-]]},
-{nil,"char_floor",[[
-j j j j j j j j j j j j j j j j j f f f f f f f f j j j j j j j j j j j j j j j 
-f f f F F F F f f f f f f f f f f F F F F F F F F f f f f f f j j j j j f f f f 
-F F F f f f f F F F F F F F F F F f f f f f f f f F F F F F F f f f f f F F F F 
-f f f f f f f f f f F F F F f f f f f f f f f f f f f f f f f F F F F F f f f f 
-f f f j j j j f f f f f f f f f f j j j j j j j j f f f f f f f f f f f f f f f 
-j j j f f f f j j j f f f f j j j f f f f f f f f j j j j j j f f f f f j j j j 
-f f f j j j j f f f j j j j f f f j j j j j j j j f f f f f f j j j j j f f f f 
-j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j 
-]]},
-
-{nil,"player_f1",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
-. . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
-. . . . . . . . . 4 7 2 1 7 4 . . . . . . . . . 
-. . . . . . . . 4 7 7 1 2 7 7 4 . . . . . . . . 
-. . . . . . . 4 7 7 1 7 7 2 7 7 4 . . . . . . . 
-. . . . . . . 4 4 4 4 4 4 4 4 4 4 . . . . . . . 
-. . . . . . . . . . 7 7 0 7 . . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . . . 7 7 . . . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . 7 7 7 7 . 7 7 7 . . . . . . . . 
-. . . . . . . . 7 7 7 7 7 . 7 7 . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . 7 7 7 . 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 7 . 7 7 7 . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-]]},
-{nil,"player_f2",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
-. . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
-. . . . . . . . . 4 7 2 1 7 4 . . . . . . . . . 
-. . . . . . . . 4 7 7 1 2 7 7 4 . . . . . . . . 
-. . . . . . . 4 7 7 1 7 7 2 7 7 4 . . . . . . . 
-. . . . . . . 4 4 4 4 4 4 4 4 4 4 . . . . . . . 
-. . . . . . . . . . 7 7 0 7 . . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . . . 7 7 . . . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 . 7 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 7 . 7 7 . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . . . 7 7 . . . . . . . . . . . 
-. . . . . . . . . . . 7 7 . . . . . . . . . . . 
-. . . . . . . . . . . 7 7 7 . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-]]},
-{nil,"player_f3",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . 4 4 4 4 . . . . . . . . . . 
-. . . . . . . . . 4 2 7 7 1 4 . . . . . . . . . 
-. . . . . . . . . 4 7 2 1 7 4 . . . . . . . . . 
-. . . . . . . . 4 7 7 1 2 7 7 4 . . . . . . . . 
-. . . . . . . 4 7 7 1 7 7 2 7 7 4 . . . . . . . 
-. . . . . . . 4 4 4 4 4 4 4 4 4 4 . . . . . . . 
-. . . . . . . . . . 7 7 0 7 . . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . . . 7 7 . . . . . . . . . . . 
-. . . . . . . . . . 7 7 7 7 . . . . . . . . . . 
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . 7 7 7 7 7 7 7 7 . . . . . . . . 
-. . . . . . . 7 7 7 7 7 7 7 7 7 7 . . . . . . . 
-. . . . . . . 7 7 . 7 7 7 7 . 7 7 . . . . . . . 
-. . . . . . . . . . 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . . . 7 7 7 . 7 7 . 7 . . . . . . . 
-. . . . . . . . 7 7 . . . . 7 7 7 . . . . . . . 
-. . . . . . . . 7 7 7 . . . 7 7 . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-]]},
-{nil,"cannon_ball",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . O O O O . . . . . . . . . . 
-. . . . . . . R O O O O O O O O R . . . . . . . 
-. . . . . . R R R O O O O O O R R R . . . . . . 
-. . . . . R R R R O O O O O O R R R R . . . . . 
-. . . . . 5 R R R R O O O O R R R R c . . . . . 
-. . . . . 5 5 5 R R O O O O R R c c c . . . . . 
-. . . . 5 5 5 5 5 5 R 0 0 R c c c c c c . . . . 
-. . . . 5 5 5 5 5 5 0 0 0 0 c c c c c c . . . . 
-. . . . 5 5 5 5 5 5 0 0 0 0 c c c c c c . . . . 
-. . . . 5 5 5 5 5 5 R 0 0 R c c c c c c . . . . 
-. . . . . 5 5 5 R R o o o o R R c c c . . . . . 
-. . . . . 5 R R R R o o o o R R R R c . . . . . 
-. . . . . R R R R o o o o o o R R R R . . . . . 
-. . . . . . R R R o o o o o o R R R . . . . . . 
-. . . . . . . R o o o o o o o o R . . . . . . . 
-. . . . . . . . . . o o o o . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-]]},
-{nil,"coin",[[
-. . . . . . . . 
-. . Y Y Y Y . . 
-. Y Y 0 0 Y Y . 
-Y Y 0 Y Y 0 Y Y 
-Y Y Y 0 0 Y Y Y 
-Y Y 0 Y Y 0 Y Y 
-. Y Y 0 0 Y Y . 
-. . Y Y Y Y . . 
-]]},
-
 
 {nil,"npc1",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -432,341 +353,12 @@ Y Y 0 Y Y 0 Y Y
 . . . . . . . . d d d . d d d . . . . . . . . . 
 ]]},
 
-{nil,"char_bigwall",[[
-j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
-j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
-O O R R R R j j j j O O O O r r r r O O O O f f f f F F F F O O O O f f f f O O 
-O O R R R R j j j j O O O O r Y Y r O O O O f Y f f F F F F O O O O f f f f O O 
-j j j j R R R R r r r r R R Y Y Y j j j R R R Y i i i i R R R R O O O O R R R R 
-j j j j R R R R r r r r R Y Y Y Y Y Y Y Y Y Y Y Y i i i R R R R O O O O R R R R 
-r r O O O O j j j j R R Y Y j Y Y Y Y Y Y R j Y Y Y R R R R j j j j R R R R r r 
-r r O O O O j j j j R R Y R j Y Y Y Y R R R j Y Y Y Y Y R R j j j j R R R R r r 
-i i i i f f f f r r r r f f f Y Y j j j r r r r i Y Y Y f f f f r r r r i i i i 
-i i i i f f f f r r r r f f f Y j j j j r r r r i Y Y Y Y f f f r r r r i i i i 
-f f F F F F O O O O f f f f O Y O O R R R R j j j j Y Y Y O r r r r O O O O f f 
-f f F F F F O O O O f f f f O Y O O R R R R j j j j O O O O r r r r O O O O f f 
-i i i i R R R R O O O O R R R R j j j j R R R R r r r r R R R R j j j j R R R R 
-i i i i R R R R O O O O R R R R j j j j R R R R r r r r R R R R j j j j R R R R 
-j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
-j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
-]]},
-
-{nil,"char_grass",[[
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. G . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-g G g . . . . . . . . . . . . . g . . . . . . . . g . g . . . . 
-g G G . G . g . g . G . . . . g . . . g g . g . . G . . g . . g 
-]]},
-
-{nil,"char_stump",[[
-. . F F F F . . 
-f F f f f f F f 
-j f F F F F f j 
-j j f f f j f j 
-j f f f j j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-]]},
-
-{nil,"char_sidewood",[[
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-j f F f f j f j 
-]]},
-
-
-{nil,"char_tree",[[
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . j . . . . . . 
-. . . j . . . . . j . . . . . . 
-. . . . f . . . j . . . . . . . 
-. . . . f F . j . . . . . . . . 
-. . . . . f F j . . j . . . . . 
-. . . . . j f F . f . . . . . . 
-. . . . . . . f . j . . . . . . 
-. . . . . . . f F f . . . . . . 
-. . . . . j F f f f . . . . . . 
-. . . . . . f F j . . . . . . . 
-. . . . . . j F j . . . . . . . 
-. . . . . . j f j . . . . . . . 
-. . . . . . . F j . . . . . . . 
-. . . j F F . f f . . . . . . . 
-. . . . j F F j f j . . . . . . 
-. . . . . j f j f . . . . . . . 
-. . . . . . f f F f j j . . . . 
-. . . . . . j F f j . . . . . . 
-. . . . . . . f F . . . . . . . 
-. . . . . . . f f . . . . . . . 
-. . . . . . . j F . . . . . . . 
-. . . . . . f f F f . . . . . . 
-]]},
-
-
-{nil,"char_sign",[[
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f . . . 
-. . . . . . . . . . . . F f . . 
-. . f f f 5 f f f 5 f f f F f . 
-. . f F 4 F F F 4 F 4 F F f F f 
-. . f j 3 j 3 j 3 j 3 j j f F f 
-. . f j j 2 2 j j 2 j j f F f . 
-. . . . . . j j j . . . F f . . 
-. . . . . . F j j . . . f . . . 
-. . . . . . F f j . . . . . . . 
-. . . . . . F f j . . . . . . . 
-. . . . . . F f j . . . . . . . 
-. . . . . . F f j . . . . . . . 
-]]},
-
-{nil,"char_postbox",[[
-. m m m m m m . 
-m R R R R R R m 
-m m m m m m m f 
-m R R R R R R f 
-m R 0 0 0 0 R f 
-m R R R R R R f 
-m R 3 2 3 2 R f 
-m R 2 3 2 3 R f 
-m R R R R R R f 
-m R R R R R R f 
-m R R R R R R f 
-m R R R R R f f 
-m R R R R f R f 
-R R R R f R f f 
-f R R f R f f f 
-. f f f f f f . 
-]]},
-
-
--- 4 x 16x32
-{nil,"skel_walk_4",[[
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . 
-. . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . 
-. . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . 
-. . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . 
-. . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . 
-. . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . 
-. . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . 
-. . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
-. . . . 7 7 . 7 . 7 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
-. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 . 7 . . . . . . . 7 . 7 . 7 . . 7 7 . . . . 
-. . . . 7 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
-. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . 7 7 . . 7 7 7 7 . 7 7 . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
-. . . . 7 7 . 7 . . 7 . . . . . . . . . 7 . 7 7 7 7 . 7 . . . . . . 7 . . 7 . 7 . . 7 . 7 . . . . . . . 7 . 7 7 7 7 7 . . . . . 
-. . . . 7 . 7 7 7 7 7 . . . . . . . . . 7 7 . 7 7 . 7 7 . . . . . . 7 . . . 7 7 7 7 . . 7 . . . . . . . 7 7 . 7 7 . 7 . . . . . 
-. . . . 7 7 . 7 7 . 7 . . . . . . . . . 7 7 7 7 7 7 7 7 7 . . . . . 7 . . 7 . 7 7 . 7 . 7 . . . . . . . 7 7 7 7 7 7 7 . . . . . 
-. . . . 7 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . 7 . 7 7 . . . . . 7 7 . 7 7 7 7 7 7 7 7 . . . . . . . 7 7 7 . . 7 7 . . . . . 
-. . . . 7 7 7 . . 7 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . 7 7 . . 7 . . 7 . 7 7 . . . . . . . . . 7 . . . 7 7 . . . . 
-. . . . . 7 . . . . 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . . . . 7 7 . . . 
-. . . . 7 7 . . . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . . 7 7 . . . 
-. . . . 7 7 . . . . 7 7 . . . . . . . . . . 7 . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . 7 . . . . . 
-. . . . 7 . . . . . 7 . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . . 7 . . . . . 
-. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
-. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
-. . . . 7 . . . . . 7 . . . . . . . . . 7 7 7 7 . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . 7 7 7 7 . . . . 
-. . . 7 7 7 7 . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-]]},
-
-
 }
 
 
 
------------------------------------------------------------------------------
---[[#levels
-
-Design levels here
-
-]]
------------------------------------------------------------------------------
-
-local combine_legends=function(...)
-	local legend={}
-	for _,t in ipairs{...} do -- merge all
-		for n,v in pairs(t) do -- shallow copy, right side values overwrite left
-			legend[n]=v
-		end
-	end
-	return legend
-end
-
-local default_legend={
-	[0]={ name="char_empty",	},
-
-	[". "]={ name="char_empty",				},
-	["00"]={ name="char_black",				solid=1, dense=1, },		-- black border
-	["0 "]={ name="char_empty",				solid=1, dense=1, },		-- empty border
-
-	["||"]={ name="char_sidewood",				solid=1},				-- wall
-	["=="]={ name="char_floor",				solid=1},				-- floor
-
--- items not tiles, so display tile 0 and we will add a sprite for display
-	["S "]={ name="char_empty",	start=1,	},
-	["N1"]={ name="char_empty",	npc="npc1",				sprite="npc1", },
-	["N2"]={ name="char_empty",	npc="npc2",				sprite="npc2", },
-	["N3"]={ name="char_empty",	npc="npc3",				sprite="npc3", },
-	["WW"]={ name="char_bigwall", solid=1, },
-	[",,"]={ name="char_grass", },
-	["t."]={ name="char_tree", },
-	["S="]={ name="char_stump", solid=1, },
-	["s."]={ name="char_sign", },
-	["P="]={ name="char_postbox", solid=1, },
-
-}
-	
-levels={}
-
-levels[1]={
-legend=combine_legends(default_legend,{
-	["?0"]={ name="char_empty" },
-}),
-title="This is a test.",
-map=[[
-||0000000000000000000000000000000000000000000000000000000000000000000000000000||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . t.t.. . . . . . . s.s.. . . . . . . . . . . . . N3. . . . ||
-||,,,,,,,,,,,,,,,,,,t.t.,,,,,,,,,,,,,,s.s.,,,,,,,,. . . . ,,,,,,,,,,,,,,,,,,,,||
-||================================================. . . . ====================||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||======. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||,,,,,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||==========. . . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . t.t.. . . . . . WWWWWWWWWWWW. . . . N2. . . . ||
-||,,,,,,,,,,,,,,. . . . ,,,,,,,,t.t.,,,,,,,,,,,,WWWWWWWWWWWW,,,,,,,,,,,,,,,,,,||
-||==============. . . . ======================================================||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||==. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||,,. . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N1. . ||
-||==. . . . . . . . . . . . . . . . . . . . . . S=. . . . . . . ,,,,,,,,,,,,,,||
-||. . . . . . . . . . . . . . . . P=. . S=. . . S=. . . . . . . ==============||
-||,,. . . . . . ,,,,,,,,,,S=,,,,,,P=,,,,S=,,,,,,S=,,,,,,,,,,,,,,,,,,. . . . . ||
-||==. . . . . . ====================================================. . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||============================================================================||
-||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
-]],
-}
 
 
------------------------------------------------------------------------------
---[[#entities
-
-	entities.reset()
-	entities.items(caste)
-	entities.add(it,caste)
-	entities.call(fname,...)
-	entities.get(name)
-	entities.set(name,value)
-	entities.manifest(name,value)
-
-handle tables of entities that need to be updated and drawn.
-
-	entities.systems
-
-A table to register or find a global system, these are not cleared by 
-reset and should not contain any state data, just functions to create 
-the actual entity.
-
-]]
------------------------------------------------------------------------------
-entities={systems={}} -- a place to store everything that needs to be updated
-
-entities.system=function(name,value)
-	if value then entities.systems[name]=value end
-	return entities.systems[name]
-end
-
-entities.reset=function()
-	entities.data={}
-	entities.info={}
-end
-
--- get items for the given caste
-entities.items=function(caste)
-	caste=caste or "generic"
-	if not entities.data[caste] then entities.data[caste]={} end -- create on use
-	return entities.data[caste]
-end
-
--- add an item to this caste
-entities.add=function(it,caste)
-	caste=caste or it.caste -- probably from item
-	caste=caste or "generic"
-	local items=entities.items(caste)
-	items[ #items+1 ]=it -- add to end of array
-	return it
-end
-
--- call this functions on all items in every caste
-entities.call=function(fname,...)
-	local count=0
-	for caste,items in pairs(entities.data) do
-		for idx=#items,1,-1 do -- call backwards so item can remove self
-			local it=items[idx]
-			if it[fname] then
-				it[fname](it,...)
-				count=count+1
-			end
-		end			
-	end
-	return count -- number of items called
-end
-
--- get/set info associated with this entities
-entities.get=function(name)       return entities.info[name]							end
-entities.set=function(name,value)        entities.info[name]=value	return value	end
-entities.manifest=function(name,empty)
-	if not entities.info[name] then entities.info[name]=empty or {} end -- create empty
-	return entities.info[name]
-end
-
--- also reset the entities right now
-entities.reset()
 
 
 -----------------------------------------------------------------------------
@@ -942,6 +534,196 @@ end,
 }
 
 -----------------------------------------------------------------------------
+--[[#entities.systems.tile
+
+setup background tile graphics
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.tile={
+
+load=function() graphics.loads{
+
+{nil,"char_empty",[[
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+]]},
+{nil,"char_black",[[
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+]]},
+{nil,"char_wall",[[
+O O R R R R O O 
+O O R R R R O O 
+r r r r o o o o 
+r r r r o o o o 
+R R O O O O R R 
+R R O O O O R R 
+o o o o r r r r 
+o o o o r r r r 
+]]},
+{nil,"char_floor",[[
+j j j j j j j j j j j j j j j j j f f f f f f f f j j j j j j j j j j j j j j j 
+f f f F F F F f f f f f f f f f f F F F F F F F F f f f f f f j j j j j f f f f 
+F F F f f f f F F F F F F F F F F f f f f f f f f F F F F F F f f f f f F F F F 
+f f f f f f f f f f F F F F f f f f f f f f f f f f f f f f f F F F F F f f f f 
+f f f j j j j f f f f f f f f f f j j j j j j j j f f f f f f f f f f f f f f f 
+j j j f f f f j j j f f f f j j j f f f f f f f f j j j j j j f f f f f j j j j 
+f f f j j j j f f f j j j j f f f j j j j j j j j f f f f f f j j j j j f f f f 
+j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j 
+]]},
+{nil,"char_bigwall",[[
+j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
+j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
+O O R R R R j j j j O O O O r r r r O O O O f f f f F F F F O O O O f f f f O O 
+O O R R R R j j j j O O O O r Y Y r O O O O f Y f f F F F F O O O O f f f f O O 
+j j j j R R R R r r r r R R Y Y Y j j j R R R Y i i i i R R R R O O O O R R R R 
+j j j j R R R R r r r r R Y Y Y Y Y Y Y Y Y Y Y Y i i i R R R R O O O O R R R R 
+r r O O O O j j j j R R Y Y j Y Y Y Y Y Y R j Y Y Y R R R R j j j j R R R R r r 
+r r O O O O j j j j R R Y R j Y Y Y Y R R R j Y Y Y Y Y R R j j j j R R R R r r 
+i i i i f f f f r r r r f f f Y Y j j j r r r r i Y Y Y f f f f r r r r i i i i 
+i i i i f f f f r r r r f f f Y j j j j r r r r i Y Y Y Y f f f r r r r i i i i 
+f f F F F F O O O O f f f f O Y O O R R R R j j j j Y Y Y O r r r r O O O O f f 
+f f F F F F O O O O f f f f O Y O O R R R R j j j j O O O O r r r r O O O O f f 
+i i i i R R R R O O O O R R R R j j j j R R R R r r r r R R R R j j j j R R R R 
+i i i i R R R R O O O O R R R R j j j j R R R R r r r r R R R R j j j j R R R R 
+j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
+j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
+]]},
+
+{nil,"char_grass",[[
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. G . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+g G g . . . . . . . . . . . . . g . . . . . . . . g . g . . . . 
+g G G . G . g . g . G . . . . g . . . g g . g . . G . . g . . g 
+]]},
+
+{nil,"char_stump",[[
+. . F F F F . . 
+f F f f f f F f 
+j f F F F F f j 
+j j f f f j f j 
+j f f f j j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+]]},
+
+{nil,"char_sidewood",[[
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+j f F f f j f j 
+]]},
+
+
+{nil,"char_tree",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . j . . . . . . 
+. . . j . . . . . j . . . . . . 
+. . . . f . . . j . . . . . . . 
+. . . . f F . j . . . . . . . . 
+. . . . . f F j . . j . . . . . 
+. . . . . j f F . f . . . . . . 
+. . . . . . . f . j . . . . . . 
+. . . . . . . f F f . . . . . . 
+. . . . . j F f f f . . . . . . 
+. . . . . . f F j . . . . . . . 
+. . . . . . j F j . . . . . . . 
+. . . . . . j f j . . . . . . . 
+. . . . . . . F j . . . . . . . 
+. . . j F F . f f . . . . . . . 
+. . . . j F F j f j . . . . . . 
+. . . . . j f j f . . . . . . . 
+. . . . . . f f F f j j . . . . 
+. . . . . . j F f j . . . . . . 
+. . . . . . . f F . . . . . . . 
+. . . . . . . f f . . . . . . . 
+. . . . . . . j F . . . . . . . 
+. . . . . . f f F f . . . . . . 
+]]},
+
+
+{nil,"char_sign",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f . . . 
+. . . . . . . . . . . . F f . . 
+. . f f f 5 f f f 5 f f f F f . 
+. . f F 4 F F F 4 F 4 F F f F f 
+. . f j 3 j 3 j 3 j 3 j j f F f 
+. . f j j 2 2 j j 2 j j f F f . 
+. . . . . . j j j . . . F f . . 
+. . . . . . F j j . . . f . . . 
+. . . . . . F f j . . . . . . . 
+. . . . . . F f j . . . . . . . 
+. . . . . . F f j . . . . . . . 
+. . . . . . F f j . . . . . . . 
+]]},
+
+{nil,"char_postbox",[[
+. m m m m m m . 
+m R R R R R R m 
+m m m m m m m f 
+m R R R R R R f 
+m R 0 0 0 0 R f 
+m R R R R R R f 
+m R 3 2 3 2 R f 
+m R 2 3 2 3 R f 
+m R R R R R R f 
+m R R R R R R f 
+m R R R R R R f 
+m R R R R R f f 
+m R R R R f R f 
+R R R R f R f f 
+f R R f R f f f 
+. f f f f f f . 
+]]},
+
+}end,
+
+}
+
+-----------------------------------------------------------------------------
 --[[#entities.systems.item
 
 	item = entities.systems.item.add()
@@ -951,6 +733,38 @@ items, can be used for general things, EG physics shapes with no special actions
 ]]
 -----------------------------------------------------------------------------
 entities.systems.item={
+
+load=function() graphics.loads{
+
+{nil,"cannon_ball",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . O O O O . . . . . . . . . . 
+. . . . . . . R O O O O O O O O R . . . . . . . 
+. . . . . . R R R O O O O O O R R R . . . . . . 
+. . . . . R R R R O O O O O O R R R R . . . . . 
+. . . . . 5 R R R R O O O O R R R R c . . . . . 
+. . . . . 5 5 5 R R O O O O R R c c c . . . . . 
+. . . . 5 5 5 5 5 5 R 0 0 R c c c c c c . . . . 
+. . . . 5 5 5 5 5 5 0 0 0 0 c c c c c c . . . . 
+. . . . 5 5 5 5 5 5 0 0 0 0 c c c c c c . . . . 
+. . . . 5 5 5 5 5 5 R 0 0 R c c c c c c . . . . 
+. . . . . 5 5 5 R R o o o o R R c c c . . . . . 
+. . . . . 5 R R R R o o o o R R R R c . . . . . 
+. . . . . R R R R o o o o o o R R R R . . . . . 
+. . . . . . R R R o o o o o o R R R . . . . . . 
+. . . . . . . R o o o o o o o o R . . . . . . . 
+. . . . . . . . . . o o o o . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+}end,
+
 add=function()
 	local item=entities.add{caste="item"}
 	item.draw=function()
@@ -1032,9 +846,60 @@ end,
 }
 
 -----------------------------------------------------------------------------
---[[#char_controls
+--[[#entities.systems.player
 
-	char_controls(it,fast)
+	player = entities.systems.player.add(idx)
+
+Add a player, level should be setup before calling this
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.player={
+
+load=function() graphics.loads{
+
+-- 4 x 16x32
+{nil,"skel_walk_4",[[
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . 
+. . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . 
+. . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . 
+. . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . 7 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 . 7 . . . . . . . 7 . 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . 7 7 . . 7 7 7 7 . 7 7 . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . . 7 . . . . . . . . . 7 . 7 7 7 7 . 7 . . . . . . 7 . . 7 . 7 . . 7 . 7 . . . . . . . 7 . 7 7 7 7 7 . . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . . 7 7 . 7 7 . 7 7 . . . . . . 7 . . . 7 7 7 7 . . 7 . . . . . . . 7 7 . 7 7 . 7 . . . . . 
+. . . . 7 7 . 7 7 . 7 . . . . . . . . . 7 7 7 7 7 7 7 7 7 . . . . . 7 . . 7 . 7 7 . 7 . 7 . . . . . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . 7 . 7 7 . . . . . 7 7 . 7 7 7 7 7 7 7 7 . . . . . . . 7 7 7 . . 7 7 . . . . . 
+. . . . 7 7 7 . . 7 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . 7 7 . . 7 . . 7 . 7 7 . . . . . . . . . 7 . . . 7 7 . . . . 
+. . . . . 7 . . . . 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . . . . 7 7 . . . 
+. . . . 7 7 . . . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . . 7 7 . . . 
+. . . . 7 7 . . . . 7 7 . . . . . . . . . . 7 . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . 7 . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . . 7 . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . 7 7 7 7 . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . 7 7 7 7 . . . . 
+. . . 7 7 7 7 . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+}end,
+
+-----------------------------------------------------------------------------
+--[[#entities.systems.player
+
+	entities.systems.player.controls(it,fast)
 
 Handle player style movement, so we can reuse this code for player 
 style monsters. it is a player or monster, fast lets us tweak the speed 
@@ -1047,8 +912,10 @@ it.jump which is true if we should jump
 
 ]]
 -----------------------------------------------------------------------------
-local function char_controls(it,fast)
+controls=function(it,fast)
 	fast=fast or 1
+	
+	local chats=entities.get("chats")
 
 	local time=entities.get("time")
 
@@ -1161,19 +1028,8 @@ local function char_controls(it,fast)
 		end
 
 	end
-end
+end,
 
-
------------------------------------------------------------------------------
---[[#entities.systems.player
-
-	player = entities.systems.player.add(idx)
-
-Add a player, level should be setup before calling this
-
-]]
------------------------------------------------------------------------------
-entities.systems.player={
 add=function(i)
 	local players_colors={30,14,18,7,3,22}
 
@@ -1272,7 +1128,7 @@ add=function(i)
 
 		if player.active then
 		
-			char_controls(player)
+			entities.systems.player.controls(player)
 		
 		end
 	end
@@ -1299,6 +1155,91 @@ add=function(i)
 end,
 }
 
+
+
+-----------------------------------------------------------------------------
+--[[#levels
+
+Design levels here
+
+]]
+-----------------------------------------------------------------------------
+
+local combine_legends=function(...)
+	local legend={}
+	for _,t in ipairs{...} do -- merge all
+		for n,v in pairs(t) do -- shallow copy, right side values overwrite left
+			legend[n]=v
+		end
+	end
+	return legend
+end
+
+local default_legend={
+	[0]={ name="char_empty",	},
+
+	[". "]={ name="char_empty",				},
+	["00"]={ name="char_black",				solid=1, dense=1, },		-- black border
+	["0 "]={ name="char_empty",				solid=1, dense=1, },		-- empty border
+
+	["||"]={ name="char_sidewood",				solid=1},				-- wall
+	["=="]={ name="char_floor",				solid=1},				-- floor
+
+-- items not tiles, so display tile 0 and we will add a sprite for display
+	["S "]={ name="char_empty",	start=1,	},
+	["N1"]={ name="char_empty",	npc="npc1",				sprite="npc1", },
+	["N2"]={ name="char_empty",	npc="npc2",				sprite="npc2", },
+	["N3"]={ name="char_empty",	npc="npc3",				sprite="npc3", },
+	["WW"]={ name="char_bigwall", solid=1, },
+	[",,"]={ name="char_grass", },
+	["t."]={ name="char_tree", },
+	["S="]={ name="char_stump", solid=1, },
+	["s."]={ name="char_sign", },
+	["P="]={ name="char_postbox", solid=1, },
+
+}
+	
+levels={}
+
+levels[1]={
+legend=combine_legends(default_legend,{
+	["?0"]={ name="char_empty" },
+}),
+title="This is a test.",
+map=[[
+||0000000000000000000000000000000000000000000000000000000000000000000000000000||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . t.t.. . . . . . . s.s.. . . . . . . . . . . . . N3. . . . ||
+||,,,,,,,,,,,,,,,,,,t.t.,,,,,,,,,,,,,,s.s.,,,,,,,,. . . . ,,,,,,,,,,,,,,,,,,,,||
+||================================================. . . . ====================||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||======. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,,,,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||==========. . . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . t.t.. . . . . . WWWWWWWWWWWW. . . . N2. . . . ||
+||,,,,,,,,,,,,,,. . . . ,,,,,,,,t.t.,,,,,,,,,,,,WWWWWWWWWWWW,,,,,,,,,,,,,,,,,,||
+||==============. . . . ======================================================||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||==. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,. . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N1. . ||
+||==. . . . . . . . . . . . . . . . . . . . . . S=. . . . . . . ,,,,,,,,,,,,,,||
+||. . . . . . . . . . . . . . . . P=. . S=. . . S=. . . . . . . ==============||
+||,,. . . . . . ,,,,,,,,,,S=,,,,,,P=,,,,S=,,,,,,S=,,,,,,,,,,,,,,,,,,. . . . . ||
+||==. . . . . . ====================================================. . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||============================================================================||
+||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
+]],
+}
+
 -----------------------------------------------------------------------------
 --[[#entities.systems.level
 
@@ -1313,8 +1254,7 @@ setup=function(idx)
 
 	entities.reset()
 
-	chats=chatdown.setup(chat_text)
-	menu=entities.systems.menu.setup() -- chats.get_menu_items("example") )
+	menu=entities.systems.menu.setup()
 
 	entities.systems.score.setup()
 
@@ -1667,6 +1607,136 @@ menu.show(items) then call update and draw each frame.
 entities.systems.menu={
 setup=function(items)
 
+	local chats=entities.set("chats", chatdown.setup([[
+
+#npc1 Conversation NPC1
+
+	A rare bread of NPC who will fulfil all your conversational desires for 
+	a very good price.
+
+	=sir sir/madam
+
+	>convo
+
+		Is this the right room for a conversation?
+		
+	>exit
+	
+		...ERROR...EOF...PLEASE...RESTART...
+
+<welcome
+
+	Good Morning {sir},
+	
+	>morning
+
+		Good morning to you too.
+
+	>afternoon
+
+		I think you will find it is now afternoon.
+
+	>sir
+
+		How dare you call me {sir}!
+
+<sir
+
+	My apologies, I am afraid that I am but an NPC with very little 
+	brain, how might I address you?
+	
+	>welcome.1?sir!=madam
+
+		You may address me as Madam.
+
+		=sir madam
+
+	>welcome.2?sir!=God
+
+		You may address me as God.
+
+		=sir God
+
+	>welcome.3?sir!=sir
+
+		You may address me as Sir.
+
+		=sir sir
+
+<afternoon
+	
+	Then good afternoon {sir},
+	
+	>convo
+
+<morning
+	
+	and how may I help {sir} today?
+	
+	>convo
+
+
+<convo
+
+	Indeed it is, would you like the full conversation or just the quick natter?
+
+	>convo_full
+	
+		How long is the full conversation?
+
+	>convo_quick
+
+		A quick natter sounds just perfect.
+
+<convo_full
+
+	The full conversation is very full and long so much so that you 
+	will have to page through many pages before you get to make a 
+	decision
+	
+	>
+		Like this?
+	<
+	
+	Yes just like this. In fact I think you can see that we are already 
+	doing it.
+			
+	
+	>exit
+
+<convo_quick
+
+	...
+	
+	>exit
+
+#npc2 Conversation NPC2
+
+	Not a real boy.
+
+<welcome
+
+	Sorry but I am not a real boy.
+	
+	>exit
+	
+		Bye bye.
+
+
+#npc3 Conversation NPC3
+
+	Not a real girl.
+
+<welcome
+
+	Sorry but I am not a real girl.
+	
+	>exit
+	
+		Bye bye.
+
+]]) )
+
 	local wstr=require("wetgenes.string")
 
 	local menu=entities.set("menu",entities.add{})
@@ -1844,7 +1914,7 @@ update=function()
 	
 end
 
--- setup graphics
+-- load graphics into texture memory
 for n,v in pairs(entities.systems) do
 	if v.load then v:load() end
 end
