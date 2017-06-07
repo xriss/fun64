@@ -1016,10 +1016,54 @@ end,
 --[[#entities.tiles.start
 
 The player start point, just save the x,y
+
 ]]
 -----------------------------------------------------------------------------
 entities.tiles.start=function(tile)
 	entities.set("players_start",{tile.x*8+4,tile.y*8+4}) --  remember start point
+end
+
+-----------------------------------------------------------------------------
+--[[#entities.tiles.sprite
+
+Display a sprite
+
+]]
+-----------------------------------------------------------------------------
+entities.tiles.sprite=function(tile)
+
+	local names=system.components.tiles.names
+
+	local item=entities.systems.item.add()
+	item.active=true
+	item.px=tile.x*8+4
+	item.py=tile.y*8+4
+	item.sprite = names[tile.sprite].idx
+	item.h=24
+	item.s=1
+	item.draw_rz=0
+	item.pz=-1
+end
+
+-----------------------------------------------------------------------------
+--[[#entities.tiles.npc
+
+Display a npc
+
+]]
+-----------------------------------------------------------------------------
+entities.tiles.npc=function(tile)
+
+	local names=system.components.tiles.names
+	local space=entities.get("space")
+
+	local item=entities.systems.item.add()
+
+	item.shape=space.static:shape("box", (tile.x-1)*8,(tile.y-1)*8, (tile.x+2)*8,(tile.y+2)*8,0)
+
+	item.shape:collision_type(space:type("npc"))
+	item.shape.npc=tile.npc
+
 end
 
 -----------------------------------------------------------------------------
@@ -1042,7 +1086,7 @@ end
 
 local default_legend={
 
-	[0]={ tile="char_empty",back="char_empty",uvproject=true},
+	[0]={ tile="char_empty",back="char_empty",uvworld=true},
 
 -- screen edges
 	["00"]={ tile="char_black",				solid=1, dense=1, },		-- black border
@@ -1061,8 +1105,10 @@ local default_legend={
 	["t."]={ tile="char_tree", },
 	["s."]={ tile="char_sign", },
 
--- items not tiles, so display tile 0 and we will add a sprite for display
+-- special locations
 	["S "]={ 	start=1,	},
+
+-- items not tiles, so display tile 0 and we will add a sprite for display
 	["N1"]={ 	npc="npc1",				sprite="npc1", },
 	["N2"]={ 	npc="npc2",				sprite="npc2", },
 	["N3"]={ 	npc="npc3",				sprite="npc3", },
@@ -1183,25 +1229,17 @@ setup=function(idx)
 
 	for y,line in pairs(map) do
 		for x,tile in pairs(line) do
-			local shape
-			if tile.deadly then -- a deadly tile
 
-				if tile.deadly==1 then
-					shape=space.static:shape("poly",{x*8+4,y*8+8,(x+1)*8,(y+0)*8,(x+0)*8,(y+0)*8},0)
-				else
-					shape=space.static:shape("poly",{x*8+4,y*8,(x+1)*8,(y+1)*8,(x+0)*8,(y+1)*8},0)
-				end
-				shape:friction(1)
-				shape:elasticity(1)
-				shape.cx=x
-				shape.cy=y
-				shape:collision_type(space:type("deadly")) -- a tile that kills
+			tile.map=map -- remember map
+			tile.level=level -- remember level
 
-			elseif tile.solid and (not tile.parent) then -- if we have no parent then we are the master tile
+			if tile.solid and (not tile.parent) then -- if we have no parent then we are the master tile
 			
 				local l=1
 				local t=tile
 				while t.child do t=t.child l=l+1 end -- count length of strip
+
+				local shape
 
 				if     tile.link==1 then -- x strip
 					shape=space.static:shape("box",x*8,y*8,(x+l)*8,(y+1)*8,0)
@@ -1210,265 +1248,28 @@ setup=function(idx)
 				else -- single box
 					shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
 				end
+				tile.shape=shape
+				shape.tile=tile
 
 				shape:friction(tile.solid)
 				shape:elasticity(tile.solid)
 				shape.cx=x
 				shape.cy=y
 				shape.coll=tile.coll
-				if tile.collapse then
-					shape:collision_type(space:type("crumbling")) -- a tile that collapses when we walk on it
-					tile.update=function(tile)
-						tile.anim=(tile.anim or 0) + 1
-						
-						if tile.anim%4==0 then
-							local dust=entities.get("dust")
-							dust.add({
-								vx=0,
-								vy=0,
-								px=(tile.x+math.random())*8,
-								py=(tile.y+math.random())*8,
-								life=60*2,
-								friction=1,
-								elasticity=0.75,
-							})
-						end
-
-						if tile.anim > 60 then
-							space:remove( tile.shape )
-							tile.shape=nil
-							system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,{0,0,0,0})
-							system.components.map.dirty(true)
-							level.updates[tile]=nil
-						else
-							local name
-							if     tile.anim < 20 then name="char_floor_collapse_1"
-							elseif tile.anim < 40 then name="char_floor_collapse_2"
-							else                       name="char_floor_collapse_3"
-							end
-							local idx=names[name].idx
-							local v={}
-							v[1]=(          (idx    )%256)
-							v[2]=(math.floor(idx/256)%256)
-							v[3]=31
-							v[4]=0
-							system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,v)
-							system.components.map.dirty(true)
-						end
-					end
-				elseif not tile.dense then 
+				
+				if not tile.dense then 
 					shape:collision_type(space:type("pass")) -- a tile we can jump up through
 				end
 			end
-			if tile.push then
-				if shape then
-					shape:surface_velocity(tile.push*12,0)
-				end
-				level.updates[tile]=true
-				tile.update=function(tile)
-					tile.anim=( (tile.anim or 0) + 1 )%20
-					
-					local name
-					if     tile.anim <  5 then name="char_floor_move_1"
-					elseif tile.anim < 10 then name="char_floor_move_2"
-					elseif tile.anim < 15 then name="char_floor_move_3"
-					else                       name="char_floor_move_4"
-					end
-					local idx=names[name].idx
-					local v={}
-					v[1]=(          (idx    )%256)
-					v[2]=(math.floor(idx/256)%256)
-					v[3]=31
-					v[4]=0
-					system.components.map.tilemap_grd:pixels(tile.x,tile.y,1,1,v)
-					system.components.map.dirty(true)
-				end
-			end
 
-			tile.map=map -- remember map
-			tile.level=level -- remember level
-			if shape then -- link shape and tile
-				shape.tile=tile
-				tile.shape=shape
-			end
 		end
 	end
 
 
 	for y,line in pairs(map) do
-		for x,tile in pairs(line) do
-		
+		for x,tile in pairs(line) do		
 			for n,f in pairs(entities.tiles) do
 				if tile[n] then f(tile) end
-			end
-
-			if tile.loot then
-				local loot=add_loot()
-
-				local shape=space.static:shape("box",x*8,y*8,(x+1)*8,(y+1)*8,0)
-				shape:collision_type(space:type("loot"))
-				shape.loot=loot
-				loot.shape=shape
-				loot.px=x*8+4
-				loot.py=y*8+4
-				loot.active=true
-			end
-			if tile.item then
-				local item=entities.systems.item.add()
-				
-				item.sprite=names.cannon_ball.idx
-				item.h=24
-
-				item.active=true
-				item.body=space:body(2,2)
-				item.body:position(x*8+4,y*8+4)
-
-				item.shape=item.body:shape("circle",8,0,0)
-				item.shape:friction(0.5)
-				item.shape:elasticity(0.5)
-
-			end
---			if tile.start then
---				entities.set("players_start",{x*8+4,y*8+4}) --  remember start point
---			end
-			if tile.monster then
-				local item=add_monster{
-					px=x*8+4,py=y*8+4,
-					vx=0,vy=0,
-				}
-			end
-			if tile.trigger then
-				local item=entities.systems.item.add()
-
-				local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
-				item.shape=shape
-				
-				shape:collision_type(space:type("trigger"))
-				shape.trigger=tile
-			end
-			if tile.menu then
-				local item=entities.systems.item.add()
-
-				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
-				
-				item.shape:collision_type(space:type("menu"))
-				item.shape.menu=tile.menu
-			end
-			if tile.sign then
-				local items={}
-				tile.items=items
-				local px,py=x*8-(#tile.sign)*4 + (tile.sign_x or 0) ,y*8 + (tile.sign_y or 0)
-				for i=1,#tile.sign do
-					local item=entities.systems.item.add()
-					items[i]=item
-
-					item.sprite=tile.sign:byte(i)/2
-					item.hx=4
-					item.hy=8
-					item.s=2
-
-					item.active=true
-					item.body=space:body(1,100)
-					item.body:position(px+i*8-4 ,py+8 )
-
-					item.shape=item.body:shape("box", -4 ,-8, 4 ,8,0)
-					item.shape:friction(1)
-					item.shape:elasticity(0.5)
-					
-					if tile.colors then item.color=tile.colors[ ((i-1)%#tile.colors)+1 ] end
-										
-					if items[i-1] then -- link
-						item.constraint=space:constraint(item.body,items[i-1].body,"pin_joint", 0,-8 , 0,-8 )
-						item.constraint:collide_bodies(false)
-					end					
-				end
-				local item=items[1] -- first
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px-4,py )
-
-				local item=items[#tile.sign] -- last
-				item.constraint_static=space:constraint(item.body,space.static,"pin_joint", 0,-8 , px+#tile.sign*8+4,py )
-			end
-			if tile.spill then
-				level.updates[tile]=true
-				tile.update=function(tile)
-					local dust=entities.get("dust")
-					dust.add({
-						vx=0,
-						vy=0,
-						px=(tile.x+math.random())*8,
-						py=(tile.y+math.random())*8,
-						life=60*2,
-						friction=1,
-						elasticity=0.75,
-					})
-				end
-			end
-			if tile.bubble then
-				level.updates[tile]=true
-				tile.update=function(tile)
-					tile.count=((tile.count or tile.bubble.start )+ 1)%tile.bubble.rate
-					if tile.count==0 then
-						local dust=entities.get("dust")
-						dust.add({
-							vx=0,
-							vy=0,
-							px=(tile.x+math.random())*8,
-							py=(tile.y+math.random())*8,
-							sprite = names.bubble.idx,
-							mass=1/64,inertia=1,
-							h=24,
-							s=1,
-							shape_args={"circle",12,0,0},
-							life=60*16,
-							friction=0,
-							elasticity=15/16,
-							gravity={0,-64},
-							draw_rz=0,
-							die_speed=128,
-							on_die=function(it) -- burst
-								local px,py=it.body:position()
-								for i=1,16 do
-									local r=math.random(math.pi*2000)/1000
-									local vx=math.sin(r)
-									local vy=math.cos(r)
-									dust.add({
-										gravity={0,-64},
-										mass=1/16384,
-										vx=vx*100,
-										vy=vy*100,
-										px=px+vx*8,
-										py=py+vy*8,
-										friction=0,
-										elasticity=0.75,
-										sprite= names.char_dust_white.idx,
-										life=15*(2+i),
-									})
-								end
-							end
-						})
-					end
-				end
-			end
-			if tile.sprite then
-				local item=entities.systems.item.add()
-				item.active=true
-				item.px=tile.x*8+4
-				item.py=tile.y*8+4
-				item.sprite = names[tile.sprite].idx
-				item.h=24
-				item.s=1
-				item.draw_rz=0
-				item.pz=-1
-			end
-			if tile.npc then
-				local item=entities.systems.item.add()
-
-				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
-
--- print("npc",x,y)
-
-				item.shape:collision_type(space:type("npc"))
-				item.shape.npc=tile.npc
 			end
 		end
 	end
