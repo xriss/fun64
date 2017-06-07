@@ -13,222 +13,6 @@ hardware,main=system.configurator({
 -- debug text dump
 local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
-
------------------------------------------------------------------------------
---[[#entities
-
-	entities.reset()
-	entities.items(caste)
-	entities.add(it,caste)
-	entities.call(fname,...)
-	entities.get(name)
-	entities.set(name,value)
-	entities.manifest(name,value)
-
-handle tables of entities that need to be updated and drawn.
-
-	entities.systems
-
-A table to register or find a global system, these are not cleared by 
-reset and should not contain any state data, just functions to create 
-the actual entity.
-
-]]
------------------------------------------------------------------------------
-entities={systems={}} -- a place to store everything that needs to be updated
-
-entities.system=function(name,value)
-	if value then entities.systems[name]=value end
-	return entities.systems[name]
-end
-
-entities.reset=function()
-	entities.data={}
-	entities.info={}
-end
-
--- get items for the given caste
-entities.items=function(caste)
-	caste=caste or "generic"
-	if not entities.data[caste] then entities.data[caste]={} end -- create on use
-	return entities.data[caste]
-end
-
--- add an item to this caste
-entities.add=function(it,caste)
-	caste=caste or it.caste -- probably from item
-	caste=caste or "generic"
-	local items=entities.items(caste)
-	items[ #items+1 ]=it -- add to end of array
-	return it
-end
-
--- call this functions on all items in every caste
-entities.call=function(fname,...)
-	local count=0
-	for caste,items in pairs(entities.data) do
-		for idx=#items,1,-1 do -- call backwards so item can remove self
-			local it=items[idx]
-			if it[fname] then
-				it[fname](it,...)
-				count=count+1
-			end
-		end			
-	end
-	return count -- number of items called
-end
-
--- get/set info associated with this entities
-entities.get=function(name)       return entities.info[name]							end
-entities.set=function(name,value)        entities.info[name]=value	return value	end
-entities.manifest=function(name,empty)
-	if not entities.info[name] then entities.info[name]=empty or {} end -- create empty
-	return entities.info[name]
-end
-
--- also reset the entities right now
-entities.reset()
-
-
-
------------------------------------------------------------------------------
---[[#chat_text
-
-Who says what and how, see chatdown for format
-
-]]
------------------------------------------------------------------------------
-local chat_text=[[
-
-#npc1 Conversation NPC1
-
-	A rare bread of NPC who will fulfil all your conversational desires for 
-	a very good price.
-
-	=sir sir/madam
-
-	>convo
-
-		Is this the right room for a conversation?
-		
-	>exit
-	
-		...ERROR...EOF...PLEASE...RESTART...
-
-<welcome
-
-	Good Morning {sir},
-	
-	>morning
-
-		Good morning to you too.
-
-	>afternoon
-
-		I think you will find it is now afternoon.
-
-	>sir
-
-		How dare you call me {sir}!
-
-<sir
-
-	My apologies, I am afraid that I am but an NPC with very little 
-	brain, how might I address you?
-	
-	>welcome.1?sir!=madam
-
-		You may address me as Madam.
-
-		=sir madam
-
-	>welcome.2?sir!=God
-
-		You may address me as God.
-
-		=sir God
-
-	>welcome.3?sir!=sir
-
-		You may address me as Sir.
-
-		=sir sir
-
-<afternoon
-	
-	Then good afternoon {sir},
-	
-	>convo
-
-<morning
-	
-	and how may I help {sir} today?
-	
-	>convo
-
-
-<convo
-
-	Indeed it is, would you like the full conversation or just the quick natter?
-
-	>convo_full
-	
-		How long is the full conversation?
-
-	>convo_quick
-
-		A quick natter sounds just perfect.
-
-<convo_full
-
-	The full conversation is very full and long so much so that you 
-	will have to page through many pages before you get to make a 
-	decision
-	
-	>
-		Like this?
-	<
-	
-	Yes just like this. In fact I think you can see that we are already 
-	doing it.
-			
-	
-	>exit
-
-<convo_quick
-
-	...
-	
-	>exit
-
-#npc2 Conversation NPC2
-
-	Not a real boy.
-
-<welcome
-
-	Sorry but I am not a real boy.
-	
-	>exit
-	
-		Bye bye.
-
-
-#npc3 Conversation NPC3
-
-	Not a real girl.
-
-<welcome
-
-	Sorry but I am not a real girl.
-	
-	>exit
-	
-		Bye bye.
-
-]]
-
-
 -----------------------------------------------------------------------------
 --[[#graphics
 
@@ -268,6 +52,78 @@ graphics.loads=function(tab)
 		graphics.load(v[2],v[3])
 	end
 end
+
+-----------------------------------------------------------------------------
+--[[#entities
+
+	entities.reset()
+	entities.caste(caste)
+	entities.add(it,caste)
+	entities.call(fname,...)
+	entities.get(name)
+	entities.set(name,value)
+	entities.manifest(name,value)
+
+handle tables of entities that need to be updated and drawn.
+
+	entities.systems
+
+A table to register or find a global system, these are not cleared by 
+reset and should not contain any state data, just functions to create 
+the actual entity.
+
+]]
+-----------------------------------------------------------------------------
+entities={systems={},tiles={}} -- a place to store everything that needs to be updated
+
+entities.reset=function()
+	entities.data={}
+	entities.info={}
+end
+
+-- get items for the given caste
+entities.caste=function(caste)
+	caste=caste or "generic"
+	if not entities.data[caste] then entities.data[caste]={} end -- create on use
+	return entities.data[caste]
+end
+
+-- add an item to this caste
+entities.add=function(it,caste)
+	caste=caste or it.caste -- probably from item
+	caste=caste or "generic"
+	local items=entities.caste(caste)
+	items[ #items+1 ]=it -- add to end of array
+	return it
+end
+
+-- call this functions on all items in every caste
+entities.call=function(fname,...)
+	local count=0
+	for caste,items in pairs(entities.data) do
+		for idx=#items,1,-1 do -- call backwards so item can remove self
+			local it=items[idx]
+			if it[fname] then
+				it[fname](it,...)
+				count=count+1
+			end
+		end			
+	end
+	return count -- number of items called
+end
+
+-- get/set info associated with this entities
+entities.get=function(name)       return entities.info[name]							end
+entities.set=function(name,value)        entities.info[name]=value	return value	end
+entities.manifest=function(name,empty)
+	if not entities.info[name] then entities.info[name]=empty or {} end -- create empty
+	return entities.info[name]
+end
+
+-- also reset the entities right now
+entities.reset()
+
+
 
 
 graphics.loads{
@@ -811,7 +667,7 @@ setup=function()
 		local time=entities.get("time")
 	
 		local remain=0
-		for _,loot in ipairs( entities.items("loot") ) do
+		for _,loot in ipairs( entities.caste("loot") ) do
 			if loot.active then remain=remain+1 end -- count remaining loots
 		end
 		if remain==0 and not time.finish then -- done
@@ -831,7 +687,7 @@ setup=function()
 		
 		s=level.title or s
 
-		for i,player in pairs(entities.items("player")) do
+		for i,player in pairs(entities.caste("player")) do
 			if player.near_menu then
 				s=player.near_menu.title
 			end
@@ -1156,6 +1012,15 @@ end,
 }
 
 
+-----------------------------------------------------------------------------
+--[[#entities.tiles.start
+
+The player start point, just save the x,y
+]]
+-----------------------------------------------------------------------------
+entities.tiles.start=function(tile)
+	entities.set("players_start",{tile.x*8+4,tile.y*8+4}) --  remember start point
+end
 
 -----------------------------------------------------------------------------
 --[[#levels
@@ -1176,26 +1041,30 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[0]={ name="char_empty",	},
+	[0]={ tile="char_empty",back="char_empty" },
 
-	[". "]={ name="char_empty",				},
-	["00"]={ name="char_black",				solid=1, dense=1, },		-- black border
-	["0 "]={ name="char_empty",				solid=1, dense=1, },		-- empty border
+-- screen edges
+	["00"]={ tile="char_black",				solid=1, dense=1, },		-- black border
+	["0 "]={ tile="char_empty",				solid=1, dense=1, },		-- empty border
 
-	["||"]={ name="char_sidewood",				solid=1},				-- wall
-	["=="]={ name="char_floor",				solid=1},				-- floor
+
+-- solid features
+	["||"]={ tile="char_sidewood",				solid=1},				-- wall
+	["=="]={ back="char_floor",				solid=1},				-- floor
+	["WW"]={ tile="char_bigwall", solid=1, },
+	["S="]={ tile="char_stump", solid=1, },
+	["P="]={ tile="char_postbox", solid=1, },
+
+-- foreground features
+	[",,"]={ back="char_grass", },
+	["t."]={ tile="char_tree", },
+	["s."]={ tile="char_sign", },
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
-	["S "]={ name="char_empty",	start=1,	},
-	["N1"]={ name="char_empty",	npc="npc1",				sprite="npc1", },
-	["N2"]={ name="char_empty",	npc="npc2",				sprite="npc2", },
-	["N3"]={ name="char_empty",	npc="npc3",				sprite="npc3", },
-	["WW"]={ name="char_bigwall", solid=1, },
-	[",,"]={ name="char_grass", },
-	["t."]={ name="char_tree", },
-	["S="]={ name="char_stump", solid=1, },
-	["s."]={ name="char_sign", },
-	["P="]={ name="char_postbox", solid=1, },
+	["S "]={ 	start=1,	},
+	["N1"]={ 	npc="npc1",				sprite="npc1", },
+	["N2"]={ 	npc="npc2",				sprite="npc2", },
+	["N3"]={ 	npc="npc3",				sprite="npc3", },
 
 }
 	
@@ -1203,7 +1072,7 @@ levels={}
 
 levels[1]={
 legend=combine_legends(default_legend,{
-	["?0"]={ name="char_empty" },
+	["?0"]={ },
 }),
 title="This is a test.",
 map=[[
@@ -1276,8 +1145,15 @@ setup=function(idx)
 
 	local tilemap={}
 	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
-		if v.name then -- convert name to tile
-			tilemap[n]=names[v.name]
+		if v.tile then -- convert name to tile
+			tilemap[n]=names[v.tile]
+		end
+	end
+
+	local backmap={}
+	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
+		if v.back then -- convert name to tile
+			backmap[n]=names[v.back]
 		end
 	end
 
@@ -1285,6 +1161,7 @@ setup=function(idx)
 	
 	level.title=levels[idx].title
 	
+	bitdown.tile_grd( levels[idx].map, backmap, system.components.back.tilemap_grd  ) -- draw into the screen (tiles)
 	bitdown.tile_grd( levels[idx].map, tilemap, system.components.map.tilemap_grd  ) -- draw into the screen (tiles)
 
 	local unique=0
@@ -1413,6 +1290,10 @@ setup=function(idx)
 
 	for y,line in pairs(map) do
 		for x,tile in pairs(line) do
+		
+			for n,f in pairs(entities.tiles) do
+				if tile[n] then f(tile) end
+			end
 
 			if tile.loot then
 				local loot=add_loot()
@@ -1440,9 +1321,9 @@ setup=function(idx)
 				item.shape:elasticity(0.5)
 
 			end
-			if tile.start then
-				entities.set("players_start",{x*8+4,y*8+4}) --  remember start point
-			end
+--			if tile.start then
+--				entities.set("players_start",{x*8+4,y*8+4}) --  remember start point
+--			end
 			if tile.monster then
 				local item=add_monster{
 					px=x*8+4,py=y*8+4,
