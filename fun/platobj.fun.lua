@@ -1041,7 +1041,8 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[0]={ tile="char_empty",back="char_grass",uvproject=true},
+
+	[0]={ tile="char_empty",back="char_empty",uvproject=true},
 
 -- screen edges
 	["00"]={ tile="char_black",				solid=1, dense=1, },		-- black border
@@ -1049,11 +1050,11 @@ local default_legend={
 
 
 -- solid features
-	["||"]={ tile="char_sidewood",				solid=1},				-- wall
-	["=="]={ back="char_floor",				solid=1},				-- floor
-	["WW"]={ tile="char_bigwall", solid=1, },
-	["S="]={ tile="char_stump", solid=1, },
-	["P="]={ tile="char_postbox", solid=1, },
+	["||"]={ solid=1, tile="char_sidewood", },				-- wall
+	["=="]={ solid=1, back="char_floor",    },				-- floor
+	["WW"]={ solid=1, tile="char_bigwall",  },
+	["S="]={ solid=1, tile="char_stump",    },
+	["P="]={ solid=1, tile="char_postbox",  },
 
 -- foreground features
 	[",,"]={ back="char_grass", },
