@@ -188,7 +188,6 @@ end
 -- load a list of sprites
 graphics.loads=function(tab)
 	for i,v in ipairs(tab) do
-print(i,v)
 		graphics.load(v[2],v[3])
 	end
 end
