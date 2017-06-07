@@ -706,15 +706,15 @@ map=[[
 
 handle tables of entities that need to be updated and drawn.
 
-	entities.system(name,value)
+	entities.systems
 
-Register or find a global system, these are not cleared by reset and 
-should not contain any state data, just functions to create the actual 
-entity.
+A table to register or find a global system, these are not cleared by 
+reset and should not contain any state data, just functions to create 
+the actual entity.
 
 ]]
 -----------------------------------------------------------------------------
-local entities={systems={}} -- a place to store everything that needs to be updated
+entities={systems={}} -- a place to store everything that needs to be updated
 
 entities.system=function(name,value)
 	if value then entities.systems[name]=value end
@@ -770,7 +770,7 @@ entities.reset()
 
 
 -----------------------------------------------------------------------------
---[[#entities.systems.space.setup
+--[[#entities.systems.space
 
 	space = entities.systems.space.setup()
 
@@ -778,7 +778,7 @@ Create the space that simulates all of the physics.
 
 ]]
 -----------------------------------------------------------------------------
-entities.system("space",{
+entities.systems.space={
 setup=function()
 
 	local space=entities.set("space", chipmunk.space() )
@@ -938,19 +938,20 @@ setup=function()
 	space:add_handler(arbiter_npc,space:type("npc"))
 
 	return space
-end
-})
+end,
+}
 
 -----------------------------------------------------------------------------
---[[#add_item
+--[[#entities.systems.item
 
-	item = add_item()
+	item = entities.systems.item.add()
 
 items, can be used for general things, EG physics shapes with no special actions
 
 ]]
 -----------------------------------------------------------------------------
-function add_item()
+entities.systems.item={
+add=function()
 	local item=entities.add{caste="item"}
 	item.draw=function()
 		if item.active then
@@ -964,19 +965,21 @@ function add_item()
 		end
 	end
 	return item
-end
+end,
+}
 
 
 -----------------------------------------------------------------------------
---[[#setup_score
+--[[#entities.systems.score
 
-	score = setup_score()
+	score = entities.systems.score.setup()
 
 Create entity that handles the score hud update and display
 
 ]]
 -----------------------------------------------------------------------------
-function setup_score()
+entities.systems.score={
+setup=function()
 
 	local score=entities.set("score",entities.add{})
 	
@@ -1025,7 +1028,8 @@ function setup_score()
 	end
 	
 	return score
-end
+end,
+}
 
 -----------------------------------------------------------------------------
 --[[#char_controls
@@ -1309,7 +1313,7 @@ function setup(idx)
 	chats=chatdown.setup(chat_text)
 	menu=setup_menu() -- chats.get_menu_items("example") )
 
-	setup_score()
+	entities.systems.score.setup()
 
 	local level=entities.set("level",entities.add{})
 
@@ -1479,7 +1483,7 @@ function setup(idx)
 				loot.active=true
 			end
 			if tile.item then
-				local item=add_item()
+				local item=entities.systems.item.add()
 				
 				item.sprite=names.cannon_ball.idx
 				item.h=24
@@ -1503,7 +1507,7 @@ function setup(idx)
 				}
 			end
 			if tile.trigger then
-				local item=add_item()
+				local item=entities.systems.item.add()
 
 				local shape=space.static:shape("box", x*8 - (tile.trigger*6) ,y*8, (x+1)*8 - (tile.trigger*6) ,(y+1)*8,0)
 				item.shape=shape
@@ -1512,7 +1516,7 @@ function setup(idx)
 				shape.trigger=tile
 			end
 			if tile.menu then
-				local item=add_item()
+				local item=entities.systems.item.add()
 
 				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
 				
@@ -1524,7 +1528,7 @@ function setup(idx)
 				tile.items=items
 				local px,py=x*8-(#tile.sign)*4 + (tile.sign_x or 0) ,y*8 + (tile.sign_y or 0)
 				for i=1,#tile.sign do
-					local item=add_item()
+					local item=entities.systems.item.add()
 					items[i]=item
 
 					item.sprite=tile.sign:byte(i)/2
@@ -1615,7 +1619,7 @@ function setup(idx)
 				end
 			end
 			if tile.sprite then
-				local item=add_item()
+				local item=entities.systems.item.add()
 				item.active=true
 				item.px=tile.x*8+4
 				item.py=tile.y*8+4
@@ -1626,7 +1630,7 @@ function setup(idx)
 				item.pz=-1
 			end
 			if tile.npc then
-				local item=add_item()
+				local item=entities.systems.item.add()
 
 				item.shape=space.static:shape("box", (x-1)*8,(y-1)*8, (x+2)*8,(y+2)*8,0)
 
