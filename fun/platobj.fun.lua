@@ -1041,7 +1041,7 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[0]={ tile="char_empty",back="char_empty" },
+	[0]={ tile="char_empty",back="char_bigwall",uvproject},
 
 -- screen edges
 	["00"]={ tile="char_black",				solid=1, dense=1, },		-- black border
