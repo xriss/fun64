@@ -569,6 +569,43 @@ f R R f R f f f
 ]]},
 
 
+-- 4 x 16x32
+{nil,"skel_walk_4",[[
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . 
+. . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . 
+. . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . 
+. . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . 7 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 . 7 . . . . . . . 7 . 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . 7 7 . . 7 7 7 7 . 7 7 . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . . 7 . . . . . . . . . 7 . 7 7 7 7 . 7 . . . . . . 7 . . 7 . 7 . . 7 . 7 . . . . . . . 7 . 7 7 7 7 7 . . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . . 7 7 . 7 7 . 7 7 . . . . . . 7 . . . 7 7 7 7 . . 7 . . . . . . . 7 7 . 7 7 . 7 . . . . . 
+. . . . 7 7 . 7 7 . 7 . . . . . . . . . 7 7 7 7 7 7 7 7 7 . . . . . 7 . . 7 . 7 7 . 7 . 7 . . . . . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . 7 . 7 7 . . . . . 7 7 . 7 7 7 7 7 7 7 7 . . . . . . . 7 7 7 . . 7 7 . . . . . 
+. . . . 7 7 7 . . 7 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . 7 7 . . 7 . . 7 . 7 7 . . . . . . . . . 7 . . . 7 7 . . . . 
+. . . . . 7 . . . . 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . . . . 7 7 . . . 
+. . . . 7 7 . . . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . . 7 7 . . . 
+. . . . 7 7 . . . . 7 7 . . . . . . . . . . 7 . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . 7 . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . . 7 . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . 7 7 7 7 . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . 7 7 7 7 . . . . 
+. . . 7 7 7 7 . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+
 }
 
 
@@ -1143,7 +1180,7 @@ function add_player(i)
 	player.up_text_x=math.ceil( (system.components.text.tilemap_hx/16)*( 1 + ((i>3 and i+2 or i)-1)*2 ) )
 
 	player.frame=0
-	player.frames={ names.player_f1.idx , names.player_f2.idx , names.player_f1.idx , names.player_f3.idx }
+	player.frames={ names.skel_walk_4.idx+0 , names.skel_walk_4.idx+2 , names.skel_walk_4.idx+4 , names.skel_walk_4.idx+6 }
 	
 	player.join=function()
 		local players_start=entities.get("players_start") or {64,64}
@@ -1166,7 +1203,7 @@ function add_player(i)
 					
 		player.floor_time=0 -- last time we had some floor
 
-		player.shape=player.body:shape("segment",0,-4,0,4,4)
+		player.shape=player.body:shape("segment",0,2,0,11,4)
 		player.shape:friction(1)
 		player.shape:elasticity(0)
 		player.shape:collision_type(space:type("walking")) -- walker
@@ -1226,24 +1263,13 @@ function add_player(i)
 	
 
 	player.draw=function()
-		if player.bubble_active then
-
-			local px,py=player.bubble_body:position()
-			local rz=player.bubble_body:angle()
-			player.frame=player.frame%16
-			local t=player.frames[1+math.floor(player.frame/4)]
-			
-			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=(player.dir or 1)*0.5,s=0.5,rz=180*rz/math.pi,color=player.color})
-			
-			system.components.sprites.list_add({t=names.bubble.idx,h=24,px=px,py=py,s=1})
-
-		elseif player.active then
+		if player.active then
 			local px,py=player.body:position()
 			local rz=player.body:angle()
 			player.frame=player.frame%16
 			local t=player.frames[1+math.floor(player.frame/4)]
 			
-			system.components.sprites.list_add({t=t,h=24,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})			
+			system.components.sprites.list_add({t=t,hx=16,hy=32,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})			
 		end
 
 		if player.joined then
