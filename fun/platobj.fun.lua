@@ -1179,11 +1179,18 @@ end
 
 function change_level(idx)
 
-	setup_level(idx)
+	setup(idx)
 	
 end
 
-function setup_level(idx)
+function setup(idx)
+
+	entities.reset()
+
+	chats=chatdown.setup(chat_text)
+	menu=setup_menu() -- chats.get_menu_items("example") )
+
+	setup_score()
 
 	local level=entities.set("level",entities.add{})
 
@@ -1197,6 +1204,7 @@ function setup_level(idx)
 	end
 
 -- init map and space
+
 
 	local space=setup_space()
 
@@ -1511,6 +1519,8 @@ function setup_level(idx)
 		end
 	end
 	
+		
+	add_player(1) -- add a player
 end
 
 -----------------------------------------------------------------------------
@@ -1682,18 +1692,7 @@ Update and draw loop, called every frame.
 update=function()
 
 	if not setup_done then
-
-		entities.reset()
-
-		chats=chatdown.setup(chat_text)
-		menu=setup_menu() -- chats.get_menu_items("example") )
-
-		setup_score()
-		
-		setup_level(1) -- load map
-		
-		add_player(1) -- add a player
-
+		setup(1) -- load map
 		setup_done=true
 	end
 	
