@@ -3,19 +3,15 @@ cd `dirname $0`
 git pull --recurse-submodules && git submodule update --recursive --remote
 
 echo " fixing local exe branch to track origin "
-git branch -f --track exe origin/exe
 cd exe
 git stash -u
-#git branch -u origin/exe exe
-git reset --hard exe
-git checkout exe
+git reset --hard origin/exe
+git checkout origin/exe
 cd ..
 
 echo " forcing local gh-pages branch to track origin "
-git branch -f --track gh-pages origin/gh-pages
 cd pages
 git stash -u
-#git branch -u origin/gh-pages gh-pages
-git reset --hard gh-pages
-git checkout gh-pages
+git reset --hard origin/gh-pages
+git checkout origin/gh-pages
 cd ..
