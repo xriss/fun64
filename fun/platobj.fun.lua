@@ -1041,7 +1041,7 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[0]={ tile="char_empty",back="char_bigwall",uvproject},
+	[0]={ tile="char_empty",back="char_grass",uvproject=true},
 
 -- screen edges
 	["00"]={ tile="char_black",				solid=1, dense=1, },		-- black border
@@ -1146,14 +1146,20 @@ setup=function(idx)
 	local tilemap={}
 	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
 		if v.tile then -- convert name to tile
-			tilemap[n]=names[v.tile]
+			local t={}
+			for n,v in pairs( v ) do t[n]=v end
+			for n,v in pairs( names[v.tile] ) do t[n]=v end
+			tilemap[n]=t
 		end
 	end
 
 	local backmap={}
 	for n,v in pairs( levels[idx].legend ) do -- build tilemap from legend
 		if v.back then -- convert name to tile
-			backmap[n]=names[v.back]
+			local t={}
+			for n,v in pairs( v ) do t[n]=v end
+			for n,v in pairs( names[v.back] ) do t[n]=v end
+			backmap[n]=t
 		end
 	end
 
