@@ -14,6 +14,13 @@ hardware,main=system.configurator({
 local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
+-----------------------------------------------------------------------------
+--[[#chat_text
+
+Who says what and how, see chatdown for format
+
+]]
+-----------------------------------------------------------------------------
 local chat_text=[[
 
 #npc1 Conversation NPC1
@@ -145,11 +152,17 @@ local chat_text=[[
 ]]
 
 
+-----------------------------------------------------------------------------
+--[[#graphics
 
--- define all graphics in this global, we will convert and upload to tiles at setup
--- although you can change tiles during a game, we try and only upload graphics
--- during initial setup so we have a nice looking sprite sheet to be edited by artists
 
+define all graphics in this global, we will convert and upload to tiles 
+at setup although you can change tiles during a game, we try and only 
+upload graphics during initial setup so we have a nice looking sprite 
+sheet to be edited by artists
+
+]]
+-----------------------------------------------------------------------------
 graphics={
 {0x0000,"_font",0x0140}, -- allocate the font area
 }
@@ -560,6 +573,14 @@ f R R f R f f f
 
 
 
+-----------------------------------------------------------------------------
+--[[#levels
+
+Design levels here
+
+]]
+-----------------------------------------------------------------------------
+
 local combine_legends=function(...)
 	local legend={}
 	for _,t in ipairs{...} do -- merge all
@@ -636,19 +657,35 @@ map=[[
 }
 
 
--- handle tables of entities that need to be updated and drawn.
+-----------------------------------------------------------------------------
+--[[#entities
 
+	entities.reset()
+	entities.items(caste)
+	entities.add(it,caste)
+	entities.call(fname,...)
+	entities.get(name)
+	entities.set(name,value)
+	entities.manifest(name,value)
+
+handle tables of entities that need to be updated and drawn.
+
+]]
+-----------------------------------------------------------------------------
 local entities={} -- a place to store everything that needs to be updated
+
 entities.reset=function()
 	entities.data={}
 	entities.info={}
 end
+
 -- get items for the given caste
 entities.items=function(caste)
 	caste=caste or "generic"
 	if not entities.data[caste] then entities.data[caste]={} end -- create on use
 	return entities.data[caste]
 end
+
 -- add an item to this caste
 entities.add=function(it,caste)
 	caste=caste or it.caste -- probably from item
@@ -657,6 +694,7 @@ entities.add=function(it,caste)
 	items[ #items+1 ]=it -- add to end of array
 	return it
 end
+
 -- call this functions on all items in every caste
 entities.call=function(fname,...)
 	local count=0
@@ -671,6 +709,7 @@ entities.call=function(fname,...)
 	end
 	return count -- number of items called
 end
+
 -- get/set info associated with this entities
 entities.get=function(name)       return entities.info[name]							end
 entities.set=function(name,value)        entities.info[name]=value	return value	end
@@ -678,19 +717,20 @@ entities.manifest=function(name,empty)
 	if not entities.info[name] then entities.info[name]=empty or {} end -- create empty
 	return entities.info[name]
 end
--- reset the entities
+
+-- also reset the entities right now
 entities.reset()
 
 
--- call coroutine with traceback on error
-local coroutine_resume_and_report_errors=function(co,...)
-	local a,b=coroutine.resume(co,...)
-	if a then return a,b end -- no error
-	error( b.."\nin coroutine\n"..debug.traceback(co) , 2 ) -- error
-end
+-----------------------------------------------------------------------------
+--[[#setup_space
 
+	space = setup_space()
 
--- create space and handlers
+Create the space that simulates all of the physics.
+
+]]
+-----------------------------------------------------------------------------
 function setup_space()
 
 	local space=entities.set("space", chipmunk.space() )
@@ -853,7 +893,15 @@ function setup_space()
 end
 
 
--- items, can be used for general things, EG physics shapes with no special actions
+-----------------------------------------------------------------------------
+--[[#add_item
+
+	item = add_item()
+
+items, can be used for general things, EG physics shapes with no special actions
+
+]]
+-----------------------------------------------------------------------------
 function add_item()
 	local item=entities.add{caste="item"}
 	item.draw=function()
@@ -871,6 +919,15 @@ function add_item()
 end
 
 
+-----------------------------------------------------------------------------
+--[[#setup_score
+
+	score = setup_score()
+
+Create entity that handles the score hud update and display
+
+]]
+-----------------------------------------------------------------------------
 function setup_score()
 
 	local score=entities.set("score",entities.add{})
@@ -922,9 +979,22 @@ function setup_score()
 	return score
 end
 
--- move it like a player or monster based on
--- it.move which is "left" or "right" to move 
--- it.jump which is true if we should jump
+-----------------------------------------------------------------------------
+--[[#char_controls
+
+	char_controls(it,fast)
+
+Handle player style movement, so we can reuse this code for player 
+style monsters. it is a player or monster, fast lets us tweak the speed 
+and defaults to 1
+
+movement controls are set in it
+
+it.move which is "left" or "right" to move left or right
+it.jump which is true if we should jump
+
+]]
+-----------------------------------------------------------------------------
 function char_controls(it,fast)
 	fast=fast or 1
 
@@ -1042,6 +1112,15 @@ function char_controls(it,fast)
 end
 
 
+-----------------------------------------------------------------------------
+--[[#add_player
+
+	player = add_player(idx)
+
+Add a player, level should be setup before calling this
+
+]]
+-----------------------------------------------------------------------------
 function add_player(i)
 	local players_colors={30,14,18,7,3,22}
 
@@ -1177,12 +1256,15 @@ function add_player(i)
 	return player
 end
 
-function change_level(idx)
+-----------------------------------------------------------------------------
+--[[#setup
 
-	setup(idx)
-	
-end
+	setup(level)
 
+reset and setup everything for this level idx
+
+]]
+-----------------------------------------------------------------------------
 function setup(idx)
 
 	entities.reset()
@@ -1696,7 +1778,7 @@ update=function()
 		setup_done=true
 	end
 	
-	if menu.lines then -- menu only, pause the entities
+	if menu.lines then -- menu only, pause the entities and draw the menu
 		menu.update()
 		menu.draw()
 	else
@@ -1706,11 +1788,12 @@ update=function()
 		space:step(1/(60*2))
 	end
 
+	local cb=entities.get("callbacks") or {} -- get callback list 
+	entities.set("callbacks",{}) -- and reset it
 	-- run all the callbacks created by collisions 
-	for _,f in pairs(entities.manifest("callbacks")) do f() end
-	entities.set("callbacks",{}) -- and reset the list
+	for _,f in pairs(cb) do f() end
 
-	entities.call("draw") -- because we are going to add them all in again here
+	entities.call("draw") -- draw everything, well, actually just prepare everything to be drawn by the system
 	
 end
 
