@@ -1047,7 +1047,7 @@ it.jump which is true if we should jump
 
 ]]
 -----------------------------------------------------------------------------
-function char_controls(it,fast)
+local function char_controls(it,fast)
 	fast=fast or 1
 
 	local time=entities.get("time")
@@ -1165,15 +1165,16 @@ end
 
 
 -----------------------------------------------------------------------------
---[[#add_player
+--[[#entities.systems.player
 
-	player = add_player(idx)
+	player = entities.systems.player.add(idx)
 
 Add a player, level should be setup before calling this
 
 ]]
 -----------------------------------------------------------------------------
-function add_player(i)
+entities.systems.player={
+add=function(i)
 	local players_colors={30,14,18,7,3,22}
 
 	local names=system.components.tiles.names
@@ -1295,23 +1296,25 @@ function add_player(i)
 	end
 	
 	return player
-end
+end,
+}
 
 -----------------------------------------------------------------------------
---[[#setup
+--[[#entities.systems.level
 
-	setup(level)
+	entities.systems.level.setup(level)
 
 reset and setup everything for this level idx
 
 ]]
 -----------------------------------------------------------------------------
-function setup(idx)
+entities.systems.level={
+setup=function(idx)
 
 	entities.reset()
 
 	chats=chatdown.setup(chat_text)
-	menu=setup_menu() -- chats.get_menu_items("example") )
+	menu=entities.systems.menu.setup() -- chats.get_menu_items("example") )
 
 	entities.systems.score.setup()
 
@@ -1643,13 +1646,14 @@ function setup(idx)
 	end
 	
 		
-	add_player(1) -- add a player
-end
+	entities.systems.player.add(1) -- add a player
+end,
+}
 
 -----------------------------------------------------------------------------
---[[#setup_menu
+--[[#entities.systems.menu
 
-	menu = setup_menu()
+	menu = entities.systems.menu.setup()
 
 Create a displayable and controllable menu system that can be fed chat 
 data for user display.
@@ -1660,7 +1664,8 @@ menu.show(items) then call update and draw each frame.
 
 ]]
 -----------------------------------------------------------------------------
-function setup_menu(items)
+entities.systems.menu={
+setup=function(items)
 
 	local wstr=require("wetgenes.string")
 
@@ -1800,7 +1805,8 @@ function setup_menu(items)
 	if items then menu.show(items) end
 	
 	return menu
-end
+end,
+}
 
 
 -----------------------------------------------------------------------------
@@ -1815,7 +1821,7 @@ Update and draw loop, called every frame.
 update=function()
 
 	if not setup_done then
-		setup(1) -- load map
+		entities.systems.level.setup(1) -- load map
 		setup_done=true
 	end
 	
