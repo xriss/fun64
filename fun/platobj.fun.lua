@@ -67,20 +67,65 @@ end
 --[[#entities
 
 	entities.reset()
+	
+empty the list of entites to update and draw
+
 	entities.caste(caste)
+
+get the list of entities of a given caste, eg "bullets" or "enemies"
+
 	entities.add(it,caste)
+	entities.add(it)
+
+add a new entity of caste or it.caste to the list of things to update 
+
 	entities.call(fname,...)
+
+for every entity call the function named fname like so it[fname](it,...)
+
+
+
 	entities.get(name)
+
+get a value previously saved, this is an easy way to find a unique 
+entity, eg the global space but it can be used to save any values you 
+wish not just to bookmark unique entities.
+
 	entities.set(name,value)
+
+save a value by a unique name
+
 	entities.manifest(name,value)
 
-handle tables of entities that need to be updated and drawn.
+get a value previously saved, or initalize it to the given value if it 
+does not already exist. The default value is {} as this is intended for 
+lists.
+
+
 
 	entities.systems
 
 A table to register or find a global system, these are not cleared by 
 reset and should not contain any state data, just functions to create 
-the actual entity.
+the actual entity or initialise data.
+
+
+
+	entities.tiles
+
+These functions are called as we generate a level from ascii, every 
+value in the tile legend data is checked against all the strings in 
+entities.tiles and if it matches it calls that function which is then 
+responsible for adding the appropriate collision and drawing code to 
+make that tile actually add something to the level.
+
+The basic values of tile.tile and tile.back are used to write graphics 
+into the two tile layers but could still be caught here if you need to.
+
+Multiple hooks may get called for a single tile, think of each string 
+as a flag to signal that something happens and its value describes what 
+happens.
+
 
 ]]
 -----------------------------------------------------------------------------
@@ -1027,27 +1072,8 @@ end,
 }
 
 
------------------------------------------------------------------------------
---[[#entities.tiles
 
-These functions are called as we generate a level from ascii, every 
-value in the tile legend data is checked against all the strings in 
-entities.tiles and if it matches it calls thsat function which is then 
-responsable for adding the appropriate collision and drawing code to 
-make that tile actually add something to the level.
-
-The basic values of tile.tile and tile.back are used to write graphics 
-into the two tile layers but could still be caught here if you need to.
-
-Multiple hooks may get called for a single tile, think of each string 
-as a flag to signal that something happens and its value describes what 
-happens.
-
-]]
------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------
+----------------------------------------------------------------------------
 --[[#entities.tiles.start
 
 The player start point, just save the x,y
