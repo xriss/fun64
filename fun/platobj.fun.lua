@@ -173,7 +173,7 @@ entities.systems.tile={
 
 load=function() graphics.loads{
 
-{nil,"char_empty",[[
+{nil,"tile_empty",[[
 . . . . . . . . 
 . . . . . . . . 
 . . . . . . . . 
@@ -183,7 +183,7 @@ load=function() graphics.loads{
 . . . . . . . . 
 . . . . . . . . 
 ]]},
-{nil,"char_black",[[
+{nil,"tile_black",[[
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
@@ -193,7 +193,7 @@ load=function() graphics.loads{
 0 0 0 0 0 0 0 0 
 0 0 0 0 0 0 0 0 
 ]]},
-{nil,"char_wall",[[
+{nil,"tile_wall",[[
 O O R R R R O O 
 O O R R R R O O 
 r r r r o o o o 
@@ -203,7 +203,7 @@ R R O O O O R R
 o o o o r r r r 
 o o o o r r r r 
 ]]},
-{nil,"char_floor",[[
+{nil,"tile_floor",[[
 j j j j j j j j j j j j j j j j j f f f f f f f f j j j j j j j j j j j j j j j 
 f f f F F F F f f f f f f f f f f F F F F F F F F f f f f f f j j j j j f f f f 
 F F F f f f f F F F F F F F F F F f f f f f f f f F F F F F F f f f f f F F F F 
@@ -213,7 +213,7 @@ j j j f f f f j j j f f f f j j j f f f f f f f f j j j j j j f f f f f j j j j
 f f f j j j j f f f j j j j f f f j j j j j j j j f f f f f f j j j j j f f f f 
 j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j j 
 ]]},
-{nil,"char_bigwall",[[
+{nil,"tile_bigwall",[[
 j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
 j j j j r r r r i i i i f f f f r r r r i i i i i i i i f f f f r r r r f f f f 
 O O R R R R j j j j O O O O r r r r O O O O f f f f F F F F O O O O f f f f O O 
@@ -232,7 +232,7 @@ j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j
 j j R R R R j j j j R R R R r r r r O O O O j j j j R R R R j j j j R R R R j j 
 ]]},
 
-{nil,"char_grass",[[
+{nil,"tile_grass",[[
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -243,7 +243,7 @@ g G g . . . . . . . . . . . . . g . . . . . . . . g . g . . . .
 g G G . G . g . g . G . . . . g . . . g g . g . . G . . g . . g 
 ]]},
 
-{nil,"char_stump",[[
+{nil,"tile_stump",[[
 . . F F F F . . 
 f F f f f f F f 
 j f F F F F f j 
@@ -270,7 +270,7 @@ j f F f f j f j
 j f F f f j f j 
 ]]},
 
-{nil,"char_sidewood",[[
+{nil,"tile_sidewood",[[
 j f F f f j f j 
 j f F f f j f j 
 j f F f f j f j 
@@ -282,7 +282,7 @@ j f F f f j f j
 ]]},
 
 
-{nil,"char_tree",[[
+{nil,"tile_tree",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . j . . . . . . 
@@ -310,7 +310,7 @@ j f F f f j f j
 ]]},
 
 
-{nil,"char_sign",[[
+{nil,"tile_sign",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -329,7 +329,7 @@ j f F f f j f j
 . . . . . . F f j . . . . . . . 
 ]]},
 
-{nil,"char_postbox",[[
+{nil,"tile_postbox",[[
 . m m m m m m . 
 m R R R R R R m 
 m m m m m m m f 
@@ -1119,24 +1119,24 @@ end
 
 local default_legend={
 
-	[0]={ tile="char_empty",back="char_empty",uvworld=true},
+	[0]={ tile="tile_empty",back="tile_empty",uvworld=true},
 
 -- screen edges
-	["00"]={ tile="char_black",				solid=1, dense=1, },		-- black border
-	["0 "]={ tile="char_empty",				solid=1, dense=1, },		-- empty border
+	["00"]={ tile="tile_black",				solid=1, dense=1, },		-- black border
+	["0 "]={ tile="tile_empty",				solid=1, dense=1, },		-- empty border
 
 
 -- solid features
-	["||"]={ solid=1, tile="char_sidewood", },				-- wall
-	["=="]={ solid=1, back="char_floor",    },				-- floor
-	["WW"]={ solid=1, tile="char_bigwall",  },
-	["S="]={ solid=1, tile="char_stump",    },
-	["P="]={ solid=1, tile="char_postbox",  },
+	["||"]={ solid=1, tile="tile_sidewood", },				-- wall
+	["=="]={ solid=1, back="tile_floor",    },				-- floor
+	["WW"]={ solid=1, tile="tile_bigwall",  },
+	["S="]={ solid=1, tile="tile_stump",    },
+	["P="]={ solid=1, tile="tile_postbox",  },
 
 -- foreground features
-	[",,"]={ back="char_grass", },
-	["t."]={ tile="char_tree", },
-	["s."]={ tile="char_sign", },
+	[",,"]={ back="tile_grass", },
+	["t."]={ tile="tile_tree", },
+	["s."]={ tile="tile_sign", },
 
 -- special locations
 	["S "]={ 	start=1,	},
