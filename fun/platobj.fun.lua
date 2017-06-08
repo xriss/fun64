@@ -235,155 +235,11 @@ setup=function()
 	space:damping(0.5)
 	space:sleep_time_threshold(1)
 	space:idle_speed_threshold(10)
-	
-	local arbiter_pass={}  -- background tiles we can jump up through
-		arbiter_pass.presolve=function(it)
-			local points=it:points()
--- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
-			if it.shape_b.in_body.headroom then
-				local headroom=false
---					for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
---					if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
-				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
-					it.shape_b.in_body.headroom[it.shape_a]=true
-					return it:ignore()
-				end
-			end
-			
-			return true
-		end
-		arbiter_pass.separate=function(it)
-			if it.shape_a and it.shape_b and it.shape_b.in_body then
-				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
-			end
-		end
-	space:add_handler(arbiter_pass,space:type("pass"))
-	
-	local arbiter_deadly={} -- deadly things
-		arbiter_deadly.presolve=function(it)
-			local callbacks=entities.manifest("callbacks")
-			if it.shape_b.player then -- trigger die
-				local pb=it.shape_b.player
-				callbacks[#callbacks+1]=function() pb:die() end
-			end
-			return true
-		end
-	space:add_handler(arbiter_deadly,space:type("deadly"))
 
-	local arbiter_crumbling={} -- crumbling tiles
-		arbiter_crumbling.presolve=function(it)
-			local points=it:points()
-	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
-			if it.shape_b.in_body.headroom then
-				local headroom=false
-	--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
-	--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
-				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
-					it.shape_b.in_body.headroom[it.shape_a]=true
-					return it:ignore()
-				end
-				local tile=it.shape_a.tile -- a humanoid is walking on this tile
-				if tile then
-					tile.level.updates[tile]=true -- start updates to animate this tile crumbling away
-				end
-			end
-			
-			return true
-		end
-		arbiter_crumbling.separate=function(it)
-			if it.shape_a and it.shape_b and it.shape_b.in_body then
-				if it.shape_b.in_body.headroom then -- only players types will have headroom
-					it.shape_b.in_body.headroom[it.shape_a]=nil
-				end
-			end
-		end
-	space:add_handler(arbiter_crumbling,space:type("crumbling"))
-
-	local arbiter_walking={} -- walking things (players)
-		arbiter_walking.presolve=function(it)
-			local callbacks=entities.manifest("callbacks")
-			if it.shape_a.player and it.shape_b.monster then
-				local pa=it.shape_a.player
-				callbacks[#callbacks+1]=function() pa:die() end
-			end
-			if it.shape_a.monster and it.shape_b.player then
-				local pb=it.shape_b.player
-				callbacks[#callbacks+1]=function() pb:die() end
-			end
-			if it.shape_a.player and it.shape_b.player then -- two players touch
-				local pa=it.shape_a.player
-				local pb=it.shape_b.player
-				if pa.active then
-					if pb.bubble_active and pb.joined then -- burst
-						callbacks[#callbacks+1]=function() pb:join() end
-					end
-				end				
-				if pb.active then
-					if pa.bubble_active and pa.joined then -- burst
-						callbacks[#callbacks+1]=function() pa:join() end
-					end
-				end				
-			end
-			return true
-		end
-		arbiter_walking.postsolve=function(it)
-			local points=it:points()
-			if points.normal_y>0.25 then -- on floor
-				local time=entities.get("time")
-				it.shape_a.in_body.floor_time=time.game
-				it.shape_a.in_body.floor=it.shape_b
-			end
-			return true
-		end
-	space:add_handler(arbiter_walking,space:type("walking")) -- walking things (players)
-
-	local arbiter_loot={} -- loot things (pickups)
-		arbiter_loot.presolve=function(it)
-			if it.shape_a.loot and it.shape_b.player then -- trigger collect
-				it.shape_a.loot.player=it.shape_b.player
-			end
-			return false
-		end
-	space:add_handler(arbiter_loot,space:type("loot")) 
-	
-	local arbiter_trigger={} -- trigger things
-		arbiter_trigger.presolve=function(it)
-			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
-				it.shape_b.triggered.triggered = it.shape_a.trigger
-			end
-			return false
-		end
-	space:add_handler(arbiter_trigger,space:type("trigger"))
-
-	local arbiter_menu={} -- menu things
-		arbiter_menu.presolve=function(it)
-			if it.shape_a.menu and it.shape_b.player then -- remember menu
-				it.shape_b.player.near_menu=it.shape_a.menu
-			end
-			return false
-		end
-		arbiter_menu.separate=function(it)
-			if it.shape_a and it.shape_a.menu and it.shape_b and it.shape_b.player then -- forget menu
-				it.shape_b.player.near_menu=false
-			end
-			return true
-		end
-	space:add_handler(arbiter_menu,space:type("menu"))
-
-	local arbiter_npc={} -- npc menu things
-		arbiter_npc.presolve=function(it)
-			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
-				it.shape_b.player.near_npc=it.shape_a.npc
-			end
-			return false
-		end
-		arbiter_npc.separate=function(it)
-			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
-				it.shape_b.player.near_npc=false
-			end
-			return true
-		end
-	space:add_handler(arbiter_npc,space:type("npc"))
+	-- run all arbiter space hooks that have been registered
+	for n,v in pairs(entities.systems) do
+		if v.space then v:space() end
+	end
 
 	return space
 end,
@@ -649,6 +505,21 @@ Create entity that handles the score hud update and display
 ]]
 -----------------------------------------------------------------------------
 entities.systems.score={
+
+space=function()
+
+	local space=entities.get("space")
+	local arbiter_loot={} -- loot things (pickups)
+		arbiter_loot.presolve=function(it)
+			if it.shape_a.loot and it.shape_b.player then -- trigger collect
+				it.shape_a.loot.player=it.shape_b.player
+			end
+			return false
+		end
+	space:add_handler(arbiter_loot,space:type("loot")) 
+
+end,
+
 setup=function()
 
 	local score=entities.set("score",entities.add{})
@@ -751,6 +622,138 @@ load=function() graphics.loads{
 ]]},
 
 }end,
+
+space=function()
+
+	local space=entities.get("space")
+
+	local arbiter_pass={}  -- background tiles we can jump up through
+		arbiter_pass.presolve=function(it)
+			local points=it:points()
+-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+			if it.shape_b.in_body.headroom then
+				local headroom=false
+--					for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+--					if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
+					it.shape_b.in_body.headroom[it.shape_a]=true
+					return it:ignore()
+				end
+			end
+			
+			return true
+		end
+		arbiter_pass.separate=function(it)
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then it.shape_b.in_body.headroom[it.shape_a]=nil end
+			end
+		end
+	space:add_handler(arbiter_pass,space:type("pass"))
+	
+	local arbiter_walking={} -- walking things (players)
+		arbiter_walking.presolve=function(it)
+			local callbacks=entities.manifest("callbacks")
+			if it.shape_a.player and it.shape_b.monster then
+				local pa=it.shape_a.player
+				callbacks[#callbacks+1]=function() pa:die() end
+			end
+			if it.shape_a.monster and it.shape_b.player then
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
+			end
+			if it.shape_a.player and it.shape_b.player then -- two players touch
+				local pa=it.shape_a.player
+				local pb=it.shape_b.player
+				if pa.active then
+					if pb.bubble_active and pb.joined then -- burst
+						callbacks[#callbacks+1]=function() pb:join() end
+					end
+				end				
+				if pb.active then
+					if pa.bubble_active and pa.joined then -- burst
+						callbacks[#callbacks+1]=function() pa:join() end
+					end
+				end				
+			end
+			return true
+		end
+		arbiter_walking.postsolve=function(it)
+			local points=it:points()
+			if points.normal_y>0.25 then -- on floor
+				local time=entities.get("time")
+				it.shape_a.in_body.floor_time=time.game
+				it.shape_a.in_body.floor=it.shape_b
+			end
+			return true
+		end
+	space:add_handler(arbiter_walking,space:type("walking")) -- walking things (players)
+
+	local arbiter_deadly={} -- deadly things
+		arbiter_deadly.presolve=function(it)
+			local callbacks=entities.manifest("callbacks")
+			if it.shape_b.player then -- trigger die
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
+			end
+			return true
+		end
+	space:add_handler(arbiter_deadly,space:type("deadly"))
+
+	local arbiter_crumbling={} -- crumbling tiles
+		arbiter_crumbling.presolve=function(it)
+			local points=it:points()
+	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+			if it.shape_b.in_body.headroom then
+				local headroom=false
+	--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+	--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
+					it.shape_b.in_body.headroom[it.shape_a]=true
+					return it:ignore()
+				end
+				local tile=it.shape_a.tile -- a humanoid is walking on this tile
+				if tile then
+					tile.level.updates[tile]=true -- start updates to animate this tile crumbling away
+				end
+			end
+			
+			return true
+		end
+		arbiter_crumbling.separate=function(it)
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then -- only players types will have headroom
+					it.shape_b.in_body.headroom[it.shape_a]=nil
+				end
+			end
+		end
+	space:add_handler(arbiter_crumbling,space:type("crumbling"))
+	
+	local arbiter_trigger={} -- trigger things
+		arbiter_trigger.presolve=function(it)
+			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
+				it.shape_b.triggered.triggered = it.shape_a.trigger
+			end
+			return false
+		end
+	space:add_handler(arbiter_trigger,space:type("trigger"))
+
+
+	local arbiter_npc={} -- npc menu things
+		arbiter_npc.presolve=function(it)
+			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
+				it.shape_b.player.near_npc=it.shape_a.npc
+			end
+			return false
+		end
+		arbiter_npc.separate=function(it)
+			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
+				it.shape_b.player.near_npc=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_npc,space:type("npc"))
+
+end,
 
 -----------------------------------------------------------------------------
 --[[#entities.systems.player
@@ -1294,6 +1297,23 @@ menu.show(items) then call update and draw each frame.
 ]]
 -----------------------------------------------------------------------------
 entities.systems.menu={
+space=function()
+	local space=entities.get("space")
+	local arbiter_menu={} -- menu things
+		arbiter_menu.presolve=function(it)
+			if it.shape_a.menu and it.shape_b.player then -- remember menu
+				it.shape_b.player.near_menu=it.shape_a.menu
+			end
+			return false
+		end
+		arbiter_menu.separate=function(it)
+			if it.shape_a and it.shape_a.menu and it.shape_b and it.shape_b.player then -- forget menu
+				it.shape_b.player.near_menu=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_menu,space:type("menu"))
+end,
 setup=function(items)
 
 	local chats=entities.set("chats", chatdown.setup([[
