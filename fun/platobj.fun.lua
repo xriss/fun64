@@ -125,98 +125,6 @@ entities.reset()
 
 
 
-
-graphics.loads{
-
-{nil,"npc1",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . R R R R R . . . . . . . . 
-. . . . . . . . . . R R R R R R R . . . . . . . 
-. . . . . . . . . . R R R R R R R . . . . . . . 
-. . . . . . . . . . . Y 0 Y Y R R . . . . . . . 
-. . . . . . . . . . M Y m m Y R R . . . . . . . 
-. . . . . . . . . . . Y Y Y Y . R . R . . . . . 
-. . . . . . . . . . . . Y Y . . . R . . . . . . 
-. . . . . . . . . . . Y b b Y . . . . . . . . . 
-. . . . . . . . . . Y b b b b Y . . . . . . . . 
-. . . . . . . . . . Y b b b b Y . . . . . . . . 
-. . . . . . . . . Y Y b . b b Y Y . . . . . . . 
-. . . . . . . . . Y Y . b b b Y Y . . . . . . . 
-. . . . . . . . . . . b b b b . . . . . . . . . 
-. . . . . . . . . . Y I . Y Y I . . . . . . . . 
-. . . . . . . . . . Y I I . Y I . . . . . . . . 
-. . . . . . . . . I I I . I I I . . . . . . . . 
-]]},
-
-{nil,"npc2",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . I I I . . . . . . . . . . 
-. . . . . . . . . . I I I I I . . . . . . . . . 
-. . . . . . . . . I I I I I I I . . . . . . . . 
-. . . . . . . b b b b b b b b b . . . . . . . . 
-. . . . . . . . . j j j j j j j . . . . . . . . 
-. . . . . . . . . . s 0 s j j j . . . . . . . . 
-. . . . . . . . . M s F F s j . . . . . . . . . 
-. . . . . . . . . . s s s s . . . . . . . . . . 
-. . . . . . . . . . . s s . . . . . . . . . . . 
-. . . . . . . . . . 4 G G 4 . . . . . . . . . . 
-. . . . . . . . . 4 G G G G 4 . . . . . . . . . 
-. . . . . . . . . 4 G G G G 4 . . . . . . . . . 
-. . . . . . . . s s G . G 2 s s . . . . . . . . 
-. . . . . . . . s s . 2 2 2 s s . . . . . . . . 
-. . . . . . . . . . 2 2 2 2 . . . . . . . . . . 
-. . . . . . . . . 7 7 . 7 7 B . . . . . . . . . 
-. . . . . . . . . 5 5 B . 5 B . . . . . . . . . 
-. . . . . . . . B B B . B B B . . . . . . . . . 
-]]},
-
-{nil,"npc3",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . o o . . . . . . . . . . 
-. . . . . . . . . . o o o o o . . . . . . . . . 
-. . . . . . . . o o o o o o o o . . . . . . . . 
-. . . . . . . . . o o 4 4 o o o . . . . . . . . 
-. . . . . . . . . . 4 0 4 4 o o . . . . . . . . 
-. . . . . . . . . 5 4 m m 4 4 o . . . . . . . . 
-. . . . . . . . . . 4 4 4 4 o o . . . . . . . . 
-. . . . . . . . . . . 4 4 . o o . . . . . . . . 
-. . . . . . . . . . j 5 5 j . . . . . . . . . . 
-. . . . . . . . . 5 f j j f 5 . . . . . . . . . 
-. . . . . . . . . 5 j j j j 5 . . . . . . . . . 
-. . . . . . . . 4 4 j . j j 4 4 . . . . . . . . 
-. . . . . . . . 4 4 . j j j 4 4 . . . . . . . . 
-. . . . . . . . . . g g g g . . . . . . . . . . 
-. . . . . . . . . g g . g g d . . . . . . . . . 
-. . . . . . . . . g g d . g d . . . . . . . . . 
-. . . . . . . . d d d . d d d . . . . . . . . . 
-]]},
-
-}
-
-
-
-
-
-
-
 -----------------------------------------------------------------------------
 --[[#entities.systems.space
 
@@ -433,6 +341,52 @@ f R R f R f f f
 
 }end,
 
+space=function()
+
+	local space=entities.get("space")
+
+	local arbiter_deadly={} -- deadly things
+		arbiter_deadly.presolve=function(it)
+			local callbacks=entities.manifest("callbacks")
+			if it.shape_b.player then -- trigger die
+				local pb=it.shape_b.player
+				callbacks[#callbacks+1]=function() pb:die() end
+			end
+			return true
+		end
+	space:add_handler(arbiter_deadly,space:type("deadly"))
+
+	local arbiter_crumbling={} -- crumbling tiles
+		arbiter_crumbling.presolve=function(it)
+			local points=it:points()
+	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
+			if it.shape_b.in_body.headroom then
+				local headroom=false
+	--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
+	--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
+				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
+					it.shape_b.in_body.headroom[it.shape_a]=true
+					return it:ignore()
+				end
+				local tile=it.shape_a.tile -- a humanoid is walking on this tile
+				if tile then
+					tile.level.updates[tile]=true -- start updates to animate this tile crumbling away
+				end
+			end
+			
+			return true
+		end
+		arbiter_crumbling.separate=function(it)
+			if it.shape_a and it.shape_b and it.shape_b.in_body then
+				if it.shape_b.in_body.headroom then -- only players types will have headroom
+					it.shape_b.in_body.headroom[it.shape_a]=nil
+				end
+			end
+		end
+	space:add_handler(arbiter_crumbling,space:type("crumbling"))
+
+end,
+
 }
 
 -----------------------------------------------------------------------------
@@ -447,6 +401,87 @@ items, can be used for general things, EG physics shapes with no special actions
 entities.systems.item={
 
 load=function() graphics.loads{
+
+{nil,"npc1",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . R R R R R . . . . . . . . 
+. . . . . . . . . . R R R R R R R . . . . . . . 
+. . . . . . . . . . R R R R R R R . . . . . . . 
+. . . . . . . . . . . Y 0 Y Y R R . . . . . . . 
+. . . . . . . . . . M Y m m Y R R . . . . . . . 
+. . . . . . . . . . . Y Y Y Y . R . R . . . . . 
+. . . . . . . . . . . . Y Y . . . R . . . . . . 
+. . . . . . . . . . . Y b b Y . . . . . . . . . 
+. . . . . . . . . . Y b b b b Y . . . . . . . . 
+. . . . . . . . . . Y b b b b Y . . . . . . . . 
+. . . . . . . . . Y Y b . b b Y Y . . . . . . . 
+. . . . . . . . . Y Y . b b b Y Y . . . . . . . 
+. . . . . . . . . . . b b b b . . . . . . . . . 
+. . . . . . . . . . Y I . Y Y I . . . . . . . . 
+. . . . . . . . . . Y I I . Y I . . . . . . . . 
+. . . . . . . . . I I I . I I I . . . . . . . . 
+]]},
+
+{nil,"npc2",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . I I I . . . . . . . . . . 
+. . . . . . . . . . I I I I I . . . . . . . . . 
+. . . . . . . . . I I I I I I I . . . . . . . . 
+. . . . . . . b b b b b b b b b . . . . . . . . 
+. . . . . . . . . j j j j j j j . . . . . . . . 
+. . . . . . . . . . s 0 s j j j . . . . . . . . 
+. . . . . . . . . M s F F s j . . . . . . . . . 
+. . . . . . . . . . s s s s . . . . . . . . . . 
+. . . . . . . . . . . s s . . . . . . . . . . . 
+. . . . . . . . . . 4 G G 4 . . . . . . . . . . 
+. . . . . . . . . 4 G G G G 4 . . . . . . . . . 
+. . . . . . . . . 4 G G G G 4 . . . . . . . . . 
+. . . . . . . . s s G . G 2 s s . . . . . . . . 
+. . . . . . . . s s . 2 2 2 s s . . . . . . . . 
+. . . . . . . . . . 2 2 2 2 . . . . . . . . . . 
+. . . . . . . . . 7 7 . 7 7 B . . . . . . . . . 
+. . . . . . . . . 5 5 B . 5 B . . . . . . . . . 
+. . . . . . . . B B B . B B B . . . . . . . . . 
+]]},
+
+{nil,"npc3",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . o o . . . . . . . . . . 
+. . . . . . . . . . o o o o o . . . . . . . . . 
+. . . . . . . . o o o o o o o o . . . . . . . . 
+. . . . . . . . . o o 4 4 o o o . . . . . . . . 
+. . . . . . . . . . 4 0 4 4 o o . . . . . . . . 
+. . . . . . . . . 5 4 m m 4 4 o . . . . . . . . 
+. . . . . . . . . . 4 4 4 4 o o . . . . . . . . 
+. . . . . . . . . . . 4 4 . o o . . . . . . . . 
+. . . . . . . . . . j 5 5 j . . . . . . . . . . 
+. . . . . . . . . 5 f j j f 5 . . . . . . . . . 
+. . . . . . . . . 5 j j j j 5 . . . . . . . . . 
+. . . . . . . . 4 4 j . j j 4 4 . . . . . . . . 
+. . . . . . . . 4 4 . j j j 4 4 . . . . . . . . 
+. . . . . . . . . . g g g g . . . . . . . . . . 
+. . . . . . . . . g g . g g d . . . . . . . . . 
+. . . . . . . . . g g d . g d . . . . . . . . . 
+. . . . . . . . d d d . d d d . . . . . . . . . 
+]]},
 
 {nil,"cannon_ball",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -476,6 +511,28 @@ load=function() graphics.loads{
 ]]},
 
 }end,
+
+space=function()
+
+	local space=entities.get("space")
+
+	local arbiter_npc={} -- npc menu things
+		arbiter_npc.presolve=function(it)
+			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
+				it.shape_b.player.near_npc=it.shape_a.npc
+			end
+			return false
+		end
+		arbiter_npc.separate=function(it)
+			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
+				it.shape_b.player.near_npc=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_npc,space:type("npc"))
+
+
+end,
 
 add=function()
 	local item=entities.add{caste="item"}
@@ -687,46 +744,6 @@ space=function()
 			return true
 		end
 	space:add_handler(arbiter_walking,space:type("walking")) -- walking things (players)
-
-	local arbiter_deadly={} -- deadly things
-		arbiter_deadly.presolve=function(it)
-			local callbacks=entities.manifest("callbacks")
-			if it.shape_b.player then -- trigger die
-				local pb=it.shape_b.player
-				callbacks[#callbacks+1]=function() pb:die() end
-			end
-			return true
-		end
-	space:add_handler(arbiter_deadly,space:type("deadly"))
-
-	local arbiter_crumbling={} -- crumbling tiles
-		arbiter_crumbling.presolve=function(it)
-			local points=it:points()
-	-- once we trigger headroom, we keep a table of headroom shapes and it is not reset until total separation
-			if it.shape_b.in_body.headroom then
-				local headroom=false
-	--				for n,v in pairs(it.shape_b.in_body.headroom) do headroom=true break end -- still touching an old headroom shape?
-	--				if ( (points.normal_y>0) or headroom) then -- can only headroom through non dense tiles
-				if ( (points.normal_y>0) or it.shape_b.in_body.headroom[it.shape_a] ) then
-					it.shape_b.in_body.headroom[it.shape_a]=true
-					return it:ignore()
-				end
-				local tile=it.shape_a.tile -- a humanoid is walking on this tile
-				if tile then
-					tile.level.updates[tile]=true -- start updates to animate this tile crumbling away
-				end
-			end
-			
-			return true
-		end
-		arbiter_crumbling.separate=function(it)
-			if it.shape_a and it.shape_b and it.shape_b.in_body then
-				if it.shape_b.in_body.headroom then -- only players types will have headroom
-					it.shape_b.in_body.headroom[it.shape_a]=nil
-				end
-			end
-		end
-	space:add_handler(arbiter_crumbling,space:type("crumbling"))
 	
 	local arbiter_trigger={} -- trigger things
 		arbiter_trigger.presolve=function(it)
@@ -736,22 +753,6 @@ space=function()
 			return false
 		end
 	space:add_handler(arbiter_trigger,space:type("trigger"))
-
-
-	local arbiter_npc={} -- npc menu things
-		arbiter_npc.presolve=function(it)
-			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
-				it.shape_b.player.near_npc=it.shape_a.npc
-			end
-			return false
-		end
-		arbiter_npc.separate=function(it)
-			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
-				it.shape_b.player.near_npc=false
-			end
-			return true
-		end
-	space:add_handler(arbiter_npc,space:type("npc"))
 
 end,
 
