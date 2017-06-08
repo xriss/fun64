@@ -19,7 +19,8 @@ Here we have chosen the default 320x240 setup.
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	graphics=function() return graphics end,
-	update=function() update() end, -- called repeatedly to update+draw
+	update=function() update() end, -- called repeatedly to update
+	draw=function() draw() end, -- called repeatedly to draw
 })
 
 -----------------------------------------------------------------------------
@@ -784,6 +785,7 @@ it.jump which is true if we should jump
 controls=function(it,fast)
 	fast=fast or 1
 	
+	local menu=entities.get("menu")
 	local chats=entities.get("chats")
 
 	local time=entities.get("time")
@@ -1203,7 +1205,7 @@ setup=function(idx)
 
 	entities.reset()
 
-	menu=entities.systems.menu.setup()
+	local menu=entities.systems.menu.setup()
 
 	entities.systems.score.setup()
 
@@ -1623,7 +1625,7 @@ end,
 
 	update()
 
-Update and draw loop, called every frame.
+Update called every 1/60 of a second
 
 ]]
 -----------------------------------------------------------------------------
@@ -1633,10 +1635,11 @@ update=function()
 		entities.systems.level.setup(1) -- load map
 		setup_done=true
 	end
+
+	local menu=entities.get("menu")
 	
 	if menu.lines then -- menu only, pause the entities and draw the menu
 		menu.update()
-		menu.draw()
 	else
 		entities.call("update")
 		local space=entities.get("space")
@@ -1649,9 +1652,30 @@ update=function()
 	-- run all the callbacks created by collisions 
 	for _,f in pairs(cb) do f() end
 
-	entities.call("draw") -- draw everything, well, actually just prepare everything to be drawn by the system
 	
 end
+
+-----------------------------------------------------------------------------
+--[[#draw
+
+	draw()
+
+Draw called every frame
+
+]]
+-----------------------------------------------------------------------------
+draw=function()
+
+	local menu=entities.get("menu")
+
+	if menu.lines then
+		menu.draw()
+	end
+
+	entities.call("draw") -- draw everything, well, actually just prepare everything to be drawn by the system
+
+end
+
 
 -- load graphics into texture memory
 for n,v in pairs(entities.systems) do
