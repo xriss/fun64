@@ -1,17 +1,26 @@
 
-local chatdown=require("wetgenes.gamecake.fun.chatdown")
-local bitdown=require("wetgenes.gamecake.fun.bitdown")
-local chipmunk=require("wetgenes.chipmunk")
+local chatdown=require("wetgenes.gamecake.fun.chatdown")	-- conversation trees
+local bitdown=require("wetgenes.gamecake.fun.bitdown")		-- ascii to bitmap
+local chipmunk=require("wetgenes.chipmunk")					-- 2d physics https://chipmunk-physics.net/
 
+-- debug text dump
+local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
+-----------------------------------------------------------------------------
+--[[#hardware
+
+select the hardware we will need to run this code, eg layers of 
+graphics, colors to use, sprites, text, sound, etc etc.
+
+Here we have chosen the default 320x240 setup.
+
+]]
+-----------------------------------------------------------------------------
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	graphics=function() return graphics end,
 	update=function() update() end, -- called repeatedly to update+draw
 })
-
--- debug text dump
-local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 -----------------------------------------------------------------------------
 --[[#graphics
@@ -1014,6 +1023,26 @@ add=function(i)
 	return player
 end,
 }
+
+
+-----------------------------------------------------------------------------
+--[[#entities.tiles
+
+These functions are called as we generate a level from ascii, every 
+value in the tile legend data is checked against all the strings in 
+entities.tiles and if it matches it calls thsat function which is then 
+responsable for adding the appropriate collision and drawing code to 
+make that tile actually add something to the level.
+
+The basic values of tile.tile and tile.back are used to write graphics 
+into the two tile layers but could still be caught here if you need to.
+
+Multiple hooks may get called for a single tile, think of each string 
+as a flag to signal that something happens and its value describes what 
+happens.
+
+]]
+-----------------------------------------------------------------------------
 
 
 -----------------------------------------------------------------------------
