@@ -39,7 +39,7 @@ graphics={
 }
 
 -- load a single sprite
-graphics.load=function(name,data)
+graphics.load=function(idx,name,data)
 	local found
 	for i,v in ipairs(graphics) do
 		if v[2]==name then
@@ -48,9 +48,9 @@ graphics.load=function(name,data)
 		end
 	end
 	if not found then -- add new graphics
-		graphics[#graphics+1]={nil,name,data}
+		graphics[#graphics+1]={idx,name,data}
 	else
-		found[1]=nil
+		found[1]=idx
 		found[2]=name
 		found[3]=data
 	end
@@ -59,7 +59,7 @@ end
 -- load a list of sprites
 graphics.loads=function(tab)
 	for i,v in ipairs(tab) do
-		graphics.load(v[2],v[3])
+		graphics.load(v[1],v[2],v[3])
 	end
 end
 
