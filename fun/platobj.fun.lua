@@ -1625,7 +1625,8 @@ end,
 
 	update()
 
-Update called every 1/60 of a second
+Update called every 1/60 of a second, possibly many times before we get 
+a draw call.
 
 ]]
 -----------------------------------------------------------------------------
@@ -1660,7 +1661,10 @@ end
 
 	draw()
 
-Draw called every frame
+Draw called every frame, there may be any number of updates between 
+each draw but hopefully we are looking at one update followed by a 
+draw, if you have an exceptionally fast computer then we may even get 0 
+updates between some draws.
 
 ]]
 -----------------------------------------------------------------------------
