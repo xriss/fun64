@@ -1486,7 +1486,7 @@ setup=function(items)
 
 ]],function(chat,change,...)
 	local a,b=...
-ls(chat)
+
 	if     change=="description" then			print("description",a.name)
 	elseif change=="response"    then			print("response   ",a.name)
 	elseif change=="decision"    then			print("decision   ",a.name)
