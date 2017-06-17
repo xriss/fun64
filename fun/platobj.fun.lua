@@ -457,87 +457,6 @@ entities.systems.item={
 
 load=function() graphics.loads{
 
-{nil,"npc1",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . R R R R R . . . . . . . . 
-. . . . . . . . . . R R R R R R R . . . . . . . 
-. . . . . . . . . . R R R R R R R . . . . . . . 
-. . . . . . . . . . . Y 0 Y Y R R . . . . . . . 
-. . . . . . . . . . M Y m m Y R R . . . . . . . 
-. . . . . . . . . . . Y Y Y Y . R . R . . . . . 
-. . . . . . . . . . . . Y Y . . . R . . . . . . 
-. . . . . . . . . . . Y b b Y . . . . . . . . . 
-. . . . . . . . . . Y b b b b Y . . . . . . . . 
-. . . . . . . . . . Y b b b b Y . . . . . . . . 
-. . . . . . . . . Y Y b . b b Y Y . . . . . . . 
-. . . . . . . . . Y Y . b b b Y Y . . . . . . . 
-. . . . . . . . . . . b b b b . . . . . . . . . 
-. . . . . . . . . . Y I . Y Y I . . . . . . . . 
-. . . . . . . . . . Y I I . Y I . . . . . . . . 
-. . . . . . . . . I I I . I I I . . . . . . . . 
-]]},
-
-{nil,"npc2",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . I I I . . . . . . . . . . 
-. . . . . . . . . . I I I I I . . . . . . . . . 
-. . . . . . . . . I I I I I I I . . . . . . . . 
-. . . . . . . b b b b b b b b b . . . . . . . . 
-. . . . . . . . . j j j j j j j . . . . . . . . 
-. . . . . . . . . . s 0 s j j j . . . . . . . . 
-. . . . . . . . . M s F F s j . . . . . . . . . 
-. . . . . . . . . . s s s s . . . . . . . . . . 
-. . . . . . . . . . . s s . . . . . . . . . . . 
-. . . . . . . . . . 4 G G 4 . . . . . . . . . . 
-. . . . . . . . . 4 G G G G 4 . . . . . . . . . 
-. . . . . . . . . 4 G G G G 4 . . . . . . . . . 
-. . . . . . . . s s G . G 2 s s . . . . . . . . 
-. . . . . . . . s s . 2 2 2 s s . . . . . . . . 
-. . . . . . . . . . 2 2 2 2 . . . . . . . . . . 
-. . . . . . . . . 7 7 . 7 7 B . . . . . . . . . 
-. . . . . . . . . 5 5 B . 5 B . . . . . . . . . 
-. . . . . . . . B B B . B B B . . . . . . . . . 
-]]},
-
-{nil,"npc3",[[
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . o o . . . . . . . . . . 
-. . . . . . . . . . o o o o o . . . . . . . . . 
-. . . . . . . . o o o o o o o o . . . . . . . . 
-. . . . . . . . . o o 4 4 o o o . . . . . . . . 
-. . . . . . . . . . 4 0 4 4 o o . . . . . . . . 
-. . . . . . . . . 5 4 m m 4 4 o . . . . . . . . 
-. . . . . . . . . . 4 4 4 4 o o . . . . . . . . 
-. . . . . . . . . . . 4 4 . o o . . . . . . . . 
-. . . . . . . . . . j 5 5 j . . . . . . . . . . 
-. . . . . . . . . 5 f j j f 5 . . . . . . . . . 
-. . . . . . . . . 5 j j j j 5 . . . . . . . . . 
-. . . . . . . . 4 4 j . j j 4 4 . . . . . . . . 
-. . . . . . . . 4 4 . j j j 4 4 . . . . . . . . 
-. . . . . . . . . . g g g g . . . . . . . . . . 
-. . . . . . . . . g g . g g d . . . . . . . . . 
-. . . . . . . . . g g d . g d . . . . . . . . . 
-. . . . . . . . d d d . d d d . . . . . . . . . 
-]]},
-
 {nil,"cannon_ball",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -568,23 +487,6 @@ load=function() graphics.loads{
 }end,
 
 space=function()
-
-	local space=entities.get("space")
-
-	local arbiter_npc={} -- npc menu things
-		arbiter_npc.presolve=function(it)
-			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
-				it.shape_b.player.near_npc=it.shape_a.npc
-			end
-			return false
-		end
-		arbiter_npc.separate=function(it)
-			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
-				it.shape_b.player.near_npc=false
-			end
-			return true
-		end
-	space:add_handler(arbiter_npc,space:type("npc"))
 
 
 end,
@@ -672,7 +574,15 @@ setup=function()
 
 		for i,player in pairs(entities.caste("player")) do
 			if player.near_menu then
+			
+			
 				s=player.near_menu.title
+			end
+
+			if player.near_npc then
+				local chats=entities.get("chats")
+				local chat=chats.get(player.near_npc.name)
+				s=chat.description and chat.description.text or chat.description_name
 			end
 		end
 
@@ -858,9 +768,9 @@ controls=function(it,fast)
 			local callbacks=entities.manifest("callbacks")
 			callbacks[#callbacks+1]=function()
 
-				local chat=chats.get(it.near_npc)
+				local chat=chats.get(it.near_npc.name)
 				chat.set_response("welcome")
-				menu.show( chat.get_menu_items() )
+				menu.show( menu.chat(chat) )
 
 			end -- call later so we do not process menu input this frame
 
@@ -1072,6 +982,152 @@ end,
 }
 
 
+-----------------------------------------------------------------------------
+--[[#entities.systems.npc
+
+	npc = entities.systems.npc.add(opts)
+
+Add an npc.
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.npc={
+
+load=function() graphics.loads{
+
+-- 4 x 16x32
+{nil,"npc1_walk_4",[[
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 7 7 7 . . . . . 
+. . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 7 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . 
+. . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . 7 0 7 0 7 . . . . . . . . . . . 7 7 0 7 7 . . . . . 
+. . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 7 0 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . . 7 0 7 . . . . . . . . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . 7 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . 7 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 . 7 . . . . . . . 7 . 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . . 7 . . . . . . . . 7 . . 7 7 7 7 7 . . . . . . . . 7 . 7 . 7 . . 7 7 . . . . . . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . 7 7 7 . 7 . . 7 7 . . . . . . 7 7 . . 7 7 7 7 . 7 7 . . . . . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . . 7 7 . 7 . . 7 . . . . . . . . . 7 . 7 7 7 7 . 7 . . . . . . 7 . . 7 . 7 . . 7 . 7 . . . . . . . 7 . 7 7 7 7 7 . . . . . 
+. . . . 7 . 7 7 7 7 7 . . . . . . . . . 7 7 . 7 7 . 7 7 . . . . . . 7 . . . 7 7 7 7 . . 7 . . . . . . . 7 7 . 7 7 . 7 . . . . . 
+. . . . 7 7 . 7 7 . 7 . . . . . . . . . 7 7 7 7 7 7 7 7 7 . . . . . 7 . . 7 . 7 7 . 7 . 7 . . . . . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . 7 . 7 7 . . . . . 7 7 . 7 7 7 7 7 7 7 7 . . . . . . . 7 7 7 . . 7 7 . . . . . 
+. . . . 7 7 7 . . 7 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . 7 7 . . 7 . . 7 . 7 7 . . . . . . . . . 7 . . . 7 7 . . . . 
+. . . . . 7 . . . . 7 . . . . . . . . . . . . 7 7 7 . . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . . . . 7 7 . . . 
+. . . . 7 7 . . . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . . 7 7 . . . 
+. . . . 7 7 . . . . 7 7 . . . . . . . . . . 7 . . 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . . . 7 7 . . . 7 . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . . 7 . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . . 7 . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . . 7 . . . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . . 7 . . . . . . 
+. . . . 7 . . . . . 7 . . . . . . . . . 7 7 7 7 . 7 . . . . . . . . . . . . 7 . 7 . . . . . . . . . . . . 7 . . 7 7 7 7 . . . . 
+. . . 7 7 7 7 . . 7 7 7 7 . . . . . . . . . . . 7 7 7 7 . . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 7 7 7 7 . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+}end,
+
+space=function()
+
+	local space=entities.get("space")
+
+	local arbiter_npc={} -- npc menu things
+		arbiter_npc.presolve=function(it)
+			if it.shape_a.npc and it.shape_b.player then -- remember npc menu
+				it.shape_b.player.near_npc=it.shape_a.npc
+			end
+			return false
+		end
+		arbiter_npc.separate=function(it)
+			if it.shape_a and it.shape_a.npc and it.shape_b and it.shape_b.player then -- forget npc menu
+				it.shape_b.player.near_npc=false
+			end
+			return true
+		end
+	space:add_handler(arbiter_npc,space:type("npc"))
+
+end,
+
+
+add=function(opts)
+
+	local names=system.components.tiles.names
+	local space=entities.get("space")
+
+	local npc=entities.add{caste="npc"}
+
+	npc.frame=0
+	npc.frames={ names.npc1_walk_4.idx+0 , names.npc1_walk_4.idx+2 , names.npc1_walk_4.idx+4 , names.npc1_walk_4.idx+6 }
+		
+	npc.update=function()
+
+		npc.move=false
+		npc.jump=false
+		npc.jump_clr=false
+
+		if npc.active then
+		
+			entities.systems.player.controls(npc)
+		
+		end
+	end
+	
+
+	npc.draw=function()
+		if npc.active then
+			local px,py=npc.body:position()
+			local rz=npc.body:angle()
+			local t=npc.frames[1]
+			
+			system.components.sprites.list_add({t=t,hx=16,hy=32,px=px,py=py,sx=npc.dir,sy=1,rz=180*rz/math.pi,color=npc.color})			
+		end
+
+	end
+	
+
+	local px,py=opts.px,opts.py
+	local vx,vy=0,0
+	
+	npc.dir=-1
+	npc.color={r=1/2,g=1,b=1/2,a=1}
+
+	npc.active=true
+	npc.body=space:body(1,math.huge)
+	npc.body:position(px,py)
+	npc.body:velocity(vx,vy)
+	npc.body.headroom={}
+	
+	npc.body:velocity_func(function(body)
+--				body.gravity_x=-body.gravity_x
+--				body.gravity_y=-body.gravity_y
+		return true
+	end)
+				
+	npc.floor_time=0 -- last time we had some floor
+
+	npc.shape=npc.body:shape("segment",0,2,0,11,4)
+	npc.shape:friction(1)
+	npc.shape:elasticity(0)
+	npc.shape:collision_type(space:type("walking")) -- walker
+
+	npc.shape2=npc.body:shape("segment",0,2,0,11,8) -- talk area
+	npc.shape2:collision_type(space:type("npc"))
+	npc.shape2.npc=npc
+	
+	npc.body.floor_time=0
+	
+	npc.name="npc1"
+
+
+	return npc
+end,
+}
 
 ----------------------------------------------------------------------------
 --[[#entities.tiles.start
@@ -1118,12 +1174,7 @@ entities.tiles.npc=function(tile)
 	local names=system.components.tiles.names
 	local space=entities.get("space")
 
-	local item=entities.systems.item.add()
-
-	item.shape=space.static:shape("box", (tile.x-1)*8,(tile.y-1)*8, (tile.x+2)*8,(tile.y+2)*8,0)
-
-	item.shape:collision_type(space:type("npc"))
-	item.shape.npc=tile.npc
+	local item=entities.systems.npc.add({px=tile.x*8,py=tile.y*8})
 
 end
 
@@ -1170,15 +1221,54 @@ local default_legend={
 	["S "]={ 	start=1,	},
 
 -- items not tiles, so display tile 0 and we will add a sprite for display
-	["N1"]={ 	npc="npc1",				sprite="npc1", },
-	["N2"]={ 	npc="npc2",				sprite="npc2", },
-	["N3"]={ 	npc="npc3",				sprite="npc3", },
+	["N1"]={ 	npc="npc1",  },
+	["N2"]={ 	npc="npc2",  },
+	["N3"]={ 	npc="npc3",  },
 
 }
 	
 levels={}
 
 levels[1]={
+legend=combine_legends(default_legend,{
+	["?0"]={ },
+}),
+title="Welcome!",
+map=[[
+||0000000000000000000000000000000000000000000000000000000000000000000000000000||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||,,. . . . . . ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,. . . . . ||
+||==. . . . . . ====================================================. . . . . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N1. . ||
+||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
+||============================================================================||
+||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||
+]],
+}
+
+levels[2]={
 legend=combine_legends(default_legend,{
 	["?0"]={ },
 }),
@@ -1376,133 +1466,27 @@ setup=function(items)
 
 	local chats=entities.set("chats", chatdown.setup([[
 
-#npc1 Conversation NPC1
+#npc1 A door shaped like a dead man.
 
-	A rare bread of NPC who will fulfil all your conversational desires for 
-	a very good price.
-
-	=sir sir/madam
-
-	>convo
-
-		Is this the right room for a conversation?
-		
-	>exit
-	
-		...ERROR...EOF...PLEASE...RESTART...
+	=donuts 0
 
 <welcome
 
-	Good Morning {sir},
+	Good Day Kind Sir,
 	
-	>morning
-
-		Good morning to you too.
-
-	>afternoon
-
-		I think you will find it is now afternoon.
-
-	>sir
-
-		How dare you call me {sir}!
-
-<sir
-
-	My apologies, I am afraid that I am but an NPC with very little 
-	brain, how might I address you?
-	
-	>welcome.1?sir!=madam
-
-		You may address me as Madam.
-
-		=sir madam
-
-	>welcome.2?sir!=God
-
-		You may address me as God.
-
-		=sir God
-
-	>welcome.3?sir!=sir
-
-		You may address me as Sir.
-
-		=sir sir
-
-<afternoon
-	
-	Then good afternoon {sir},
-	
-	>convo
-
-<morning
-	
-	and how may I help {sir} today?
-	
-	>convo
-
-
-<convo
-
-	Indeed it is, would you like the full conversation or just the quick natter?
-
-	>convo_full
-	
-		How long is the full conversation?
-
-	>convo_quick
-
-		A quick natter sounds just perfect.
-
-<convo_full
-
-	The full conversation is very full and long so much so that you 
-	will have to page through many pages before you get to make a 
-	decision
-	
-	>
-		Like this?
-	<
-	
-	Yes just like this. In fact I think you can see that we are already 
-	doing it.
-			
+	If you fetch me all the donuts I will let you out.
 	
 	>exit
 
-<convo_quick
+		Fine I'll go look.
 
-	...
-	
-	>exit
+	>exit?donuts>=10
 
-#npc2 Conversation NPC2
-
-	Not a real boy.
-
-<welcome
-
-	Sorry but I am not a real boy.
-	
-	>exit
-	
-		Bye bye.
-
-
-#npc3 Conversation NPC3
-
-	Not a real girl.
-
-<welcome
-
-	Sorry but I am not a real girl.
-	
-	>exit
-	
-		Bye bye.
+		Here you go.
 
 ]]) )
+
+
 
 	local wstr=require("wetgenes.string")
 
@@ -1516,6 +1500,50 @@ setup=function(items)
 	menu.cx=math.floor((80-menu.width)/2)
 	menu.cy=0
 	
+	menu.chat=function(chat)
+		local items={cursor=1,cursor_max=0}
+		
+		items.title=chat.description and chat.description.text or chat.description_name
+		
+		local ss=chat.response and chat.response.text or {} if type(ss)=="string" then ss={ss} end
+		for i,v in ipairs(ss) do
+			if i>1 then
+				items[#items+1]={text="",chat=chat} -- blank line
+			end
+			items[#items+1]={text=chat.replace_proxies(v)or"",chat=chat}
+		end
+
+		for i,v in ipairs(chat.decisions or {}) do
+
+			items[#items+1]={text="",chat=chat} -- blank line before each decision
+
+			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
+
+			local color=30
+			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this decision
+			
+			local f=function(item,menu)
+
+				if item.decision and item.decision.name then
+
+					chat.changes("decision",item.decision)
+
+					chat.set_response(item.decision.name)
+
+					chat.set_proxies(item.decision.proxies)
+
+					menu.show( menu.chat(chat) )
+
+				end
+			end
+			
+			items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,decision=v,cursor=i,call=f,color=color} -- only show first line
+			items.cursor_max=i
+		end
+
+		return items
+	end
+
 	function menu.show(items)
 	
 		if not items then
