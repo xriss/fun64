@@ -1484,8 +1484,16 @@ setup=function(items)
 
 		Here you go.
 
-]]) )
-
+]],function(chat,change,...)
+	local a,b=...
+ls(chat)
+	if     change=="description" then			print("description",a.name)
+	elseif change=="response"    then			print("response   ",a.name)
+	elseif change=="decision"    then			print("decision   ",a.name)
+	elseif change=="proxy"       then			print("proxy      ",a,b)
+	end
+	
+end))
 
 
 	local wstr=require("wetgenes.string")
@@ -1526,7 +1534,7 @@ setup=function(items)
 
 				if item.decision and item.decision.name then
 
-					chat.changes("decision",item.decision)
+					chats.changes(chat,"decision",item.decision)
 
 					chat.set_response(item.decision.name)
 
@@ -1603,6 +1611,7 @@ setup=function(items)
 					if item.call then -- do this
 					
 						if item and item.decision and item.decision.name=="exit" then --exit menu
+							item.call( item , menu )
 							menu.show()	-- hide
 						else
 							item.call( item , menu )
