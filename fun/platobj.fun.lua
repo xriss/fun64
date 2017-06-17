@@ -549,8 +549,8 @@ setup=function()
 
 	score.draw=function()
 	
+--[[
 		local time=entities.get("time")
-	
 		local remain=0
 		for _,loot in ipairs( entities.caste("loot") ) do
 			if loot.active then remain=remain+1 end -- count remaining loots
@@ -565,6 +565,7 @@ setup=function()
 
 		local s=string.format("%d.%02d",ts,tp)
 		system.components.text.text_print(s,math.floor((system.components.text.tilemap_hx-#s)/2),0)
+]]
 
 		local s=""
 		
@@ -970,10 +971,10 @@ add=function(i)
 			system.components.sprites.list_add({t=t,hx=16,hy=32,px=px,py=py,sx=player.dir,sy=1,rz=180*rz/math.pi,color=player.color})			
 		end
 
-		if player.joined then
-			local s=string.format("%d",player.score)
-			system.components.text.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
-		end
+--		if player.joined then
+--			local s=string.format("%d",player.score)
+--			system.components.text.text_print(s,math.floor(player.up_text_x-(#s/2)),0,player.color.idx)
+--		end
 
 	end
 	
@@ -1129,6 +1130,134 @@ add=function(opts)
 end,
 }
 
+
+
+-----------------------------------------------------------------------------
+--[[#entities.systems.donut
+
+	donut = entities.systems.donut.add(opts)
+
+Add an donut.
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.donut={
+
+load=function() graphics.loads{
+
+-- 1 x 24x24
+{nil,"donut_1",[[
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . O O O O . . . . . . . . . . 
+. . . . . . . O O O O O O O O O O . . . . . . . 
+. . . . . . O O O O O O O O O O O O . . . . . . 
+. . . . . O O O O O O O O O O O O O O . . . . . 
+. . . . . O O O O O O O O O O O O O O . . . . . 
+. . . . . O O O O O O . . O O O O O O . . . . . 
+. . . . O O O O O O . . . . O O O O O O . . . . 
+. . . . O O O O O . . . . . . O O O O O . . . . 
+. . . . O O O O O . . . . . . O O O O O . . . . 
+. . . . O O O O O O . . . . O O O O O O . . . . 
+. . . . . O O O O O O . . O O O O O O . . . . . 
+. . . . . O O O O O O O O O O O O O O . . . . . 
+. . . . . O O O O O O O O O O O O O O . . . . . 
+. . . . . . O O O O O O O O O O O O . . . . . . 
+. . . . . . . O O O O O O O O O O . . . . . . . 
+. . . . . . . . . . O O O O . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . 
+]]},
+
+}end,
+
+space=function()
+
+	local space=entities.get("space")
+	local arbiter_loot={} -- loot things (pickups)
+		arbiter_loot.presolve=function(it)
+			if it.shape_a.loot and it.shape_b.player then -- trigger collect
+				local loot=it.shape_a.loot
+				local player=it.shape_b.player
+				local callbacks=entities.manifest("callbacks")
+				callbacks[#callbacks+1]=function() loot:pickup(player) end
+				return false
+			end
+			return true
+		end
+	space:add_handler(arbiter_loot,space:type("donut")) 
+
+
+end,
+
+spawn=function(count)
+
+	for i=1,count do
+		local px=math.random(32,320-32)
+		local py=32
+		local vx=math.random(-4000,4000)/100
+		local vy=math.random(-4000,4000)/100
+		entities.systems.donut.add({px=px,py=py,vx=vx,vy=vy})
+	end
+	
+end,
+
+add=function(opts)
+
+	local names=system.components.tiles.names
+	local space=entities.get("space")
+
+	local donut=entities.add{caste="donut"}
+
+	donut.frame=0
+	donut.frames={ names.donut_1.idx+0 }
+		
+	donut.update=function()
+	end
+	
+	donut.draw=function()
+		if donut.active then
+			local px,py=donut.body:position()
+			local rz=donut.body:angle()
+			local t=donut.frames[1]
+			system.components.sprites.list_add({t=t,h=24,px=px,py=py,rz=180*rz/math.pi})			
+		end
+
+	end
+
+	donut.pickup=function(it,player)
+		if donut.active then
+			donut.active=false
+			space:remove(donut.shape)
+			space:remove(donut.body)
+			
+			local chats=entities.get("chats")
+			chats.set_proxy("npc1/donuts", tostring(tonumber(chats.get_proxy("npc1/donuts")) + 1 ))
+		end
+	end
+		
+	donut.active=true
+	
+	donut.body=space:body(1,1)
+	donut.body:position(opts.px,opts.py)
+	donut.body:velocity(opts.vx,opts.vy)
+	donut.body.headroom={}
+	
+
+	donut.shape=donut.body:shape("circle",8,0,0)
+	donut.shape:friction(1)
+	donut.shape:elasticity(0)
+	donut.shape:collision_type(space:type("donut"))
+	donut.shape.loot=donut
+
+	return donut
+end,
+}
+
 ----------------------------------------------------------------------------
 --[[#entities.tiles.start
 
@@ -1279,7 +1408,7 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . t.t.. . . . . . . s.s.. . . . . . . . . . . . . N3. . . . ||
+||. . . . . . . . . t.t.. . . . . . . s.s.. . . . . . . . . . . . . . . . . . ||
 ||,,,,,,,,,,,,,,,,,,t.t.,,,,,,,,,,,,,,s.s.,,,,,,,,. . . . ,,,,,,,,,,,,,,,,,,,,||
 ||================================================. . . . ====================||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -1288,14 +1417,14 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||,,,,,,,,,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||==========. . . . . . . . . . t.t.. . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . t.t.. . . . . . WWWWWWWWWWWW. . . . N2. . . . ||
+||. . . . . . . . . . . . . . . t.t.. . . . . . WWWWWWWWWWWW. . . . . . . . . ||
 ||,,,,,,,,,,,,,,. . . . ,,,,,,,,t.t.,,,,,,,,,,,,WWWWWWWWWWWW,,,,,,,,,,,,,,,,,,||
 ||==============. . . . ======================================================||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||,,. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||==. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||,,. . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . N1. . ||
+||,,. . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||==. . . . . . . . . . . . . . . . . . . . . . S=. . . . . . . ,,,,,,,,,,,,,,||
 ||. . . . . . . . . . . . . . . . P=. . S=. . . S=. . . . . . . ==============||
 ||,,. . . . . . ,,,,,,,,,,S=,,,,,,P=,,,,S=,,,,,,S=,,,,,,,,,,,,,,,,,,. . . . . ||
@@ -1425,6 +1554,8 @@ setup=function(idx)
 		end
 	end
 	
+	system.components.back.dirty(true)
+	system.components.map.dirty(true)
 		
 	entities.systems.player.add(1) -- add a player
 end,
@@ -1476,14 +1607,27 @@ setup=function(items)
 	
 	If you fetch me all the donuts I will let you out.
 	
-	>exit
+	>exit?donuts<10
 
 		Fine I'll go look.
 
-	>exit?donuts>=10
+	>donut?donuts>9
 
-		Here you go.
+		Here you go, 10 donuts that have barely touched the ground.
 
+	>out
+
+		Where is out?
+<out
+
+	Out is nearby, I may have been here a long long time but I know 
+	exactly how to get out and I can show you, just bring me donuts, 
+	all of them!
+	
+	>exit
+	
+		Be seeing you.
+	
 ]],function(chat,change,...)
 	local a,b=...
 
@@ -1491,6 +1635,20 @@ setup=function(items)
 	elseif change=="response"    then			print("response   ",a.name)
 	elseif change=="decision"    then			print("decision   ",a.name)
 	elseif change=="proxy"       then			print("proxy      ",a,b)
+	end
+	
+	if change=="decision" then
+		if chat.name=="npc1" then
+			if a.name=="exit" then
+				if not entities.get("added_donuts") then
+					entities.set("added_donuts",true)
+					entities.systems.donut.spawn(10)
+				end
+			end
+			if a.name=="donut" then
+				entities.systems.level.setup(2)
+			end
+		end
 	end
 	
 end))
