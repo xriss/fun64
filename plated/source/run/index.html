@@ -100,8 +100,8 @@ a		{color:#88f;}
 // create a pulse function and call it every frame
 					var pulse;
 					pulse=function() {
-						requestAnimationFrame(pulse); // we need to always ask to be called again
-						gamecake_post('cmd=lua\n','return gamecake_pulse()');
+						var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
+						if(ret==0) { requestAnimationFrame(pulse); } // stop updating on error
 					};
 					requestAnimationFrame(pulse); // start the updates
 
