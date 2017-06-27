@@ -1284,7 +1284,7 @@ add=function(opts)
 			space:remove(donut.body)
 			
 			local chats=entities.get("chats")
-			chats.set_proxy("npc1/donuts", tostring(tonumber(chats.get_proxy("npc1/donuts")) + 1 ))
+			chats.set_proxy("npc1/donuts","+1")
 		end
 	end
 		
@@ -1655,7 +1655,7 @@ setup=function(items)
 	local chat_hook=function(chat,change,...)
 		local a,b=...
 
-		if     change=="description" then			print("description",a.name)
+		if     change=="description" then			print("description",chat.name,a.name)
 
 			for n,v in pairs(entities.systems) do
 				if v.chat_hook_description then 
@@ -1663,7 +1663,7 @@ setup=function(items)
 				end
 			end
 
-		elseif change=="response"    then			print("response   ",a.name)
+		elseif change=="response"    then			print("response   ",chat.name,a.name)
 
 			for n,v in pairs(entities.systems) do
 				if v.chat_hook_response then
@@ -1671,7 +1671,7 @@ setup=function(items)
 				end
 			end
 
-		elseif change=="decision"    then			print("decision   ",a.name)
+		elseif change=="decision"    then			print("decision   ",chat.name,a.name)
 
 			for n,v in pairs(entities.systems) do
 				if v.chat_hook_decision then
@@ -1679,7 +1679,7 @@ setup=function(items)
 				end
 			end
 
-		elseif change=="proxy"       then			print("proxy      ",a,b)
+		elseif change=="proxy"       then			print("proxy      ",chat.name,a,b)
 
 			for n,v in pairs(entities.systems) do
 				if v.chat_hook_proxy then
