@@ -994,6 +994,54 @@ Add an npc.
 -----------------------------------------------------------------------------
 entities.systems.npc={
 
+chat_text=[[
+
+#npc1 A door shaped like a dead man.
+
+	=donuts 0
+
+<welcome
+
+	Good Day Kind Sir,
+	
+	If you fetch me all the donuts I will let you out.
+	
+	>exit?donuts<10
+
+		Fine I'll go look.
+
+	>donut?donuts>9
+
+		Here you go, 10 donuts that have barely touched the ground.
+
+	>out
+
+		Where is out?
+<out
+
+	Out is nearby, I may have been here a long long time but I know 
+	exactly how to get out and I can show you, just bring me donuts, 
+	all of them!
+	
+	>exit
+	
+		Be seeing you.
+	
+]],
+chat_hook_decision=function(chat,a)
+	if chat.name=="npc1" then
+		if a.name=="exit" then
+			if not entities.get("added_donuts") then
+				entities.set("added_donuts",true)
+				entities.systems.donut.spawn(10)
+			end
+		end
+		if a.name=="donut" then
+			entities.systems.level.setup(2)
+		end
+	end
+end,
+
 load=function() graphics.loads{
 
 -- 4 x 16x32
@@ -1593,64 +1641,57 @@ space=function()
 end,
 setup=function(items)
 
-	local chats=entities.set("chats", chatdown.setup([[
 
-#npc1 A door shaped like a dead man.
-
-	=donuts 0
-
-<welcome
-
-	Good Day Kind Sir,
-	
-	If you fetch me all the donuts I will let you out.
-	
-	>exit?donuts<10
-
-		Fine I'll go look.
-
-	>donut?donuts>9
-
-		Here you go, 10 donuts that have barely touched the ground.
-
-	>out
-
-		Where is out?
-<out
-
-	Out is nearby, I may have been here a long long time but I know 
-	exactly how to get out and I can show you, just bring me donuts, 
-	all of them!
-	
-	>exit
-	
-		Be seeing you.
-	
-]],function(chat,change,...)
-	local a,b=...
-
-	if     change=="description" then			print("description",a.name)
-	elseif change=="response"    then			print("response   ",a.name)
-	elseif change=="decision"    then			print("decision   ",a.name)
-	elseif change=="proxy"       then			print("proxy      ",a,b)
-	end
-	
-	if change=="decision" then
-		if chat.name=="npc1" then
-			if a.name=="exit" then
-				if not entities.get("added_donuts") then
-					entities.set("added_donuts",true)
-					entities.systems.donut.spawn(10)
-				end
-			end
-			if a.name=="donut" then
-				entities.systems.level.setup(2)
-			end
+-- join all entity chat_text to build chat_texts with
+	local chat_texts={}
+	for n,v in pairs(entities.systems) do
+		if v.chat_text then
+			chat_texts[#chat_texts+1]=v.chat_text
 		end
 	end
+	chat_texts=table.concat(chat_texts,"\n\n")
 	
-end))
+-- manage chat hooks from entities and print debug text
+	local chat_hook=function(chat,change,...)
+		local a,b=...
 
+		if     change=="description" then			print("description",a.name)
+
+			for n,v in pairs(entities.systems) do
+				if v.chat_hook_description then 
+				   v.chat_hook_description(chat,a)
+				end
+			end
+
+		elseif change=="response"    then			print("response   ",a.name)
+
+			for n,v in pairs(entities.systems) do
+				if v.chat_hook_response then
+				   v.chat_hook_response(chat,a)
+				end
+			end
+
+		elseif change=="decision"    then			print("decision   ",a.name)
+
+			for n,v in pairs(entities.systems) do
+				if v.chat_hook_decision then
+				   v.chat_hook_decision(chat,a)
+				end
+			end
+
+		elseif change=="proxy"       then			print("proxy      ",a,b)
+
+			for n,v in pairs(entities.systems) do
+				if v.chat_hook_proxy then
+				   v.chat_hook_proxy(chat,a,b)
+				end
+			end
+
+		end
+		
+	end
+
+	local chats=entities.set( "chats", chatdown.setup(chat_texts,chat_hook) )
 
 	local wstr=require("wetgenes.string")
 
