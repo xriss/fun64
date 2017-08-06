@@ -49,14 +49,43 @@ end
 
 </pre>
 </div>
-<div id="split_right">
+<div id="gamecake_container">
 	<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
 </div>
 </div>
 
+<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
+
+	local hx,hy,ss=320,240,3
+
+	local opts={
+		times=true, -- request simple time keeping samples
+
+		width=hx*ss,	-- display basics
+		height=hy*ss,
+		screen_scale=ss,
+	--	show="full",
+		title="fun",
+		start="wetgenes.gamecake.fun.main",
+		fun="start",
+		fps=60,
+		... -- include commandline opts
+	}
+
+	math.randomseed( os.time() ) -- try and randomise a little bit better
+
+	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+
+	return oven:serv()
+
+--]]></script>
+
+
 <script>
 
-	$("#split").height("100%").split({orientation:'vertical',limit:10,position:'50%'});
+	$("#split").height("100%").split({orientation:'vertical',limit:10,position:'50%',onDrag: function(event) {
+		if( window.Module && window.Module.canvas_resize ) { window.Module.canvas_resize(); }
+	}});
 	
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
@@ -141,7 +170,7 @@ end
 	
 	// anytime the editor changes
 	editor.on('change', function(e){
-		code = editor.getValue();
+		var code = editor.getValue();
 		gamecake_load_fun_copypasta(code);
 	});
 	
