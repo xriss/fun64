@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>fun64 gist player</title>
+	<title>Fun64pad edit and run.</title>
 	<script data-pace-options='{ "eventLag": false }' src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
 	<script src="../js/jquery-3.1.1.min.js"></script>
 	<script src="../js/jquery.splitter.js"></script>
@@ -28,9 +28,14 @@ a		{color:#88f;}
 	right: 0;
 }
 
+#icobar { width:100%; height:32px; }
+
 	</style>
 </head>
 <body>
+<div id="iconbar">
+	<a id="iconbar_run" href="#">RUN</a>
+</div>
 <div id="split">
 <div id="split_left">
 <pre id="editor">
@@ -83,8 +88,13 @@ end
 
 <script>
 
-	$("#split").height("100%").split({orientation:'vertical',limit:10,position:'50%',onDrag: function(event) {
-		if( window.Module && window.Module.canvas_resize ) { window.Module.canvas_resize(); }
+	var timeout;
+	$("#split").height("100%").split({orientation:'vertical',limit:20,position:'50%',onDrag: function(event) {
+		var f=function() {
+			window.dispatchEvent(new Event('resize'));
+		};
+		clearTimeout(timeout);
+		timeout=setTimeout(f,500);
 	}});
 	
     var editor = ace.edit("editor");
@@ -101,11 +111,8 @@ end
 		console.log("GameCake Loading "+pct+"%");
 	};
 
-	var gamecake_load_fun=function(tab)
+	var gamecake_load_fun=function(code)
 	{
-		var url=tab.url;
-		var copypasta=tab.copypasta;
-		
 		var resize=function(){
 			var e=document.getElementById("gamecake_container");
 			var w=parseFloat(window.getComputedStyle(e).width);
@@ -122,7 +129,16 @@ end
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
 		Module.memoryInitializerPrefixURL="../exe/";
-		Module['_main'] = function() {
+		Module.monitorRunDependencies=show_progress;
+		Module.preInit=function() {
+			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
+			FS.mkdir("/lua");
+			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+		};
+		Module.preRun=function(){
+			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "#canvas";
+		};
+		Module._main=function() {
 			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 
 			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
@@ -136,27 +152,7 @@ end
 			requestAnimationFrame(pulse); // start the updates
 
 			setTimeout(resize,500); // call resize in a little while
-
 		};
-		Module["preInit"] = function() {
-			if(url)
-			{
-				var aa=url.split("/");
-				if(aa[2]=="gist.github.com") // convert gist page into raw link
-				{
-					url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
-				}
-				FS.createPreloadedFile('/', "start.fun.lua", url, true, false);
-			}
-			else
-			{
-				FS.writeFile("/start.fun.lua", copypasta,  { encoding: "utf8" } );
-			}
-			FS.mkdir("/lua");
-			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
-
-		};
-		Module["monitorRunDependencies"]=show_progress;
 
 		(function(d, script) {
 			script = d.createElement('script');
@@ -166,14 +162,18 @@ end
 			d.getElementsByTagName('head')[0].appendChild(script);
 		}(document));
 	}
-	var gamecake_load_fun_copypasta=function(copypasta){ return gamecake_load_fun({copypasta:copypasta}) };
 	
 	// anytime the editor changes
 	editor.on('change', function(e){
 		var code = editor.getValue();
-		gamecake_load_fun_copypasta(code);
 	});
 	
+	$("#iconbar_run").click(function(e){
+		e..preventDefault();
+		var code = editor.getValue();
+		gamecake_load_fun(code);
+
+	});
 		
 			
 </script>
