@@ -48,7 +48,13 @@ hardware,main=system.configurator({
 -- updates are run at 60fps
 update=function()
 
-	system.components.text.text_print("Hello World!",5,2,31,0) -- (text,x,y,color,background)
+    local ctext=system.components.text
+    local bg=0
+    local fg=31
+
+	ctext.text_clear(0x01000000*bg) -- clear text forcing a background color
+	
+	ctext.text_print("Hello World!",5,2,fg,bg) -- (text,x,y,color,background)
 	
 end
 
@@ -118,7 +124,7 @@ end
 			var w=parseFloat(window.getComputedStyle(e).width);
 			var h=parseFloat(window.getComputedStyle(e).height);
 			Module.setCanvasSize(w,h);
-			if(gamecake_post)
+			if(window.gamecake_post)
 			{
 				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
 			}
@@ -144,12 +150,12 @@ end
 			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
 
 // create a pulse function and call it every frame
-			var pulse;
-			pulse=function() {
+			Module._pulse=function() {
+				cancelAnimationFrame(Module._pulseid);
 				var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
-				if(ret==0) { requestAnimationFrame(pulse); } // stop updating on error
+				if(ret==0) { Module._pulseid=requestAnimationFrame(Module._pulse); } // stop updating on error
 			};
-			requestAnimationFrame(pulse); // start the updates
+			Module._pulse();
 
 			setTimeout(resize,500); // call resize in a little while
 		};
@@ -170,8 +176,21 @@ end
 	
 	$("#iconbar_run").click(function(e){
 		e.preventDefault();
+		
 		var code = editor.getValue();
-		gamecake_load_fun(code);
+
+		if(window.Module) // update
+		{
+			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
+			gamecake_post('cmd=lua\n',"oven.next='wetgenes.gamecake.fun.main'");
+			Module.canvas_resize();
+			Module._pulse(); // make sure the pulse is running again it may have stoped on error
+
+		}
+		else
+		{
+			gamecake_load_fun(code);
+		}
 
 	});
 		
