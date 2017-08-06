@@ -111,6 +111,20 @@ end
 
 	editor.getSession().setUseWrapMode(true);
 
+	// load any saved code at the start
+	var code_filename="start.fun.lua";
+	var code = localStorage.getItem(code_filename) || editor.getValue();
+	editor.setValue(code);
+	editor.clearSelection();
+	editor.focus();
+	
+	// autosave any edits to local storage
+	editor.on('change', function(e){ 
+		var code = editor.getValue();
+		localStorage.setItem(code_filename, code)
+	});
+	
+	
 	var show_progress=function(n)
 	{
 		window.show_progress_max=window.show_progress_max || 0;
@@ -197,8 +211,7 @@ end
 	});
 		
 
-	var code = editor.getValue();
-	gamecake_load_fun(code);
+	gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
 			
 </script>
 
