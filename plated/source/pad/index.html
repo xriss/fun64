@@ -99,6 +99,18 @@ end
 
 <script>
 
+	var params={};
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+	if(params.url) // fill pad with this code
+	{
+		var aa=params.url.split("/");
+		if(aa[2]=="gist.github.com") // convert gist page into raw link
+		{
+			params.url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
+		}
+	}
+
 	var timeout;
 	$("#split").height("100%").split({orientation:'vertical',limit:20,position:'50%',onDrag: function(event) {
 		var f=function() {
@@ -115,11 +127,15 @@ end
 	editor.getSession().setUseWrapMode(true);
 
 	// load any saved code at the start
-	var code_filename="start.fun.lua";
-	var code = localStorage.getItem(code_filename) || editor.getValue();
-	editor.setValue(code);
-	editor.clearSelection();
-	editor.focus();
+	var code_filename=params.url || "start.fun.lua";
+	var code = localStorage.getItem(code_filename);
+	if(code)
+	{
+		editor.setValue(code);
+		editor.clearSelection();
+		editor.focus();
+		params.url_donotload=true;
+	}
 	
 	// autosave any edits to local storage
 	editor.on('change', function(e){ 
@@ -210,20 +226,10 @@ end
 		}
 
 	});
-		
-	var params={};
-	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
-		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
-	
-	if(params.url) // fill pad with this code
+			
+	if(params.url && !params.url_donotload ) // fill pad with this code
 	{
 //		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
-
-		var aa=params.url.split("/");
-		if(aa[2]=="gist.github.com") // convert gist page into raw link
-		{
-			params.url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
-		}
 		
 		$.get(params.url,function(code){
 			editor.setValue(code);
