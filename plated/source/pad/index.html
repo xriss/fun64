@@ -230,6 +230,7 @@ end
 			editor.setValue(code);
 			editor.clearSelection();
 			editor.focus();
+			gamecake_load_fun(code);
 		});
 		
 		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
