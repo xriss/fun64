@@ -28,19 +28,76 @@ a		{color:#88f;}
 	right: 0;
 }
 
-#gamecake_container { overflow:visible; }
 
-#icobar { width:100%; height:32px; }
+#gamecake_container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.splitter_panel .vsplitter {
+    background-color: #222;
+}
+
+.splitter_panel .hsplitter {
+    background-color: #222;
+}
+
+#iconbar { width:100%; height:32px; background-color: #333; position:relative; }
+
+#iconbar a {
+	display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    width: 25%;
+    height: 100%;
+    padding: 5px 4px;
+    margin: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+    overflow: hidden;
+}
+
+#iconbar a:hover { background-color: #000; }
+
+#iconbar a:hover { background-color: #000; }
+
+#gamecake_log {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    color: #4c4;
+}
+
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(128, 128, 128, 0.1);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(128, 128, 128, 0.5);
+}
+
 
 	</style>
 </head>
 <body>
 <div id="split">
-<div id="split_left">
-<div id="iconbar">
-	Paste your fun64 code below then click <a id="iconbar_run" href="#">RUN!</a>
-</div>
-<pre id="editor">
+	<div id="split_left">
+		<div id="iconbar"><!--
+		--><a id="iconbar_run" href="#" title="Refresh and restart the running code." >RUN</a><!--
+		--><a id="iconbar_patch" href="#"></a><!--
+		--><a id="iconbar_clearlog" href="#" title="Empty the log.">CLEAR LOG</a><!--
+		--><a id="iconbar_revert" href="#"></a><!--
+		--></div>
+		<pre id="editor">
 
 --
 -- This is fun64 code, you can copy paste it into https://xriss.github.io/fun64/pad/ to run it.
@@ -63,11 +120,14 @@ update=function()
 	
 end
 
-</pre>
-</div>
-<div id="gamecake_container">
-	<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
-</div>
+		</pre>
+	</div>
+	<div id="split_right">
+		<div id="gamecake_container">
+			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
+		</div>
+		<pre id="gamecake_log"></pre>
+	</div>
 </div>
 
 <script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
@@ -99,6 +159,27 @@ end
 
 <script>
 
+(function () {
+	var old = console.log;
+	console.log = function () {
+		var logger = document.getElementById('gamecake_log');
+		for (var i = 0; i < arguments.length; i++) {
+			if (typeof arguments[i] == 'object') {
+				s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
+			} else {
+				s=arguments[i] + "\n";
+			}
+		}
+		
+		var t=logger.innerHTML || "";
+		if(t.length>2048) { t=t.slice(-2048); } // limit
+		logger.innerHTML=t+s;
+
+		logger.scrollTop=logger.scrollHeight;
+		old.apply(console, arguments);
+	}
+})();
+
 	var params={};
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
 		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
@@ -111,14 +192,17 @@ end
 		}
 	}
 
-	var timeout;
-	$("#split").height("100%").split({orientation:'vertical',limit:20,position:'50%',onDrag: function(event) {
+	var resize_timeout;
+	var resize_func=function(event) {
 		var f=function() {
 			window.dispatchEvent(new Event('resize'));
 		};
-		clearTimeout(timeout);
-		timeout=setTimeout(f,500);
-	}});
+		clearTimeout(resize_timeout);
+		timresize_timeouteout=setTimeout(f,100);
+	};
+	
+	$("#split").height("100%").split({orientation:'vertical',limit:5,position:'50%',onDrag: resize_func });
+	$("#split_right").split({orientation:'horizontal',limit:5,position:'90%',onDrag: resize_func });
 	
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
@@ -224,7 +308,17 @@ end
 		{
 			gamecake_load_fun(code);
 		}
-
+		
+	});
+	$("#iconbar_patch").click(function(e){
+		e.preventDefault();
+	});
+	$("#iconbar_clearlog").click(function(e){
+		e.preventDefault();
+		$("#gamecake_log").text("");
+	});
+	$("#iconbar_revert").click(function(e){
+		e.preventDefault();
 	});
 			
 	if(params.url && !params.url_donotload ) // fill pad with this code
