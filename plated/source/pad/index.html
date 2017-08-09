@@ -52,7 +52,7 @@ update=function()
 
     local ctext=system.components.text
     local bg=0
-    local fg=31
+    local fg=system.ticks%32 -- cycle the foreground color
 
 	ctext.text_clear(0x01000000*bg) -- clear text forcing a background color
 	
@@ -168,8 +168,9 @@ end
 // create a pulse function and call it every frame
 			Module._pulse=function() {
 				cancelAnimationFrame(Module._pulseid);
+				Module._pulseid=requestAnimationFrame(Module._pulse);
 				var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
-				if(ret==0) { Module._pulseid=requestAnimationFrame(Module._pulse); } // stop updating on error
+				if(ret!=0) { cancelAnimationFrame(Module._pulseid); } // stop updating on error
 			};
 			Module._pulse();
 
