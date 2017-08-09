@@ -220,6 +220,8 @@ end
 	
 	if(params.url) // fill pad with this code
 	{
+		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
+
 		var aa=params.url.split("/");
 		if(aa[2]=="gist.github.com") // convert gist page into raw link
 		{
@@ -231,9 +233,7 @@ end
 			editor.clearSelection();
 			editor.focus();
 			gamecake_load_fun(code);
-		});
-		
-		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
+		});		
 	}
 	else
 	{
