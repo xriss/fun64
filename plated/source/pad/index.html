@@ -220,13 +220,13 @@ end
 	
 	if(params.url) // fill pad with this code
 	{
-		var aa=url.split("/");
+		var aa=params.url.split("/");
 		if(aa[2]=="gist.github.com") // convert gist page into raw link
 		{
-			url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
+			params.url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
 		}
 		
-		$.get(url,function(code){
+		$.get(params.url,function(code){
 			editor.setValue(code);
 			editor.clearSelection();
 			editor.focus();
