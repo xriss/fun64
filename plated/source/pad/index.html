@@ -43,7 +43,7 @@ a		{color:#88f;}
 <pre id="editor">
 
 --
--- This is fun64 code, you can paste it into https://xriss.github.io/fun64/pad/ to run it.
+-- This is fun64 code, you can copy paste it into https://xriss.github.io/fun64/pad/ to run it.
 --
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
@@ -214,8 +214,30 @@ end
 
 	});
 		
-
-	gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
+	var params={};
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+	
+	if(params.url) // fill pad with this code
+	{
+		var aa=url.split("/");
+		if(aa[2]=="gist.github.com") // convert gist page into raw link
+		{
+			url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
+		}
+		
+		$.get(url,function(code){
+			editor.setValue(code);
+			editor.clearSelection();
+			editor.focus();
+		});
+		
+		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
+	}
+	else
+	{
+		gamecake_load_fun(code);
+	}
 			
 </script>
 
