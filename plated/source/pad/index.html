@@ -178,6 +178,8 @@ end
 			Module._pulse();
 
 			setTimeout(resize,500); // call resize in a little while
+			
+			Module._main_run=true;
 		};
 
 		(function(d, script) {
@@ -188,11 +190,6 @@ end
 			d.getElementsByTagName('head')[0].appendChild(script);
 		}(document));
 	}
-	
-	// anytime the editor changes
-	editor.on('change', function(e){
-		var code = editor.getValue();
-	});
 	
 	$("#iconbar_run").click(function(e){
 		e.preventDefault();
@@ -220,7 +217,7 @@ end
 	
 	if(params.url) // fill pad with this code
 	{
-		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
+//		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
 
 		var aa=params.url.split("/");
 		if(aa[2]=="gist.github.com") // convert gist page into raw link
