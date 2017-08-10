@@ -2,6 +2,32 @@
 <head>
 	<title>Fun64pad edit and run.</title>
 	<script data-pace-options='{ "eventLag": false }' src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+	<script>
+(function () {
+	var newlog = function () {
+		var logger = document.getElementById('gamecake_log');
+		if( logger )
+		{
+			for (var i = 0; i < arguments.length; i++) {
+				if (typeof arguments[i] == 'object') {
+					s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
+				} else {
+					s=arguments[i] + "\n";
+				}
+			}
+			
+			var t=logger.innerHTML || "";
+			if(t.length>4096) { t=t.slice(-4096); } // limit
+			logger.innerHTML=t+s;
+
+			logger.scrollTop=logger.scrollHeight;
+		}		
+	}
+//	console.error=newlog;
+	console.warn=newlog;
+	console.log=newlog;
+})();
+	</script>
 	<script src="../js/jquery-3.1.1.min.js"></script>
 	<script src="../js/jquery.splitter.js"></script>
 	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
@@ -158,28 +184,6 @@ end
 
 
 <script>
-
-(function () {
-	var old = console.log;
-	console.log = function () {
-		var logger = document.getElementById('gamecake_log');
-		for (var i = 0; i < arguments.length; i++) {
-			if (typeof arguments[i] == 'object') {
-				s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
-			} else {
-				s=arguments[i] + "\n";
-			}
-		}
-		
-		var t=logger.innerHTML || "";
-		if(t.length>4096) { t=t.slice(-4096); } // limit
-		logger.innerHTML=t+s;
-
-		logger.scrollTop=logger.scrollHeight;
-		
-//		old.apply(console, arguments);
-	}
-})();
 
 	var params={};
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
