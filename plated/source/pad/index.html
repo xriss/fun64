@@ -1,33 +1,7 @@
 <html>
 <head>
 	<title>Fun64pad edit and run.</title>
-	<script data-pace-options='{ "eventLag": false }' src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
-	<script>
-(function () {
-	var newlog = function () {
-		var logger = document.getElementById('gamecake_log');
-		if( logger )
-		{
-			for (var i = 0; i < arguments.length; i++) {
-				if (typeof arguments[i] == 'object') {
-					s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
-				} else {
-					s=arguments[i] + "\n";
-				}
-			}
-			
-			var t=logger.innerHTML || "";
-			if(t.length>4096) { t=t.slice(-4096); } // limit
-			logger.innerHTML=t+s;
-
-			logger.scrollTop=logger.scrollHeight;
-		}		
-	}
-//	console.error=newlog;
-	console.warn=newlog;
-	console.log=newlog;
-})();
-	</script>
+	<script data-pace-options='{ "eventLag": false }' src="../js/pace.min.js"></script>
 	<script src="../js/jquery-3.1.1.min.js"></script>
 	<script src="../js/jquery.splitter.js"></script>
 	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
@@ -118,13 +92,12 @@ a		{color:#88f;}
 <div id="split">
 	<div id="split_left">
 		<div id="iconbar"><!--
-		--><a id="iconbar_run" href="#" title="Refresh and restart the running code." >RUN</a><!--
-		--><a id="iconbar_patch" href="#"></a><!--
-		--><a id="iconbar_clearlog" href="#" title="Empty the log.">CLEAR LOG</a><!--
-		--><a id="iconbar_revert" href="#"></a><!--
+		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code." >RUN</a><!--
+		--><a id="iconbar_patch"    href="#"                                               ></a><!--
+		--><a id="iconbar_clearlog" href="#" title="Empty the log."                        >CLEAR LOG</a><!--
+		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       >REVERT CODE</a><!--
 		--></div>
-		<pre id="editor">
-
+<pre id="editor">
 --
 -- This is fun64 code, you can copy paste it into https://xriss.github.io/fun64/pad/ to run it.
 --
@@ -133,11 +106,26 @@ hardware,main=system.configurator({
 	update=function() update() end, -- called repeatedly to update+draw
 })
 
+
+-- we will call this once in the update function
+setup=function()
+
+--    system.components.screen.bloom=0
+--    system.components.screen.filter=nil
+--    system.components.screen.shadow=nil
+    
+    print("Setup complete!")
+
+end
+
+
 -- updates are run at 60fps
 update=function()
+    
+    if setup then setup() setup=nil end
 
     local ctext=system.components.text
-    local bg=0
+    local bg=9
     local fg=system.ticks%32 -- cycle the foreground color
 
 	ctext.text_clear(0x01000000*bg) -- clear text forcing a background color
@@ -145,8 +133,7 @@ update=function()
 	ctext.text_print("Hello World!",34,15,fg,bg) -- (text,x,y,color,background)
 	
 end
-
-		</pre>
+</pre>
 	</div>
 	<div id="split_right">
 		<div id="gamecake_container">
@@ -184,6 +171,38 @@ end
 
 
 <script>
+	
+	window.gamecake_original_code=document.getElementById("editor").innerHTML;
+
+	(function () {
+		var newlog = function () {
+			var logger = document.getElementById('gamecake_log');
+			if( logger )
+			{
+				for (var i = 0; i < arguments.length; i++) {
+					if (typeof arguments[i] == 'object') {
+						s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
+					} else {
+						s=arguments[i] + "\n";
+					}
+				}
+				
+				var sticky=( logger.scrollTop >= (logger.scrollHeight-logger.clientHeight) );
+				
+				var t=logger.innerHTML || "";
+				if(t.length>4096) { t=t.slice(-4096); } // limit
+				logger.innerHTML=t+s;
+
+				if(sticky)
+				{
+					logger.scrollTop=(logger.scrollHeight-logger.clientHeight);
+				}
+			}		
+		}
+	//	console.error=newlog;
+		console.warn=newlog;
+		console.log=newlog;
+	})();
 
 	var params={};
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -210,6 +229,7 @@ end
 	$("#split_right").split({orientation:'horizontal',limit:5,position:'90%',onDrag: resize_func });
 	
     var editor = ace.edit("editor");
+    editor.$blockScrolling = Infinity;
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/lua");
 
@@ -276,6 +296,7 @@ end
 // create a pulse function and call it every frame
 			Module._pulse=function() {
 				cancelAnimationFrame(Module._pulseid);
+				if(!Module._pulse) { return; } // in the middle of reboot
 				Module._pulseid=requestAnimationFrame(Module._pulse);
 				var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
 				if(ret!=0) { cancelAnimationFrame(Module._pulseid); } // stop updating on error
@@ -324,6 +345,12 @@ end
 	});
 	$("#iconbar_revert").click(function(e){
 		e.preventDefault();
+		
+		var code=window.gamecake_original_code;
+
+		editor.setValue(code);
+		editor.clearSelection();
+		editor.focus();
 	});
 			
 	if(params.url && !params.url_donotload ) // fill pad with this code
@@ -331,6 +358,7 @@ end
 //		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
 		
 		$.get(params.url,function(code){
+			window.gamecake_original_code=code;
 			editor.setValue(code);
 			editor.clearSelection();
 			editor.focus();
