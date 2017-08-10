@@ -172,11 +172,12 @@ end
 		}
 		
 		var t=logger.innerHTML || "";
-		if(t.length>2048) { t=t.slice(-2048); } // limit
+		if(t.length>4096) { t=t.slice(-4096); } // limit
 		logger.innerHTML=t+s;
 
 		logger.scrollTop=logger.scrollHeight;
-		old.apply(console, arguments);
+		
+//		old.apply(console, arguments);
 	}
 })();
 
