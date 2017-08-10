@@ -279,6 +279,7 @@ end
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
 		Module.memoryInitializerPrefixURL="../exe/";
+		Module.wasmBinaryFile="../exe/gamecake.wasm";
 		Module.monitorRunDependencies=show_progress;
 		Module.preInit=function() {
 			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
