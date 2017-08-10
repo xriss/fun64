@@ -245,6 +245,10 @@ end
 		editor.focus();
 		params.url_donotload=true;
 	}
+	else
+	{
+		code=window.gamecake_original_code;
+	}
 	
 	// autosave any edits to local storage
 	editor.on('change', function(e){ 
@@ -281,15 +285,16 @@ end
 		Module.memoryInitializerPrefixURL="../exe/";
 		Module.wasmBinaryFile="../exe/gamecake.wasm";
 		Module.monitorRunDependencies=show_progress;
-		Module.preInit=function() {
+		Module.preRun=function(){
+			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
+
 			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
 			FS.mkdir("/lua");
 			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 		};
-		Module.preRun=function(){
-			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
-		};
-		Module._main=function() {
+
+		Module.onRuntimeInitialized=function() {
+
 			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 
 			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
@@ -305,8 +310,6 @@ end
 			Module._pulse();
 
 			setTimeout(resize,500); // call resize in a little while
-			
-			Module._main_run=true;
 		};
 
 		(function(d, script) {

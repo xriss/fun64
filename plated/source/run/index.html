@@ -92,7 +92,8 @@ a		{color:#88f;}
 				Module.canvas=document.getElementById("gamecake_canvas");
 				Module.canvas_resize=function(){setTimeout(resize,500);};
 				Module.memoryInitializerPrefixURL="../exe/";
-				Module['_main'] = function() {
+				Module.wasmBinaryFile="../exe/gamecake.wasm";
+				Module.onRuntimeInitialized = function() {
 					gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 
 					gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
@@ -108,7 +109,7 @@ a		{color:#88f;}
 					setTimeout(resize,500); // call resize in a little while
 
 				};
-				Module["preInit"] = function() {
+				Module.preInit = function() {
 					if(url)
 					{
 						var aa=url.split("/");
@@ -126,7 +127,7 @@ a		{color:#88f;}
 					FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 
 				};
-				Module["monitorRunDependencies"]=show_progress;
+				Module.monitorRunDependencies=show_progress;
 
 				(function(d, script) {
 					script = d.createElement('script');
