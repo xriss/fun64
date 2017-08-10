@@ -366,6 +366,14 @@ end
 		});		
 	}
 	else
+	if(params.url) // fetch but do not run
+	{
+		$.get(params.url,function(code){
+			window.gamecake_original_code=code;
+		});		
+		gamecake_load_fun(code);
+	}
+	else
 	{
 		gamecake_load_fun(code);
 	}
