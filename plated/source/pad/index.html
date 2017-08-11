@@ -45,11 +45,15 @@ a		{color:#88f;}
 
 #iconbar { width:100%; height:32px; background-color: #333; position:relative; }
 
+a:focus { 
+    outline: none; 
+}
+
 #iconbar a {
 	display: inline-block;
     text-align: center;
     text-decoration: none;
-    width: 25%;
+    width: 20%;
     height: 100%;
     padding: 5px 4px;
     margin: 0;
@@ -92,10 +96,11 @@ a		{color:#88f;}
 <div id="split">
 	<div id="split_left">
 		<div id="iconbar"><!--
+		--><a id="iconbar_about"    href=".." title="What is Fun64?"                       >ABOUT</a><!--
 		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code." >RUN</a><!--
 		--><a id="iconbar_patch"    href="#"                                               ></a><!--
-		--><a id="iconbar_clearlog" href="#" title="Empty the log."                        >CLEAR LOG</a><!--
-		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       >REVERT CODE</a><!--
+		--><a id="iconbar_clearlog" href="#" title="Empty the log."                        >FLUSH</a><!--
+		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       >REVERT</a><!--
 		--></div>
 <pre id="editor">
 --
@@ -172,6 +177,15 @@ end
 
 <script>
 	
+if (typeof(document.isFullscreen === undefined)) {
+  document.isFullscreen = function() {
+ return !((document.fullScreenElement !== undefined && document.fullScreenElement === null) || 
+ (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || 
+ (document.mozFullScreen !== undefined && !document.mozFullScreen) || 
+ (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen));
+  }
+}
+
 	window.gamecake_original_code=document.getElementById("editor").innerHTML;
 
 	(function () {
@@ -268,13 +282,16 @@ end
 	var gamecake_load_fun=function(code)
 	{
 		var resize=function(){
-			var e=document.getElementById("gamecake_container");
-			var w=parseFloat(window.getComputedStyle(e).width);
-			var h=parseFloat(window.getComputedStyle(e).height);
-			Module.setCanvasSize(w,h);
-			if(window.gamecake_post)
+			if(!document.isFullscreen())
 			{
-				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				var e=document.getElementById("gamecake_container");
+				var w=parseFloat(window.getComputedStyle(e).width);
+				var h=parseFloat(window.getComputedStyle(e).height);
+				Module.setCanvasSize(w,h);
+				if(window.gamecake_post)
+				{
+					gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				}
 			}
 		};
 
@@ -382,6 +399,11 @@ end
 		gamecake_load_fun(code);
 	}
 			
+$(document).keydown(function(event){
+    if(event.keyCode==112){return false;} // disable browsers F1
+    if(event.keyCode==122){return false;} // disable browsers F11
+});
+
 </script>
 
 </body>
