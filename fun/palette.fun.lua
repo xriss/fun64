@@ -36,20 +36,22 @@ update=function()
     for y=0,15 do
         for x=0,1 do
             local n=16*x + y
-            local s=string.format(" %3d :      : %2s : %-16s",n,cmap[n].code or "",cmap[n].name or "")
-        	ctext.text_print(s,x*40+2,y+2,fg,bg) -- (text,x,y,color,background)
-        	ctext.text_print("    ",x*40+2+7,y+2,fg,n) -- (text,x,y,color,background)
+            local web=math.floor(cmap[n].bgra/16)%16 + math.floor(cmap[n].bgra/(16*256))%16*16 + math.floor(cmap[n].bgra/(16*256*256))%16*256
+            local s=string.format("%3d          %2s   %03X   %-16s",n,cmap[n].code or "",web,cmap[n].name or "")
+        	ctext.text_print(s,x*40+1,y+2,fg,bg) -- (text,x,y,color,background)
+        	ctext.text_print("    ",x*40+1+6,y+2,fg,n) -- (text,x,y,color,background)
         end
     end
 
 	local tx=wstr.trim([[
 
-This is a data dump of the Swanky32 palette.
+This is a data dump of the ]]..tostring(cmap.name)..[[ palette.
 
-First column is the color index.
-Second coloumn is the color.
+First column is the color index number.
+Second column is the color.
 Third column is the color code used in bitdown ascii graphics.
-Fourth column is the name of the color.
+Fourth column is the hex RGB that can be used on the web.
+Fifth column is the name of the color.
 
 Colors may be referenced by their index number or name.
 
@@ -60,9 +62,8 @@ Colors may be referenced by their index number or name.
 	for i=0,system.components.text.tilemap_hy-1 do
 		local t=tl[i+1]
 		if not t then break end
-		system.components.text.text_print(t,3,20+i,fg,bg)
+		system.components.text.text_print(t,3,19+i,fg,bg)
 	end
 
 
 end
-
