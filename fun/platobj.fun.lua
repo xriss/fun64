@@ -858,7 +858,7 @@ controls=function(it,fast)
 end,
 
 add=function(i)
-	local players_colors={30,14,18,7,3,22}
+	local players_colors={[0]=30,30,14,18,7,3,22}
 
 	local names=system.components.tiles.names
 	local space=entities.get("space")
@@ -1603,7 +1603,7 @@ setup=function(idx)
 	system.components.back.dirty(true)
 	system.components.map.dirty(true)
 		
-	entities.systems.player.add(1) -- add a player
+	entities.systems.player.add(0) -- add a player
 end,
 }
 
