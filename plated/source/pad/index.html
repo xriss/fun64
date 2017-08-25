@@ -7,88 +7,44 @@
 	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
 	<script src="../js/ace/ace.js"></script>
 	<style>
+		
 .pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
 .pace-inactive { display:none; }
 .pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
 
 *		{box-sizing:border-box;}
 html	{overflow:hidden;}
-body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px;}
+body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px; position:relative;}
 h1		{font-size:4em; font-weight:normal; color:#1400ff;}
 h2		{font-size:2em; font-weight:normal;}
-
 a		{color:#88f;}
 
-#editor {
-	margin: 0;
-	position: absolute;
-	top: 32;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
+#editor {margin:0; position:absolute; top:32; bottom:0; left:0; right:0;}
+#gamecake_container {overflow:hidden; width:100%; height:100%;}
 
+.splitter_panel .vsplitter {background-color:#222;}
+.splitter_panel .hsplitter {background-color:#222;}
 
-#gamecake_container {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-}
+#iconbar	{width:100%; height:32px; background-color:#333; position:relative; }
+a:focus		{outline: none;}
+#iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:20%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#aaa; overflow:hidden;}
+#iconbar a:hover {background-color:#000;}
 
-.splitter_panel .vsplitter {
-    background-color: #222;
-}
+/*	Patch link is unused	*/
+a#iconbar_patch			{background-color:#232323;}
+a#iconbar_patch:hover	{background-color:#232323; cursor:default;}
 
-.splitter_panel .hsplitter {
-    background-color: #222;
-}
+#gamecake_log {width:100%; height:100%; margin:0; color:#4c4;}
 
-#iconbar { width:100%; height:32px; background-color: #333; position:relative; }
+::-webkit-scrollbar			{width: 12px;  /* for vertical scrollbars */ 
+							 height: 12px; /* for horizontal scrollbars */}
+::-webkit-scrollbar-track	{background:rgba(128,128,128,0.1);}
+::-webkit-scrollbar-thumb	{background:rgba(128,128,128,0.5);}
 
-a:focus { 
-    outline: none; 
-}
+.about_wrap		{display:none; position:absolute; width:50%; left:25%; top:20%; z-index:999; padding:40px 60px 20px 60px; background-color:#000; box-sizing:border-box;}
+.about_wrap span{font-weight:bold; display:block;}
 
-#iconbar a {
-	display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    width: 20%;
-    height: 100%;
-    padding: 5px 4px;
-    margin: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-    overflow: hidden;
-}
-
-#iconbar a:hover { background-color: #000; }
-
-#iconbar a:hover { background-color: #000; }
-
-#gamecake_log {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    color: #4c4;
-}
-
-::-webkit-scrollbar
-{
-  width: 12px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
-}
-
-::-webkit-scrollbar-track
-{
-  background: rgba(128, 128, 128, 0.1);
-}
-
-::-webkit-scrollbar-thumb
-{
-  background: rgba(128, 128, 128, 0.5);
-}
-
+.ace_editor		{font-size:16px;}
 
 	</style>
 </head>
@@ -405,6 +361,26 @@ $(document).keydown(function(event){
 });
 
 </script>
+<div class="about_wrap">
+	<div class="about_head">
+		The <B>funpad</b> can be used to edit and run fun64 test code in the browser.
+	</div>
+	<p>
+		<a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> is a simple game engine designed for single file game sketches. 
+	</p>
+	<p>
+		<span>RUN</span>
+		Click to refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
+	</p>
+	<p>
+		<span>FLUSH</span>
+		Click to empty the log messages. Log messages are found on the bottom right of this page. They are created each time you run the code.
+	</p>
+	<p>
+		<span>REVERT</span>
+		Click to restore code to the original state. The original state is the code that you copied into the pad.
+	</p>
+</div>
 
 </body>
 </html>

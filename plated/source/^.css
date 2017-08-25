@@ -75,7 +75,7 @@ a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; backg
 .blog_code_wrap		{width:1024px; font-size:14px; margin:0 auto; position:relative;}
 pre.lang-lua		{height:100%; overflow:scroll; padding:16px; padding-top:0;}
 a.raw_src			{display:block; position:absolute; right:15px; top:0; color:#444; text-decoration:none; background-color:#fff; padding:5px 10px; text-align:center; z-index:666;}
-a.raw_src:hover		{color:#1400ff;}
+a.raw_src:hover		{color:#1400ff; cursor:pointer;}
 
 #gamecake_container, #gamecake_canvas	{width:100%; height:100%; position:absolute;}
 .code_embed_wrap	{width:1024px; height:100%; overflow:hidden; margin:0 auto; margin-top:14px;}
