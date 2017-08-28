@@ -1,23 +1,25 @@
 <html>
 <head>
-	<title>Fun64pad edit and run.</title>
+	<title>FunPad for Fun64 - Edit and Run</title>
 	<script data-pace-options='{ "eventLag": false }' src="../js/pace.min.js"></script>
 	<script src="../js/jquery-3.1.1.min.js"></script>
 	<script src="../js/jquery.splitter.js"></script>
 	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
 	<script src="../js/ace/ace.js"></script>
 	<style>
-		
+/*	Pace loading bar to be removed	*/	
 .pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
 .pace-inactive { display:none; }
 .pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
 
 *		{box-sizing:border-box;}
 html	{overflow:hidden;}
-body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px; position:relative;}
+body	{background:#000; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#ccc; width:100%; padding:0; margin:0 auto; position:relative;}
 h1		{font-size:4em; font-weight:normal; color:#1400ff;}
 h2		{font-size:2em; font-weight:normal;}
 a		{color:#88f;}
+b		{font-weight:700;}
 
 #editor {margin:0; position:absolute; top:32; bottom:0; left:0; right:0;}
 #gamecake_container {overflow:hidden; width:100%; height:100%;}
@@ -27,14 +29,8 @@ a		{color:#88f;}
 
 #iconbar	{width:100%; height:32px; background-color:#333; position:relative; }
 a:focus		{outline: none;}
-#iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:20%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#aaa; overflow:hidden;}
-#iconbar a:hover {background-color:#000;}
-
-/*	Patch link is unused	*/
-a#iconbar_patch			{background-color:#232323;}
-a#iconbar_patch:hover	{background-color:#232323; cursor:default;}
-
-a#iconbar_about:hover	{cursor:pointer;}
+#iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:20%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#ccc; overflow:hidden;}
+#iconbar a:hover {background-color:#000; cursor:pointer;}
 
 #gamecake_log {width:100%; height:100%; margin:0; color:#4c4;}
 
@@ -43,14 +39,21 @@ a#iconbar_about:hover	{cursor:pointer;}
 ::-webkit-scrollbar-track	{background:rgba(128,128,128,0.1);}
 ::-webkit-scrollbar-thumb	{background:rgba(128,128,128,0.5);}
 
-.about_wrap		{display:none; position:absolute; width:50%; left:25%; top:20%; z-index:999; background-color:#000; box-sizing:border-box; border:1px solid #232323;}
-.about_wrap span{font-weight:bold; display:block;}
+/*	ABOUT link popup	*/
+.pop_wrap		{position:absolute; width:60%; left:20%; top:15%; z-index:999; background-color:#000; box-sizing:border-box; border:1px solid #232323; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5);}
+.pop_wrap span	{display:inline; background-color:#333; padding:2px 10px; color:#aaa; font-weight:400;}
+.pop_text		{padding:40px 60px 20px 60px;}
+.pop_head		{font-size:20px;}
+.pop_close_wrap	{position:relative; width:100%;}
+a.pop_close		{position:absolute; display:block; top:15px; right:15px; border-radius:25px; width:25px; height:25px; background-color:#000; font-size:20px; line-height:23px; text-align:center;}
+a.pop_close:hover{background-color:#111; cursor:pointer;}
 
-.about			{padding:40px 60px 20px 60px;}
 
-.about_close_wrap	{position:relative; width:100%;}
-a.about_close		{position:absolute; display:block; top:15px; right:15px; border-radius:25px; width:25px; height:25px; background-color:#000; font-size:20px; line-height:23px; text-align:center;}
-a.about_close:hover	{cursor:pointer; background-color:#111;}
+/*	LOAD link popup	*/
+
+.pop_wrap.about	{display:none;}
+.pop_wrap.load	{display:none;}
+
 
 .ace_editor		{font-size:16px;}
 
@@ -60,11 +63,11 @@ a.about_close:hover	{cursor:pointer; background-color:#111;}
 <div id="split">
 	<div id="split_left">
 		<div id="iconbar"><!--
-		--><a id="iconbar_about"    		 title="What is Fun64?" onclick="$('.about_wrap').toggle();">ABOUT</a><!--
-		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code." >RUN</a><!--
-		--><a id="iconbar_patch"    href="#"                                               ></a><!--
-		--><a id="iconbar_clearlog" href="#" title="Empty the log."                        >FLUSH</a><!--
-		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       >REVERT</a><!--
+		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    >ABOUT</a><!--
+		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code." 							>RUN</a><!--
+		--><a id="iconbar_patch"    		 title="Load your code URL" onclick="$('.pop_wrap.load').toggle();" 	>LOAD</a><!--
+		--><a id="iconbar_clearlog" href="#" title="Empty the log."                       							>FLUSH</a><!--
+		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       							>REVERT</a><!--
 		--></div>
 <pre id="editor">
 --
@@ -369,20 +372,22 @@ $(document).keydown(function(event){
 });
 
 </script>
-<div class="about_wrap">
-	<div class="about_close_wrap">
-		<a class="about_close" onclick="$('.about_wrap').toggle();">x</a>
+<div class="pop_wrap about">
+	<div class="pop_close_wrap">
+		<a class="pop_close" onclick="$('.pop_wrap.about').toggle();">x</a>
 	</div>
-	<div class="about">
-		<div class="about_head">
-			The <B>funpad</b> can be used to edit and run fun64 test code in the browser.
+	<div class="pop_text">
+		<div class="pop_head">
+			The <B>FunPad</b> lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
+			<p>FunPad is powered by Gamecake, WebAssembly JS and lua.</p>
 		</div>
-		<p>
-			<a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> is a simple game engine designed for single file game sketches. 
-		</p>
 		<p>
 			<span>RUN</span>
 			Click to refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
+		</p>
+		<p>
+			<span>LOAD</span>
+			Click to load FUN64 code on Github Gist or fun.lua files anywhere online. Share the link with your friends for them to play your app.
 		</p>
 		<p>
 			<span>FLUSH</span>
@@ -392,8 +397,46 @@ $(document).keydown(function(event){
 			<span>REVERT</span>
 			Click to restore code to the original state. The original state is the code that you copied into the pad.
 		</p>
+		<p>
+			<span>FULLSCREEN PLAY</span>
+			Click on the game and and press F11 to run the app in fullscreen mode. Please enable WebAssembly if you're running the Edge browser.
+		</p>
 	</div>
 </div>
+<div class="pop_wrap load" id="gamecake_div_input">
+	<div class="pop_close_wrap">
+		<a class="pop_close" onclick="$('.pop_wrap.load').toggle();">x</a>
+	</div>
+	<div class="pop_text">
+		<div id="div_page_url">
+			<div class="pop_head">Paste the URL of your gist or fun.lua file &amp; press return.</div>
+			<p><input type=text id="gamecake_text_input" style="width:100%;font-size:x-large"></p>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	
+	var params={};
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+	
+	if(params.url) // redirect to pad for all running now
+	{
+		window.location="../pad/?"+$.param(params);
+	}
+	else
+	{
+		$("#gamecake_div_input").show();
 
+		$("#gamecake_text_input").keyup(function(e){
+			if(e.keyCode == 13)
+			{
+				params.url=$("#gamecake_text_input").val();
+				window.location="../pad/?"+$.param(params);
+			}
+		});
+	}
+	
+</script>
 </body>
 </html>

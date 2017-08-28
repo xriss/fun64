@@ -1,14 +1,19 @@
 #^css same=append
+@import url('https://fonts.googleapis.com/css?family=Cabin:400,700');
 
 *		{box-sizing:border-box;}
-body	{background:#f7f4fd; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#3a3a3a; width:100%; padding:50px; margin:0px auto;}
+body	{background:#58656b; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#3a3a3a; width:100%; padding:0; margin:0 auto;}
 h1		{font-size:4em; font-weight:normal; color:#1400ff;}
 h2		{font-size:2em; font-weight:normal;}
 
 a		{color:#1400ff;}
+a:hover	{cursor:pointer;}
+b		{font-weight:700;}
+
+.wrap	{width:1024px; margin:0 auto;}
 
 a.bar		{color:#f7f4fd; background-color:#3a3a3a; border-radius:4px; padding:5px; text-decoration:none; border-bottom:none;}
-a.bar:hover	{background-color:#1400ff; border-bottom:none; cursor:pointer;}
+a.bar:hover	{background-color:#1400ff; border-bottom:none;}
 
 .nav_wrap	{width:1024px; margin:auto;}
 .nav		{display:inline-block; vertical-align:top; width:50%; border-bottom:1px dashed #1400ff; padding-bottom:20px;}
@@ -20,7 +25,35 @@ a.bar:hover	{background-color:#1400ff; border-bottom:none; cursor:pointer;}
 
 /*	INDEX styles
 	============================================= */
-.fun_bits		{width:1024px; margin:auto; font-size:14px; line-height:16px; color:#1400ff;}
+.fun_bits		{width:1024px; margin:0 auto; font-size:14px; line-height:16px; color:#0b0088; position:relative;}
+.fun_bits pre	{width:1000px; margin:0 auto;}
+
+/*	INDEX NAVIGATION BAR styles
+	============================================= */
+.navi_wrap		{width:100%; background:#58656b;}
+.navi			{width:1024px; margin:0 auto; padding:20px 0;}
+.navi a			{text-decoration:none;}
+.navi a:hover	{color:#fff;}
+a.navi_link_home{display:inline-block; width:55%; color:#ccc; vertical-align:top; font-weight:700;}
+a.navi_link_all	{display:inline-block; width:15%; text-align:right; color:#eaeaea;}
+
+/*	INDEX ABOUT SECTION styles
+	============================================= */
+.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:23%;}
+.fun_about		{color:#fff; font-size:38px; line-height:50px; width:50%; text-align:center; margin:0 auto;}
+a.fun_try		{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}
+a.fun_try:hover	{background-color:#FFEB3B;}
+
+
+/*	INDEX EXAMPLES SECTION styles
+	============================================= */
+a.example		{position:relative; display:block; margin:0 auto; margin-top:20px; margin-bottom:20px; text-decoration:none;}
+a.example span	{display:block;}
+span.example_text_wrap	{position:absolute; width:350px; height:214px; background-color:#131b1f; color:#fff; right:0; top:0; padding:30px 40px;}
+.wrap a:nth-of-type(even) span.example_text_wrap	{left:0;}
+span.example_text_info	{color:#126a94;}
+span.example_text_head	{font-weight:700; font-size:28px; line-height:34px; padding:10px 0;}
+span.example_text		{}
 
 
 /*	FOOTER styles
@@ -33,21 +66,23 @@ a.bar:hover	{background-color:#1400ff; border-bottom:none; cursor:pointer;}
 .footer			{display:inline-block; vertical-align:top; width:70%;}
 .footer:nth-of-type(2)	{width:30%;}
 
-a.home			{font-weight:bold; color:#1400ff; text-decoration:none;}
+a.home			{font-weight:700; color:#1400ff; text-decoration:none;}
 a.home:hover	{text-decoration:underline;}
 
 
 /*	BLOG styles
 	============================================= */
 
-span.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:bold;}
-span.blog_post_user	{display:block; font-size:12px; margin-bottom:20px;}
+.blog_head			{width:1024px; margin:0 auto; margin-top:20px;}
+
+span.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:700;}
+span.blog_post_user	{display:block; font-size:16px; margin-bottom:20px;}
 
 .blog_list_wrap		{width:1024px; margin:0 auto;}
 .line				{border-top:1px dashed #1400ff; margin-top:40px; margin-bottom:40px; position:relative;}
 .blog_info			{position:absolute; right:10px; top:10px;}
 
-.blog_wrap			{width:700px; margin:auto; margin-top:40px; font-size:18px; line-height:26px; border:0;}
+.blog_wrap			{width:700px; margin:auto; margin-top:40px; font-size:20px; line-height:30px; border:0;}
 
 
 /*	BLOG post styles
@@ -58,7 +93,7 @@ a.blog_post_link:nth-of-type(odd)	{background-color:#1400ff; color:#fff;}
 a.blog_post_link:nth-of-type(3)		{margin-right:0;}
 a.blog_post_link:hover	{background-color:rgba(0,0,0,0.4); color:#fff;}
 
-a.blog_post_link span.blog_post_title	{display:block; font-size:21px; line-height:30px; font-weight:bold;}
+a.blog_post_link span.blog_post_title	{display:block; font-size:26px; line-height:30px; font-weight:700;}
 a.blog_post_link span.blog_post_snip	{display:block; height:180px; overflow:hidden;}
 a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}
 
@@ -75,7 +110,7 @@ a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; backg
 .blog_code_wrap		{width:1024px; font-size:14px; margin:0 auto; position:relative;}
 pre.lang-lua		{height:100%; overflow:scroll; padding:16px; padding-top:0;}
 a.raw_src			{display:block; position:absolute; right:15px; top:0; color:#444; text-decoration:none; background-color:#fff; padding:5px 10px; text-align:center; z-index:666;}
-a.raw_src:hover		{color:#1400ff; cursor:pointer;}
+a.raw_src:hover		{color:#1400ff;}
 
 #gamecake_container, #gamecake_canvas	{width:100%; height:100%; position:absolute;}
 .code_embed_wrap	{width:1024px; height:100%; overflow:hidden; margin:0 auto; margin-top:14px;}

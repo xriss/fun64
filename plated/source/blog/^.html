@@ -15,10 +15,8 @@ Fun64 updates
 #^------------------------------
 #^_blog_page_body
 #^------------------------------
-<div class="nav_wrap">
-	<div class="nav">You are reading: <span>Fun64 dev blog</span></div><div class="nav"><a href="{_root}" class="bar">Home</a></div>
-</div>
-
+{navigation}
+<div class="wrap"><div class="blog_head">You are reading: <span>Fun64 dev blog</span></div></div>
 <div class="blog_list_wrap">{_list:blog_list}</div>
 
 <div class="nav_wrap">
@@ -47,7 +45,8 @@ Fun64 updates
 #^-This is a single blog post viewed on its own page
 #^_blog_post_body_one
 #^------------------------------
-<div class="nav_wrap"><div class="nav">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div><div class="nav"><a href="{_root}" class="bar">Home</a></div></div>
+{navigation}
+<div class="wrap"><div class="blog_head">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div></div>
 <div class="blog_wrap">
 	<span class="blog_post_user">
 		<span>~ {_blog_post_json.author}</span>
@@ -285,3 +284,7 @@ Fun64 updates
 	</div>
 
 </div>
+
+
+#^css same=append
+body {background:#f7f4fd;}
