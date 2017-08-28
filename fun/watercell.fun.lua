@@ -659,10 +659,10 @@ void main(void)
 
 		if(abs(fctr.x)>0.0) { cc[4].x=fctr.x; }
 
-		if(ftop.y>0) { w+=ftop.y; if(fctr.z==0.0){cc[4].x=cc[1].x; } }
-		if(fbot.y<0) { w-=fbot.y; if(fctr.z==0.0){cc[4].x=cc[7].x; } }
-		if(flft.x>0) { w+=flft.x; if(fctr.z==0.0){cc[4].x=flft.x;} }
-		if(frgt.x<0) { w-=frgt.x; if(fctr.z==0.0){cc[4].x=frgt.x;} }
+		if(ftop.y>0.0) { w+=ftop.y; if(fctr.z==0.0){cc[4].x=cc[1].x; } }
+		if(fbot.y<0.0) { w-=fbot.y; if(fctr.z==0.0){cc[4].x=cc[7].x; } }
+		if(flft.x>0.0) { w+=flft.x; if(fctr.z==0.0){cc[4].x=flft.x;} }
+		if(frgt.x<0.0) { w-=frgt.x; if(fctr.z==0.0){cc[4].x=frgt.x;} }
 
 		cc[4].b+=w;
 	}
@@ -732,7 +732,7 @@ void main(void)
 	if(cc.a == 0.0) // empty
 	{
 
-		if( (cb.a != 0.0) || (cb.b>=8) )// solid
+		if( (cb.a != 0.0) || (cb.b>=8.0) )// solid
 		{
 			d.r=(16.0+min(cc.b,8.0))/255.0;
 			if(cc.b>=8.0) // some water
