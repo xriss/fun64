@@ -44,6 +44,9 @@ a:focus		{outline: none;}
 .pop_wrap span	{display:inline; background-color:#333; padding:2px 10px; color:#aaa; font-weight:400;}
 .pop_text		{padding:40px 60px 20px 60px;}
 .pop_head		{font-size:20px;}
+.pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
+.pop_head a:hover	{text-decoration:underline;}
+.pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 .pop_close_wrap	{position:relative; width:100%;}
 a.pop_close		{position:absolute; display:block; top:15px; right:15px; border-radius:25px; width:25px; height:25px; background-color:#000; font-size:20px; line-height:23px; text-align:center;}
 a.pop_close:hover{background-color:#111; cursor:pointer;}
@@ -378,7 +381,7 @@ $(document).keydown(function(event){
 	</div>
 	<div class="pop_text">
 		<div class="pop_head">
-			The <B>FunPad</b> lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
+			The FunPad lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
 			<p>FunPad is powered by Gamecake, WebAssembly JS and lua.</p>
 		</div>
 		<p>

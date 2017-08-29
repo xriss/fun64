@@ -1,15 +1,21 @@
 #^css same=append
 @import url('https://fonts.googleapis.com/css?family=Cabin:400,700');
 
-*		{box-sizing:border-box;}
-html, body	{width:100%; padding:0; margin:0 auto;}
-body	{background:#58656b; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#3a3a3a; font-size-adjust:0.4; font-weight:normal; font-style:normal; min-width:100%; min-height:100%; display:table;}
-h1		{font-size:4em; font-weight:normal; color:#1400ff;}
-h2		{font-size:2em; font-weight:normal;}
+*{box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; -ms-box-sizing:border-box;}
 
-a		{color:#1400ff;}
-a:hover	{cursor:pointer;}
-b		{font-weight:700;}
+
+a,img{border:0; outline:none;}textarea:focus,input:focus{outline:0;}*:focus{outline:0;}
+
+html		{height:100%;}
+body, html	{-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; width:100%; padding:0; margin:0 auto;}
+body		{background:#58656b; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#3a3a3a; font-size-adjust:0.4; font-weight:normal; font-style:normal; min-width:100%; min-height:100%; display:table;}
+a			{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; -ms-transition:all .2s ease-in-out; transition:all .2s ease-in-out; cursor:pointer; overflow-wrap:break-word; word-wrap:break-word; word-break:break-word; -ms-hyphens:auto; -moz-hyphens:auto; -webkit-hyphens:auto; hyphens:auto;} /* Fix long urls */
+h1			{font-size:4em; font-weight:normal; color:#1400ff;}
+h2			{font-size:2em; font-weight:normal;}
+
+a			{color:#1400ff;}
+a:hover		{cursor:pointer;}
+b			{font-weight:700;}
 
 .wrap			{width:1024px; margin:0 auto;}
 .wrap.max		{width:100%;}
@@ -62,20 +68,25 @@ span.example_text		{}
 	============================================= */
 	
 .foot		{background-color:#3e484c; color:#eee; border-top:1px solid #ddd; display:table-footer-group}
-.foot_wrap	{margin:0 auto; padding:60px;}
+.foot_wrap	{width:1024px; margin:0 auto; padding:60px; padding-bottom:20px; position:relative;}
 .foot_wrap a{color:#fff; text-decoration:none;}
-.foot_wrap a:hover	{text-decoration:underline;}
+.foot_wrap p a:hover{border-bottom:1px solid #00adff;}
+.foot_wrap p a:after{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 .text		{font-weight:400;}
 .text span	{font-weight:700;}
-.text.wetus	{text-align:right;}
+.text.wetus	{position:absolute; right:60px; bottom:20px;}
 .text.wetus *	{vertical-align:baseline;}
 .text.wetus img	{width:initial;}
 
-.text_head	{font-size:42px; font-weight:700; margin-bottom:20px;}
+.text_head	{font-size:42px; font-weight:700; margin-bottom:40px;}
 
-a.hi			{display:block; position:relative;}
-a.hi span		{position:absolute; top:-30px; right:0; padding:5px 10px; color:#fff; display:none;}
+a.hi			{display:block; position:relative; padding:20px;}
+a.hi span		{position:absolute; top:-10px; right:20px; padding:5px 10px; color:#fff; display:none;}
 a.hi:hover span	{display:block;}
+
+a.back_top		{display:block; text-align:center; text-decoration:none; color:#aaa; padding:20px 0; font-size:12px;}
+a.back_top:hover{background-color:#2d3538;}
+
 
 /*	BLOG styles
 	============================================= */
@@ -117,6 +128,17 @@ a.bar:hover			{background-color:#1400ff;}
 .blog_wrap code		{display:block; font-size:16px; overflow-x:scroll;}
 
 
+/*	FIREFOX font fix
+	============================================= */
+	
+@-moz-document url-prefix() {
+    body,html		{font-size:20px; line-height:1;}
+    .fun_bits pre	{font-size:18px; margin-left:35px;}
+    span.example_text_head	{font-size:32px;}
+    a.back_top		{font-size:14px;}
+}
+
+
 /*	MOBILE post styles
 	============================================= */
 @media screen and (max-width:1024px) {
@@ -130,10 +152,11 @@ a.bar:hover			{background-color:#1400ff;}
 	a.navi_link_home span:before	{zoom:70%;}
 	
 	.blog_head	{padding:50px; font-size:42px;}
-	.post_page .blog_head	{font-size:14px;}
+	.post_page .blog_head	{font-size:12px;}
 	.wrap		{width:100%; margin:0 auto;}
 	.fun_bits pre	{width:95%; margin:0 auto; margin-left:5%;}
 	.blog_list_wrap, a.blog_post_link	{width:860px;}
+	.wrap.example	{padding-bottom:0;}
 	
 	a.example		{margin:0; width:100%; height:500px;}
 	
@@ -150,15 +173,19 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	.wrap img		{width:100%; display:none;}
 	.wrap .foot_wrap img	{display:inline-block; vertical-align:top; width:50px;}
-	.foot_wrap p	{font-size:16px; line-height:42px; padding:5px 0;}
+	.foot_wrap p	{font-size:14px; line-height:42px; padding:10px 0;}
+	.text.wetus		{bottom:140px;}
 	.text.wetus img	{width:80px;}
+	a.back_top		{padding:40px 0;}
+	.foot_wrap p a:after	{font-size:38px;}
 	
 	span.example_text_wrap	{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}
 	span.example_text_head	{font-size:1.25em; line-height:1.25em;}
 	span.example_text_info	{margin-top:10px;}
 		
-	.blog_wrap p			{margin:40px 0; font-size:28px; line-height:72px;}
-	span.blog_post_title	{font-size:76px; line-height:92px;}
+	.blog_wrap p			{margin:40px 0; font-size:22px; line-height:60px;}
+	span.blog_post_user		{font-size:14px;}
+	span.blog_post_title	{font-size:60px; line-height:72px;}
 	
 	.blog_embed_head, .blog_wrap			{width:800px;}
 	a.blog_post_link						{display:block; margin:0 auto; margin-bottom:40px; font-size:38px; line-height:54px; height:400px;}
@@ -169,7 +196,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
 	.page_link a	{font-size:38px;}
 	
-	a.bar			{font-size:24px; padding:30px;}
+	a.bar			{font-size:22px; padding:30px;}
 	
 	.text_head		{margin-top:40px; margin-bottom:40px; font-size:48px;}
 }
