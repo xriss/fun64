@@ -63,7 +63,7 @@ span.example_text_info	{color:#126a94;}
 span.example_text_head	{font-weight:700; font-size:28px; line-height:34px; padding:10px 0;}
 span.example_text		{}
 
-a.example:before, a.example:after	{content:""; background-color:#1c3240; width:50%; position:absolute; left:-45%; top:0; bottom:0; -webkit-transform:skewX(-20deg); transform:skewX(-20deg);}
+a.example:before, a.example:after	{content:""; background-color:#1c3240; width:70%; position:absolute; left:-65%; top:0; bottom:0; -webkit-transform:skewX(-20deg); transform:skewX(-20deg);}
 .wrap.eg a:nth-of-type(even):before	{display:none;}
 .wrap.eg a:nth-of-type(even):after		{left:auto; right:-55px; width:100px; background-color:#58656b;}
 
