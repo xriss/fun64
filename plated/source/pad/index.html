@@ -63,11 +63,11 @@ a.pop_close:hover{background-color:#111; cursor:pointer;}
 <div id="split">
 	<div id="split_left">
 		<div id="iconbar"><!--
-		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    >ABOUT</a><!--
-		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code." 							>RUN</a><!--
-		--><a id="iconbar_patch"    		 title="Load your code URL" onclick="$('.pop_wrap.load').toggle();" 	>LOAD</a><!--
-		--><a id="iconbar_clearlog" href="#" title="Empty the log."                       							>FLUSH</a><!--
-		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       							>REVERT</a><!--
+		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    	>ABOUT</a><!--
+		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code" 								>RUN</a><!--
+		--><a id="iconbar_patch"    		 title="Load the URL of your code" onclick="$('.pop_wrap.load').toggle();" 	>LOAD</a><!--
+		--><a id="iconbar_clearlog" href="#" title="Empty the log messages"                       						>FLUSH</a><!--
+		--><a id="iconbar_revert"   href="#" title="Restore code to original state"       								>REVERT</a><!--
 		--></div>
 <pre id="editor">
 --
@@ -421,8 +421,6 @@ $(document).keydown(function(event){
 		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
 	
 	{
-		$("#gamecake_div_input").show();
-
 		$("#gamecake_text_input").keyup(function(e){
 			if(e.keyCode == 13)
 			{
