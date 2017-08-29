@@ -5,7 +5,7 @@
 
 <html>
 <head>{head}</head>
-<body>{body}{footer}</body>
+<body>{navigation}{body}</body>
 </html>
 
 
@@ -34,14 +34,18 @@ Title is missing.
 
 Body is missing.
 
-#^navigation
+#^------------------------------
+#^navigation trim=ends
+#^------------------------------
 <div class="navi_wrap">
     <div class="navi">
         <a href="{_root}" class="navi_link_home">Fun64</a><a href="{_root}/blog" class="navi_link_all">Devlog</a><a href="{_root}/pad" class="navi_link_all">FunPad</a><a href="https://github.com/xriss/fun64" class="navi_link_all git">Github</a>
     </div>
 </div>
 
-#^footer
+#^------------------------------
+#^footer trim=ends
+#^------------------------------
 <div class="footer_wrap">
 	<div class="footer">
 

@@ -12,12 +12,6 @@ b		{font-weight:700;}
 
 .wrap	{width:1024px; margin:0 auto;}
 
-a.bar		{color:#f7f4fd; background-color:#3a3a3a; border-radius:4px; padding:5px; text-decoration:none; border-bottom:none;}
-a.bar:hover	{background-color:#1400ff; border-bottom:none;}
-
-.nav_wrap	{width:1024px; margin:auto;}
-.nav		{display:inline-block; vertical-align:top; width:50%; border-bottom:1px dashed #1400ff; padding-bottom:20px;}
-.nav:nth-of-type(2)	{text-align:right;}
 
 .page_link	{display:inline-block; width:50%; vertical-align:top; margin-top:80px;}
 .page_link:nth-of-type(2)	{text-align:right;}
@@ -30,7 +24,7 @@ a.bar:hover	{background-color:#1400ff; border-bottom:none;}
 
 /*	INDEX NAVIGATION BAR styles
 	============================================= */
-.navi_wrap		{width:100%; background:#58656b;}
+.navi_wrap		{width:100%; margin:0 auto; background:#58656b;}
 .navi			{width:1024px; margin:0 auto; padding:20px 0;}
 .navi a			{text-decoration:none;}
 .navi a:hover	{color:#fff;}
@@ -59,16 +53,9 @@ span.example_text		{}
 /*	FOOTER styles
 	============================================= */
 	
-.footer_wrap	{border-top:1px dashed #1400ff; padding-top:20px; width:1024px; margin:auto; margin-top:40px;}
+.footer_wrap	{border-top:0px dashed #1400ff; padding-top:20px; width:1024px; margin:auto; margin-top:40px;}
 .footer_wrap p	{padding:5px 0;}
-.footer:nth-of-type(1) p:nth-of-type(1)	{font-size:20px; margin-right:5em;}
-
-.footer			{display:inline-block; vertical-align:top; width:70%;}
-.footer:nth-of-type(2)	{width:30%;}
-
-a.home			{font-weight:700; color:#1400ff; text-decoration:none;}
-a.home:hover	{text-decoration:underline;}
-
+.footer			{width:100%;}
 
 /*	BLOG styles
 	============================================= */
@@ -98,43 +85,60 @@ a.blog_post_link span.blog_post_snip	{display:block; height:180px; overflow:hidd
 a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}
 
 
-/*	CODE EMBED
+/*	BLOG FUNPAD LINK - found beneath each post
 	============================================= */
 
-.blog_embed_wrap	{margin:0 auto; margin-top:40px;}
+.blog_embed_wrap	{margin:0 auto; margin-top:60px;}
 .blog_embed_head	{width:700px; margin:auto;}
-.blog_embed_head div{width:50%; display:inline-block; vertical-align:top; border-top:1px dashed #1400ff; padding-top:40px; margin-bottom:20px;}
-.blog_embed_head div:nth-of-type(2)	{text-align:right;}
 
+a.bar				{display:block; width:100%; color:#f7f4fd; font-size:24px; text-align:center; background-color:#3a3a3a; border-radius:4px; padding:15px; text-decoration:none;}
+a.bar:hover			{background-color:#1400ff;}
 
-.blog_code_wrap		{width:1024px; font-size:14px; margin:0 auto; position:relative;}
-pre.lang-lua		{height:100%; overflow:scroll; padding:16px; padding-top:0;}
-a.raw_src			{display:block; position:absolute; right:15px; top:0; color:#444; text-decoration:none; background-color:#fff; padding:5px 10px; text-align:center; z-index:666;}
-a.raw_src:hover		{color:#1400ff;}
-
-#gamecake_container, #gamecake_canvas	{width:100%; height:100%; position:absolute;}
-.code_embed_wrap	{width:1024px; height:100%; overflow:hidden; margin:0 auto; margin-top:14px;}
-.code_embed			{width:100%; height:100%; position:relative; background-color:#000;}
-.loading			{position:absolute; top:40px; right:50%; color:#fff;}
+.blog_wrap code		{display:block; font-size:16px; overflow-x:scroll;}
 
 
 /*	MOBILE post styles
 	============================================= */
 @media screen and (max-width:1024px) {
 
-	body		{padding:0;}	
+	body		{padding:0; font-size:100%;}	
 	pre			{margin:0 auto;}
 	.fun_bits	{font-size:12px;}
-	.fun_bits, .nav_wrap, .footer_wrap	{width:960px; margin:0 auto; padding:50px;}
+	.navi a		{font-size:40px; width:25%; text-align:center;}
+	.fun_bits, .navi, .blog_head{width:960px; margin:0 auto; padding:50px 0;}
+	.blog_head	{padding:50px; font-size:42px;}
+	.wrap		{width:100%; margin:0 auto;}
+	.fun_bits pre	{width:95%; margin:0 auto; margin-left:5%;}
 	.blog_list_wrap, a.blog_post_link	{width:860px;}
 	
-	.nav				{font-size:38px; line-height:54px; min-height:130px;}
-	.footer, .footer:nth-of-type(2)			{display:block; width:100%;}
+	a.example	{margin:0; width:100%; height:500px;}
 	
-	.footer p, .footer:nth-of-type(1) p:nth-of-type(1), .blog_wrap p		{margin:40px 0; font-size:18px; line-height:54px;}
+	.wrap.example a:nth-of-type(1)	{background:url('{_root}data/example_01.png')no-repeat -900px center; background-size:cover;}
+	.wrap.example a:nth-of-type(2)	{background:url('{_root}data/example_02.png')no-repeat center center; background-size:cover;}
+	.wrap.example a:nth-of-type(3)	{background:url('{_root}data/example_03.png')no-repeat center center; background-size:cover;}
+	.wrap.example a:nth-of-type(4)	{background:url('{_root}data/example_04.png')no-repeat center center; background-size:cover;}
+	.wrap.example a:nth-of-type(5)	{background:url('{_root}data/example_05.png')no-repeat -1600px center; background-size:cover;}
 	
-	a.blog_post_link	{display:block; margin:0 auto; margin-bottom:40px; font-size:38px; line-height:54px;}
+	.fun_about_wrap	{top:10%;}
+	.fun_about	{font-size:60px; line-height:80px; width:70%;}
+	a.fun_try	{font-size:42px; display:inline-block; padding:30px 40px; width:initial;}
+	
+	.wrap img	{width:100%; display:none;}
+	
+	span.example_text_wrap	{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}
+	span.example_text_head	{font-size:1.25em; line-height:1.25em;}
+		
+	.blog_wrap p			{margin:40px 0; font-size:34px; line-height:72px;}
+	span.blog_post_title	{font-size:76px; line-height:92px;}
+	
+	.blog_embed_head, .blog_wrap			{width:800px;}
+	a.blog_post_link						{display:block; margin:0 auto; margin-bottom:40px; font-size:38px; line-height:54px; height:400px;}
 	a.blog_post_link span.blog_post_title	{font-size:48px; line-height:68px;}
 	a.blog_post_link span.blog_post_snip	{height:200px;}
 	a.blog_post_link span.blog_post_user	{font-size:24px; width:960px;}
+	
+	.page_link		{text-align:center;}
+	.page_link a	{font-size:38px;}
+	
+	a.bar			{font-size:38px; padding:30px;}
 }

@@ -65,7 +65,7 @@ a.pop_close:hover{background-color:#111; cursor:pointer;}
 		<div id="iconbar"><!--
 		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    	>ABOUT</a><!--
 		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code" 								>RUN</a><!--
-		--><a id="iconbar_patch"    		 title="Load the URL of your code" onclick="$('.pop_wrap.load').toggle();" 	>LOAD</a><!--
+		--><a id="iconbar_patch"    		 title="Open a URL" 		onclick="$('.pop_wrap.load').toggle();" 		>OPEN</a><!--
 		--><a id="iconbar_clearlog" href="#" title="Empty the log messages"                       						>FLUSH</a><!--
 		--><a id="iconbar_revert"   href="#" title="Restore code to original state"       								>REVERT</a><!--
 		--></div>
@@ -386,8 +386,8 @@ $(document).keydown(function(event){
 			Click to refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
 		</p>
 		<p>
-			<span>LOAD</span>
-			Click to load FUN64 code on Github Gist or fun.lua files anywhere online. Share the link with your friends for them to play your app.
+			<span>OPEN</span>
+			Click to paste the link to a FUN64 code on Github Gist or any raw fun.lua file online. Share the link with your friends for them to play your app.
 		</p>
 		<p>
 			<span>FLUSH</span>
