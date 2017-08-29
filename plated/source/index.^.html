@@ -11,10 +11,6 @@ Welcome to Fun64
 {navigation}
 <div class="fun_bits">
 <pre>
-levels[1]={
-legend=combine_legends(default_legend,{
-	["?0"]={ name="char_empty" },
-}),
 title="A small cave full of treasures.",
 map=[[
 ||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||
@@ -25,17 +21,6 @@ map=[[
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . ? . . . . . . . . . . . . . . . x $ . . x $ . . x $ . . . . . ||
 ||================================================--------====--------==================================||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . . . . . . . . . . . . . . . . . . ||
-||======. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ ||
-||==========. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . ||||||||||||. . . . . . . . . . . . . . . . . . . . . . ||
-||. . . . . . . . . . . > . . . . . M . . . . < ||||||||||||. . $ x $ . . . . ? . . . . . . . . . . . . ||
-||==============. . . . <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<. . . . . . . . ||
-||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ==========||
-||. . . . . . . . . . . . . . . . . $ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
 ||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ======||
 ||. . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||
@@ -54,7 +39,7 @@ map=[[
 	<div class="fun_about">
 		<b>Fun64</b> is a simple game engine designed for single file game sketches.
 	</div>
-	<a class="fun_try" href="/pad">Try it now</a>
+	<a class="fun_try" href="{_root}pad">Try it now</a>
 </div>
 </div>
 <div class="wrap">
@@ -104,6 +89,18 @@ map=[[
 				NPC Conversation
 			</span>
 			<span class="example_text">Have a go at changing the character conversation choices.</span>
+		</span>
+	</a>
+	<a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatobj.fun.lua" class="example">
+		<img src="{_root}data/example_02.png" width="1024px"/>
+		<span class="example_text_wrap">
+			<span class="example_text_info">
+				GIST EXAMPLE
+			</span>
+			<span class="example_text_head">
+				Palette colours
+			</span>
+			<span class="example_text">Listing the Swanky32 colour palette supported by the engine.</span>
 		</span>
 	</a>
 </div>

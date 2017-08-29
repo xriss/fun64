@@ -39,7 +39,7 @@ a.navi_link_all	{display:inline-block; width:15%; text-align:right; color:#eaeae
 
 /*	INDEX ABOUT SECTION styles
 	============================================= */
-.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:23%;}
+.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:15%;}
 .fun_about		{color:#fff; font-size:38px; line-height:50px; width:50%; text-align:center; margin:0 auto;}
 a.fun_try		{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}
 a.fun_try:hover	{background-color:#FFEB3B;}
