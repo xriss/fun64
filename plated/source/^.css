@@ -130,7 +130,7 @@ a.bar:hover			{background-color:#1400ff;}
 	a.navi_link_home span:before	{zoom:70%;}
 	
 	.blog_head	{padding:50px; font-size:42px;}
-	.post_page .blog_head	{font-size:16px;}
+	.post_page .blog_head	{font-size:14px;}
 	.wrap		{width:100%; margin:0 auto;}
 	.fun_bits pre	{width:95%; margin:0 auto; margin-left:5%;}
 	.blog_list_wrap, a.blog_post_link	{width:860px;}
@@ -150,7 +150,7 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	.wrap img		{width:100%; display:none;}
 	.wrap .foot_wrap img	{display:inline-block; vertical-align:top; width:50px;}
-	.foot_wrap p	{font-size:18px; line-height:42px;}
+	.foot_wrap p	{font-size:16px; line-height:42px; padding:5px 0;}
 	.text.wetus img	{width:80px;}
 	
 	span.example_text_wrap	{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}
@@ -169,5 +169,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
 	.page_link a	{font-size:38px;}
 	
-	a.bar			{font-size:30px; padding:30px;}
+	a.bar			{font-size:24px; padding:30px;}
+	
+	.text_head		{margin-top:40px; margin-bottom:40px; font-size:48px;}
 }
