@@ -420,11 +420,6 @@ $(document).keydown(function(event){
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
 		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
 	
-	if(params.url) // redirect to pad for all running now
-	{
-		window.location="../pad/?"+$.param(params);
-	}
-	else
 	{
 		$("#gamecake_div_input").show();
 
