@@ -44,6 +44,9 @@ a:focus		{outline: none;}
 .pop_wrap span	{display:inline; background-color:#333; padding:2px 10px; color:#aaa; font-weight:400;}
 .pop_text		{padding:40px 60px 20px 60px;}
 .pop_head		{font-size:20px;}
+.pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
+.pop_head a:hover	{text-decoration:underline;}
+.pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 .pop_close_wrap	{position:relative; width:100%;}
 a.pop_close		{position:absolute; display:block; top:15px; right:15px; border-radius:25px; width:25px; height:25px; background-color:#000; font-size:20px; line-height:23px; text-align:center;}
 a.pop_close:hover{background-color:#111; cursor:pointer;}
@@ -63,11 +66,11 @@ a.pop_close:hover{background-color:#111; cursor:pointer;}
 <div id="split">
 	<div id="split_left">
 		<div id="iconbar"><!--
-		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    >ABOUT</a><!--
-		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code." 							>RUN</a><!--
-		--><a id="iconbar_patch"    		 title="Load your code URL" onclick="$('.pop_wrap.load').toggle();" 	>LOAD</a><!--
-		--><a id="iconbar_clearlog" href="#" title="Empty the log."                       							>FLUSH</a><!--
-		--><a id="iconbar_revert"   href="#" title="Restore code to original state."       							>REVERT</a><!--
+		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    	>ABOUT</a><!--
+		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code" 								>RUN</a><!--
+		--><a id="iconbar_patch"    		 title="Open a URL" 		onclick="$('.pop_wrap.load').toggle();" 		>OPEN</a><!--
+		--><a id="iconbar_clearlog" href="#" title="Empty the log messages"                       						>FLUSH</a><!--
+		--><a id="iconbar_revert"   href="#" title="Restore code to original state"       								>REVERT</a><!--
 		--></div>
 <pre id="editor">
 --
@@ -378,7 +381,7 @@ $(document).keydown(function(event){
 	</div>
 	<div class="pop_text">
 		<div class="pop_head">
-			The <B>FunPad</b> lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
+			The FunPad lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
 			<p>FunPad is powered by Gamecake, WebAssembly JS and lua.</p>
 		</div>
 		<p>
@@ -386,8 +389,8 @@ $(document).keydown(function(event){
 			Click to refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
 		</p>
 		<p>
-			<span>LOAD</span>
-			Click to load FUN64 code on Github Gist or fun.lua files anywhere online. Share the link with your friends for them to play your app.
+			<span>OPEN</span>
+			Click to paste the link to a FUN64 code on Github Gist or any raw fun.lua file online. Share the link with your friends for them to play your app.
 		</p>
 		<p>
 			<span>FLUSH</span>
@@ -420,14 +423,7 @@ $(document).keydown(function(event){
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
 		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
 	
-	if(params.url) // redirect to pad for all running now
 	{
-		window.location="../pad/?"+$.param(params);
-	}
-	else
-	{
-		$("#gamecake_div_input").show();
-
 		$("#gamecake_text_input").keyup(function(e){
 			if(e.keyCode == 13)
 			{

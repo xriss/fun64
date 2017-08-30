@@ -5,7 +5,7 @@
 
 <html>
 <head>{head}</head>
-<body>{body}{footer}</body>
+<body><div id="content">{navigation}{body}</div>{footer}</body>
 </html>
 
 
@@ -21,29 +21,49 @@
 <script	src="{_root}js/google-code-prettify/prettify.js" ></script>
 <script	src="{_root}js/google-code-prettify/lang-lua.js" ></script>
 <link rel="stylesheet" type="text/css" href="{_root}js/google-code-prettify/skins/sons-of-obsidian.css" />
+<link rel="icon" type="image/png" href="{_root}data/favicon.png" />
 
 #^------------------------------
 #^title trim=ends
 #^------------------------------
 
-Title is missing.
+\\\\\\\Fun64///////
 
 #^------------------------------
 #^body trim=ends
 #^------------------------------
 
-Body is missing.
+\\\\\\\Fun64///////
 
-#^navigation
+#^------------------------------
+#^navigation trim=ends
+#^------------------------------
 <div class="navi_wrap">
     <div class="navi">
-        <a href="{_root}" class="navi_link_home">Fun64</a><a href="{_root}/blog" class="navi_link_all">Devlog</a><a href="{_root}/pad" class="navi_link_all">FunPad</a><a href="https://github.com/xriss/fun64" class="navi_link_all git">Github</a>
+        <a href="{_root}" class="navi_link_home"><span>Fun64</span></a><a href="{_root}blog" class="navi_link_all">Devlog</a><a href="{_root}pad" class="navi_link_all">FunPad</a><a href="https://github.com/xriss/fun64" class="navi_link_all git">Github</a>
     </div>
 </div>
 
-#^footer
-<div class="footer_wrap">
-	<div class="footer">
-
+#^------------------------------
+#^footer trim=ends
+#^------------------------------
+<div class="wrap max foot">
+	<span id="about"></span>
+	<div class="foot_wrap">
+		<div class="text">
+			<div class="text_head"><img src="{_root}data/favicon.png" width="40px"/> Fun64</div>
+			<p><a href="{_root}"><b>Fun64</b></a> is a super simple super lowrez single file game engine powered by <a href="https://github.com/xriss/gamecake">Gamecake</a>, <a href="http://webassembly.org/">WebAssembly JS</a> and <a href="https://www.lua.org/about.html">Lua</a>.</p>
+			<p>The <a href="https://xriss.github.io/fun64/pad/">FunPad</a> lets you edit and run Fun64 code in any modern browser using <a href="https://gist.github.com/search?q=fun64+lua">Github Gist</a> as storage, creating a unique url that you can share with others to play and collaborate on.</p>
+		</div>
+		<div><p><a href="http://github.com/xriss/fun64">Fun64 is on Github</a></p></div>
+		<div><p>Some documentation for functions can be found <a href="https://xriss.github.io/gamecake/">here</a>.</p></div>
+		<div class="text wetus"><a href="http://wetgenes.com" class="hi"><span>hi!</span><img src="{_root}data/wetus.png"/></a></div>
 	</div>
+	<a class="back_top" href="#">BACK TO TOP</a>
 </div>
+<script>
+	$('.back_top').click(function(){ 
+		$('html,body').animate({scrollTop:0}, 400);
+		return false; 
+	});
+</script>

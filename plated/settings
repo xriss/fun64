@@ -1,1 +1,15 @@
+
+# The root of the website on the website server
+
 PLATED_ROOT=/fun64
+
+
+# The directory to write output files into
+
+PLATED_OUTPUT=../pages
+
+
+# The directory to read input files from
+
+PLATED_SOURCE=source
+
