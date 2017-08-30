@@ -40,10 +40,11 @@ update=function()
 	local up=ups(i)
 	
 	local ns={
-	    "up","down","left","right","fire",	-- basic joystick, most buttons map to fire
-	    "x","y","a","b",                    -- the four face buttons
-	    "l1","l2","r1","r2",                -- the triggers
-	    "select","start",			-- the menu face buttons
+	    "up","down","left","right","fire",		-- basic joystick, most buttons map to fire
+	    "x","y","a","b",            	        -- the four face buttons
+	    "l1","l2","r1","r2",        	        -- the triggers
+	    "select","start",				-- the menu face buttons
+	    "mouse_left","mouse_right","mouse_middle",	-- mouse buttons
 	    }
 	    
 	local ax={"lx","ly","rx","ry","dx","dy","mx","my"} -- axis name

@@ -190,17 +190,25 @@ local names=system.components.tiles.names
 	local test_entity={
 		caste="player",
 		tile=names.test_tile.idx,
-		px=160,py=120,
+		px=160,py=120,sz=3,rz=0,
 		update=function(it)
 			local up=ups(0) -- get all connected controls, keyboard or gamepad
-			if up.button("up")    then it.py=it.py-1 end
-			if up.button("down")  then it.py=it.py+1 end
-			if up.button("left")  then it.px=it.px-1 end
-			if up.button("right") then it.px=it.px+1 end
+
+			if up.button("fire") then
+				if up.button("up")    then it.sz=it.sz-(1/16) end
+				if up.button("down")  then it.sz=it.sz+(1/16) end
+				if up.button("left")  then it.rz=it.rz-1 end
+				if up.button("right") then it.rz=it.rz+1 end
+			else
+				if up.button("up")    then it.py=it.py-1 end
+				if up.button("down")  then it.py=it.py+1 end
+				if up.button("left")  then it.px=it.px-1 end
+				if up.button("right") then it.px=it.px+1 end
+			end
 			
 		end,
 		draw=function(it)
-			system.components.sprites.list_add({t=it.tile,px=it.px,py=it.py,s=3})
+			system.components.sprites.list_add({t=it.tile,px=it.px,py=it.py,s=it.sz,rz=it.rz})
 		end,
 	}
 
