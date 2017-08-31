@@ -38,11 +38,23 @@ update=function()
 		
 		ccopper.shader_uniforms.scroll={0,0,0,0}
 
+		it={}
+		it.vx=0.25
+		it.vy=1
+
 		setup_done=true
 	end
 
-	ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+0.25
-	ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+2
+	local up=ups(0) -- get all connected controls, keyboard or gamepad
+
+	if up.button("up")    then it.vy=it.vy-(1/16) end
+	if up.button("down")  then it.vy=it.vy+(1/16) end
+	if up.button("left")  then it.vx=it.vx+(1/16) end
+	if up.button("right") then it.vx=it.vx-(1/16) end
+
+
+	ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+it.vx
+	ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+it.vy
 	
 end
 
@@ -260,11 +272,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 		(2.0+ f  *2.0)/32.0 );
 
 
-	for(float i=1.0;i<=4.0;i++ )
+	for(float i=1.0;i<=4.0;i+=1.0 )
 	{
 		float speed=i/8.0;
-		f=1.0-cellular( vec3(fragCoord+vec2(i,0.0)+(scroll.xy*speed),i*19.0)/32.0 ).x;
-		f=pow(f,9.0-i);
+		f=1.0-cellular( vec3(fragCoord+vec2(i*19,0.0)+(scroll.xy*speed),i*19.0)/32.0 ).x;
+		f=pow(f,8.0-i);
 		f=max(f-0.75,0.0)*4.0;
 		color+=vec3(f)*vec3(0.5,0.5,1.0);
 	}
