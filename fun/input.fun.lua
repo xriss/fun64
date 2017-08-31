@@ -26,12 +26,13 @@ update=function()
     
     if setup then setup() setup=nil end
 
-    local cmap=system.components.colors.cmap
+    local ccmap=system.components.colors.cmap
+    local cmap=system.components.map
     local ctext=system.components.text
     local bg=9
     local fg=31
 
-    ctext.text_clear(0x01000000*bg) -- clear text forcing a background color
+    cmap.text_clear(0x01000000*bg) -- clear text forcing a background color
 	
 	
     local y=2
@@ -65,21 +66,23 @@ update=function()
 	end
 
 	local s=i.."up : "..table.concat(a," ")
-	ctext.text_print(s,2,y,fg,bg) y=y+1
+	ctext.text_print(s,2,y,fg,0) y=y+1
 
 	y=y+1
     end
 
     local tx=wstr.trim([[
 
-Testing
+Testing the 8x8 font on the background layer rather than the 4x8 text layer.
+
+Notice how the text layer gets you a drop shadow down onto this layer which helps separate it from the background.
 
 ]])
 
-    local tl=wstr.smart_wrap(tx,system.components.text.text_hx-6)
+    local tl=wstr.smart_wrap(tx,cmap.text_hx-2)
     for i=1,#tl do
 	    local t=tl[i]
-	    system.components.text.text_print(t,3,16+i,fg,bg)
+	    cmap.text_print(t,1,16+i,fg,bg)
     end
 
 
