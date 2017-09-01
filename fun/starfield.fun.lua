@@ -293,7 +293,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 	for(float i=1.0;i<=4.0;i+=1.0 )
 	{
 		float speed=i/8.0;
-		f=1.0-cellular( vec3(fragCoord+vec2(i*19,0.0)+(scroll.xy*speed),i*19.0)/32.0 ).x;
+		f=1.0-cellular( vec3(fragCoord+vec2(i*19.0,0.0)+(scroll.xy*speed),i*19.0)/32.0 ).x;
 		f=pow(f,8.0-i);
 		f=max(f-0.75,0.0)*4.0;
 		color+=vec3(f)*vec3(0.5,0.5,1.0);
