@@ -256,14 +256,8 @@ space=function()
 
 	local space=entities.get("space")
 
-	local arbiter_trigger={} -- trigger things
-		arbiter_trigger.presolve=function(it)
-			if it.shape_a.trigger and it.shape_b.triggered then -- trigger something
-				it.shape_b.triggered.triggered = it.shape_a.trigger
-			end
-			return false
-		end
-	space:add_handler(arbiter_trigger,space:type("trigger"))
+	local arbiter_player={} -- when a player collides with something
+	space:add_handler(arbiter_player,space:type("player"))
 
 end,
 
@@ -284,7 +278,7 @@ add=function(i)
 	player.frames={ names.player_ship.idx+0 }
 	
 	player.body=space:body(1,math.huge)
-	player.body:position(160,200)
+	player.body:position(160,220)
 	player.body:velocity(0,0)
 	
 	player.scale=4
@@ -298,13 +292,17 @@ add=function(i)
 	player.update=function()
 		local up=ups(0) -- the controls for this player
 		
+		local px,py=player.body:position()
 		local vx,vy=player.body:velocity()
 		local s=4
 
-		if up.button("up")    then if vy>0 then vy=0 end vy=vy-s end
-		if up.button("down")  then if vy<0 then vy=0 end vy=vy+s end
+--		if up.button("up")    then if vy>0 then vy=0 end vy=vy-s end
+--		if up.button("down")  then if vy<0 then vy=0 end vy=vy+s end
 		if up.button("left")  then if vx>0 then vx=0 end vx=vx-s end
 		if up.button("right") then if vx<0 then vx=0 end vx=vx+s end
+
+		if px<0   and vx<0 then vx=0 end
+		if px>320 and vx>0 then vx=0 end
 
 		player.body:velocity(vx,vy)
 
@@ -325,6 +323,91 @@ end,
 
 
 -----------------------------------------------------------------------------
+--[[#entities.systems.enemy
+
+	player = entities.systems.player.add(idx)
+
+Add a player
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.invader={
+
+load=function() graphics.loads{
+
+-- 4 x 16x32
+{nil,"invader_ship",[[
+. . . . . . . . 
+. . . . . . . . 
+. . 7 7 7 7 . . 
+. . . 7 7 . . . 
+. . 7 7 7 7 . . 
+. . 7 . . 7 . . 
+. . . . . . . . 
+. . . . . . . . 
+]]},
+
+}end,
+
+space=function()
+
+	local space=entities.get("space")
+
+	local arbiter_invader={} -- trigger things
+	space:add_handler(arbiter_invader,space:type("invader"))
+
+end,
+
+
+add=function(x,y)
+
+	local names=system.components.tiles.names
+	local space=entities.get("space")
+
+	local invader=entities.add{caste="invader"}
+
+	invader.idx=i
+	invader.score=0
+	
+
+	invader.color={1,1,1,1}
+	invader.frame=0
+	invader.frames={ names.invader_ship.idx+0 }
+	
+	invader.body=space:body(1,math.huge)
+	invader.body:position(x,y)
+	invader.body:velocity(0,0)
+	
+	invader.scale=4
+						
+	invader.shape=invader.body:shape("circle",3*invader.scale,0,0)
+	invader.shape:friction(1)
+	invader.shape:elasticity(0)
+	invader.shape:collision_type(space:type("invader"))
+	invader.shape.invader=invader
+
+	invader.update=function()
+		local up=ups(0) -- the controls for this invader
+		
+--		local vx,vy=invader.body:velocity()
+--		invader.body:velocity(vx,vy)
+
+	end
+
+	invader.draw=function()
+
+			local px,py=invader.body:position()
+			local t=invader.frames[1]
+			
+			system.components.sprites.list_add({t=t,h=8,px=px,py=py,s=invader.scale,color=invader.color})			
+
+	end
+	
+	return invader
+end,
+}
+
+-----------------------------------------------------------------------------
 --[[#setup
 
 Called once to setup things in the first update loop after hardware has 
@@ -336,6 +419,14 @@ setup=function()
 
 	entities.systems.space.setup()
 	entities.systems.player.add(0)
+	
+	for y=0,4 do
+		for x=0,8 do
+
+			entities.systems.invader.add(16+x*24,32+y*24)
+
+		end	
+	end
 	
 end
 
