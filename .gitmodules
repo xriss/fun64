@@ -15,3 +15,6 @@
 [submodule "gists/e6965fb7b34b9353fd744e223b0f6af6"]
 	path = gists/e6965fb7b34b9353fd744e223b0f6af6
 	url = https://gist.github.com/e6965fb7b34b9353fd744e223b0f6af6.git
+[submodule "gists/18eac9295deb6e51b097334639d6d55c"]
+	path = gists/18eac9295deb6e51b097334639d6d55c
+	url = https://gist.github.com/18eac9295deb6e51b097334639d6d55c.git
