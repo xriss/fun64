@@ -100,9 +100,19 @@ add a new entity of caste or it.caste if caste it missing to the list
 of things to update 
 
 
+	entities.remove(it)
+
+Remove an entity from its caste table.
+
+
 	entities.call(fname,...)
 
 for every entity call the function named fname like so it[fname](it,...)
+
+
+	entities.count(caste)
+
+Return the count of the number of entities in a given caste.
 
 
 	entities.get(name)
@@ -150,6 +160,18 @@ entities.add=function(it,caste)
 	return it
 end
 
+-- remove an item
+entities.remove=function(it)
+	caste=it.caste or "generic"
+	for i=1,#entities.data[caste] do -- find it
+		local v=entities.data[caste][i]
+		if v==it then
+			table.remove(entities.data[caste],i) -- remove it
+			return v
+		end
+	end
+end
+
 -- call this functions on all items in every caste
 entities.call=function(fname,...)
 	local count=0
@@ -166,12 +188,13 @@ entities.call=function(fname,...)
 end
 
 -- get/set info associated with this entities
-entities.get=function(name)       return entities.info[name]							end
+entities.get=function(name)       return entities.info[name]						end
 entities.set=function(name,value)        entities.info[name]=value	return value	end
 entities.manifest=function(name,empty)
 	if not entities.info[name] then entities.info[name]=empty or {} end -- create empty
 	return entities.info[name]
 end
+entities.count=function(caste) local c=entities.data[caste] return c and #c or 0 end
 
 -- also reset the entities right now creating the initial data and info tables
 entities.reset()
@@ -283,7 +306,7 @@ add=function(i)
 	
 	player.scale=4
 						
-	player.shape=player.body:shape("circle",4*player.scale,0,0)
+	player.shape=player.body:shape("circle",3*player.scale,0,0)
 	player.shape:friction(1)
 	player.shape:elasticity(0)
 	player.shape:collision_type(space:type("player"))
@@ -296,13 +319,23 @@ add=function(i)
 		local vx,vy=player.body:velocity()
 		local s=4
 
+		if up.button("fire")  then
+		
+			if entities.count("missile")==0 then
+			
+				entities.systems.missile.add(px,py-16,0,-128)
+
+			end
+
+		end
+
 --		if up.button("up")    then if vy>0 then vy=0 end vy=vy-s end
 --		if up.button("down")  then if vy<0 then vy=0 end vy=vy+s end
 		if up.button("left")  then if vx>0 then vx=0 end vx=vx-s end
 		if up.button("right") then if vx<0 then vx=0 end vx=vx+s end
 
-		if px<0   and vx<0 then vx=0 end
-		if px>320 and vx>0 then vx=0 end
+		if px<0  +12 and vx<0 then vx=0 end
+		if px>320-8 and vx>0 then vx=0 end
 
 		player.body:velocity(vx,vy)
 
@@ -390,8 +423,8 @@ add=function(x,y)
 
 		invader.body:velocity(invader.horde.vx,invader.horde.vy)
 		
-		if px<  0 then invader.horde.hit_left=true end
-		if px>320 then invader.horde.hit_right=true end
+		if px<  0+8 then invader.horde.hit_left=true end
+		if px>320-8 then invader.horde.hit_right=true end
 
 	end
 
@@ -477,6 +510,124 @@ end,
 }
 
 -----------------------------------------------------------------------------
+--[[#entities.systems.missile
+
+a missile
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.missile={
+
+load=function() graphics.loads{
+
+-- 4 x 16x32
+{nil,"missile",[[
+. . . . . . . . 
+. . . . . . . . 
+. . . 7 7 . . . 
+. . . 7 7 . . . 
+. . . 7 7 . . . 
+. . . 7 7 . . . 
+. . . . . . . . 
+. . . . . . . . 
+]]},
+
+}end,
+
+space=function()
+
+	local space=entities.get("space")
+
+	local arbiter_missile={} -- trigger things
+	space:add_handler(arbiter_missile,space:type("missile"))
+
+end,
+
+
+add=function(px,py,vx,vy)
+
+	local names=system.components.tiles.names
+	local space=entities.get("space")
+
+	local missile=entities.add{caste="missile"}
+
+	missile.color={r=1/8,g=6/8,b=1/8,a=1}
+	missile.frame=0
+	missile.frames={ names.missile.idx+0 }
+	
+	missile.body=space:body(1,math.huge)
+	missile.body:position(px,py)
+	missile.body:velocity(vx,vy)
+	
+	missile.scale=2
+						
+	missile.shape=missile.body:shape("circle",2*missile.scale,0,0)
+	missile.shape:friction(0)
+	missile.shape:elasticity(0)
+	missile.shape:collision_type(space:type("missile"))
+	missile.shape.missile=missile
+
+	missile.update=function()
+		
+		local px,py=missile.body:position()
+
+		missile.body:velocity(vx,vy) -- keep velocity
+
+		if py<0 or py>240 then
+		
+			entities.remove(missile)
+		
+		end
+		
+	end
+
+	missile.draw=function()
+
+			local px,py=missile.body:position()
+			local t=missile.frames[1]
+			
+			system.components.sprites.list_add({t=t,h=8,px=px,py=py,s=missile.scale,color=missile.color})			
+
+	end
+	
+	return missile
+end,
+}
+
+
+-----------------------------------------------------------------------------
+--[[#entities.systems.stars
+
+The invading stars
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.stars={
+
+add=function(cx,cy)
+
+	local stars=entities.add{caste="stars"}
+
+	stars.vx=1/8
+	stars.vy=2
+
+	local ccopper=system.components.copper
+	ccopper.shader_name="fun_copper_stars"		
+	ccopper.shader_uniforms.scroll={0,0,0,0}
+
+	stars.update=function()
+	
+		ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+stars.vx
+		ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+stars.vy
+
+	end
+
+	return stars
+end,
+
+}
+
+-----------------------------------------------------------------------------
 --[[#setup
 
 Called once to setup things in the first update loop after hardware has 
@@ -486,15 +637,7 @@ been initialised.
 -----------------------------------------------------------------------------
 setup=function()
 
-	local ccopper=system.components.copper
-
-	ccopper.shader_name="fun_copper_noise"		
-	ccopper.shader_uniforms.scroll={0,0,0,0}
-
-
---	ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+it.vx
---	ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+it.vy
-
+	entities.systems.stars.add()
 
 	entities.systems.space.setup()
 	entities.systems.player.add(0)
@@ -510,7 +653,7 @@ entities.systems_call("load")
 -- Include GLSL code inside a comment
 -- The GLSL handler will pickup the #shader directive and use all the code following it until the next #shader directive.
 --[=[
-#shader "fun_copper_noise"
+#shader "fun_copper_stars"
 
 #ifdef VERTEX_SHADER
 
