@@ -273,7 +273,7 @@ add=function(i)
 	player.score=0
 	
 
-	player.color={r=1/8,g=1,b=1/8,a=1}
+	player.color={r=1/8,g=6/8,b=1/8,a=1}
 	player.frame=0
 	player.frames={ names.player_ship.idx+0 }
 	
@@ -323,11 +323,9 @@ end,
 
 
 -----------------------------------------------------------------------------
---[[#entities.systems.enemy
+--[[#entities.systems.invader
 
-	player = entities.systems.player.add(idx)
-
-Add a player
+an invader
 
 ]]
 -----------------------------------------------------------------------------
@@ -370,7 +368,7 @@ add=function(x,y)
 	invader.score=0
 	
 
-	invader.color={r=1/8,g=1,b=1/8,a=1}
+	invader.color={r=1/8,g=6/8,b=1/8,a=1}
 	invader.frame=0
 	invader.frames={ names.invader_ship.idx+0 }
 	
@@ -387,10 +385,13 @@ add=function(x,y)
 	invader.shape.invader=invader
 
 	invader.update=function()
-		local up=ups(0) -- the controls for this invader
 		
---		local vx,vy=invader.body:velocity()
---		invader.body:velocity(vx,vy)
+		local px,py=invader.body:position()
+
+		invader.body:velocity(invader.horde.vx,invader.horde.vy)
+		
+		if px<  0 then invader.horde.hit_left=true end
+		if px>320 then invader.horde.hit_right=true end
 
 	end
 
@@ -405,6 +406,74 @@ add=function(x,y)
 	
 	return invader
 end,
+}
+
+-----------------------------------------------------------------------------
+--[[#entities.systems.horde
+
+The invading horde
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.horde={
+
+add=function(cx,cy)
+
+	local horde=entities.add{caste="horde"}
+	
+	horde.state="right"
+	horde.wait=0
+
+	horde.vx=0
+	horde.vy=0
+
+	for y=1,cy do
+		for x=1,cx do
+
+			local invader=entities.systems.invader.add(x*24,y*24)
+			
+			invader.horde=horde
+
+		end	
+	end
+
+	horde.update=function()
+	
+		if     horde.state=="left" then
+			horde.vx=-8
+			horde.vy=0
+			if horde.hit_left then
+				horde.state="down_right"
+				horde.wait=60
+			end
+		elseif horde.state=="right" then
+			horde.vx=8
+			horde.vy=0
+			if horde.hit_right then
+				horde.state="down_left"
+				horde.wait=60
+			end
+		elseif horde.state=="down_left" or horde.state=="down_right"  then
+			horde.vx=0
+			horde.vy=8
+			
+			horde.wait=horde.wait-1
+			
+			if horde.wait<=0 then
+				if horde.state=="down_left"  then horde.state="left" end
+				if horde.state=="down_right" then horde.state="right" end
+			end
+
+		end
+		
+		horde.hit_left=false
+		horde.hit_right=false
+
+	end
+
+	return horde
+end,
+
 }
 
 -----------------------------------------------------------------------------
@@ -430,13 +499,7 @@ setup=function()
 	entities.systems.space.setup()
 	entities.systems.player.add(0)
 	
-	for y=0,4 do
-		for x=0,8 do
-
-			entities.systems.invader.add(16+x*24,24+y*24)
-
-		end	
-	end
+	entities.systems.horde.add(8,4)
 	
 end
 
