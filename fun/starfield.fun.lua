@@ -1,5 +1,5 @@
 
-
+local wstr=require("wetgenes.string")
 
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
@@ -31,6 +31,7 @@ Update and draw loop, called every frame.
 update=function()
 
 	local ccopper=system.components.copper
+	local cmap=system.components.map
 
 	if not setup_done then
 
@@ -51,11 +52,28 @@ update=function()
 	if up.button("down")  then it.vy=it.vy+(1/16) end
 	if up.button("left")  then it.vx=it.vx+(1/16) end
 	if up.button("right") then it.vx=it.vx-(1/16) end
+	if up.button("fire_set") then it.vx=0 it.vy=0 end
 
 
 	ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+it.vx
 	ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+it.vy
 	
+    local tx=wstr.trim([[
+
+Use up/down/left/right to adjust the speed of the scrolling star field. 
+Hit fire to reset the momentum.
+
+]])
+
+    local tl=wstr.smart_wrap(tx,cmap.text_hx-4)
+    for i=1,#tl do
+	    local t=tl[i]
+	    cmap.text_print(t,2,1+i,28,0)
+    end
+    cmap.dirty(true)
+
+
+
 end
 
 
