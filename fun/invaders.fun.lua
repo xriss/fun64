@@ -1,4 +1,6 @@
 
+local wstr=require("wetgenes.string")
+
 local chatdown=require("wetgenes.gamecake.fun.chatdown")	-- conversation trees
 local bitdown=require("wetgenes.gamecake.fun.bitdown")		-- ascii to bitmap
 local chipmunk=require("wetgenes.chipmunk")					-- 2d physics https://chipmunk-physics.net/
@@ -463,6 +465,7 @@ add=function(x,y)
 		
 		if invader.bang then
 			invader.remove()
+			entities.get("score").inc(invader.horde.score)
 		end
 
 		if py>240 then
@@ -506,6 +509,9 @@ add=function(cx,cy,cs)
 
 	horde.vx=0
 	horde.vy=0
+	
+	horde.score=cs-2
+	if horde.score<1 then horde.score=1 end
 
 	if cx>12 then cx=12 end -- 12x8 fills the entire screen
 	if cy>8  then cy=8  end
@@ -782,6 +788,50 @@ end,
 }
 
 -----------------------------------------------------------------------------
+--[[#entities.systems.score
+
+The score
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.score={
+
+add=function()
+
+	local score=entities.set("score",entities.add{caste="score"})
+
+
+	score.number=0
+
+
+	score.reset=function(num)
+		score.number=num or 0
+	end
+
+	score.inc=function(num)
+		score.number=(score.number or 0 ) + num
+	end
+
+	score.update=function()
+
+		local cmap=system.components.map
+
+
+		local s="Score : "..score.number
+
+		cmap.text_print(s,(40-#s)/2,1,31,0)
+		
+		cmap.dirty(true)
+	
+	end
+
+
+	return score
+end,
+
+}
+
+-----------------------------------------------------------------------------
 --[[#entities.systems.stars
 
 The stars
@@ -824,6 +874,7 @@ been initialised.
 setup=function()
 
 	entities.systems.stars.add()
+	entities.systems.score.add()
 
 	entities.systems.space.setup()
 	entities.systems.player.add(0)
