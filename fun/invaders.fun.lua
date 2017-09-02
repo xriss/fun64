@@ -875,6 +875,13 @@ add=function(cx,cy)
 
 	stars.update=function()
 	
+		local player=entities.caste("player")[1]
+		if player then
+			if player.body then
+				local px,py=player.body:position()
+				stars.vx=((px-120)/120)
+			end
+		end
 		ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+stars.vx
 		ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+stars.vy
 
