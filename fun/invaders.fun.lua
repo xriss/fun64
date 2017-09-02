@@ -412,7 +412,7 @@ add=function(x,y)
 	invader.scale=4
 						
 	invader.shape=invader.body:shape("circle",3*invader.scale,0,0)
-	invader.shape:friction(1)
+	invader.shape:friction(0)
 	invader.shape:elasticity(0)
 	invader.shape:collision_type(space:type("invader"))
 	invader.shape.invader=invader
@@ -421,8 +421,8 @@ add=function(x,y)
 
 		entities.remove(invader)
 
-		space:remove(invader.shape) invader.shape=nil
-		space:remove(invader.body)  invader.body=nil
+		if invader.shape then space:remove(invader.shape) invader.shape=nil end
+		if invader.body  then space:remove(invader.body)  invader.body=nil  end
 
 	end
 
@@ -430,8 +430,13 @@ add=function(x,y)
 		
 		local px,py=invader.body:position()
 
-		invader.body:velocity(invader.horde.vx,invader.horde.vy)
+		local vx,vy=invader.body:velocity()
+		vx=(vx*3+invader.horde.vx)/4
+		vy=(vy*3+invader.horde.vy)/4
+		invader.body:velocity(vx,vy)
 		
+		if py<  0   then invader.horde.hit_top=true end
+
 		if px<  0+8 then invader.horde.hit_left=true end
 		if px>320-8 then invader.horde.hit_right=true end
 		
@@ -483,21 +488,38 @@ add=function(cx,cy)
 		end	
 	end
 
-	horde.update=function()
+	horde.remove=function()
+		entities.remove(horde)
 
-		local speed=(cx*cy+1-entities.count("invader"))*8
+		cx=cx+1
+		cy=cy+1
+		if cx>12 then cx=12 end
+		entities.systems.horde.add(cx,cy)
+		
+	end
+	
+	horde.update=function()
+	
+		if entities.count("invader")==0 then -- alldead
+			horde.remove()
+			return
+		end
+
+		local count=entities.count("invader")
+		if count<1 then count=1 end
+		local speed=256/count
 	
 		if     horde.state=="left" then
 			horde.vx=-speed
 			horde.vy=0
-			if horde.hit_left then
+			if horde.hit_left or horde.hit_top then
 				horde.state="down_right"
 				horde.wait=60
 			end
 		elseif horde.state=="right" then
 			horde.vx=speed
 			horde.vy=0
-			if horde.hit_right then
+			if horde.hit_right or horde.hit_top then
 				horde.state="down_left"
 				horde.wait=60
 			end
@@ -514,6 +536,7 @@ add=function(cx,cy)
 
 		end
 		
+		horde.hit_top=false
 		horde.hit_left=false
 		horde.hit_right=false
 
@@ -593,8 +616,8 @@ add=function(px,py,vx,vy)
 
 		entities.remove(missile)
 
-		space:remove(missile.shape) missile.shape=nil
-		space:remove(missile.body)  missile.body=nil
+		if missile.shape then space:remove(missile.shape) missile.shape=nil end
+		if missile.body  then space:remove(missile.body)  missile.body=nil  end
 
 	end
 	
@@ -619,10 +642,10 @@ add=function(px,py,vx,vy)
 
 	missile.draw=function()
 
-			local px,py=missile.body:position()
-			local t=missile.frames[1]
-			
-			system.components.sprites.list_add({t=t,h=8,px=px,py=py,s=missile.scale,color=missile.color})			
+		local px,py=missile.body:position()
+		local t=missile.frames[1]
+		
+		system.components.sprites.list_add({t=t,h=8,px=px,py=py,s=missile.scale,color=missile.color})
 
 	end
 	
@@ -678,6 +701,23 @@ add=function(it)
 
 	bang.scale=bang.scale or 6
 	bang.life=bang.life or 12
+	
+	for i,v in ipairs(entities.caste("invader")) do
+		if v.body then
+			local px,py=v.body:position()
+			local dx=bang.px-px
+			local dy=bang.py-py
+			local dd=dx*dx + dy*dy
+			if dd < 80*80 and dd>0 then
+				local d=math.sqrt(dd)
+				local nx,ny=dx/d,dy/d
+				local vx,vy=v.body:velocity()
+				vx=vx-(nx*256)
+				vy=vy-(ny*256)
+				v.body:velocity(vx,vy)
+			end
+		end
+	end
 
 	bang.remove=function()
 
