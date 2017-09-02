@@ -315,7 +315,7 @@ add=function(i)
 	
 	player.scale=4
 						
-	player.shape=player.body:shape("circle",3*player.scale,0,0)
+	player.shape=player.body:shape("box",-3*player.scale,-2*player.scale,2*player.scale,3*player.scale,0)
 	player.shape:friction(1)
 	player.shape:elasticity(0)
 	player.shape:collision_type(space:type("player"))
@@ -337,7 +337,7 @@ add=function(i)
 		local vx,vy=player.body:velocity()
 		local s=4
 
-		if up.button("fire")  then
+		if up.button("fire_set")  then
 		
 			if entities.count("missile")==0 then
 			
@@ -410,6 +410,16 @@ space=function()
 	local arbiter_invader={} -- trigger things
 	space:add_handler(arbiter_invader,space:type("invader"))
 
+
+	local arbiter_invader_aura={} -- when a player collides with something
+		arbiter_invader_aura.presolve=function(it)
+			if it.shape_a.invader_aura and it.shape_b.invader_aura then
+				return true
+			end
+			return false
+		end
+	space:add_handler(arbiter_invader_aura,space:type("invader_aura"))
+
 end,
 
 
@@ -434,18 +444,27 @@ add=function(x,y)
 	
 	invader.scale=4
 						
-	invader.shape=invader.body:shape("circle",3*invader.scale,0,0)
+	invader.shape=invader.body:shape("box",-2*invader.scale,-2*invader.scale,2*invader.scale,2*invader.scale,0)
 	invader.shape:friction(0)
 	invader.shape:elasticity(0)
 	invader.shape:collision_type(space:type("invader"))
 	invader.shape.invader=invader
 
+-- used to keep invaders away from each other
+	invader.shape2=invader.body:shape("box",-3*invader.scale,-3*invader.scale,3*invader.scale,3*invader.scale,0)
+	invader.shape2:friction(0)
+	invader.shape2:elasticity(0)
+	invader.shape2:collision_type(space:type("invader_aura"))
+	invader.shape2.invader_aura=true
+
+
 	invader.remove=function()
 
 		entities.remove(invader)
 
-		if invader.shape then space:remove(invader.shape) invader.shape=nil end
-		if invader.body  then space:remove(invader.body)  invader.body=nil  end
+		if invader.shape2 then space:remove(invader.shape2) invader.shape2=nil end
+		if invader.shape  then space:remove(invader.shape)  invader.shape=nil  end
+		if invader.body   then space:remove(invader.body)   invader.body=nil   end
 
 	end
 
@@ -474,6 +493,7 @@ add=function(x,y)
 				invader.bang=v
 				v.bang=invader
 			end
+			entities.systems.bang.add({px=px,py=py})
 		end
 
 	end
@@ -513,8 +533,8 @@ add=function(cx,cy,cs)
 	horde.score=cs-2
 	if horde.score<1 then horde.score=1 end
 
-	if cx>12 then cx=12 end -- 12x8 fills the entire screen
-	if cy>8  then cy=8  end
+	if cx>11 then cx=11 cs=cs+1 end -- 12x7 fills the entire screen
+	if cy>7  then cy=7  cs=cs+1 end
 
 	for y=1,cy do
 		for x=1,cx do
@@ -641,7 +661,7 @@ add=function(px,py,vx,vy)
 	
 	missile.scale=2
 						
-	missile.shape=missile.body:shape("circle",2*missile.scale,0,0)
+	missile.shape=missile.body:shape("box",-1*missile.scale,-2*missile.scale,1*missile.scale,2*missile.scale,0)
 	missile.shape:friction(0)
 	missile.shape:elasticity(0)
 	missile.shape:collision_type(space:type("missile"))
