@@ -6,3 +6,15 @@
 	path = pages
 	url = https://github.com/xriss/fun64.git
 	branch = gh-pages
+[submodule "gists/cd4951d249936329a0e08a79c111d17e"]
+	path = gists/cd4951d249936329a0e08a79c111d17e
+	url = https://gist.github.com/cd4951d249936329a0e08a79c111d17e.git
+[submodule "gists/90f8c1d2e9cb0b9d307fe68aebb4b9c3"]
+	path = gists/90f8c1d2e9cb0b9d307fe68aebb4b9c3
+	url = https://gist.github.com/90f8c1d2e9cb0b9d307fe68aebb4b9c3.git
+[submodule "gists/e6965fb7b34b9353fd744e223b0f6af6"]
+	path = gists/e6965fb7b34b9353fd744e223b0f6af6
+	url = https://gist.github.com/e6965fb7b34b9353fd744e223b0f6af6.git
+[submodule "gists/18eac9295deb6e51b097334639d6d55c"]
+	path = gists/18eac9295deb6e51b097334639d6d55c
+	url = https://gist.github.com/18eac9295deb6e51b097334639d6d55c.git
