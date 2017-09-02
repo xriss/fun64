@@ -493,7 +493,8 @@ add=function(cx,cy)
 
 		cx=cx+1
 		cy=cy+1
-		if cx>12 then cx=12 end
+		if cx>12 then cx=12 end -- 12x8 fills the entire screen
+		if cy>8  then cy=8  end
 		entities.systems.horde.add(cx,cy)
 		
 	end
@@ -507,7 +508,7 @@ add=function(cx,cy)
 
 		local count=entities.count("invader")
 		if count<1 then count=1 end
-		local speed=256/count
+		local speed=cy*64/count
 	
 		if     horde.state=="left" then
 			horde.vx=-speed
