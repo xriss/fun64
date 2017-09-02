@@ -3,16 +3,17 @@
 #^html trim=ends
 #^------------------------------
 
-<html>
+<html lang="en">
 <head>{head}</head>
-<body><div id="content">{navigation}{body}</div>{footer}</body>
+<body><div id="content" role="main">{navigation}{body}</div>{footer}</body>
 </html>
 
 
 #^------------------------------
 #^head trim=ends
 #^------------------------------
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#131b1f">
 <title>{title}</title>
 <style>
 {css}
