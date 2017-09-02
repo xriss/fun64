@@ -468,7 +468,7 @@ The invading horde
 -----------------------------------------------------------------------------
 entities.systems.horde={
 
-add=function(cx,cy)
+add=function(cx,cy,cs)
 
 	local horde=entities.add{caste="horde"}
 	
@@ -477,6 +477,9 @@ add=function(cx,cy)
 
 	horde.vx=0
 	horde.vy=0
+
+	if cx>12 then cx=12 end -- 12x8 fills the entire screen
+	if cy>8  then cy=8  end
 
 	for y=1,cy do
 		for x=1,cx do
@@ -491,11 +494,7 @@ add=function(cx,cy)
 	horde.remove=function()
 		entities.remove(horde)
 
-		cx=cx+1
-		cy=cy+1
-		if cx>12 then cx=12 end -- 12x8 fills the entire screen
-		if cy>8  then cy=8  end
-		entities.systems.horde.add(cx,cy)
+		entities.systems.horde.add(cx+1,cy+1,cs+1)
 		
 	end
 	
@@ -508,7 +507,7 @@ add=function(cx,cy)
 
 		local count=entities.count("invader")
 		if count<1 then count=1 end
-		local speed=cy*64/count
+		local speed=cs*64/count
 	
 		if     horde.state=="left" then
 			horde.vx=-speed
@@ -800,7 +799,7 @@ setup=function()
 	entities.systems.space.setup()
 	entities.systems.player.add(0)
 	
-	entities.systems.horde.add(8,4)
+	entities.systems.horde.add(8,4,4)
 	
 end
 
