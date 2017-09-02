@@ -323,7 +323,7 @@ add=function(i)
 		
 			if entities.count("missile")==0 then
 			
-				entities.systems.missile.add(px,py-16,0,-128)
+				entities.systems.missile.add(px-2,py-8,0,-256)
 
 			end
 
@@ -417,6 +417,15 @@ add=function(x,y)
 	invader.shape:collision_type(space:type("invader"))
 	invader.shape.invader=invader
 
+	invader.remove=function()
+
+		entities.remove(invader)
+
+		space:remove(invader.shape) invader.shape=nil
+		space:remove(invader.body)  invader.body=nil
+
+	end
+
 	invader.update=function()
 		
 		local px,py=invader.body:position()
@@ -425,6 +434,10 @@ add=function(x,y)
 		
 		if px<  0+8 then invader.horde.hit_left=true end
 		if px>320-8 then invader.horde.hit_right=true end
+		
+		if invader.bang then
+			invader.remove()
+		end
 
 	end
 
@@ -471,16 +484,18 @@ add=function(cx,cy)
 	end
 
 	horde.update=function()
+
+		local speed=(cx*cy+1-entities.count("invader"))*8
 	
 		if     horde.state=="left" then
-			horde.vx=-8
+			horde.vx=-speed
 			horde.vy=0
 			if horde.hit_left then
 				horde.state="down_right"
 				horde.wait=60
 			end
 		elseif horde.state=="right" then
-			horde.vx=8
+			horde.vx=speed
 			horde.vy=0
 			if horde.hit_right then
 				horde.state="down_left"
@@ -488,7 +503,7 @@ add=function(cx,cy)
 			end
 		elseif horde.state=="down_left" or horde.state=="down_right"  then
 			horde.vx=0
-			horde.vy=8
+			horde.vy=16
 			
 			horde.wait=horde.wait-1
 			
@@ -539,6 +554,13 @@ space=function()
 	local space=entities.get("space")
 
 	local arbiter_missile={} -- trigger things
+		arbiter_missile.presolve=function(it)
+			if it.shape_a.missile and it.shape_b.invader then
+				it.shape_a.missile.bang=it.shape_b.invader
+				it.shape_b.invader.bang=it.shape_a.missile
+			end
+			return false
+		end
 	space:add_handler(arbiter_missile,space:type("missile"))
 
 end,
@@ -567,6 +589,15 @@ add=function(px,py,vx,vy)
 	missile.shape:collision_type(space:type("missile"))
 	missile.shape.missile=missile
 
+	missile.remove=function()
+
+		entities.remove(missile)
+
+		space:remove(missile.shape) missile.shape=nil
+		space:remove(missile.body)  missile.body=nil
+
+	end
+	
 	missile.update=function()
 		
 		local px,py=missile.body:position()
@@ -575,8 +606,13 @@ add=function(px,py,vx,vy)
 
 		if py<0 or py>240 then
 		
-			entities.remove(missile)
+			missile.remove()
+
+		end
 		
+		if missile.bang then
+			entities.systems.bang.add({px=px,py=py})
+			missile.remove()
 		end
 		
 	end
@@ -596,9 +632,90 @@ end,
 
 
 -----------------------------------------------------------------------------
+--[[#entities.systems.bang
+
+a bang
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.bang={
+
+load=function() graphics.loads{
+
+-- 4 x 16x32
+{nil,"bang",[[
+. . . 7 7 . . . 
+. 7 7 7 7 7 7 . 
+. 7 7 7 7 7 7 . 
+7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 
+. 7 7 7 7 7 7 . 
+. 7 7 7 7 7 7 . 
+. . . 7 7 . . . 
+]]},
+
+}end,
+
+space=function()
+
+end,
+
+
+add=function(it)
+
+	local names=system.components.tiles.names
+	local space=entities.get("space")
+
+	it.caste="bang"
+	local bang=entities.add(it)
+
+	bang.color={r=1/8,g=6/8,b=1/8,a=1}
+	bang.frame=0
+	bang.frames={ names.bang.idx+0 }
+
+	bang.px=bang.px or 160
+	bang.py=bang.py or 120
+
+	bang.scale=bang.scale or 6
+	bang.life=bang.life or 12
+
+	bang.remove=function()
+
+		entities.remove(bang)
+
+	end
+	
+	bang.update=function()
+
+		bang.life=bang.life-1
+		
+		bang.scale=bang.scale+1
+		bang.color.a=bang.life/12
+		bang.color.r=bang.color.a*(1/8)
+		bang.color.g=bang.color.a*(6/8)
+		bang.color.b=bang.color.a*(1/8)
+		
+		if bang.life<=0 then
+			bang.remove()
+		end	
+	end
+
+	bang.draw=function()
+
+		local t=bang.frames[1]
+		
+		system.components.sprites.list_add({t=t,h=8,px=bang.px,py=bang.py,s=bang.scale,color=bang.color})			
+
+	end
+	
+	return bang
+end,
+}
+
+-----------------------------------------------------------------------------
 --[[#entities.systems.stars
 
-The invading stars
+The stars
 
 ]]
 -----------------------------------------------------------------------------
