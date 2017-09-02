@@ -809,7 +809,9 @@ add=function()
 	end
 
 	score.inc=function(num)
-		score.number=(score.number or 0 ) + num
+		if entities.count("player")>0 then -- check we are still alive
+			score.number=score.number + num
+		end
 	end
 
 	score.update=function()
