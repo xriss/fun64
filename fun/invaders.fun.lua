@@ -280,6 +280,13 @@ space=function()
 	local space=entities.get("space")
 
 	local arbiter_player={} -- when a player collides with something
+		arbiter_player.presolve=function(it)
+			if it.shape_a.player and it.shape_b.invader then
+				it.shape_a.player.bang =it.shape_b.invader
+				it.shape_b.invader.bang=it.shape_a.player
+			end
+			return false
+		end
 	space:add_handler(arbiter_player,space:type("player"))
 
 end,
@@ -312,6 +319,15 @@ add=function(i)
 	player.shape:collision_type(space:type("player"))
 	player.shape.player=player
 
+	player.remove=function()
+
+		entities.remove(player)
+
+		if player.shape then space:remove(player.shape) player.shape=nil end
+		if player.body  then space:remove(player.body)  player.body=nil  end
+
+	end
+
 	player.update=function()
 		local up=ups(0) -- the controls for this player
 		
@@ -338,6 +354,11 @@ add=function(i)
 		if px>320-8 and vx>0 then vx=0 end
 
 		player.body:velocity(vx,vy)
+
+		if player.bang then
+			entities.systems.bang.add({px=px,py=py})
+			player.remove()
+		end
 
 	end
 
@@ -442,6 +463,14 @@ add=function(x,y)
 		
 		if invader.bang then
 			invader.remove()
+		end
+
+		if py>240 then
+			invader.bang={}
+			for i,v in ipairs(entities.caste("player")) do -- should only be one
+				invader.bang=v
+				v.bang=invader
+			end
 		end
 
 	end
@@ -799,7 +828,7 @@ setup=function()
 	entities.systems.space.setup()
 	entities.systems.player.add(0)
 	
-	entities.systems.horde.add(8,4,4)
+	entities.systems.horde.add(6,3,3)
 	
 end
 
