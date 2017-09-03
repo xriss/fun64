@@ -339,6 +339,10 @@ add=function(i)
 
 		if up.button("fire_set")  then
 		
+			if up.button("mouse_left_set") then player.mouse=true else player.mouse=false end
+
+			print(player.mouse)
+			
 			if entities.count("missile")==0 then
 			
 				entities.systems.missile.add(px-2,py-8,0,-256)
@@ -351,9 +355,16 @@ add=function(i)
 --		if up.button("down")  then if vy<0 then vy=0 end vy=vy+s end
 		if up.button("left")  then if vx>0 then vx=0 end vx=vx-s end
 		if up.button("right") then if vx<0 then vx=0 end vx=vx+s end
+		
+		if player.mouse then
+			local mx=up.axis("mx")
+			if     mx < px then if vx>0 then vx=0 end vx=vx-s
+			elseif mx > px then if vx<0 then vx=0 end vx=vx+s
+			end
+		end
 
 		if px<0  +12 and vx<0 then vx=0 end
-		if px>320-8 and vx>0 then vx=0 end
+		if px>320-8  and vx>0 then vx=0 end
 
 		player.body:velocity(vx,vy)
 
