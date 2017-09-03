@@ -340,8 +340,6 @@ add=function(i)
 		if up.button("fire_set")  then
 		
 			if up.button("mouse_left_set") then player.mouse=true else player.mouse=false end
-
-			print(player.mouse)
 			
 			if entities.count("missile")==0 then
 			
