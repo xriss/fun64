@@ -359,7 +359,7 @@ add=function(i)
 
 		if player.bang then
 			entities.systems.bang.add({px=px,py=py})
-			entities.get("score").gameover=60
+			entities.get("score").gameover=240
 			player.remove()
 		end
 
@@ -884,7 +884,7 @@ add=function()
 			local s="HighScore : "..score.highest
 			ctext.text_print(s,(80-#s)/2,10,system.ticks%32,0)
 
-			local s="Press fire to start!"
+			local s="Press FIRE to start!"
 			ctext.text_print(s,(80-#s)/2,15,system.ticks%32,0)
 
 		elseif score.gameover then
