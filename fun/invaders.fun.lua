@@ -359,6 +359,7 @@ add=function(i)
 
 		if player.bang then
 			entities.systems.bang.add({px=px,py=py})
+			entities.get("score").gameover=60
 			player.remove()
 		end
 
@@ -548,15 +549,13 @@ add=function(cx,cy,cs)
 
 	horde.remove=function()
 		entities.remove(horde)
-
-		entities.systems.horde.add(cx+1,cy+1,cs+1)
-		
 	end
 	
 	horde.update=function()
 	
 		if entities.count("invader")==0 then -- alldead
 			horde.remove()
+			entities.systems.horde.add(cx+1,cy+1,cs+1)
 			return
 		end
 
@@ -822,6 +821,7 @@ add=function()
 
 
 	score.number=0
+	score.highest=0
 
 
 	score.reset=function(num)
@@ -831,19 +831,70 @@ add=function()
 	score.inc=function(num)
 		if entities.count("player")>0 then -- check we are still alive
 			score.number=score.number + num
+			if score.number > score.highest then score.highest=score.number end
 		end
 	end
 
 	score.update=function()
 
-		local cmap=system.components.map
+		if score.start then
+
+			local up=ups(0) -- the controls for this player
+			
+			if up.button("fire_clr")  then
+
+-- remove all stuff
+				for _,name in ipairs{"horde","invader","missile","player"} do
+					local tab=entities.caste(name)
+					for i=#tab,1,-1 do tab[i].remove() end
+				end
+			
+				entities.systems.player.add(0)	
+				entities.systems.horde.add(6,3,3)
+
+				score.number=0
+				score.start=nil
+			end
+
+		elseif score.gameover then
+		
+			score.gameover=score.gameover-1
+			
+			if score.gameover<=0 then
+			
+				score.gameover=nil
+				score.start=true
+			
+			end
+			
+		end
+
+	end
+	
+	score.draw=function()
+
+		local ctext=system.components.text
 
 
 		local s="Score : "..score.number
-
-		cmap.text_print(s,(40-#s)/2,1,31,0)
+		ctext.text_print(s,(80-#s)/2,1,31,0)
 		
-		cmap.dirty(true)
+		if score.start then
+		
+			local s="HighScore : "..score.highest
+			ctext.text_print(s,(80-#s)/2,10,system.ticks%32,0)
+
+			local s="Press fire to start!"
+			ctext.text_print(s,(80-#s)/2,15,system.ticks%32,0)
+
+		elseif score.gameover then
+		
+			local s="!GAME!OVER!"
+			ctext.text_print(s,(80-#s)/2,15,system.ticks%32,0)
+
+		end
+		
+--		ctext.dirty(true)
 	
 	end
 
@@ -900,17 +951,18 @@ been initialised.
 
 ]]
 -----------------------------------------------------------------------------
-setup=function()
+setup_start=function()
 
 	entities.systems.stars.add()
-	entities.systems.score.add()
+	entities.systems.score.add().start=true
 
 	entities.systems.space.setup()
-	entities.systems.player.add(0)
+--	entities.systems.player.add(0)
 	
 	entities.systems.horde.add(6,3,3)
 	
 end
+setup=setup_start
 
 -- copy images from systems into graphics table
 entities.systems_call("load")
