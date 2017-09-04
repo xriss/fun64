@@ -24,6 +24,7 @@ setup=function()
     
     beeps["1"]=scsfx.sound.simple{
 	fwav="sine",
+	duty=0.5,
 	adsr={
 	    1,
 	    0,0,0.4,0.1
@@ -31,7 +32,7 @@ setup=function()
     }
     
     beeps["2"]=scsfx.sound.simple{
-	fwav="square",
+	fwav="triangle",
 	adsr={
 	    1,
 	    0,0,0.4,0.1
@@ -40,6 +41,7 @@ setup=function()
 
     beeps["3"]=scsfx.sound.simple{
 	fwav="sawtooth",
+	duty=0.125,
 	adsr={
 	    1,
 	    0,0,0.4,0.1
@@ -47,7 +49,8 @@ setup=function()
     }
 
     beeps["4"]=scsfx.sound.simple{
-	fwav="triangle",
+	fwav="toothsaw",
+	duty=0.125,
 	adsr={
 	    1,
 	    0,0,0.4,0.1
@@ -55,7 +58,28 @@ setup=function()
     }
 
     beeps["5"]=scsfx.sound.simple{
+	fwav="square",
+	duty=0.5,
+	adsr={
+	    1,
+	    0,0,0.4,0.1
+	},
+    }
+
+    beeps["6"]=scsfx.sound.simple{
 	fwav="whitenoise",
+	adsr={
+	    1,
+	    0,0,0.4,0.1
+	},
+    }
+
+    beeps["7"]=scsfx.sound.simple{
+	fwav=function(t)
+	    local t2=t/8
+	    local n=math.sin( (t%1) * math.pi*2  ) * math.sin( ((t2)%1) * math.pi*2  )
+	    return n
+	end,
 	adsr={
 	    1,
 	    0,0,0.4,0.1
@@ -65,17 +89,19 @@ setup=function()
     beeps["q"]=scsfx.sound.simple_fm{
 	fwav="sine",
 	adsr={
-	    1,
-	    0,0,0.4,0.1
+	    0.5,
+	    0.0, 0.0, 2.0, 0.1
 	},
 	fm={
-	    frequency=16,
-	    fwav="sine",
+	    frequency=8,
+--	    fwav="toothsaw",
+	    fwav="sawtooth",
+--	    fwav="square",
 	    ffreq=function(it)
-		local f1=bitsynth.note2freq("C3")
-		local f2=bitsynth.note2freq("C4")
-		local f3=bitsynth.note2freq("C5")
-		local t1=1024
+		local f1=bitsynth.note2freq("C4")
+		local f2=bitsynth.note2freq("D4")
+		local f3=bitsynth.note2freq("E4")
+		local t1=0
 		local f=function(m,t)
 			if m<0 then return f2+((f1-f2)*-m)+t*t1 end
 			return f2+((f3-f2)*m)+t*t1
@@ -89,18 +115,19 @@ setup=function()
 	fwav="sine",
 	adsr={
 	    1,
-	    0,0,0.4,0.1
+	    0,0,1,0.1
 	},
 	fm={
-	    frequency=16,
-	    fwav="square",
+	    frequency=1024,
+	    fwav="sine",
 	    ffreq=function(it)
 		local f1=bitsynth.note2freq("C3")
-		local f2=bitsynth.note2freq("C4")
-		local f3=bitsynth.note2freq("C5")
+		local f2=bitsynth.note2freq("D3")
+		local f3=bitsynth.note2freq("E3")
+		local t1=64
 		local f=function(m,t)
-			if m<0 then return f2+((f1-f2)*-m) end
-			return f2+((f3-f2)*m)
+			if m<0 then return f2+((f1-f2)*-m)+bitsynth.fwav.square(t*4)*t1 end
+			return f2+((f3-f2)*m)+bitsynth.fwav.square(t*4)*t1
 		end
 		return f
 	    end,
@@ -120,9 +147,10 @@ setup=function()
 		local f1=bitsynth.note2freq("C3")
 		local f2=bitsynth.note2freq("C4")
 		local f3=bitsynth.note2freq("C5")
+		local t1=0
 		local f=function(m,t)
-			if m<0 then return f2+((f1-f2)*-m) end
-			return f2+((f3-f2)*m)
+			if m<0 then return f2+((f1-f2)*-m)+t*t1 end
+			return f2+((f3-f2)*m)+t*t1
 		end
 		return f
 	    end,
@@ -142,9 +170,10 @@ setup=function()
 		local f1=bitsynth.note2freq("C3")
 		local f2=bitsynth.note2freq("C4")
 		local f3=bitsynth.note2freq("C5")
+		local t1=0
 		local f=function(m,t)
-			if m<0 then return f2+((f1-f2)*-m) end
-			return f2+((f3-f2)*m)
+			if m<0 then return f2+((f1-f2)*-m)+t*t1 end
+			return f2+((f3-f2)*m)+t*t1
 		end
 		return f
 	    end,
@@ -164,9 +193,10 @@ setup=function()
 		local f1=bitsynth.note2freq("C3")
 		local f2=bitsynth.note2freq("C4")
 		local f3=bitsynth.note2freq("C5")
+		local t1=0
 		local f=function(m,t)
-			if m<0 then return f2+((f1-f2)*-m) end
-			return f2+((f3-f2)*m)
+			if m<0 then return f2+((f1-f2)*-m)+t*t1 end
+			return f2+((f3-f2)*m)+t*t1
 		end
 		return f
 	    end,
@@ -183,12 +213,12 @@ end
 -- handle raw key press
 msg=function(m)
     if m.class=="key" then
-	print(m.keyname,m.action,m.ascii)
+--	print(m.keyname,m.action,m.ascii)
 	if m.action==1 then
 	    local csfx=system.components.sfx
 	    local s=beeps[m.keyname]
 	    if s then
-		csfx.play(s.name,1,1)
+		csfx.play(s.name,1,0.5)
 	    end
 	end
     end
