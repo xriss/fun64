@@ -852,17 +852,20 @@ add=function()
 			
 			if up.button("fire_clr")  then
 
--- remove all stuff
-				for _,name in ipairs{"horde","invader","missile","player"} do
-					local tab=entities.caste(name)
-					for i=#tab,1,-1 do tab[i].remove() end
+				-- use a setup function so we are called outside of update loop
+				setup=function()
+					-- remove all old stuff
+					for _,name in ipairs{"horde","invader","missile","player"} do
+						local tab=entities.caste(name)
+						for i=#tab,1,-1 do tab[i].remove() end
+					end
+					-- add in all new stuff
+					entities.systems.player.add(0)	
+					entities.systems.horde.add(6,3,3)
+					-- reset state
+					score.number=0
+					score.start=nil
 				end
-			
-				entities.systems.player.add(0)	
-				entities.systems.horde.add(6,3,3)
-
-				score.number=0
-				score.start=nil
 			end
 
 		elseif score.gameover then
@@ -951,33 +954,6 @@ add=function(cx,cy)
 end,
 
 }
-
------------------------------------------------------------------------------
---[[#setup
-
-Called once to setup things in the first update loop after hardware has 
-been initialised.
-
-]]
------------------------------------------------------------------------------
-setup_start=function()
-
-	entities.systems.stars.add()
-	entities.systems.score.add().start=true
-
-	entities.systems.space.setup()
---	entities.systems.player.add(0)
-	
-	entities.systems.horde.add(6,3,3)
-	
-end
-setup=setup_start
-
--- copy images from systems into graphics table
-entities.systems_call("load")
-
-
--- Include GLSL code inside a comment
 -- The GLSL handler will pickup the #shader directive and use all the code following it until the next #shader directive.
 --[=[
 #shader "fun_copper_stars"
@@ -1208,4 +1184,32 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 #endif
 
 #shader
+-- end of GLSL code
 //]=]
+
+-----------------------------------------------------------------------------
+--[[#setup
+
+Called once to setup things in the first update loop after hardware has 
+been initialised.
+
+]]
+-----------------------------------------------------------------------------
+setup_start=function()
+
+	entities.systems.stars.add()
+	entities.systems.score.add().start=true
+
+	entities.systems.space.setup()
+--	entities.systems.player.add(0)
+	
+	entities.systems.horde.add(6,3,3)
+	
+end
+setup=setup_start
+
+-- copy images from systems into graphics table
+entities.systems_call("load")
+
+
+
