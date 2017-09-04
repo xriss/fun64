@@ -20,7 +20,7 @@ setup=function()
     
     
     local scsfx=system.components.sfx
-
+    local bitsynth=scsfx.bitsynth
     
     beeps["1"]=scsfx.sound.simple{
 	fwav="sine",
@@ -71,7 +71,17 @@ setup=function()
 	fm={
 	    frequency=16,
 	    fwav="sine",
-	    range={"C4","C#4","D4"},
+	    ffreq=function(it)
+		local f1=bitsynth.note2freq("C3")
+		local f2=bitsynth.note2freq("C4")
+		local f3=bitsynth.note2freq("C5")
+		local t1=1024
+		local f=function(m,t)
+			if m<0 then return f2+((f1-f2)*-m)+t*t1 end
+			return f2+((f3-f2)*m)+t*t1
+		end
+		return f
+	    end,
 	}
     }
 
@@ -84,7 +94,16 @@ setup=function()
 	fm={
 	    frequency=16,
 	    fwav="square",
-	    range={"C4","C#4","D4"},
+	    ffreq=function(it)
+		local f1=bitsynth.note2freq("C3")
+		local f2=bitsynth.note2freq("C4")
+		local f3=bitsynth.note2freq("C5")
+		local f=function(m,t)
+			if m<0 then return f2+((f1-f2)*-m) end
+			return f2+((f3-f2)*m)
+		end
+		return f
+	    end,
 	}
     }
 
@@ -97,7 +116,16 @@ setup=function()
 	fm={
 	    frequency=16,
 	    fwav="sawtooth",
-	    range={"C4","C#4","D4"},
+	    ffreq=function(it)
+		local f1=bitsynth.note2freq("C3")
+		local f2=bitsynth.note2freq("C4")
+		local f3=bitsynth.note2freq("C5")
+		local f=function(m,t)
+			if m<0 then return f2+((f1-f2)*-m) end
+			return f2+((f3-f2)*m)
+		end
+		return f
+	    end,
 	}
     }
 
@@ -110,7 +138,16 @@ setup=function()
 	fm={
 	    frequency=16,
 	    fwav="triangle",
-	    range={"C4","C#4","D4"},
+	    ffreq=function(it)
+		local f1=bitsynth.note2freq("C3")
+		local f2=bitsynth.note2freq("C4")
+		local f3=bitsynth.note2freq("C5")
+		local f=function(m,t)
+			if m<0 then return f2+((f1-f2)*-m) end
+			return f2+((f3-f2)*m)
+		end
+		return f
+	    end,
 	}
     }
 
@@ -123,7 +160,16 @@ setup=function()
 	fm={
 	    frequency=128,
 	    fwav="square",
-	    range={"C3","C4","C5"},
+	    ffreq=function(it)
+		local f1=bitsynth.note2freq("C3")
+		local f2=bitsynth.note2freq("C4")
+		local f3=bitsynth.note2freq("C5")
+		local f=function(m,t)
+			if m<0 then return f2+((f1-f2)*-m) end
+			return f2+((f3-f2)*m)
+		end
+		return f
+	    end,
 	}
     }
 
