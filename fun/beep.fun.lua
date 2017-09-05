@@ -68,13 +68,30 @@ setup=function()
 
     beeps["6"]=scsfx.sound.simple{
 	fwav="whitenoise",
+	frequency="C2",
+	adsr={
+	    1,
+	    0,0,0.4,0.1
+	},
+    }
+    beeps["7"]=scsfx.sound.simple{
+	fwav="whitenoise",
+	frequency="C4",
+	adsr={
+	    1,
+	    0,0,0.4,0.1
+	},
+    }
+    beeps["8"]=scsfx.sound.simple{
+	fwav="whitenoise",
+	frequency="C6",
 	adsr={
 	    1,
 	    0,0,0.4,0.1
 	},
     }
 
-    beeps["7"]=scsfx.sound.simple{
+    beeps["0"]=scsfx.sound.simple{
 	fwav=function(t)
 	    local t2=t/8
 	    local n=math.sin( (t%1) * math.pi*2  ) * math.sin( ((t2)%1) * math.pi*2  )
