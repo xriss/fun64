@@ -203,6 +203,165 @@ setup=function()
 	}
     }
 
+    beeps["a"]=scsfx.sound.simple_fm{
+	fwav="sawtooth",
+	adsr={
+	    0.75,
+	    0.0,0.1,0.4,0.3
+	},
+	fm={
+	    frequency=16,
+	    fwav="sine",
+	    duty=0.5,
+	    ffreq=function(it)
+		local f1=bitsynth.C3
+		local f2=bitsynth.D3
+		local f3=bitsynth.E3
+		local t1=0
+		local f=function(m,t)
+--			return f2+t*t1
+			local t2=math.pow(t+2,4)*t1
+			if m<0 then return f2+((f1-f2)*-m)+t2 end
+			return f2+((f3-f2)*m)+t2
+		end
+		return f
+	    end,
+	},
+	fread=function(it)
+	    return function(t)
+		it.fm_gwav.set_frequency(2*(t+1))
+	    end
+	end
+    }
+
+    beeps["z"]=scsfx.sound.simple{
+	fwav="triangle",
+	frequency="D4",
+	duty=0.25,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+--[[
+	fm={
+	    frequency=16,
+	    fwav="sine",
+	    duty=0.5,
+	    ffreq=function(it)
+		local f1=bitsynth.C3
+		local f2=bitsynth.D3
+		local f3=bitsynth.E3
+		local t1=0
+		local f=function(m,t)
+--			return f2+t*t1
+--			local t2=math.pow(t+2,4)*t1
+--			if m<0 then return f2+((f1-f2)*-m)+t2 end
+--			return f2+((f3-f2)*m)+t2
+			return bitsynth.D3
+		end
+		return f
+	    end,
+	},
+]]
+--	fread=function(it)
+--	    return function(t)
+--		it.fm_gwav.set_frequency(2*(t+1))
+--	    end
+--	end
+    }
+    
+
+    beeps["x"]=scsfx.sound.simple{
+	fwav="sine",
+	frequency="C5",
+	volume=1.0,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+    }
+    beeps["c"]=scsfx.sound.simple{
+	fwav="triangle",
+	frequency="C5",
+	volume=1.0,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+    }
+    beeps["v"]=scsfx.sound.simple{
+	fwav="sawtooth",
+	frequency="C5",
+	volume=0.5,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+    }
+    beeps["b"]=scsfx.sound.simple{
+	fwav="toothsaw",
+	frequency="C5",
+	volume=0.5,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+    }
+    beeps["n"]=scsfx.sound.simple{
+	fwav="square",
+	frequency="C5",
+	volume=0.5,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+    }
+
+    beeps["m"]=scsfx.sound.simple{
+	fwav="whitenoise",
+	frequency="C1",
+	volume=1.0,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,0.8,0.2
+	},
+    }
+    beeps["k"]=scsfx.sound.simple_fm{
+	fwav="square",
+	frequency="C8",
+	volume=1.0,
+	duty=0.5,
+	adsr={
+	    0.7,
+	    0.2,0.2,1.8,0.2
+	},
+	fm={
+	    frequency=2,
+	    fwav="sine",
+	    duty=0.25,
+	    ffreq=function(it)
+		local f1=bitsynth.C3
+		local f2=bitsynth.C4
+		local f3=bitsynth.E3
+		local t1=0
+		local f=function(m,t)
+--			return f2+t*t1
+			local t2=t*t1
+			if m<0 then return f2+((f1-f2)*-m)+t2 end
+			return f2+((f3-f2)*m)+t2
+--			return bitsynth.D3
+		end
+		return f
+	    end,
+	},
+    }
+
     for n,v in pairs(beeps) do v.name=n scsfx.render(v) end
 
     print("Setup complete!")
