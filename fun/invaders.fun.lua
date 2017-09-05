@@ -1,4 +1,6 @@
 
+local wstr=require("wetgenes.string")
+
 local chatdown=require("wetgenes.gamecake.fun.chatdown")	-- conversation trees
 local bitdown=require("wetgenes.gamecake.fun.bitdown")		-- ascii to bitmap
 local chipmunk=require("wetgenes.chipmunk")					-- 2d physics https://chipmunk-physics.net/
@@ -280,6 +282,13 @@ space=function()
 	local space=entities.get("space")
 
 	local arbiter_player={} -- when a player collides with something
+		arbiter_player.presolve=function(it)
+			if it.shape_a.player and it.shape_b.invader then
+				it.shape_a.player.bang =it.shape_b.invader
+				it.shape_b.invader.bang=it.shape_a.player
+			end
+			return false
+		end
 	space:add_handler(arbiter_player,space:type("player"))
 
 end,
@@ -306,11 +315,20 @@ add=function(i)
 	
 	player.scale=4
 						
-	player.shape=player.body:shape("circle",3*player.scale,0,0)
+	player.shape=player.body:shape("box",-3*player.scale,-2*player.scale,2*player.scale,3*player.scale,0)
 	player.shape:friction(1)
 	player.shape:elasticity(0)
 	player.shape:collision_type(space:type("player"))
 	player.shape.player=player
+
+	player.remove=function()
+
+		entities.remove(player)
+
+		if player.shape then space:remove(player.shape) player.shape=nil end
+		if player.body  then space:remove(player.body)  player.body=nil  end
+
+	end
 
 	player.update=function()
 		local up=ups(0) -- the controls for this player
@@ -319,8 +337,10 @@ add=function(i)
 		local vx,vy=player.body:velocity()
 		local s=4
 
-		if up.button("fire")  then
+		if up.button("fire_set")  then
 		
+			if up.button("mouse_left_set") then player.mouse=true else player.mouse=false end
+			
 			if entities.count("missile")==0 then
 			
 				entities.systems.missile.add(px-2,py-8,0,-256)
@@ -333,11 +353,24 @@ add=function(i)
 --		if up.button("down")  then if vy<0 then vy=0 end vy=vy+s end
 		if up.button("left")  then if vx>0 then vx=0 end vx=vx-s end
 		if up.button("right") then if vx<0 then vx=0 end vx=vx+s end
+		
+		if player.mouse then
+			local mx=up.axis("mx")
+			if     mx < px then if vx>0 then vx=0 end vx=vx-s
+			elseif mx > px then if vx<0 then vx=0 end vx=vx+s
+			end
+		end
 
 		if px<0  +12 and vx<0 then vx=0 end
-		if px>320-8 and vx>0 then vx=0 end
+		if px>320-8  and vx>0 then vx=0 end
 
 		player.body:velocity(vx,vy)
+
+		if player.bang then
+			entities.systems.bang.add({px=px,py=py})
+			entities.get("score").gameover=240
+			player.remove()
+		end
 
 	end
 
@@ -387,6 +420,16 @@ space=function()
 	local arbiter_invader={} -- trigger things
 	space:add_handler(arbiter_invader,space:type("invader"))
 
+
+	local arbiter_invader_aura={} -- when a player collides with something
+		arbiter_invader_aura.presolve=function(it)
+			if it.shape_a.invader_aura and it.shape_b.invader_aura then
+				return true
+			end
+			return false
+		end
+	space:add_handler(arbiter_invader_aura,space:type("invader_aura"))
+
 end,
 
 
@@ -411,18 +454,27 @@ add=function(x,y)
 	
 	invader.scale=4
 						
-	invader.shape=invader.body:shape("circle",3*invader.scale,0,0)
-	invader.shape:friction(1)
+	invader.shape=invader.body:shape("box",-2*invader.scale,-2*invader.scale,2*invader.scale,2*invader.scale,0)
+	invader.shape:friction(0)
 	invader.shape:elasticity(0)
 	invader.shape:collision_type(space:type("invader"))
 	invader.shape.invader=invader
+
+-- used to keep invaders away from each other
+	invader.shape2=invader.body:shape("box",-3*invader.scale,-3*invader.scale,3*invader.scale,3*invader.scale,0)
+	invader.shape2:friction(0)
+	invader.shape2:elasticity(0)
+	invader.shape2:collision_type(space:type("invader_aura"))
+	invader.shape2.invader_aura=true
+
 
 	invader.remove=function()
 
 		entities.remove(invader)
 
-		space:remove(invader.shape) invader.shape=nil
-		space:remove(invader.body)  invader.body=nil
+		if invader.shape2 then space:remove(invader.shape2) invader.shape2=nil end
+		if invader.shape  then space:remove(invader.shape)  invader.shape=nil  end
+		if invader.body   then space:remove(invader.body)   invader.body=nil   end
 
 	end
 
@@ -430,13 +482,28 @@ add=function(x,y)
 		
 		local px,py=invader.body:position()
 
-		invader.body:velocity(invader.horde.vx,invader.horde.vy)
+		local vx,vy=invader.body:velocity()
+		vx=(vx*3+invader.horde.vx)/4
+		vy=(vy*3+invader.horde.vy)/4
+		invader.body:velocity(vx,vy)
 		
+		if py<  0   then invader.horde.hit_top=true end
+
 		if px<  0+8 then invader.horde.hit_left=true end
 		if px>320-8 then invader.horde.hit_right=true end
 		
 		if invader.bang then
 			invader.remove()
+			entities.get("score").inc(invader.horde.score)
+		end
+
+		if py>240 then
+			invader.bang={}
+			for i,v in ipairs(entities.caste("player")) do -- should only be one
+				invader.bang=v
+				v.bang=invader
+			end
+			entities.systems.bang.add({px=px,py=py})
 		end
 
 	end
@@ -463,7 +530,7 @@ The invading horde
 -----------------------------------------------------------------------------
 entities.systems.horde={
 
-add=function(cx,cy)
+add=function(cx,cy,cs)
 
 	local horde=entities.add{caste="horde"}
 	
@@ -472,6 +539,12 @@ add=function(cx,cy)
 
 	horde.vx=0
 	horde.vy=0
+	
+	horde.score=cs-2
+	if horde.score<1 then horde.score=1 end
+
+	if cx>11 then cx=11 cs=cs+1 end -- 12x7 fills the entire screen
+	if cy>7  then cy=7  cs=cs+1 end
 
 	for y=1,cy do
 		for x=1,cx do
@@ -483,21 +556,33 @@ add=function(cx,cy)
 		end	
 	end
 
+	horde.remove=function()
+		entities.remove(horde)
+	end
+	
 	horde.update=function()
+	
+		if entities.count("invader")==0 then -- alldead
+			horde.remove()
+			entities.systems.horde.add(cx+1,cy+1,cs+1)
+			return
+		end
 
-		local speed=(cx*cy+1-entities.count("invader"))*8
+		local count=entities.count("invader")
+		if count<1 then count=1 end
+		local speed=cs*64/count
 	
 		if     horde.state=="left" then
 			horde.vx=-speed
 			horde.vy=0
-			if horde.hit_left then
+			if horde.hit_left or horde.hit_top then
 				horde.state="down_right"
 				horde.wait=60
 			end
 		elseif horde.state=="right" then
 			horde.vx=speed
 			horde.vy=0
-			if horde.hit_right then
+			if horde.hit_right or horde.hit_top then
 				horde.state="down_left"
 				horde.wait=60
 			end
@@ -514,6 +599,7 @@ add=function(cx,cy)
 
 		end
 		
+		horde.hit_top=false
 		horde.hit_left=false
 		horde.hit_right=false
 
@@ -583,7 +669,7 @@ add=function(px,py,vx,vy)
 	
 	missile.scale=2
 						
-	missile.shape=missile.body:shape("circle",2*missile.scale,0,0)
+	missile.shape=missile.body:shape("box",-1*missile.scale,-2*missile.scale,1*missile.scale,2*missile.scale,0)
 	missile.shape:friction(0)
 	missile.shape:elasticity(0)
 	missile.shape:collision_type(space:type("missile"))
@@ -593,8 +679,8 @@ add=function(px,py,vx,vy)
 
 		entities.remove(missile)
 
-		space:remove(missile.shape) missile.shape=nil
-		space:remove(missile.body)  missile.body=nil
+		if missile.shape then space:remove(missile.shape) missile.shape=nil end
+		if missile.body  then space:remove(missile.body)  missile.body=nil  end
 
 	end
 	
@@ -619,10 +705,10 @@ add=function(px,py,vx,vy)
 
 	missile.draw=function()
 
-			local px,py=missile.body:position()
-			local t=missile.frames[1]
-			
-			system.components.sprites.list_add({t=t,h=8,px=px,py=py,s=missile.scale,color=missile.color})			
+		local px,py=missile.body:position()
+		local t=missile.frames[1]
+		
+		system.components.sprites.list_add({t=t,h=8,px=px,py=py,s=missile.scale,color=missile.color})
 
 	end
 	
@@ -678,6 +764,23 @@ add=function(it)
 
 	bang.scale=bang.scale or 6
 	bang.life=bang.life or 12
+	
+	for i,v in ipairs(entities.caste("invader")) do
+		if v.body then
+			local px,py=v.body:position()
+			local dx=bang.px-px
+			local dy=bang.py-py
+			local dd=dx*dx + dy*dy
+			if dd < 80*80 and dd>0 then
+				local d=math.sqrt(dd)
+				local nx,ny=dx/d,dy/d
+				local vx,vy=v.body:velocity()
+				vx=vx-(nx*256)
+				vy=vy-(ny*256)
+				v.body:velocity(vx,vy)
+			end
+		end
+	end
 
 	bang.remove=function()
 
@@ -713,6 +816,107 @@ end,
 }
 
 -----------------------------------------------------------------------------
+--[[#entities.systems.score
+
+The score
+
+]]
+-----------------------------------------------------------------------------
+entities.systems.score={
+
+add=function()
+
+	local score=entities.set("score",entities.add{caste="score"})
+
+
+	score.number=0
+	score.highest=0
+
+
+	score.reset=function(num)
+		score.number=num or 0
+	end
+
+	score.inc=function(num)
+		if entities.count("player")>0 then -- check we are still alive
+			score.number=score.number + num
+			if score.number > score.highest then score.highest=score.number end
+		end
+	end
+
+	score.update=function()
+
+		if score.start then
+
+			local up=ups(0) -- the controls for this player
+			
+			if up.button("fire_clr")  then
+
+				-- use a setup function so we are called outside of update loop
+				setup=function()
+					-- remove all old stuff
+					for _,name in ipairs{"horde","invader","missile","player"} do
+						local tab=entities.caste(name)
+						for i=#tab,1,-1 do tab[i].remove() end
+					end
+					-- add in all new stuff
+					entities.systems.player.add(0)	
+					entities.systems.horde.add(6,3,3)
+					-- reset state
+					score.number=0
+					score.start=nil
+				end
+			end
+
+		elseif score.gameover then
+		
+			score.gameover=score.gameover-1
+			
+			if score.gameover<=0 then
+			
+				score.gameover=nil
+				score.start=true
+			
+			end
+			
+		end
+
+	end
+	
+	score.draw=function()
+
+		local ctext=system.components.text
+
+
+		local s="Score : "..score.number
+		ctext.text_print(s,(80-#s)/2,1,31,0)
+		
+		if score.start then
+		
+			local s="HighScore : "..score.highest
+			ctext.text_print(s,(80-#s)/2,10,system.ticks%32,0)
+
+			local s="Press FIRE to start!"
+			ctext.text_print(s,(80-#s)/2,15,system.ticks%32,0)
+
+		elseif score.gameover then
+		
+			local s="!GAME!OVER!"
+			ctext.text_print(s,(80-#s)/2,15,system.ticks%32,0)
+
+		end
+		
+--		ctext.dirty(true)
+	
+	end
+
+
+	return score
+end,
+
+}
+
+-----------------------------------------------------------------------------
 --[[#entities.systems.stars
 
 The stars
@@ -734,6 +938,13 @@ add=function(cx,cy)
 
 	stars.update=function()
 	
+		local player=entities.caste("player")[1]
+		if player then
+			if player.body then
+				local px,py=player.body:position()
+				stars.vx=((px-120)/120)
+			end
+		end
 		ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+stars.vx
 		ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+stars.vy
 
@@ -743,31 +954,6 @@ add=function(cx,cy)
 end,
 
 }
-
------------------------------------------------------------------------------
---[[#setup
-
-Called once to setup things in the first update loop after hardware has 
-been initialised.
-
-]]
------------------------------------------------------------------------------
-setup=function()
-
-	entities.systems.stars.add()
-
-	entities.systems.space.setup()
-	entities.systems.player.add(0)
-	
-	entities.systems.horde.add(8,4)
-	
-end
-
--- copy images from systems into graphics table
-entities.systems_call("load")
-
-
--- Include GLSL code inside a comment
 -- The GLSL handler will pickup the #shader directive and use all the code following it until the next #shader directive.
 --[=[
 #shader "fun_copper_stars"
@@ -998,4 +1184,32 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 #endif
 
 #shader
+-- end of GLSL code
 //]=]
+
+-----------------------------------------------------------------------------
+--[[#setup
+
+Called once to setup things in the first update loop after hardware has 
+been initialised.
+
+]]
+-----------------------------------------------------------------------------
+setup_start=function()
+
+	entities.systems.stars.add()
+	entities.systems.score.add().start=true
+
+	entities.systems.space.setup()
+--	entities.systems.player.add(0)
+	
+	entities.systems.horde.add(6,3,3)
+	
+end
+setup=setup_start
+
+-- copy images from systems into graphics table
+entities.systems_call("load")
+
+
+
