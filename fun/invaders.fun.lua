@@ -530,6 +530,36 @@ The invading horde
 -----------------------------------------------------------------------------
 entities.systems.horde={
 
+sound=function()
+
+	local sfx=system.components.sfx
+
+	sfx.render(sfx.sound.simple{
+		name="move1",
+		fwav="square",
+		frequency="C1",
+		volume=1.0,
+		duty=0.3,
+		adsr={
+			1.0,
+			0.0,0.0,0.0,0.2
+		},
+    })
+
+	sfx.render(sfx.sound.simple{
+		name="move2",
+		fwav="square",
+		frequency="G1",
+		volume=1.0,
+		duty=0.2,
+		adsr={
+			1.0,
+			0.0,0.0,0.0,0.2
+		},
+    })
+
+end,
+
 add=function(cx,cy,cs)
 
 	local horde=entities.add{caste="horde"}
@@ -539,6 +569,9 @@ add=function(cx,cy,cs)
 
 	horde.vx=0
 	horde.vy=0
+	
+	horde.moved=0
+	horde.noise="move1"
 	
 	horde.score=cs-2
 	if horde.score<1 then horde.score=1 end
@@ -561,6 +594,16 @@ add=function(cx,cy,cs)
 	end
 	
 	horde.update=function()
+	
+		local sfx=system.components.sfx
+
+
+		horde.moved=horde.moved+math.abs(horde.vx)+math.abs(horde.vy)
+		if horde.moved > 1024 then
+			horde.moved=0
+			sfx.play(horde.noise,1,1)
+			if horde.noise=="move1" then horde.noise="move2" else horde.noise="move1" end
+		end
 	
 		if entities.count("invader")==0 then -- alldead
 			horde.remove()
@@ -651,8 +694,40 @@ space=function()
 
 end,
 
+sound=function()
+
+	local sfx=system.components.sfx
+
+	sfx.render(sfx.sound.simple_fm{
+		name="shot",
+		fwav="whitenoise",
+		frequency="C5",
+		volume=1.0,
+		duty=0.5,
+		adsr={
+			1.0,
+			0.0,0.0,0.0,0.5
+		},
+		fm={
+			frequency=16,
+			fwav="square",
+			duty=0.5,
+			ffreq=function(it)
+				local t1=-35*35
+				return function(m,t)
+					return sfx.bitsynth.c5+t*t1
+				end
+			end,
+		},
+    })
+
+end,
 
 add=function(px,py,vx,vy)
+
+	local sfx=system.components.sfx
+
+	sfx.play("shot",1,1)
 
 	local names=system.components.tiles.names
 	local space=entities.get("space")
@@ -742,12 +817,52 @@ load=function() graphics.loads{
 
 }end,
 
+sound=function()
+
+	local sfx=system.components.sfx
+
+	sfx.render(sfx.sound.simple_fm{
+		name="explode",
+		fwav="square",
+		frequency="C5",
+		volume=1.0,
+		duty=0.5,
+		adsr={
+			1.0,
+			0.0,0.0,0.0,0.6
+		},
+		fm={
+			frequency=5*5,
+			fwav="triangle",
+			duty=0.5,
+			ffreq=function(it)
+				local f1=sfx.bitsynth.C5
+				local f2=sfx.bitsynth.E5
+				local f3=sfx.bitsynth.G5
+				local t1=-50*50
+				local f=function(m,t)
+					local t2=t*t1
+					if m<0 then return f2+((f1-f2)*-m)+t2 end
+					return f2+((f3-f2)*m)+t2
+				end
+				return f
+			end,
+		},
+    })
+
+end,
+
+
 space=function()
 
 end,
 
 
 add=function(it)
+
+	local sfx=system.components.sfx
+
+	sfx.play("explode",1,1)
 
 	local names=system.components.tiles.names
 	local space=entities.get("space")
@@ -1196,6 +1311,8 @@ been initialised.
 ]]
 -----------------------------------------------------------------------------
 setup_start=function()
+
+	entities.systems_call("sound")
 
 	entities.systems.stars.add()
 	entities.systems.score.add().start=true

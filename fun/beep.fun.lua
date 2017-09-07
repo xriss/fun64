@@ -379,6 +379,29 @@ setup=function()
 	},
     }
 
+    beeps["p"]=scsfx.sound.simple_fm{
+	fwav="whitenoise",
+	frequency="C5",
+	volume=1.0,
+	duty=0.5,
+	adsr={
+	    1.0,
+	    0.0,0.0,0.0,0.5
+	},
+	fm={
+	    frequency=16,
+	    fwav="square",
+	    duty=0.5,
+	    ffreq=function(it)
+		local t1=-35*35
+		return function(m,t)
+		    return bitsynth.c5+t*t1
+		end
+	    end,
+	},
+    }
+
+
     for n,v in pairs(beeps) do v.name=n scsfx.render(v) end
 
     print("Setup complete!")
@@ -394,7 +417,7 @@ msg=function(m)
 	    local csfx=system.components.sfx
 	    local s=beeps[m.keyname]
 	    if s then
-		csfx.play(s.name,1,0.5)
+		csfx.play(s.name,1,1.0)
 	    end
 	end
     end
