@@ -534,7 +534,7 @@ sound=function()
 
 	local sfx=system.components.sfx
 
-	sfx.render(sfx.sound.simple{
+	sfx.render{
 		name="move1",
 		fwav="square",
 		frequency="C1",
@@ -544,9 +544,9 @@ sound=function()
 			1.0,
 			0.0,0.0,0.0,0.2
 		},
-    })
+    }
 
-	sfx.render(sfx.sound.simple{
+	sfx.render{
 		name="move2",
 		fwav="square",
 		frequency="G1",
@@ -556,7 +556,7 @@ sound=function()
 			1.0,
 			0.0,0.0,0.0,0.2
 		},
-    })
+    }
 
 end,
 
@@ -698,7 +698,7 @@ sound=function()
 
 	local sfx=system.components.sfx
 
-	sfx.render(sfx.sound.simple_fm{
+	sfx.render{
 		name="shot",
 		fwav="whitenoise",
 		frequency="C5",
@@ -719,7 +719,7 @@ sound=function()
 				end
 			end,
 		},
-    })
+    }
 
 end,
 
@@ -821,7 +821,7 @@ sound=function()
 
 	local sfx=system.components.sfx
 
-	sfx.render(sfx.sound.simple_fm{
+	sfx.render{
 		name="explode",
 		fwav="square",
 		frequency="C5",
@@ -848,7 +848,7 @@ sound=function()
 				return f
 			end,
 		},
-    })
+    }
 
 end,
 

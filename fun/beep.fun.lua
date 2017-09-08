@@ -22,7 +22,7 @@ setup=function()
     local scsfx=system.components.sfx
     local bitsynth=scsfx.bitsynth
     
-    beeps["1"]=scsfx.sound.simple{
+    beeps["1"]={
 	fwav="sine",
 	duty=0.5,
 	adsr={
@@ -31,7 +31,7 @@ setup=function()
 	},
     }
     
-    beeps["2"]=scsfx.sound.simple{
+    beeps["2"]={
 	fwav="triangle",
 	adsr={
 	    1,
@@ -39,7 +39,7 @@ setup=function()
 	},
     }
 
-    beeps["3"]=scsfx.sound.simple{
+    beeps["3"]={
 	fwav="sawtooth",
 	duty=0.125,
 	adsr={
@@ -48,7 +48,7 @@ setup=function()
 	},
     }
 
-    beeps["4"]=scsfx.sound.simple{
+    beeps["4"]={
 	fwav="toothsaw",
 	duty=0.125,
 	adsr={
@@ -57,7 +57,7 @@ setup=function()
 	},
     }
 
-    beeps["5"]=scsfx.sound.simple{
+    beeps["5"]={
 	fwav="square",
 	duty=0.5,
 	adsr={
@@ -66,7 +66,7 @@ setup=function()
 	},
     }
 
-    beeps["6"]=scsfx.sound.simple{
+    beeps["6"]={
 	fwav="whitenoise",
 	frequency="C2",
 	adsr={
@@ -74,7 +74,7 @@ setup=function()
 	    0,0,0.4,0.1
 	},
     }
-    beeps["7"]=scsfx.sound.simple{
+    beeps["7"]={
 	fwav="whitenoise",
 	frequency="C4",
 	adsr={
@@ -82,7 +82,7 @@ setup=function()
 	    0,0,0.4,0.1
 	},
     }
-    beeps["8"]=scsfx.sound.simple{
+    beeps["8"]={
 	fwav="whitenoise",
 	frequency="C6",
 	adsr={
@@ -91,7 +91,7 @@ setup=function()
 	},
     }
 
-    beeps["0"]=scsfx.sound.simple{
+    beeps["0"]={
 	fwav=function(t)
 	    local t2=t/8
 	    local n=math.sin( (t%1) * math.pi*2  ) * math.sin( ((t2)%1) * math.pi*2  )
@@ -103,7 +103,7 @@ setup=function()
 	},
     }
 
-    beeps["q"]=scsfx.sound.simple_fm{
+    beeps["q"]={
 	fwav="sine",
 	adsr={
 	    0.5,
@@ -128,7 +128,7 @@ setup=function()
 	}
     }
 
-    beeps["w"]=scsfx.sound.simple_fm{
+    beeps["w"]={
 	fwav="sine",
 	adsr={
 	    1,
@@ -151,7 +151,7 @@ setup=function()
 	}
     }
 
-    beeps["e"]=scsfx.sound.simple_fm{
+    beeps["e"]={
 	fwav="sine",
 	adsr={
 	    1,
@@ -174,7 +174,7 @@ setup=function()
 	}
     }
 
-    beeps["r"]=scsfx.sound.simple_fm{
+    beeps["r"]={
 	fwav="sine",
 	adsr={
 	    1,
@@ -197,7 +197,7 @@ setup=function()
 	}
     }
 
-    beeps["t"]=scsfx.sound.simple_fm{
+    beeps["t"]={
 	fwav="sawtooth",
 	adsr={
 	    1,
@@ -220,7 +220,7 @@ setup=function()
 	}
     }
 
-    beeps["a"]=scsfx.sound.simple_fm{
+    beeps["a"]={
 	fwav="sawtooth",
 	adsr={
 	    0.75,
@@ -251,7 +251,7 @@ setup=function()
 	end
     }
 
-    beeps["z"]=scsfx.sound.simple{
+    beeps["z"]={
 	fwav="triangle",
 	frequency="D4",
 	duty=0.25,
@@ -288,7 +288,7 @@ setup=function()
     }
     
 
-    beeps["x"]=scsfx.sound.simple{
+    beeps["x"]={
 	fwav="sine",
 	frequency="C5",
 	volume=1.0,
@@ -298,7 +298,7 @@ setup=function()
 	    0.2,0.2,0.8,0.2
 	},
     }
-    beeps["c"]=scsfx.sound.simple{
+    beeps["c"]={
 	fwav="triangle",
 	frequency="C5",
 	volume=1.0,
@@ -308,7 +308,7 @@ setup=function()
 	    0.2,0.2,0.8,0.2
 	},
     }
-    beeps["v"]=scsfx.sound.simple{
+    beeps["v"]={
 	fwav="sawtooth",
 	frequency="C5",
 	volume=0.5,
@@ -318,7 +318,7 @@ setup=function()
 	    0.2,0.2,0.8,0.2
 	},
     }
-    beeps["b"]=scsfx.sound.simple{
+    beeps["b"]={
 	fwav="toothsaw",
 	frequency="C5",
 	volume=0.5,
@@ -328,7 +328,7 @@ setup=function()
 	    0.2,0.2,0.8,0.2
 	},
     }
-    beeps["n"]=scsfx.sound.simple{
+    beeps["n"]={
 	fwav="square",
 	frequency="C5",
 	volume=0.5,
@@ -339,7 +339,7 @@ setup=function()
 	},
     }
 
-    beeps["m"]=scsfx.sound.simple{
+    beeps["m"]={
 	fwav="whitenoise",
 	frequency="C1",
 	volume=1.0,
@@ -349,7 +349,7 @@ setup=function()
 	    0.2,0.2,0.8,0.2
 	},
     }
-    beeps["k"]=scsfx.sound.simple_fm{
+    beeps["k"]={
 	fwav="square",
 	frequency="C8",
 	volume=1.0,
@@ -379,7 +379,7 @@ setup=function()
 	},
     }
 
-    beeps["p"]=scsfx.sound.simple_fm{
+    beeps["p"]={
 	fwav="whitenoise",
 	frequency="C5",
 	volume=1.0,
