@@ -598,7 +598,7 @@ add=function(cx,cy,cs)
 		local sfx=system.components.sfx
 
 
-		horde.moved=horde.moved+math.abs(horde.vx)+math.abs(horde.vy)
+		horde.moved=horde.moved+math.abs(horde.vx) -- +math.abs(horde.vy)
 		if horde.moved > 1024 then
 			horde.moved=0
 			sfx.play(horde.noise,1,1)
