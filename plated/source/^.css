@@ -74,7 +74,7 @@ a.example:hover span.example_text_wrap	{background-color:#252263; transition:all
 	
 .foot		{background-color:#3e484c; color:#eee; border-top:1px solid #ddd; display:table-footer-group}
 .foot_wrap	{width:1024px; margin:0 auto; padding:60px; padding-bottom:20px; position:relative;}
-.foot_wrap a{color:#fff; text-decoration:none;}
+.foot_wrap a{color:#fff; text-decoration:none; font-weight:700;}
 .foot_wrap p a:hover{border-bottom:1px solid #00adff;}
 .foot_wrap p a:after{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 .text		{font-weight:400;}
