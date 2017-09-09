@@ -1,6 +1,9 @@
 cd `dirname $0`
 
-./git-init
+git submodule update --init --reference .
+
+plated/upgrade
+
 
 git pull --recurse-submodules && git submodule update --recursive --remote
 
