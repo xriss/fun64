@@ -2,3 +2,6 @@ cd `dirname $0`
 
 git submodule update --init --reference .
 
+plated/updrade
+
+
