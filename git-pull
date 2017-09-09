@@ -1,5 +1,7 @@
 cd `dirname $0`
 
+./git-init
+
 git pull --recurse-submodules && git submodule update --recursive --remote
 
 echo " fixing local exe branch to track origin "
