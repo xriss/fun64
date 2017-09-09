@@ -65,7 +65,9 @@ span.example_text		{}
 
 a.example:before, a.example:after	{content:""; background-color:#1c3240; width:70%; position:absolute; left:-65%; top:0; bottom:0; -webkit-transform:skewX(-20deg); transform:skewX(-20deg);}
 .wrap.eg a:nth-of-type(even):before	{display:none;}
-.wrap.eg a:nth-of-type(even):after		{left:auto; right:-55px; width:100px; background-color:#58656b;}
+.wrap.eg a:nth-of-type(even):after	{left:auto; right:-18px; width:0; background-color:#437288; height:0; border-bottom:100px solid #eab000; border-left:100px solid transparent;}
+
+a.example:hover span.example_text_wrap	{background-color:#252263; transition:all .2s ease-in-out}
 
 /*	FOOTER styles
 	============================================= */

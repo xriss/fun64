@@ -30,7 +30,7 @@ b		{font-weight:700;}
 #iconbar	{width:100%; height:32px; background-color:#333; position:relative; }
 a:focus		{outline: none;}
 #iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:20%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#ccc; overflow:hidden;}
-#iconbar a:hover {background-color:#00ff80; cursor:pointer;}
+#iconbar a:hover {background-color:#00ff80; color:#444; cursor:pointer;}
 
 #gamecake_log {width:100%; height:100%; margin:0; color:#4c4;}
 
@@ -45,16 +45,21 @@ a:focus		{outline: none;}
 .pop_wrapper	{padding:50px 150px; background-color:rgba(64,67,70,0.8); overflow:hidden; position:absolute; top:0; left:0; bottom:0; right:0; z-index:999;}
 
 /*	ABOUT link popup	*/
-.pop_wrap		{height:100%; width:100%; background-color:#000; box-sizing:border-box; border:1px solid #232323; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5);}
-.pop_wrap span	{display:inline; background-color:#333; padding:2px 10px; color:#aaa; font-weight:400;}
+.pop_wrap		{height:100%; width:100%; background-color:#000; box-sizing:border-box; border:5px solid #00ff80; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5);}
 .pop_text		{padding:40px 60px 20px 60px;}
-.pop_head		{font-size:20px;}
+.pop_head		{font-size:24px; line-height:30px; margin-top:40px;}
 .pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
 .pop_head a:hover	{text-decoration:underline;}
 .pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
+.pop_head a:before	{background:url('../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; zoom:70%;}
 .pop_close_wrap	{position:relative; width:100%;}
-a.pop_close		{position:absolute; display:block; top:15px; right:15px; width:40px; height:40px; font-size:30px; line-height:35px; text-align:center; color:#eab000;}
-a.pop_close:hover{color:#FFC922; cursor:pointer;}
+a.pop_close		{position:absolute; display:block; top:15px; right:15px; width:40px; height:40px; font-size:35px; line-height:35px; text-align:center; color:#00ff80;}
+a.pop_close:hover{color:#42F89E; cursor:pointer;}
+
+.pop_div		{display:inline-block; vertical-align:top; width:33.33%; padding-right:6%; padding-top:5%; padding-bottom:5%;}
+
+.pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-weight:400;}
+.pop_info		{margin-top:20px; font-size:18px; line-height:26px;}
 
 
 /*	LOAD link popup	*/
@@ -71,9 +76,9 @@ a.pop_close:hover{color:#FFC922; cursor:pointer;}
 <div id="split">
 	<div id="split_left">
 		<div id="iconbar"><!--
-		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrap.about').toggle();"    	>ABOUT</a><!--
+		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrapper.about').toggle();"    	>ABOUT</a><!--
 		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code" 								>RUN</a><!--
-		--><a id="iconbar_patch"    		 title="Open a URL" 		onclick="$('.pop_wrap.load').toggle();" 		>OPEN</a><!--
+		--><a id="iconbar_patch"    		 title="Open a URL" 		onclick="$('.pop_wrapper.load').toggle();" 		>OPEN</a><!--
 		--><a id="iconbar_clearlog" href="#" title="Empty the log messages"                       						>FLUSH</a><!--
 		--><a id="iconbar_revert"   href="#" title="Restore code to original state"       								>REVERT</a><!--
 		--></div>
@@ -383,40 +388,46 @@ $(document).keydown(function(event){
 <div class="pop_wrapper about">
 	<div class="pop_wrap">
 		<div class="pop_close_wrap">
-			<a class="pop_close" onclick="$('.pop_wrapper.about').fadeToggle("fast");">x</a>
+			<a class="pop_close" onclick="$('.pop_wrapper.about').fadeToggle('fast');">x</a>
 		</div>
 		<div class="pop_text">
 			<div class="pop_head">
 				The FunPad lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
 				<p>FunPad is powered by Gamecake, WebAssembly JS and lua.</p>
 			</div>
-			<p>
+			<div class="pop_div">
 				<span>RUN</span>
-				Click to refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
-			</p>
-			<p>
+				<div class="pop_info">
+					Click to refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
+				</div>
+			</div><div class="pop_div">
 				<span>OPEN</span>
-				Click to paste the link to a FUN64 code on Github Gist or any raw fun.lua file online. Share the link with your friends for them to play your app.
-			</p>
-			<p>
+				<div class="pop_info">
+					Click to paste the link to a FUN64 code on Github Gist or any raw fun.lua file online. Share the link with your friends for them to play your app.
+				</div>
+			</div><div class="pop_div">
 				<span>FLUSH</span>
-				Click to empty the log messages. Log messages are found on the bottom right of this page. They are created each time you run the code.
-			</p>
-			<p>
+				<div class="pop_info">
+					Click to empty the log messages. Log messages are found on the bottom right of this page. They are created each time you run the code.
+				</div>
+			</div><div class="pop_div">
 				<span>REVERT</span>
-				Click to restore code to the original state. The original state is the code that you copied into the pad.
-			</p>
-			<p>
+				<div class="pop_info">
+					Click to restore code to the original state. The original state is the code that you copied into the pad.
+				</div>
+			</div><div class="pop_div">
 				<span>FULLSCREEN PLAY</span>
-				Click on the game and and press F11 to run the app in fullscreen mode. Please enable WebAssembly if you're running the Edge browser.
-			</p>
+				<div class="pop_info">
+					Click on the game and and press F11 to run the app in fullscreen mode. Please enable WebAssembly if you're running the Edge browser.
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <div class="pop_wrapper load">
 	<div class="pop_wrap" id="gamecake_div_input">
 		<div class="pop_close_wrap">
-			<a class="pop_close" onclick="$('.pop_wrapper.load').fadeToggle("fast");">x</a>
+			<a class="pop_close" onclick="$('.pop_wrapper.load').fadeToggle('fast');">x</a>
 		</div>
 		<div class="pop_text">
 			<div id="div_page_url">
