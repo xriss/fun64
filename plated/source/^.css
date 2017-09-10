@@ -29,13 +29,13 @@ b			{font-weight:700;}
 
 /*	INDEX styles
 	============================================= */
-.fun_bits		{width:1024px; margin:0 auto; font-size:14px; line-height:16px; color:#0b0088; position:relative;}
+.fun_bits		{width:1024px; margin:0 auto; font-size:14px; line-height:16px; color:#0b0088; position:relative; margin-top:80px;}
 .fun_bits pre	{width:1000px; margin:0 auto;}
 
 
 /*	INDEX NAVIGATION BAR styles
 	============================================= */
-.navi_wrap		{width:100%; margin:0 auto; background:#58656b;}
+.navi_wrap		{width:100%; margin:0 auto; background:#58656b; position:fixed; z-index:666;}
 .navi			{width:1024px; margin:0 auto; padding:20px 0;}
 .navi a			{text-decoration:none;}
 .navi a:hover	{color:#fff;}
@@ -95,6 +95,8 @@ a.back_top:hover{background-color:#2d3538;}
 
 /*	BLOG styles
 	============================================= */
+
+.blog_bits, .post_page	{margin-top:100px;}
 
 .blog_head			{width:1024px; margin:0 auto; margin-top:20px;}
 

@@ -19,6 +19,7 @@ body	{background:#000; font-family:'Cabin',monospace,sans-serif; font-size:16px;
 h1		{font-size:4em; font-weight:normal; color:#1400ff;}
 h2		{font-size:2em; font-weight:normal;}
 a		{color:#88f;}
+a		{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; -ms-transition:all .2s ease-in-out; transition:all .2s ease-in-out; cursor:pointer; overflow-wrap:break-word; word-wrap:break-word; word-break:break-word; -ms-hyphens:auto; -moz-hyphens:auto; -webkit-hyphens:auto; hyphens:auto;} /* Fix long urls */
 b		{font-weight:700;}
 
 #editor {margin:0; position:absolute; top:32; bottom:0; left:0; right:0;}
@@ -50,7 +51,7 @@ a:focus		{outline: none;}
 .pop_head		{font-size:24px; line-height:30px; margin-top:40px;}
 .pop_head.title	{margin-top:60px; margin-bottom:40px;}
 .pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
-.pop_head a:hover	{text-decoration:underline;}
+.pop_head a:hover	{color:#00ff80;}
 .pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 .pop_head a:before	{background:url('../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; zoom:70%;}
 .pop_head.title a:before	{display:none;}
@@ -60,10 +61,10 @@ a.pop_close:hover{color:#42F89E; cursor:pointer;}
 
 .pop_div		{display:inline-block; vertical-align:top; width:33.33%; padding-right:6%; padding-top:5%; padding-bottom:5%; position:relative;}
 
-.pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-weight:400;}
+.pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-weight:400; box-shadow:3px 3px 0px rgba(255,0,153,0.77);}
 .pop_info		{margin-top:20px; font-size:18px; line-height:26px;}
 .pop_info a		{text-decoration:none; color:#fff; font-weight:700;}
-.pop_info a:hover	{text-decoration:underline;}
+.pop_info a:hover	{color:#00ff80;}
 .pop_info a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 
 .pop_wrapper.load .pop_div	{height:200px;}
@@ -85,6 +86,8 @@ a.pop_close:hover{color:#42F89E; cursor:pointer;}
 
 .pop_wrapper.about	{display:none;}
 .pop_wrapper.load	{display:none;}
+
+input#gamecake_text_input	{width:100%; font-size:x-large; padding:5px 10px;}
 
 
 .ace_editor		{font-size:16px;}
@@ -404,6 +407,8 @@ $(document).keydown(function(event){
 });
 
 </script>
+
+
 <div class="pop_wrapper about">
 	<div class="pop_wrap">
 		<div class="pop_close_wrap">
@@ -457,7 +462,7 @@ $(document).keydown(function(event){
 		<div class="pop_text">
 			<div id="div_page_url">
 				<div class="pop_head">Paste the URL of your gist or fun.lua file &amp; press return.</div>
-				<p><input type=text id="gamecake_text_input" style="width:100%;font-size:x-large"></p>
+				<p><input type=text id="gamecake_text_input" autofocus="autofocus" placeholder="For example; https://gist.github.com/search?q=fun64+lua"></p>
 			</div>
 			<div class="pop_head title">Examples</div>
 			<a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e" class="pop_div gist1">
