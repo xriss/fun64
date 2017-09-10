@@ -190,7 +190,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.wasm_notice	{display:block; font-size:28px; line-height:45px;}
 	
 	.wrap img		{width:100%; display:none;}
-	.wrap .foot_wrap img	{display:inline-block; vertical-align:top; width:50px;}
+	.foot_wrap .text_head img	{display:inline-block; vertical-align:top; width:50px; margin-top:-17px;}
 	.foot_wrap p	{font-size:38px; line-height:58px; padding:10px 0;}
 	.text.wetus		{position:initial;}
 	.text.wetus img	{width:80px;}
@@ -216,7 +216,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
 	.page_link a	{font-size:38px;}
 	
-	.paging div a:before {font-size:42px;}
+	.paging div a:before {font-size:55px; margin-top:-17px;}
 	.paging div:nth-of-type(2) a:after {font-size:42px;}
 	
 	a.bar			{font-size:36px; padding:40px 0;}
