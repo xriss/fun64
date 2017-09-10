@@ -216,8 +216,8 @@ a.bar:hover			{background-color:#1400ff;}
 	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
 	.page_link a	{font-size:38px;}
 	
-	.paging div a:before {font-size:72px; margin-top:-5px;}
-	.paging div:nth-of-type(2) a:after {font-size:72px;}
+	.paging div a:before {font-size:42px;}
+	.paging div:nth-of-type(2) a:after {font-size:42px;}
 	
 	a.bar			{font-size:36px; padding:40px 0;}
 	
