@@ -48,18 +48,37 @@ a:focus		{outline: none;}
 .pop_wrap		{height:100%; width:100%; background-color:#000; box-sizing:border-box; border:5px solid #00ff80; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5);}
 .pop_text		{padding:40px 60px 20px 60px;}
 .pop_head		{font-size:24px; line-height:30px; margin-top:40px;}
+.pop_head.title	{margin-top:60px; margin-bottom:40px;}
 .pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
 .pop_head a:hover	{text-decoration:underline;}
 .pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 .pop_head a:before	{background:url('../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; zoom:70%;}
+.pop_head.title a:before	{display:none;}
 .pop_close_wrap	{position:relative; width:100%;}
 a.pop_close		{position:absolute; display:block; top:15px; right:15px; width:40px; height:40px; font-size:35px; line-height:35px; text-align:center; color:#00ff80;}
 a.pop_close:hover{color:#42F89E; cursor:pointer;}
 
-.pop_div		{display:inline-block; vertical-align:top; width:33.33%; padding-right:6%; padding-top:5%; padding-bottom:5%;}
+.pop_div		{display:inline-block; vertical-align:top; width:33.33%; padding-right:6%; padding-top:5%; padding-bottom:5%; position:relative;}
 
 .pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-weight:400;}
 .pop_info		{margin-top:20px; font-size:18px; line-height:26px;}
+.pop_info a		{text-decoration:none; color:#fff; font-weight:700;}
+.pop_info a:hover	{text-decoration:underline;}
+.pop_info a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
+
+.pop_wrapper.load .pop_div	{height:200px;}
+.pop_div.gist1	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_01.png')no-repeat center center;}
+.pop_div.gist2	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_03.png')no-repeat center center;}
+.pop_div.gist3	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_04.png')no-repeat center center;}
+.pop_div.gist4	{background:linear-gradient(rgba(0,0,0,1), 	  rgba(0,0,0,0.45)),url('../data/example_05.png')no-repeat -1065px center;}
+.pop_div.gist5	{background:linear-gradient(rgba(63,81,181,1),rgba(0,0,0,0.45)),url('../data/example_02.png')no-repeat -803px center;}
+.pop_div.gist6	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_06.png')no-repeat center center;}
+
+.pop_wrapper.load .pop_div:hover	{background-color:#000;}
+.pop_wrapper.load .pop_div:hover .pop_info	{color:#fff;}
+
+.pop_wrapper.load .pop_info	{font-weight:700; text-align:center; width:100%; position:absolute; top:60px; left:0; font-size:24px; color:#ccc; line-height:30px; text-shadow:1px 2px 5px rgba(0,0,0,0.8);}
+
 
 
 /*	LOAD link popup	*/
@@ -403,7 +422,7 @@ $(document).keydown(function(event){
 			</div><div class="pop_div">
 				<span>OPEN</span>
 				<div class="pop_info">
-					Click to paste the link to a FUN64 code on Github Gist or any raw fun.lua file online. Share the link with your friends for them to play your app.
+					Click to paste the link to a FUN64 code on <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a> or any raw fun.lua file online. Share the link with your friends for them to play your app.
 				</div>
 			</div><div class="pop_div">
 				<span>FLUSH</span>
@@ -434,6 +453,33 @@ $(document).keydown(function(event){
 				<div class="pop_head">Paste the URL of your gist or fun.lua file &amp; press return.</div>
 				<p><input type=text id="gamecake_text_input" style="width:100%;font-size:x-large"></p>
 			</div>
+			<div class="pop_head title">Examples</div>
+			<a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e" class="pop_div gist1">
+				<div class="pop_info">
+					Hello, World!
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F90f8c1d2e9cb0b9d307fe68aebb4b9c3" class="pop_div gist2">
+				<div class="pop_info">
+					Shadertoy
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatform.fun.lua" class="pop_div gist3">
+				<div class="pop_info">
+					Platform game
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatobj.fun.lua" class="pop_div gist4">
+				<div class="pop_info">
+					NPC Conversation
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fe6965fb7b34b9353fd744e223b0f6af6" class="pop_div gist5">
+				<div class="pop_info">
+					Swanky32 Colour Palette
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F0a3b22b101edf1a97fe5b2ca3e865dce" class="pop_div gist6">
+				<div class="pop_info">
+					Space Shooter
+				</div>
+			</a>
+			<div class="pop_head title">Or choose one from <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a>.</div>
 		</div>
 	</div>
 </div>
