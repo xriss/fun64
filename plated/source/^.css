@@ -123,6 +123,15 @@ a.blog_post_link span.blog_post_snip	{display:block; height:180px; overflow:hidd
 a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}
 
 
+/*	BLOG paging links
+	============================================= */
+
+.paging div a	{text-decoration:none; color:#3a3a3a;}
+.paging div a:before {display:inline-block; vertical-align:top; content:"\021D0"; margin-right:5px;}
+.paging div:nth-of-type(2) a:before	{display:none;}
+.paging div:nth-of-type(2) a:after	{display:inline-block; vertical-align:top; content:"\0279C"; margin-left:5px;}
+
+
 /*	BLOG FUNPAD LINK - found beneath each post
 	============================================= */
 
@@ -154,7 +163,7 @@ a.bar:hover			{background-color:#1400ff;}
 	pre			{margin:0 auto;}
 	.fun_bits, .navi, .blog_head{width:960px; margin:0 auto; padding:50px 0;}
 	
-	.fun_bits	{font-size:12px; padding:80px 0;}
+	.fun_bits	{font-size:12px; padding:80px 0; margin-top:80px;}
 	.navi a		{font-size:40px; width:25%; text-align:center;}
 	a.navi_link_home span:before	{zoom:70%;}
 	
@@ -173,6 +182,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.wrap.eg a:nth-of-type(3)	{background:url('{_root}data/example_04.png')no-repeat -1255px center; background-size:cover;}
 	.wrap.eg a:nth-of-type(4)	{background:url('{_root}data/example_05.png')no-repeat -1200px center; background-size:cover;}
 	.wrap.eg a:nth-of-type(5)	{background:url('{_root}data/example_02.png')no-repeat -1200px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(6)	{background:url('{_root}data/example_06.png')no-repeat -200px center; background-size:cover;}
 	
 	.fun_about_wrap	{top:10%;}
 	.fun_about		{font-size:60px; line-height:80px; width:70%;}
@@ -181,18 +191,20 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	.wrap img		{width:100%; display:none;}
 	.wrap .foot_wrap img	{display:inline-block; vertical-align:top; width:50px;}
-	.foot_wrap p	{font-size:14px; line-height:42px; padding:10px 0;}
+	.foot_wrap p	{font-size:38px; line-height:58px; padding:10px 0;}
 	.text.wetus		{position:initial;}
 	.text.wetus img	{width:80px;}
-	a.back_top		{padding:40px 0;}
+	a.back_top		{padding:40px 0; font-size:32px;}
 	.foot_wrap p a:after	{font-size:38px;}
 	
 	span.example_text_wrap	{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}
 	span.example_text_head	{font-size:1.25em; line-height:1.25em;}
 	span.example_text_info	{margin-top:10px;}
-		
-	.blog_wrap p			{margin:40px 0; font-size:22px; line-height:60px;}
-	span.blog_post_user		{font-size:14px;}
+	
+	.blog_bits, .post_page	{margin-top:140px;}
+	
+	.blog_wrap p			{margin:60px 0; font-size:42px; line-height:82px;}
+	span.blog_post_user		{font-size:24px;}
 	span.blog_post_title	{font-size:60px; line-height:72px;}
 	
 	.blog_embed_head, .blog_wrap			{width:800px;}
@@ -204,7 +216,12 @@ a.bar:hover			{background-color:#1400ff;}
 	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
 	.page_link a	{font-size:38px;}
 	
-	a.bar			{font-size:26px; padding:30px;}
+	.paging div a:before {font-size:72px; margin-top:-5px;}
+	.paging div:nth-of-type(2) a:after {font-size:72px;}
+	
+	a.bar			{font-size:36px; padding:40px 0;}
 	
 	.text_head		{margin-top:40px; margin-bottom:40px; font-size:48px;}
+	
+	.foot_wrap		{font-size:1.8em;}
 }
