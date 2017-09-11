@@ -170,7 +170,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.blog_head	{padding:50px; font-size:42px;}
 	.post_page .blog_head	{font-size:12px;}
 	.wrap		{width:100%; margin:0 auto;}
-	.fun_bits pre	{width:95%; margin:0 auto; margin-left:5%;}
+	.fun_bits pre	{width:93%; margin:0 auto; margin-left:7%;}
 	.blog_list_wrap, a.blog_post_link	{width:860px;}
 	.wrap.eg	{padding-bottom:0; overflow-x:hidden;}
 	
@@ -224,4 +224,10 @@ a.bar:hover			{background-color:#1400ff;}
 	.text_head		{margin-top:40px; margin-bottom:40px; font-size:48px;}
 	
 	.foot_wrap		{font-size:1.8em;}
+	
+	@-moz-document url-prefix() {
+    .fun_bits pre	{width:100%; margin:0;}
+}
+
+
 }
