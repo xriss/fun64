@@ -194,7 +194,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.foot_wrap p	{font-size:38px; line-height:58px; padding:10px 0;}
 	.text.wetus		{position:initial;}
 	.text.wetus img	{width:80px;}
-	a.back_top		{padding:40px 0; font-size:32px;}
+	a.back_top		{padding:60px 0; font-size:32px;}
 	.foot_wrap p a:after	{font-size:38px;}
 	
 	span.example_text_wrap	{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}
@@ -216,8 +216,8 @@ a.bar:hover			{background-color:#1400ff;}
 	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
 	.page_link a	{font-size:38px;}
 	
-	.paging div a:before {font-size:55px; margin-top:-17px;}
-	.paging div:nth-of-type(2) a:after {font-size:42px;}
+	.paging div a:before {font-size:55px; margin-top:-15px;}
+	.paging div:nth-of-type(2) a:after {font-size:38px;}
 	
 	a.bar			{font-size:36px; padding:40px 0;}
 	
