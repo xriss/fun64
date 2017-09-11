@@ -182,6 +182,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.wrap.eg a:nth-of-type(4)	{background:url('{_root}data/example_05.png')no-repeat -1200px center; background-size:cover;}
 	.wrap.eg a:nth-of-type(5)	{background:url('{_root}data/example_02.png')no-repeat -1200px center; background-size:cover;}
 	.wrap.eg a:nth-of-type(6)	{background:url('{_root}data/example_06.png')no-repeat -200px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(7)	{background:url('{_root}data/example_07.png')no-repeat center center; background-size:cover;}
 	
 	.fun_about_wrap	{top:10%;}
 	.fun_about		{font-size:60px; line-height:80px; width:70%;}
