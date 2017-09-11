@@ -302,6 +302,8 @@ if (typeof(document.isFullscreen === undefined)) {
 		};
 
 		window.addEventListener("resize",function(){setTimeout(resize,500);});
+		window.addEventListener("fullscreenchange",function(){setTimeout(resize,500);});
+		window.addEventListener("orientationchange",function(){setTimeout(resize,500);});
 		Module={};
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
