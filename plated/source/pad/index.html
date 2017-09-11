@@ -288,15 +288,37 @@ if (typeof(document.isFullscreen === undefined)) {
 	var gamecake_load_fun=function(code)
 	{
 		var resize=function(){
-			if(!document.isFullscreen())
+			
+			if(document.isFullscreen()) // move the dom around so split stops messing with the size
 			{
-				var e=document.getElementById("gamecake_container");
-				var w=parseFloat(window.getComputedStyle(e).width);
-				var h=parseFloat(window.getComputedStyle(e).height);
-				Module.setCanvasSize(w,h);
-				if(window.gamecake_post)
+				$(window).prepend($("#gamecake_container")); // take away
+			}
+			else
+			{
+				$("#split_right").prepend($("#gamecake_container")); // restore
+			}
+			
+			var e=document.getElementById("gamecake_container");
+			var w=parseFloat(window.getComputedStyle(e).width);
+			var h=parseFloat(window.getComputedStyle(e).height);
+			Module.setCanvasSize(w,h);
+			if(window.gamecake_post)
+			{
+				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+			}
+		};
+
+		var fullscreen=function(yesno){
+			$("#gamecake_container")[0].focus();
+			if(window.gamecake_post)
+			{
+				if(yesno) // fullscreen is flakey, need to doubletap to get a sure response
 				{
-					gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+					gamecake_post('cmd=lua\n','local win=require("wetgenes.win").oven.win win:show() win:show("full") win:show() win:show("full")');
+				}
+				else
+				{
+					gamecake_post('cmd=lua\n','local win=require("wetgenes.win").oven.win win:show("full") win:show() win:show("full") win:show()');
 				}
 			}
 		};
@@ -307,6 +329,7 @@ if (typeof(document.isFullscreen === undefined)) {
 		Module={};
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
+		Module.canvas_fullscreen=fullscreen;
 		Module.memoryInitializerPrefixURL="../exe/";
 		Module.wasmBinaryFile="../exe/gamecake.wasm";
 		Module.monitorRunDependencies=show_progress;
@@ -416,17 +439,9 @@ $(document).keydown(function(event){
 
 <!--	Fullscreen button	-->
 <script>
-	var full = document.getElementById("iconbar_full");
-
-	full.addEventListener("click", function() {
-		
-		var n = document.getElementById("gamecake_canvas");
-
-		if		( n.requestFullScreen ) 		{ n.requestFullScreen(); } 
-		else if	( n.mozRequestFullScreen ) 		{ n.mozRequestFullScreen(); }
-		else if	( n.webkitRequestFullScreen ) 	{ n.webkitRequestFullScreen(); }
-
-	}, false);
+	$("#iconbar_full").on("mousedown",function(){
+		Module.canvas_fullscreen(true);
+	});
 </script>
 
 
