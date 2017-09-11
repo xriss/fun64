@@ -2,9 +2,6 @@ cd `dirname $0`
 
 git submodule update --init --reference .
 
-plated/upgrade
-
-
 git pull --recurse-submodules && git submodule update --recursive --remote
 
 echo " fixing local exe branch to track origin "
@@ -26,3 +23,5 @@ git branch -f --track gh-pages origin/gh-pages
 git checkout gh-pages
 git rev-parse HEAD --
 cd ..
+
+plated/upgrade
