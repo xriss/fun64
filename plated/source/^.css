@@ -168,7 +168,6 @@ a.bar:hover			{background-color:#1400ff;}
 	a.navi_link_home span:before	{zoom:70%;}
 	
 	.blog_head	{padding:50px; font-size:42px;}
-	.post_page .blog_head	{font-size:12px;}
 	.wrap		{width:100%; margin:0 auto;}
 	.fun_bits pre	{width:93%; margin:0 auto; margin-left:7%;}
 	.blog_list_wrap, a.blog_post_link	{width:860px;}
@@ -227,6 +226,8 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	@-moz-document url-prefix() {
     .fun_bits pre	{width:100%; margin:0;}
+    
+    @viewport {zoom:0.75;}
 }
 
 
