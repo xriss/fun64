@@ -50,10 +50,10 @@ a#iconbar_full {font-size:32px; line-height:17px; width:42px; position:absolute;
 .pop_wrapper	{padding:50px 150px; background-color:rgba(64,67,70,0.8); overflow:hidden; position:absolute; top:0; left:0; bottom:0; right:0; z-index:999;}
 
 /*	ABOUT link popup	*/
-.pop_wrap		{height:100%; width:100%; background-color:#000; box-sizing:border-box; border:5px solid #00ff80; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5);}
+.pop_wrap		{height:100%; width:100%; background-color:#000; box-sizing:border-box; border:5px solid #00ff80; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5); overflow:auto;}
 .pop_text		{padding:40px 60px 20px 60px;}
-.pop_head		{font-size:24px; line-height:30px; margin-top:40px;}
-.pop_head.title	{margin-top:60px; margin-bottom:40px;}
+.pop_head		{font-size:24px; line-height:30px; margin-top:20px;}
+.pop_head.title	{margin-top:40px; margin-bottom:20px;}
 .pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
 .pop_head a:hover	{color:#00ff80;}
 .pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
@@ -78,6 +78,7 @@ a.pop_close:hover{color:#42F89E; cursor:pointer;}
 .pop_div.gist4	{background:linear-gradient(rgba(0,0,0,1), 	  rgba(0,0,0,0.45)),url('../data/example_05.png')no-repeat -1065px center;}
 .pop_div.gist5	{background:linear-gradient(rgba(63,81,181,1),rgba(0,0,0,0.45)),url('../data/example_02.png')no-repeat -803px center;}
 .pop_div.gist6	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_06.png')no-repeat center center;}
+.pop_div.gist7	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_07.png')no-repeat center center;}
 
 .pop_wrapper.load .pop_div:hover	{background-color:#000;}
 .pop_wrapper.load .pop_div:hover .pop_info	{color:#fff;}
@@ -525,6 +526,10 @@ $(document).keydown(function(event){
 			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F0a3b22b101edf1a97fe5b2ca3e865dce" class="pop_div gist6">
 				<div class="pop_info">
 					Space Shooter
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F18eac9295deb6e51b097334639d6d55c" class="pop_div gist7">
+				<div class="pop_info">
+					Starfield shader
 				</div>
 			</a>
 			<div class="pop_head title">Or choose one from <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a>.</div>
