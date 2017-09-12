@@ -292,7 +292,7 @@ if (typeof(document.isFullscreen === undefined)) {
 			
 			if(document.isFullscreen()) // move the dom around so split stops messing with the size
 			{
-				$(window).prepend($("#gamecake_container")); // take away
+				$("body").prepend($("#gamecake_container")); // take away
 			}
 			else
 			{
