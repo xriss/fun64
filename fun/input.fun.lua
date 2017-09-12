@@ -3,7 +3,8 @@
 --
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
-	update=function() update() end, -- called repeatedly to update+draw
+	update=function() update() end, -- called repeatedly to update
+	draw=function() draw() end, -- called repeatedly to draw
 	msg=function(m) msg(m) end, -- handle msgs
 })
 
@@ -37,7 +38,7 @@ msg=function(m)
 	s=string.format("%6.2f %8s %2d %3d,%3d",m.time,m.class,m.action,m.x,m.y)
 
     elseif m.class=="touch" then
-	s=string.format("%6.2f %8s %2d %3d,%3d %3d %3d",m.time,m.class,m.action,m.x,m.y,m.id,m.pressure)
+	s=string.format("%6.2f %8s %2d %3d,%3d %3d %3d",m.time,m.class,m.action,m.x,m.y,m.id or 0,m.pressure or 0)
 
     elseif m.class=="padaxis" then
 	s=string.format("%6.2f %8s %2d %8s %5d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
@@ -63,7 +64,10 @@ end
 update=function()
     
     if setup then setup() setup=nil end
+end
 
+
+draw=function()
     local ccmap=system.components.colors.cmap
     local cmap=system.components.map
     local ctext=system.components.text
