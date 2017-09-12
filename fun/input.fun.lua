@@ -83,11 +83,12 @@ draw=function()
 	local up=ups(i)
 	
 	local ns={
-	    "up","down","left","right","fire",		-- basic joystick, most buttons map to fire
-	    "x","y","a","b",            	        -- the four face buttons
-	    "l1","l2","r1","r2",        	        -- the triggers
-	    "select","start",				-- the menu face buttons
+	    "up","down","left","right","fire",			-- basic joystick, most buttons map to fire
+	    "x","y","a","b",            	   		     -- the four face buttons
+	    "l1","l2","r1","r2",        		        -- the triggers
+	    "select","start",							-- the menu face buttons
 	    "mouse_left","mouse_right","mouse_middle",	-- mouse buttons
+	    "touch",									-- touch buttons
 	    }
 	    
 	local ax={"lx","ly","rx","ry","dx","dy","mx","my","tx","ty"} -- axis name
@@ -96,7 +97,7 @@ draw=function()
 		
 	for i,n in ipairs(ax) do
 	    local v=up.axis(n)
-	    if v~=0 then -- ignore all the zeros
+	    if v then
 		a[#a+1]=n.."="..math.floor(v+0.5)
 	    end
 	end
