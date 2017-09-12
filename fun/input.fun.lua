@@ -30,12 +30,11 @@ msg=function(m)
 
 
 --print(wstr.dump(m))
-    
 
     local s
 			    
     if m.class=="mouse" then
-	s=string.format("%6.2f %8s %2d %3d,%3d",m.time,m.class,m.action,m.x,m.y)
+	s=string.format("%6.2f %8s %2d %3d,%3d %s %s",m.time,m.class,m.action,m.x,m.y,tostring(m.keycode or ""),m.keyname or "")
 
     elseif m.class=="touch" then
 	s=string.format("%6.2f %8s %2d %3d,%3d %3d %3d",m.time,m.class,m.action,m.x,m.y,m.id or 0,m.pressure or 0)
