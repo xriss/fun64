@@ -289,23 +289,16 @@ if (typeof(document.isFullscreen === undefined)) {
 	var gamecake_load_fun=function(code)
 	{
 		var resize=function(){
-			
-			if(document.isFullscreen()) // move the dom around so split stops messing with the size
+			if(!document.isFullscreen()) // fill the container with the canvas
 			{
-				$("body").prepend($("#gamecake_container")); // take away
-			}
-			else
-			{
-				$("#split_right").prepend($("#gamecake_container")); // restore
-			}
-			
-			var e=document.getElementById("gamecake_container");
-			var w=parseFloat(window.getComputedStyle(e).width);
-			var h=parseFloat(window.getComputedStyle(e).height);
-			Module.setCanvasSize(w,h);
-			if(window.gamecake_post)
-			{
-				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				var e=document.getElementById("gamecake_container");
+				var w=parseFloat(window.getComputedStyle(e).width);
+				var h=parseFloat(window.getComputedStyle(e).height);
+				Module.setCanvasSize(w,h);
+				if(window.gamecake_post)
+				{
+					gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				}
 			}
 		};
 
