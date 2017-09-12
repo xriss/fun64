@@ -4,6 +4,7 @@
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	update=function() update() end, -- called repeatedly to update+draw
+	msg=function(m) msg(m) end, -- handle msgs
 })
 
 local wstr=require("wetgenes.string")
@@ -17,6 +18,43 @@ setup=function()
 --    system.components.screen.shadow=nil
     
     print("Setup complete!")
+
+end
+
+
+lines={}
+
+-- handle raw key press
+msg=function(m)
+
+
+--print(wstr.dump(m))
+    
+
+    local s
+			    
+    if m.class=="mouse" then
+	s=string.format("%6.2f %8s %2d %3d,%3d",m.time,m.class,m.action,m.x,m.y)
+
+    elseif m.class=="touch" then
+	s=string.format("%6.2f %8s %2d %3d,%3d %3d %3d",m.time,m.class,m.action,m.x,m.y,m.id,m.pressure)
+
+    elseif m.class=="padaxis" then
+	s=string.format("%6.2f %8s %2d %8s %5d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
+
+    elseif m.class=="padkey" then
+	s=string.format("%6.2f %8s %2d %8s %3d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
+
+    elseif m.class=="key" then
+	s=string.format("%6.2f %8s %2d %3s %16s",m.time,m.class,m.action,m.ascii,m.keyname)
+
+    else
+	s=string.format("%6.2f %8s %2d",m.time or 0,m.class,m.action or 0)
+    end
+
+    lines[#lines+1]=s
+    
+    while #lines > 14 do table.remove(lines,1) end
 
 end
 
@@ -35,7 +73,7 @@ update=function()
     cmap.text_clear(0x01000000*bg) -- clear text forcing a background color
 	
 	
-    local y=2
+    local y=1
 	
     for i=0,6 do
 	local up=ups(i)
@@ -48,7 +86,7 @@ update=function()
 	    "mouse_left","mouse_right","mouse_middle",	-- mouse buttons
 	    }
 	    
-	local ax={"lx","ly","rx","ry","dx","dy","mx","my"} -- axis name
+	local ax={"lx","ly","rx","ry","dx","dy","mx","my","tx","ty"} -- axis name
 	
 	local a={}
 		
@@ -71,18 +109,9 @@ update=function()
 	y=y+1
     end
 
-    local tx=wstr.trim([[
-
-Testing the 8x8 font on the background layer rather than the 4x8 text layer.
-
-Notice how the text layer gets you a drop shadow down onto this layer which helps separate it from the background.
-
-]])
-
-    local tl=wstr.smart_wrap(tx,cmap.text_hx-2)
-    for i=1,#tl do
-	    local t=tl[i]
-	    cmap.text_print(t,1,16+i,fg,bg)
+    for i=1,#lines do
+	ctext.text_print(lines[i],1,y,fg,0)
+	y=y+1
     end
 
 
