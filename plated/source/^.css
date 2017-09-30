@@ -40,7 +40,7 @@ b			{font-weight:700;}
 .navi a			{text-decoration:none;}
 .navi a:hover	{color:#fff;}
 a.navi_link_home{display:inline-block; width:55%; color:#eaeaea; vertical-align:top; font-weight:700;}
-a.navi_link_all	{display:inline-block; width:15%; text-align:right; color:#eaeaea;}
+a.navi_link_all	{display:inline-block; width:11%; text-align:right; color:#eaeaea;}
 a.navi_link_home span:before {background:url('{_root}data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; margin-right:10px; zoom:70%;}
 
 
