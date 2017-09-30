@@ -1,11 +1,11 @@
 <html>
 <head>
 	<title>Fun64pad edit and run.</title>
-	<script data-pace-options='{ "eventLag": false }' src="../js/pace.min.js"></script>
-	<script src="../js/jquery-3.1.1.min.js"></script>
-	<script src="../js/jquery.splitter.js"></script>
-	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
-	<script src="../js/ace/ace.js"></script>
+	<script data-pace-options='{ "eventLag": false }' src="../../js/pace.min.js"></script>
+	<script src="../../js/jquery-3.1.1.min.js"></script>
+	<script src="../../js/jquery.splitter.js"></script>
+	<link  href="../../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
+	<script src="../../js/ace/ace.js"></script>
 	<style>
 .pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
 .pace-inactive { display:none; }
@@ -198,8 +198,8 @@ if (typeof(document.isFullscreen === undefined)) {
 		Module={};
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
-		Module.memoryInitializerPrefixURL="../exe/";
-		Module.wasmBinaryFile="../exe/gamecake.wasm";
+		Module.memoryInitializerPrefixURL="../../exe/";
+		Module.wasmBinaryFile="../../exe/gamecake.wasm";
 		Module.monitorRunDependencies=show_progress;
 		Module.preRun=function(){
 			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
@@ -212,12 +212,13 @@ if (typeof(document.isFullscreen === undefined)) {
 
 			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
 
+/*
 			gamecake_post('cmd=lua\n',
 'local win=require("wetgenes.win")\n'+
 'local oven=win.oven\n'+
 'local paint=oven.rebake(oven.modname..".main_paint")\n'+
 'paint.configure( [==['+document.getElementById("paint_config").innerHTML+']==] )\n');
-		
+*/		
 		
 // create a pulse function and call it every frame
 			Module._pulse=function() {
@@ -236,12 +237,12 @@ if (typeof(document.isFullscreen === undefined)) {
 			script = d.createElement('script');
 			script.type = 'text/javascript';
 			script.async = true;
-			script.src = '../exe/gamecake.js';
+			script.src = '../../exe/gamecake.js';
 			d.getElementsByTagName('head')[0].appendChild(script);
 		}(document));
 	}
 	
-	gamecake_load_cake("./swankypaint.cake");
+	gamecake_load_cake("../zips/swanky-avatar.zip");
 
 $(document).keydown(function(event){
     if(event.keyCode==112){return false;} // disable browsers F1
