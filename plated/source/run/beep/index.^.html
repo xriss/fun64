@@ -1,97 +1,58 @@
+#^------------------------------
+#^html trim=ends
+#^------------------------------
 <html>
 <head>
-	<title>Fun64pad edit and run.</title>
+	<title>Swanky Beep</title>
+	<style>{css}</style>
 	<script data-pace-options='{ "eventLag": false }' src="../../js/pace.min.js"></script>
 	<script src="../../js/jquery-3.1.1.min.js"></script>
 	<script src="../../js/jquery.splitter.js"></script>
 	<link  href="../../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
 	<script src="../../js/ace/ace.js"></script>
 	<style>
-.pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
-.pace-inactive { display:none; }
-.pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+		
+#gamecake_container, .log_wrap	{display:inline-block; vertical-align:top;}
 
-*		{box-sizing:border-box;}
-body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px;}
-h1		{font-size:4em; font-weight:normal; color:#1400ff;}
-h2		{font-size:2em; font-weight:normal;}
+#gamecake_container {overflow:hidden; width:60%; height:100%;}
+#gamecake_log		{width:100%; height:669px; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:30px 0 0 10px; overflow-y:scroll;}
 
-a		{color:#88f;}
+#gamecake_log::-webkit-scrollbar {width:10px;}
+#gamecake_log::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);}
+#gamecake_log::-webkit-scrollbar-thumb {background-color:#222; outline:1px solid #000;}
 
-#editor {
-	margin: 0;
-	position: absolute;
-	top: 32;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
-
-
-#gamecake_container, #gamecake_log	{display:inline-block; vertical-align:top;}
-
-#gamecake_container {
-    overflow: hidden;
-    width: 60%;
-    height: 100%;
-}
-
-.splitter_panel .vsplitter {
-    background-color: #222;
-}
-
-.splitter_panel .hsplitter {
-    background-color: #222;
-}
-
-#iconbar { width:100%; height:32px; background-color: #333; position:relative; }
-
-a:focus { 
-    outline: none; 
-}
-
-#iconbar a {
-	display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    width: 20%;
-    height: 100%;
-    padding: 5px 4px;
-    margin: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-    overflow: hidden;
-}
-
-#iconbar a:hover { background-color: #000; }
-
-#iconbar a:hover { background-color: #000; }
-
-::-webkit-scrollbar
-{
-  width: 12px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
-}
-
-::-webkit-scrollbar-track
-{
-  background: rgba(128, 128, 128, 0.1);
-}
-
-::-webkit-scrollbar-thumb
-{
-  background: rgba(128, 128, 128, 0.5);
-}
-
-#gamecake_log {width:40%; height:800px; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:40px 10px; overflow-y:scroll;}
+.beep_wrap			{width:100%; margin:auto; margin-top:60px; background-color:#000;}
+.log_wrap			{width:40%; height:700px;}
+.log_head			{background-color:#4c4c4c; padding:5px 0 0 10px; height:31px; color:#999; line-height:26px;}
+.doc_wrap			{width:1024px; padding:30px 60px 60px 60px; margin:0 auto; color:#FFF;}
+.doc_head			{font-size:20px; line-height:30px; padding-bottom:20px;}
+.doc_head a			{color:#FFF; font-weight:bold;}
+.doc_head a:hover	{border-bottom:1px solid #00adff;}
+.doc_head p			{margin:10px 0;}
+.doc				{padding:10px 0; font-size:16px;}
+.doc span			{display:block; font-size:20px; padding-bottom:5px; font-weight:bold;}
 
 	</style>
 </head>
 <body>
+	{navigation}
+	{beep}
+	{footer}
+</body>
+</html>
 
-		<div id="gamecake_container">
-			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
-		</div><pre id="gamecake_log"></pre>
+#^------------------------------
+#^beep trim=ends
+#^------------------------------
+<div class="beep_wrap">
+	<div id="gamecake_container">
+		<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
+	</div><div class="log_wrap">
+		<div class="log_head">Console</div>
+		<pre id="gamecake_log"></pre>
+	</div>
+	{beep_doc}
+</div>
 
 
 <script id="paint_config" type="text/lua">
@@ -278,5 +239,70 @@ $(document).keydown(function(event){
 
 </script>
 
-</body>
-</html>
+
+#^------------------------------
+#^beep_doc trim=ends
+#^------------------------------
+<div class="doc_wrap">
+	<div class="doc_head">Play around with the parameters to create strange beeps and soundscapes.<p>Use the console to copy and paste your creation into the <a href="{_root}pad">FunPad</a>.</p></div>
+	<div class="doc">
+		<span>Play</span>
+		Play the frequency of your chosen parameters.<br/>The Console to the right will update itself with the raw code of that frequency.
+	</div>
+	<div class="doc">
+		<span>Square</span>
+		Choose your base waveform. See if you can tell the difference between a square wave and a sine wave.
+	</div>
+	<div class="doc">
+		<span>C</span>
+		Choose your base frequency. The pitch of the sound gets higher after C.
+	</div>
+	<div class="doc">
+		<span>4</span>
+		Choose the octave of your base frequency.
+	</div>
+	<div class="doc">
+		<span>Duty</span>
+		Adjust the centrepoint of the waveform. See if you can hear the sound get 'tinnier' when you change the slider.
+	</div>
+	<div class="doc">
+		<span>Sustain Level</span>
+		Adjust the volume of your sound.
+	</div>
+	<div class="doc">
+		<span>Attack</span>
+		Adjust the amount of time to reach peack volume. Time is in seconds.
+	</div>
+	<div class="doc">
+		<span>Decay</span>
+		Adjust the amount of time to decay from peak volume to sustain volume. Time is in seconds.
+	</div>
+	<div class="doc">
+		<span>Sustain</span>
+		Adjust the amount of time spent at sustain volume. Time is in seconds.
+	</div>
+	<div class="doc">
+		<span>Release</span>
+		 Adjust the amount of time to fade out from sustain volume. Time is in seconds.
+	</div>
+	<div class="doc">
+		<span>Frequency Modulation</span>
+		This is disabled by default. Choose active to activate the options below.
+	</div>
+	<div class="doc">
+		<span>Waveform, frequency</span>
+		Choose a waveform to modulate the frequency of your base waveform.<br/>There are 16 cycles per second. Adjust these numbers to make your sound warble faster or slower.
+	</div>
+	<div class="doc">
+		<span>FM Duty</span>
+		Adjust the centrepoint of the modulator to apply to your base waveform.
+	</div>
+	<div class="doc">
+		<span>FM Slide</span>
+		Adjust the frequency of the modulator over time.
+	</div>
+	<div class="doc">
+		<span>C3 &lt;- C4 -&gt; C5</span>
+		Choose the note range of your modulator. The first note is at -1 cycle, second note at 0 cycle and third note at 1 cycle.
+	</div>
+</div>

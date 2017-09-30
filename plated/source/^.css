@@ -13,7 +13,7 @@ a			{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out
 h1			{font-size:4em; font-weight:normal; color:#1400ff;}
 h2			{font-size:2em; font-weight:normal;}
 
-a			{color:#1400ff;}
+a			{color:#1400ff; text-decoration:none;}
 a:hover		{cursor:pointer;}
 b			{font-weight:700;}
 
@@ -35,7 +35,7 @@ b			{font-weight:700;}
 
 /*	INDEX NAVIGATION BAR styles
 	============================================= */
-.navi_wrap		{width:100%; margin:0 auto; background:#58656b; position:fixed; z-index:666;}
+.navi_wrap		{width:100%; margin:0 auto; background:#58656b; position:fixed; z-index:666; font-family:'Cabin',monospace,sans-serif;}
 .navi			{width:1024px; margin:0 auto; padding:20px 0;}
 .navi a			{text-decoration:none;}
 .navi a:hover	{color:#fff;}
@@ -144,6 +144,13 @@ a.bar:hover			{background-color:#1400ff;}
 .blog_wrap code		{display:block; font-size:16px; overflow-x:scroll;}
 
 
+/*	Pace loading bar - currently not in use
+	============================================= */
+.pace .pace-progress {height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%;}
+.pace-inactive {display:none;}
+.pace {-webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none;}
+
+
 /*	FIREFOX font fix
 	============================================= */
 	
@@ -166,6 +173,7 @@ a.bar:hover			{background-color:#1400ff;}
 	.fun_bits	{font-size:12px; padding:80px 0; margin-top:80px;}
 	.navi a		{font-size:40px; width:25%; text-align:center;}
 	a.navi_link_home span:before	{zoom:70%;}
+	a.navi_link_all.git	{display:none;}
 	
 	.blog_head	{padding:50px; font-size:42px;}
 	.wrap		{width:100%; margin:0 auto;}
