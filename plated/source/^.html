@@ -18,6 +18,20 @@
 <style>
 {css}
 </style>
+<script>
+	
+	var ua = navigator.userAgent.toLowerCase();
+	var is_android = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+	var is_firefox = ua.indexOf('firefox') > -1;
+	if(is_firefox && is_android)
+	{
+	// alert ('FF');
+	document.write('<meta name="viewport" content="user-scalable=1"/><!--320-->');
+	} else {
+	// alert ('NoFF');
+	document.write('<meta name="viewport" content="user-scalable=0"/><!--320-->');
+	}
+</script>
 <script	src="{_root}js/jquery-3.1.1.min.js" ></script>
 <script	src="{_root}js/google-code-prettify/prettify.js" ></script>
 <script	src="{_root}js/google-code-prettify/lang-lua.js" ></script>

@@ -2,6 +2,7 @@
 <head>
 	<title>FunPad for Fun64 - Edit and Run</title>
 	<script data-pace-options='{ "eventLag": false }' src="../js/pace.min.js"></script>
+	<script src="../js/head.min.js"></script>
 	<script src="../js/jquery-3.1.1.min.js"></script>
 	<script src="../js/jquery.splitter.js"></script>
 	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
@@ -30,14 +31,15 @@ b		{font-weight:700;}
 
 #iconbar	{width:100%; height:32px; background-color:#333; position:relative; }
 a:focus		{outline: none;}
-#iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:23%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#ccc; overflow:hidden;}
+#iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:23.5%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#ccc; overflow:hidden;}
 #iconbar a:hover {background-color:#00ff80; color:#444; cursor:pointer;}
+#iconbar a#iconbar_about:hover {background-color:#eab000;}
 
 #gamecake_log {width:100%; height:100%; margin:0; color:#4c4;}
 #gamecake_canvas:-webkit-full-screen {width:100%; height:100%;}
 
 /*	Fullscreen button	*/
-a#iconbar_full {font-size:32px; line-height:17px; width:42px; position:absolute; right:0; top:0;}
+a#iconbar_full {font-size:32px; line-height:17px; width:6%; position:absolute; right:0; top:0;}
 
 ::-webkit-scrollbar			{width: 12px;  /* for vertical scrollbars */ 
 							 height: 12px; /* for horizontal scrollbars */}
@@ -65,13 +67,13 @@ a.pop_close:hover{color:#42F89E; cursor:pointer;}
 
 .pop_div		{display:inline-block; vertical-align:top; width:33.33%; padding-right:6%; padding-top:5%; padding-bottom:5%; position:relative;}
 
-.pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-weight:400; box-shadow:3px 3px 0px rgba(255,0,153,0.77);}
+.pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-size:20px; font-weight:400; box-shadow:3px 3px 0px rgba(255,0,153,0.77);}
 .pop_info		{margin-top:20px; font-size:18px; line-height:26px;}
 .pop_info a		{text-decoration:none; color:#fff; font-weight:700;}
 .pop_info a:hover	{color:#00ff80;}
 .pop_info a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
 
-.pop_wrapper.load .pop_div	{height:200px;}
+.pop_wrapper.load .pop_div	{height:140px;}
 .pop_div.gist1	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_01.png')no-repeat center center;}
 .pop_div.gist2	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_03.png')no-repeat center center;}
 .pop_div.gist3	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_04.png')no-repeat center center;}
@@ -83,7 +85,7 @@ a.pop_close:hover{color:#42F89E; cursor:pointer;}
 .pop_wrapper.load .pop_div:hover	{background-color:#000;}
 .pop_wrapper.load .pop_div:hover .pop_info	{color:#fff;}
 
-.pop_wrapper.load .pop_info	{font-weight:700; text-align:center; width:100%; position:absolute; top:60px; left:0; font-size:24px; color:#ccc; line-height:30px; text-shadow:1px 2px 5px rgba(0,0,0,0.8);}
+.pop_wrapper.load .pop_info	{font-weight:700; text-align:center; width:90%; position:absolute; top:35px; left:5%; font-size:24px; color:#ccc; line-height:30px; text-shadow:1px 2px 5px rgba(0,0,0,0.8);}
 
 
 
@@ -111,7 +113,7 @@ input#gamecake_text_input	{width:100%; font-size:x-large; padding:5px 10px;}
 		--></div>
 <pre id="editor">
 --
--- This is fun64 code, you can copy paste it into https://xriss.github.io/fun64/pad/ to run it.
+-- Paste your code below and click on 'RUN' to start your application :D
 --
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
@@ -359,6 +361,10 @@ if (typeof(document.isFullscreen === undefined)) {
 			Module._pulse();
 
 			setTimeout(resize,500); // call resize in a little while
+			
+			if (head.mobile){
+				Module.canvas_fullscreen(true);
+			};
 		};
 
 		(function(d, script) {
@@ -455,7 +461,7 @@ $(document).keydown(function(event){
 		<div class="pop_text">
 			<div class="pop_head">
 				The FunPad lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
-				<p>FunPad is powered by Gamecake, WebAssembly JS and lua.</p>
+				<p>Just paste your code into the editor and click <b>RUN</b> to start your application.</p>
 			</div>
 			<div class="pop_div">
 				<span>RUN</span>
@@ -473,13 +479,15 @@ $(document).keydown(function(event){
 					Click to restore code to the original state. The original state is the code that you copied into the pad.
 				</div>
 			</div><div class="pop_div">
-				<span>FULLSCREEN PLAY</span>
+				<span>FULLSCREEN</span>
 				<div class="pop_info">
+					<p><b>Option 1</b></p>
 					Click on the game and and press F11 to run the app in fullscreen mode. Please enable WebAssembly if you're running the Edge browser.
 				</div>
 			</div><div class="pop_div">
 				<span>&#8689;</span>
 				<div class="pop_info">
+					<p><b>Option 2</b></p>
 					Click to go fullscreen. The size of the game screen will resize according to your presets; ie. move the divider to make it bigger or smaller.
 				</div>
 			</div><div class="pop_div">
@@ -488,6 +496,9 @@ $(document).keydown(function(event){
 					<p><a href="http://xriss.github.io/fun64" target="_blank">Visit the official site</a></p>
 					<p><a href="http://github.com/xriss/fun64" target="_blank">View the project on Github</a></p>
 				</div>
+			</div>
+			<div class="pop_head">
+				<p>FunPad is powered by Gamecake, WebAssembly JS and Lua.</p>
 			</div>
 		</div>
 	</div>
@@ -499,10 +510,10 @@ $(document).keydown(function(event){
 		</div>
 		<div class="pop_text">
 			<div id="div_page_url">
-				<div class="pop_head">Paste the URL of your gist or fun.lua file &amp; press return.</div>
+				<div class="pop_head">Paste the URL of your <i>gist</i> or <i>fun.lua</i> file &amp; press Enter</div>
 				<p><input type=text id="gamecake_text_input" autofocus="autofocus" placeholder="For example; https://gist.github.com/search?q=fun64+lua"></p>
 			</div>
-			<div class="pop_head title">Examples</div>
+			<div class="pop_head title">Play some of the examples below</div>
 			<a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e" class="pop_div gist1">
 				<div class="pop_info">
 					Hello, World!
@@ -532,7 +543,7 @@ $(document).keydown(function(event){
 					Starfield shader
 				</div>
 			</a>
-			<div class="pop_head title">Or choose one from <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a>.</div>
+			<div class="pop_head title">Or choose one from <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a></div>
 		</div>
 	</div>
 </div>

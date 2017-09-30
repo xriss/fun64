@@ -1,7 +1,7 @@
 #^css same=append
 @import url('https://fonts.googleapis.com/css?family=Cabin:400,700');
 
-*{box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; -ms-box-sizing:border-box;}
+*, *::after, *::before{box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; -ms-box-sizing:border-box;}
 
 
 a,img{border:0; outline:none;}textarea:focus,input:focus{outline:0;}*:focus{outline:0;}
@@ -46,7 +46,7 @@ a.navi_link_home span:before {background:url('{_root}data/favicon.png')no-repeat
 
 /*	INDEX TOP SECTION styles
 	============================================= */
-.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:15%;}
+.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:15%; left:0;}
 .fun_about		{color:#fff; font-size:38px; line-height:50px; width:50%; text-align:center; margin:0 auto;}
 a.fun_try		{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}
 a.fun_try:hover	{background-color:#FFEB3B;}
@@ -223,13 +223,12 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	.text_head		{margin-top:40px; margin-bottom:40px; font-size:48px;}
 	
-	.foot_wrap		{font-size:1.8em;}
+	.foot_wrap		{font-size:1.8em; width:100%;}
 	
 	@-moz-document url-prefix() {
     .fun_bits pre	{width:100%; margin:0;}
     
-    @viewport {zoom:0.75;}
-}
+   
 
 
 }
