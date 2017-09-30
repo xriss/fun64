@@ -4,7 +4,7 @@
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	update=function() update() end, -- called repeatedly to update+draw
-	msg=function(m) msg(m) end, -- called repeatedly to update+draw
+	msg=function(m) msg(m) end, -- handle msgs
 })
 
 local wstr=require("wetgenes.string")

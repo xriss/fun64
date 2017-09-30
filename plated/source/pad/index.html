@@ -291,23 +291,26 @@ if (typeof(document.isFullscreen === undefined)) {
 	var gamecake_load_fun=function(code)
 	{
 		var resize=function(){
-			
-			if(document.isFullscreen()) // move the dom around so split stops messing with the size
+			var container;
+			if(document.isFullscreen())
 			{
-				$(window).prepend($("#gamecake_container")); // take away
+				container=$("#gamecake_canvas"); // fullscreen does funky stuff, try not to disturb it.
 			}
 			else
 			{
-				$("#split_right").prepend($("#gamecake_container")); // restore
-			}
+				container=$("#gamecake_container"); // fit canvas to this size
+			}			
+			var w=container.width();
+			var h=container.height();
 			
-			var e=document.getElementById("gamecake_container");
-			var w=parseFloat(window.getComputedStyle(e).width);
-			var h=parseFloat(window.getComputedStyle(e).height);
-			Module.setCanvasSize(w,h);
+			if(!document.isFullscreen()) // it seems better not to call this when fullscreen
+			{
+				Module.setCanvasSize(w,h);
+			}
+
 			if(window.gamecake_post)
 			{
-				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')'); // but this might help?
 			}
 		};
 

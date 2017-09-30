@@ -3,7 +3,9 @@
 --
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
-	update=function() update() end, -- called repeatedly to update+draw
+	update=function() update() end, -- called repeatedly to update
+	draw=function() draw() end, -- called repeatedly to draw
+	msg=function(m) msg(m) end, -- handle msgs
 })
 
 local wstr=require("wetgenes.string")
@@ -21,11 +23,50 @@ setup=function()
 end
 
 
+lines={}
+
+-- handle raw key press
+msg=function(m)
+
+
+--print(wstr.dump(m))
+
+    local s
+			    
+    if m.class=="mouse" then
+	s=string.format("%6.2f %8s %2d %3d,%3d %s %s",m.time,m.class,m.action,m.x,m.y,tostring(m.keycode or ""),m.keyname or "")
+
+    elseif m.class=="touch" then
+	s=string.format("%6.2f %8s %2d %3d,%3d %3d %3d",m.time,m.class,m.action,m.x,m.y,m.id or 0,m.pressure or 0)
+
+    elseif m.class=="padaxis" then
+	s=string.format("%6.2f %8s %2d %8s %5d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
+
+    elseif m.class=="padkey" then
+	s=string.format("%6.2f %8s %2d %8s %3d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
+
+    elseif m.class=="key" then
+	s=string.format("%6.2f %8s %2d %3s %16s",m.time,m.class,m.action,m.ascii,m.keyname)
+
+    else
+	s=string.format("%6.2f %8s %2d",m.time or 0,m.class,m.action or 0)
+    end
+
+    lines[#lines+1]=s
+    
+    while #lines > 14 do table.remove(lines,1) end
+
+end
+
+
 -- updates are run at 60fps
 update=function()
     
     if setup then setup() setup=nil end
+end
 
+
+draw=function()
     local ccmap=system.components.colors.cmap
     local cmap=system.components.map
     local ctext=system.components.text
@@ -35,26 +76,27 @@ update=function()
     cmap.text_clear(0x01000000*bg) -- clear text forcing a background color
 	
 	
-    local y=2
+    local y=1
 	
     for i=0,6 do
 	local up=ups(i)
 	
 	local ns={
-	    "up","down","left","right","fire",		-- basic joystick, most buttons map to fire
-	    "x","y","a","b",            	        -- the four face buttons
-	    "l1","l2","r1","r2",        	        -- the triggers
-	    "select","start",				-- the menu face buttons
+	    "up","down","left","right","fire",			-- basic joystick, most buttons map to fire
+	    "x","y","a","b",            	   		     -- the four face buttons
+	    "l1","l2","r1","r2",        		        -- the triggers
+	    "select","start",							-- the menu face buttons
 	    "mouse_left","mouse_right","mouse_middle",	-- mouse buttons
+	    "touch",									-- touch buttons
 	    }
 	    
-	local ax={"lx","ly","rx","ry","dx","dy","mx","my"} -- axis name
+	local ax={"lx","ly","rx","ry","dx","dy","mx","my","tx","ty"} -- axis name
 	
 	local a={}
 		
 	for i,n in ipairs(ax) do
 	    local v=up.axis(n)
-	    if v~=0 then -- ignore all the zeros
+	    if v then
 		a[#a+1]=n.."="..math.floor(v+0.5)
 	    end
 	end
@@ -71,18 +113,9 @@ update=function()
 	y=y+1
     end
 
-    local tx=wstr.trim([[
-
-Testing the 8x8 font on the background layer rather than the 4x8 text layer.
-
-Notice how the text layer gets you a drop shadow down onto this layer which helps separate it from the background.
-
-]])
-
-    local tl=wstr.smart_wrap(tx,cmap.text_hx-2)
-    for i=1,#tl do
-	    local t=tl[i]
-	    cmap.text_print(t,1,16+i,fg,bg)
+    for i=1,#lines do
+	ctext.text_print(lines[i],1,y,fg,0)
+	y=y+1
     end
 
 
