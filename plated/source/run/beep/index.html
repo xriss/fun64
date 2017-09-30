@@ -89,6 +89,7 @@ a:focus {
   background: rgba(128, 128, 128, 0.5);
 }
 
+#gamecake_log {width:100%; height:100%; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:0 10px;}
 
 	</style>
 </head>
@@ -97,6 +98,7 @@ a:focus {
 		<div id="gamecake_container">
 			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
 		</div>
+		<pre id="gamecake_log"></pre>
 
 
 <script id="paint_config" type="text/lua">
@@ -155,6 +157,38 @@ a:focus {
 </script>
 
 <script>
+
+(function () {
+	var newlog = function () {
+		var logger = document.getElementById('gamecake_log');
+		if( logger )
+		{
+			for (var i = 0; i < arguments.length; i++) {
+				if (typeof arguments[i] == 'object') {
+					s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
+				} else {
+					s=arguments[i] + "\n";
+				}
+			}
+			
+			var sticky=( logger.scrollTop >= (logger.scrollHeight-logger.clientHeight) );
+			
+			var t=logger.innerHTML || "";
+			if(t.length>4096) { t=t.slice(-4096); } // limit
+			logger.innerHTML=t+s;
+
+			if(sticky)
+			{
+				logger.scrollTop=(logger.scrollHeight-logger.clientHeight);
+			}
+		}		
+	}
+//	console.error=newlog;
+	console.warn=newlog;
+	console.log=newlog;
+})();
+
+
 	
 if (typeof(document.isFullscreen === undefined)) {
   document.isFullscreen = function() {
