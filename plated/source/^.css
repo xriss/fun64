@@ -235,8 +235,6 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	@-moz-document url-prefix() {
     .fun_bits pre	{width:100%; margin:0;}
-    
+    }
    
-
-
 }
