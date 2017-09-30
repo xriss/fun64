@@ -28,9 +28,11 @@ a		{color:#88f;}
 }
 
 
+#gamecake_container, #gamecake_log	{display:inline-block; vertical-align:top;}
+
 #gamecake_container {
     overflow: hidden;
-    width: 100%;
+    width: 60%;
     height: 100%;
 }
 
@@ -65,13 +67,6 @@ a:focus {
 
 #iconbar a:hover { background-color: #000; }
 
-#gamecake_log {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    color: #4c4;
-}
-
 ::-webkit-scrollbar
 {
   width: 12px;  /* for vertical scrollbars */
@@ -88,7 +83,7 @@ a:focus {
   background: rgba(128, 128, 128, 0.5);
 }
 
-#gamecake_log {width:100%; height:100%; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:0 10px;}
+#gamecake_log {width:40%; height:800px; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:40px 10px; overflow-y:scroll;}
 
 	</style>
 </head>
@@ -96,8 +91,7 @@ a:focus {
 
 		<div id="gamecake_container">
 			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
-		</div>
-		<pre id="gamecake_log"></pre>
+		</div><pre id="gamecake_log"></pre>
 
 
 <script id="paint_config" type="text/lua">
