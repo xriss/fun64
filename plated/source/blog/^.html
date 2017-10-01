@@ -16,6 +16,11 @@ Fun64 Devlog
 #^_blog_page_body
 #^------------------------------
 <div class="wrap blog_bits"><div class="blog_head">You are reading: <span>Fun64 dev blog</span></div></div>
+
+<div class="wrap paging">
+	<div class="page_link page_top">{_blog_page_older:link_older_page}</div><div class="page_link page_top">{_blog_page_newer:link_newer_page}</div>
+</div>
+
 <div class="blog_list_wrap">{_list:blog_list}</div>
 
 <div class="wrap paging">
@@ -45,6 +50,11 @@ Fun64 Devlog
 #^_blog_post_body_one
 #^------------------------------
 <div class="wrap post_page"><div class="blog_head">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div></div>
+
+<div class="wrap paging">
+	<div class="page_link page_top">{_blog_post_older:link_older_post}</div><div class="page_link page_top">{_blog_post_newer:link_newer_post}</div>
+</div>
+
 <div class="blog_wrap">
 	<span class="blog_post_user">
 		<span>~ {_blog_post_json.author}</span>

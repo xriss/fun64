@@ -25,6 +25,7 @@ b			{font-weight:700;}
 
 
 .page_link	{display:inline-block; width:50%; vertical-align:top; margin-top:80px; margin-bottom:80px;}
+.page_link.page_top	{margin-top:20px; margin-bottom:20px;}
 .page_link:nth-of-type(2)	{text-align:right;}
 
 
@@ -110,6 +111,7 @@ a.back_top:hover{background-color:#2d3538;}
 .blog_bits, .post_page	{margin-top:100px;}
 
 .blog_head			{width:1024px; margin:0 auto; margin-top:20px;}
+.blog_head a:hover	{background-color:#e2e0e8;}
 
 span.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:700;}
 span.blog_post_user	{display:block; font-size:16px; margin-bottom:20px;}
@@ -118,15 +120,16 @@ span.blog_post_user	{display:block; font-size:16px; margin-bottom:20px;}
 .line				{border-top:1px dashed #1400ff; margin-top:40px; margin-bottom:40px; position:relative;}
 .blog_info			{position:absolute; right:10px; top:10px;}
 
-.blog_wrap			{width:700px; margin:auto; margin-top:40px; font-size:20px; line-height:30px; border:0;}
+.blog_wrap			{width:700px; margin:auto; font-size:20px; line-height:30px; border:0;}
 
 
 /*	BLOG post styles
 	============================================= */
 
-a.blog_post_link	{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:40px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}
+a.blog_post_link	{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:30px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}
 a.blog_post_link:nth-of-type(odd)	{background-color:#1400ff; color:#fff;}
-a.blog_post_link:nth-of-type(3)		{margin-right:0;}
+a.blog_post_link:nth-of-type(3n)	{margin-right:0;}
+a.blog_post_link:nth-of-type(1), a.blog_post_link:nth-of-type(2), a.blog_post_link:nth-of-type(3)	{margin-top:0;}
 a.blog_post_link:hover	{background-color:rgba(0,0,0,0.4); color:#fff;}
 
 a.blog_post_link span.blog_post_title	{display:block; font-size:26px; line-height:30px; font-weight:700;}
@@ -141,6 +144,7 @@ a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; backg
 .paging div a:before {display:inline-block; vertical-align:top; content:"\021D0"; margin-right:5px;}
 .paging div:nth-of-type(2) a:before	{display:none;}
 .paging div:nth-of-type(2) a:after	{display:inline-block; vertical-align:top; content:"\0279C"; margin-left:5px;}
+.paging div a:hover {background-color:#e2e0e8;}
 
 
 /*	BLOG FUNPAD LINK - found beneath each post

@@ -83,7 +83,8 @@ a.pop_close:hover{color:#42F89E; cursor:pointer;}
 
 .pop_wrapper.load .pop_info	{font-weight:700; text-align:center; width:90%; position:absolute; top:35px; left:5%; font-size:24px; color:#ccc; line-height:30px; text-shadow:1px 2px 5px rgba(0,0,0,0.8);}
 
-
+span.pad_icon:before	{background:url('../data/icon_pad.png')no-repeat center center; display:inline-block; background-size:contain; width:24px; height:24px; content:""; margin-right:10px;}
+span.fun64_icon:before	{background:url('../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; margin-right:10px; zoom:70%;}
 
 /*	LOAD link popup	*/
 
@@ -492,13 +493,13 @@ $(document).keydown(function(event){
 				</div>
 			</div><div class="pop_div">
 				<div class="pop_info">
-					<b>Fun64</b> is a simple game engine designed for single file game sketches.
+					<img src="../data/favicon.png" width="16px" height="16px"/> <b>Fun64</b> is a simple game engine designed for single file game sketches.
 					<p><a href="http://xriss.github.io/fun64" target="_blank">Visit the official site</a></p>
 					<p><a href="http://github.com/xriss/fun64" target="_blank">View the project on Github</a></p>
 				</div>
 			</div>
 			<div class="pop_head">
-				<p>FunPad is powered by Gamecake, WebAssembly JS and Lua.</p>
+				<p><span class="pad_icon">FunPad</span> is powered by Gamecake, WebAssembly JS and Lua.</p>
 			</div>
 		</div>
 	</div>
