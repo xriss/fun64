@@ -240,6 +240,9 @@ local names=system.components.tiles.names
 	entities.add({caste="before"})
 	entities.add({caste="laterlater"})
 	entities.add({caste="inbetween"})
+	entities.add({caste="noweight1"})
+	entities.add({caste="noweight2"})
+	entities.add({caste="noweight3"})
 
 -- dump order to show how sorting works
 	for i=1,#entities.sorted do
