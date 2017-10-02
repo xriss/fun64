@@ -140,8 +140,8 @@ entities.caste=function(caste)
 		entities.sorted[#entities.sorted+1]=items -- remember in sorted table
 		entities.atad[ items ] = caste -- remember caste for later sorting
 		table.sort(entities.sorted,function(a,b)
-			local av=entities.sortby[ entities.atad[a] ] or 0 -- get caste then use caste to get sortby weight
-			local bv=entities.sortby[ entities.atad[b] ] or 0
+			local av=entities.sortby[ entities.atad[a] ] or math.huge -- get caste then use caste to get sortby weight
+			local bv=entities.sortby[ entities.atad[b] ] or math.huge -- put items without a weight last
 			return ( av < bv )
 		end)
 	end
