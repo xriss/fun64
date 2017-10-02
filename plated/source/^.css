@@ -19,11 +19,13 @@ b			{font-weight:700;}
 
 .wrap		{width:1024px; margin:0 auto;}
 .wrap.max	{width:100%;}
+.wrap.max.beep	{background:url('/fun64/data/beep_back.png'); height:100px; background-size:cover;}
 .wrap.eg	{padding-bottom:60px;}
 #content	{display:table-row-group;}
 
 
 .page_link	{display:inline-block; width:50%; vertical-align:top; margin-top:80px; margin-bottom:80px;}
+.page_link.page_top	{margin-top:20px; margin-bottom:20px;}
 .page_link:nth-of-type(2)	{text-align:right;}
 
 
@@ -42,6 +44,8 @@ b			{font-weight:700;}
 a.navi_link_home{display:inline-block; width:55%; color:#eaeaea; vertical-align:top; font-weight:700;}
 a.navi_link_all	{display:inline-block; width:11%; text-align:right; color:#eaeaea;}
 a.navi_link_home span:before {background:url('{_root}data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; margin-right:10px; zoom:70%;}
+a.navi_link_all.pad_link span:before {background:url('{_root}data/icon_pad.png')no-repeat center center; display:inline-block; background-size:contain; width:24px; height:24px; content:""; margin-right:10px; zoom:70%;}
+a.navi_link_all.beep_link span:before{background:url('{_root}data/icon_beep.png')no-repeat center center; display:inline-block; background-size:contain; width:20px; height:20px; content:""; margin-right:10px; zoom:70%;}
 
 
 /*	INDEX TOP SECTION styles
@@ -51,6 +55,14 @@ a.navi_link_home span:before {background:url('{_root}data/favicon.png')no-repeat
 a.fun_try		{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}
 a.fun_try:hover	{background-color:#FFEB3B;}
 .wasm_notice	{display:none; text-align:center; margin-top:20px;}
+
+
+/*	INDEX Beep
+	============================================= */
+.wrap.max.beep a	{width:100%; height:100%; background-color:rgba(28,50,64,0.8); display:block; margin-top:20px;}
+.wrap.max.beep a:hover	{background-color:rgba(30,72,99, 0.8);}
+.wrap.max.beep span	{text-align:center; display:block; color:#FFF; font-size:30px; line-height:100px;}
+.wrap.max.beep span:before {content:""; background:url(/fun64/data/icon_beep.png)no-repeat center center; width:30px; height:24px; display:inline-block; background-size:contain; margin-right:10px;}
 
 
 /*	INDEX EXAMPLES SECTION styles
@@ -99,6 +111,7 @@ a.back_top:hover{background-color:#2d3538;}
 .blog_bits, .post_page	{margin-top:100px;}
 
 .blog_head			{width:1024px; margin:0 auto; margin-top:20px;}
+.blog_head a:hover	{background-color:#e2e0e8;}
 
 span.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:700;}
 span.blog_post_user	{display:block; font-size:16px; margin-bottom:20px;}
@@ -107,15 +120,16 @@ span.blog_post_user	{display:block; font-size:16px; margin-bottom:20px;}
 .line				{border-top:1px dashed #1400ff; margin-top:40px; margin-bottom:40px; position:relative;}
 .blog_info			{position:absolute; right:10px; top:10px;}
 
-.blog_wrap			{width:700px; margin:auto; margin-top:40px; font-size:20px; line-height:30px; border:0;}
+.blog_wrap			{width:700px; margin:auto; font-size:20px; line-height:30px; border:0;}
 
 
 /*	BLOG post styles
 	============================================= */
 
-a.blog_post_link	{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:40px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}
+a.blog_post_link	{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:30px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}
 a.blog_post_link:nth-of-type(odd)	{background-color:#1400ff; color:#fff;}
-a.blog_post_link:nth-of-type(3)		{margin-right:0;}
+a.blog_post_link:nth-of-type(3n)	{margin-right:0;}
+a.blog_post_link:nth-of-type(1), a.blog_post_link:nth-of-type(2), a.blog_post_link:nth-of-type(3)	{margin-top:0;}
 a.blog_post_link:hover	{background-color:rgba(0,0,0,0.4); color:#fff;}
 
 a.blog_post_link span.blog_post_title	{display:block; font-size:26px; line-height:30px; font-weight:700;}
@@ -130,6 +144,7 @@ a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; backg
 .paging div a:before {display:inline-block; vertical-align:top; content:"\021D0"; margin-right:5px;}
 .paging div:nth-of-type(2) a:before	{display:none;}
 .paging div:nth-of-type(2) a:after	{display:inline-block; vertical-align:top; content:"\0279C"; margin-left:5px;}
+.paging div a:hover {background-color:#e2e0e8;}
 
 
 /*	BLOG FUNPAD LINK - found beneath each post
@@ -235,8 +250,6 @@ a.bar:hover			{background-color:#1400ff;}
 	
 	@-moz-document url-prefix() {
     .fun_bits pre	{width:100%; margin:0;}
-    
+    }
    
-
-
 }
