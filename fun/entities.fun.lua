@@ -114,17 +114,38 @@ lists.
 -----------------------------------------------------------------------------
 entities={} -- a place to store everything that needs to be updated
 
+entities.sortby={ -- custom sort weights for update/draw order of each caste
+	"before", -- 1
+	"player", -- 2
+	"later",  -- 3
+	["laterlater"]=10,
+	["inbetween"]=2.5,
+}
+for i,v in ipairs(entities.sortby) do entities.sortby[v]=i end 
+
 -- clear the current data
 entities.reset=function()
-	entities.data={}
-	entities.info={}
+	entities.info={} -- general data
+	entities.data={} -- main lists of entities
+	entities.atad={} -- a reverse lookup of the data table
+	entities.sorted={} -- a sorted list of entities so we always get the same update order
 end
 
 -- get items for the given caste
 entities.caste=function(caste)
 	caste=caste or "generic"
-	if not entities.data[caste] then entities.data[caste]={} end -- create on use
-	return entities.data[caste]
+	if not entities.data[caste] then -- create on use
+		local items={}
+		entities.data[caste]=items
+		entities.sorted[#entities.sorted+1]=items -- remember in sorted table
+		entities.atad[ items ] = caste -- remember caste for later sorting
+		table.sort(entities.sorted,function(a,b)
+			local av=entities.sortby[ entities.atad[a] ] or math.huge -- get caste then use caste to get sortby weight
+			local bv=entities.sortby[ entities.atad[b] ] or math.huge -- put items without a weight last
+			return ( av < bv )
+		end)
+	end
+ 	return entities.data[caste]
 end
 
 -- add an item to this caste
@@ -139,7 +160,8 @@ end
 -- call this functions on all items in every caste
 entities.call=function(fname,...)
 	local count=0
-	for caste,items in pairs(entities.data) do
+	for i=1,#entities.sorted do
+		local items=entities.sorted[i]
 		for idx=#items,1,-1 do -- call backwards so item can remove self
 			local it=items[idx]
 			if it[fname] then
@@ -213,5 +235,18 @@ local names=system.components.tiles.names
 	}
 
 	entities.add(test_entity)
+
+	entities.add({caste="later"})
+	entities.add({caste="before"})
+	entities.add({caste="laterlater"})
+	entities.add({caste="inbetween"})
+	entities.add({caste="noweight1"})
+	entities.add({caste="noweight2"})
+	entities.add({caste="noweight3"})
+
+-- dump order to show how sorting works
+	for i=1,#entities.sorted do
+		print(i,entities.sorted[i][1].caste)
+	end
 
 end
