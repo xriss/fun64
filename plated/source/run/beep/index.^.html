@@ -33,6 +33,7 @@ body				{background:#000;}
 .doc_head p			{margin:10px 0;}
 .doc				{padding:10px 0; font-size:16px;}
 .doc span			{display:block; font-size:20px; padding-bottom:5px; font-weight:bold;}
+.doc_tit			{padding:10px 0 10px 20px; margin-bottom:10px; margin-top:20px; font-size:26px; background-color:#48401e; margin-left:-20px; border-radius:20px 0 20px 20px;}
 
 	</style>
 </head>
@@ -247,6 +248,28 @@ $(document).keydown(function(event){
 #^------------------------------
 <div class="doc_wrap">
 	<div class="doc_head">Play around with the parameters to create strange beeps and soundscapes.<p>Use the console to copy and paste your creation into the <a href="{_root}pad">FunPad</a>.</p></div>
+	<div class="doc_tit">
+		<span>Window displays</span>
+	</div>
+	<div class="doc">	
+		<span>Beep</span>
+		Settings for your base waveform. Press play to hear your sound.
+	</div>
+	<div class="doc">	
+		<span>Frequency Modulation</span>
+		Disabled by default. Choose Active to enable the settings in this window. 
+	</div>
+	<div class="doc">	
+		<span>Display</span>
+		Displays the waveform you play.
+	</div>
+	<div class="doc">	
+		<span>Filter</span>
+		Active by default. The equalizer lets you adjust the volume of 10 frequency bands.
+	</div>
+	<div class="doc_tit">
+		<span>Beep</span>
+	</div>
 	<div class="doc">
 		<span>Play</span>
 		Play the frequency of your chosen parameters.<br/>The Console to the right will update itself with the raw code of that frequency.
@@ -287,24 +310,36 @@ $(document).keydown(function(event){
 		<span>Release</span>
 		 Adjust the amount of time to fade out from sustain volume. Time is in seconds.
 	</div>
-	<div class="doc">
+	<div class="doc_tit">
 		<span>Frequency Modulation</span>
-		This is disabled by default. Choose active to activate the options below.
 	</div>
 	<div class="doc">
-		<span>Waveform, frequency</span>
-		Choose a waveform to modulate the frequency of your base waveform.<br/>There are 16 cycles per second. Adjust these numbers to make your sound warble faster or slower.
-	</div>
-	<div class="doc">
-		<span>FM Duty</span>
-		Adjust the centrepoint of the modulator to apply to your base waveform.
-	</div>
-	<div class="doc">
-		<span>FM Slide</span>
+		<span>Slide</span>
 		Adjust the frequency of the base waveform over time.
 	</div>
 	<div class="doc">
 		<span>C3 &lt;- C4 -&gt; C5</span>
 		Choose the note range of your modulator. The first note is at -1 cycle, second note at 0 cycle and third note at 1 cycle.
 	</div>
+	<div class="doc">
+		<span>Waveform, frequency</span>
+		Choose a waveform to modulate the frequency of your base waveform.<br/>There are 16 cycles per second. Adjust these numbers to make your sound warble faster or slower.
+	</div>
+	<div class="doc">
+		<span>White steps</span>
+		Adjust the number of random value in a single wave cycle. Only applies to Whitenoise.
+	</div>
+	<div class="doc">
+		<span>White seed</span>
+		Adjust the starting value of the Whitenoise generator. Only applies to Whitenoise.
+	</div>
+	<div class="doc">
+		<span>Wave rez</span>
+		Adjust the vertical resolution of the waveform, 0 means no adjustment (off).
+	</div>
+	<div class="doc">
+		<span>Duty</span>
+		Adjust the centrepoint of the modulator to apply to your base waveform.
+	</div>
+	
 </div>
