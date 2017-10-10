@@ -31,6 +31,7 @@ body				{background:#000;}
 .doc_head a			{color:#FFF; font-weight:bold;}
 .doc_head a:hover	{border-bottom:1px solid #00adff;}
 .doc_head p			{margin:10px 0;}
+.doc_head span:before {content:""; background:url(/fun64/data/icon_beep.png)no-repeat center center; width:20px; height:18px; display:inline-block; background-size:contain; margin-right:5px;}
 .doc				{padding:10px 0; font-size:16px;}
 .doc span			{display:block; font-size:20px; padding-bottom:5px; font-weight:bold;}
 .doc_tit			{padding:10px 0 10px 20px; margin-bottom:10px; margin-top:20px; font-size:26px; background-color:#48401e; margin-left:-20px; border-radius:20px 0 20px 20px;}
@@ -247,7 +248,10 @@ $(document).keydown(function(event){
 #^beep_doc trim=ends
 #^------------------------------
 <div class="doc_wrap">
-	<div class="doc_head">Play around with the parameters to create strange beeps and soundscapes.<p>Use the console to copy and paste your creation into the <a href="{_root}pad">FunPad</a>.</p></div>
+	<div class="doc_head">
+		<span><b>Beep</b></span> generates a 48k 16-bit sampled waveform. The highest frequency, 24k and lowest, 0k.
+		<p>Play around with the parameters to create strange beeps and soundscapes.</p>
+		<p>Use the console to copy and paste your creation into the <a href="{_root}pad">FunPad</a>.</p></div>
 	<div class="doc_tit">
 		<span>Window displays</span>
 	</div>
@@ -261,7 +265,7 @@ $(document).keydown(function(event){
 	</div>
 	<div class="doc">	
 		<span>Display</span>
-		Displays the waveform you play.
+		Displays the waveform you play. A frame shows 1/60 of a second.
 	</div>
 	<div class="doc">	
 		<span>Filter</span>
@@ -341,5 +345,21 @@ $(document).keydown(function(event){
 		<span>Duty</span>
 		Adjust the centrepoint of the modulator to apply to your base waveform.
 	</div>
+	<div class="doc_tit">
+		<span>Display</span>
+	</div>
+	<div class="doc">
+		<span>Slider</span>
+		Use the slider to scroll through the waveform and audio spectrum generated.<br/>
+		The slider also displays the time of that frame in seconds.
+	</div>
 	
+	<div class="doc_tit">
+		<span>Filter</span>
+	</div>
+	<div class="doc">
+		<span>Bands</span>
+		Adjust the volume of each frequency band. 0 is silence and 2 is twice as loud.<br/>
+		Defaults at 1 for each band.
+	</div>
 </div>
