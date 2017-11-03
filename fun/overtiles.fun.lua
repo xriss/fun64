@@ -15,11 +15,13 @@ tilemap.component="overmap"
 tilemap.name="map"
 tilemap.tiles="tiles"
 tilemap.tilemap_size={128,128}
-tilemap.tile_size={24,24}
+tilemap.tile_size={24,24,16}
 tilemap.over_size={8,16}
-tilemap.slide={0,1/2}
 tilemap.sort={-1,-1}
+tilemap.mode="xz"
 tilemap.layer=2
+
+hardware.screen.zxy={0.5,-0.5}
 
 -- debug text dump
 local ls=function(t) print(require("wetgenes.string").dump(t)) end
