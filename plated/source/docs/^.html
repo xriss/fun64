@@ -1,0 +1,69 @@
+
+#^title trim=ends
+
+Welcome to docs!
+
+#^html
+<html>
+	<head>
+		<title>{title}</title>
+		<link rel='stylesheet' href='{_docs_json.dirname}/docs.css' />
+	</head>
+	<body>{body}</body>
+</html>
+
+#^_docs_json
+
+{
+
+// ignore anything containing this text
+// so we can skip .git and node_modules etc
+
+	ignore:{
+		"node_modules":true,
+	},
+
+// search in these dirs (relative to the root of source)
+// to find files that end with the given value
+
+ 	dirs:{
+		"../../../gamecake/lua/wetgenes/gamecake/fun":".lua",
+	},
+
+// create url links by replacing the beginning of filenames like so
+
+ 	urlprefix:{
+		"../../gamecake/lua/":"https://github.com/xriss/gamecake/blob/master/lua/",
+	},
+
+}
+
+#^wrap
+
+<div style="margin:64px 0px;">
+<h1><a href="{_docs_json.dirname}/{_it.name}">{_it.name}</a></h1>
+<div><a href="{_it.url}#L{_it.line}">{_it.url}</a></div>
+<div>{[[}{_it.body}{]]}</div>
+</div>
+
+#^menuwrap trim=ends
+
+{_it.count>1&&_it:menuwrap_link}
+
+#^menuwrap_link trim=ends
+
+<a style="display:block;" href="{_docs_json.dirname}/{_it.name}">/{_it.name}</a>
+
+#^body
+<div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
+
+	<div style="margin:64px 0px;">
+	<a style="display:block;" href="{_docs_json.dirname}">/</a>
+	{_docs:menuwrap}
+	</div>
+
+</div><div style="width:60%;display:inline-block;min-width:640px;">
+
+	{_list:wrap}
+
+</div></div>
