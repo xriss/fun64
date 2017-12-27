@@ -5,23 +5,34 @@ function ls(s) print(wstr.dump(s))end
 
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
-	graphics=function() return graphics end,
-	update=function() update() end, -- called repeatedly to update+draw
+	update=function() -- called at a steady 60fps
+		if setup then setup() setup=nil end -- call an optional setup function *once*
+		entities.call("update")
+	end,
+	draw=function() -- called at actual display frame rate
+		entities.call("draw")
+	end,
 })
 
-local tilemap=hardware.map
-for i,v in pairs(tilemap) do tilemap[i]=nil end -- remove
-tilemap.component="overmap"
-tilemap.name="map"
-tilemap.tiles="tiles"
-tilemap.tilemap_size={128,128}
-tilemap.tile_size={24,24,16}
-tilemap.over_size={8,16}
-tilemap.sort={-1,-1}
-tilemap.mode="xz"
-tilemap.layer=2
+local entities=require("wetgenes.gamecake.fun.entities").create({
+	sortby={
+	},
+})
 
 hardware.screen.zxy={0.5,-0.5}
+
+hardware.insert{
+	component="overmap",
+	name="map",					-- same name so will replace the foreground tilemap
+	tiles="tiles",
+	tilemap_size={128,128},
+	tile_size={24,24,16},
+	over_size={8,16},
+	sort={-1,-1},
+	mode="xz",
+	layer=2,
+}
+
 
 -- debug text dump
 local ls=function(t) print(require("wetgenes.string").dump(t)) end
@@ -115,6 +126,33 @@ O O O O O O O O o o o o o o o o r . . . . . . .
 O O O O O O O O o o o o o o o o . . . . . . . . 
 ]]},
 
+{nil,"bubble",[[
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
+. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
+. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
+. . . 7 . . . 7 7 . . . . . . . . . . . 7 . . . 
+. . 7 . . . 7 . . . . . . . . . . . . . . 7 . . 
+. . 7 . . 7 . . . . . . . . . . . . . . . 7 . . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . . . . . . . . . 7 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
+. . 7 . . . . . . . . . . . . . . . 7 . . 7 . . 
+. . 7 . . . . . . . . . . . . . . 7 . . . 7 . . 
+. . . 7 . . . . . . . . . . . 7 7 . . . 7 . . . 
+. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
+. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
+. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
+. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
+]]},
+
 }
 
 local combine_legends=function(...)
@@ -192,9 +230,6 @@ update=function()
 
 	if not setup_done then
 
---		ccopper.shader_name="fun_copper_noise"		
---		ccopper.shader_uniforms.scroll={0,0,0,0}
-
 		it={}
 		it.vx=0.25
 		it.vy=1
@@ -231,7 +266,7 @@ update=function()
 	
     local tx=wstr.trim([[
 
-Use up/down/left/right to adjust the speed of the scrolling star field. 
+Use up/down/left/right to adjust the speed of the scrolling. 
 Hit fire to reset the momentum.
 
 ]])
