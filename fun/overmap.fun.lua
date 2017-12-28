@@ -7,16 +7,13 @@ hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	update=function() -- called at a steady 60fps
 		if setup then setup() setup=nil end -- call an optional setup function *once*
+		entities.systems.call("update")
 		entities.call("update")
 	end,
 	draw=function() -- called at actual display frame rate
+		entities.systems.call("draw")
 		entities.call("draw")
 	end,
-})
-
-local entities=require("wetgenes.gamecake.fun.entities").create({
-	sortby={
-	},
 })
 
 hardware.screen.zxy={0.5,-0.5}
@@ -33,17 +30,82 @@ hardware.insert{
 	layer=2,
 }
 
+entities=require("wetgenes.gamecake.fun.entities").create({
+	sortby={
+	},
+})
 
--- debug text dump
-local ls=function(t) print(require("wetgenes.string").dump(t)) end
+-- setup all entities
+setup=function() entities.systems.call("setup") end
 
 
--- define all graphics in this global, we will convert and upload to tiles at setup
--- although you can change tiles during a game, we try and only upload graphics
--- during initial setup so we have a nice looking sprite sheet to be edited by artists
 
-graphics={
-{0x0000,"_font",0x0340}, -- pre-allocate the 4x8 and 8x8 font area
+
+local combine_legends=function(...)
+	local legend={}
+	for _,t in ipairs{...} do -- merge all
+		for n,v in pairs(t) do -- shallow copy, right side values overwrite left
+			legend[n]=v
+		end
+	end
+	return legend
+end
+
+local default_legend={
+	[   0]={ name="test_empty",				},
+	[". "]={ name="test_empty",				},
+	["1 "]={ name="test_blue",				},
+	["2 "]={ name="test_orange",			},
+}
+	
+levels={}
+
+levels[1]={
+legend=combine_legends(default_legend,{
+}),
+title="This is a test.",
+map=[[
+1 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+1 . 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+]],
+}
+
+
+
+
+entities.systems.insert{ caste="map",
+
+	loads=function()
+
+		hardware.graphics.loads{
 
 {nil,"test_empty",[[
 . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -126,119 +188,15 @@ O O O O O O O O o o o o o o o o r . . . . . . .
 O O O O O O O O o o o o o o o o . . . . . . . . 
 ]]},
 
-{nil,"bubble",[[
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
-. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
-. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
-. . . 7 . . . 7 7 . . . . . . . . . . . 7 . . . 
-. . 7 . . . 7 . . . . . . . . . . . . . . 7 . . 
-. . 7 . . 7 . . . . . . . . . . . . . . . 7 . . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . . . . . . . . . 7 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. 7 . . . . . . . . . . . . . . . . . . . . 7 . 
-. . 7 . . . . . . . . . . . . . . . 7 . . 7 . . 
-. . 7 . . . . . . . . . . . . . . 7 . . . 7 . . 
-. . . 7 . . . . . . . . . . . 7 7 . . . 7 . . . 
-. . . . 7 . . . . . . . . . . . . . . 7 . . . . 
-. . . . . 7 7 . . . . . . . . . . 7 7 . . . . . 
-. . . . . . . 7 7 . . . . . . 7 7 . . . . . . . 
-. . . . . . . . . 7 7 7 7 7 7 . . . . . . . . . 
-]]},
-
-}
-
-local combine_legends=function(...)
-	local legend={}
-	for _,t in ipairs{...} do -- merge all
-		for n,v in pairs(t) do -- shallow copy, right side values overwrite left
-			legend[n]=v
-		end
-	end
-	return legend
-end
-
-local default_legend={
-	[   0]={ name="test_empty",				},
-	[". "]={ name="test_empty",				},
-	["1 "]={ name="test_blue",				},
-	["2 "]={ name="test_orange",			},
-}
+		}
+	end,
 	
-levels={}
+	setup=function()
 
-levels[1]={
-legend=combine_legends(default_legend,{
-}),
-title="This is a test.",
-map=[[
-1 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-1 . 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 1 2 1 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . 2 1 2 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-]],
-}
-
-
-
------------------------------------------------------------------------------
---[[#update
-
-	update()
-
-Update and draw loop, called every frame.
-
-]]
------------------------------------------------------------------------------
-update=function()
-
-	local ccopper=system.components.copper
-	local cmap=system.components.back
-
-	if not setup_done then
-
-		it={}
-		it.vx=0.25
-		it.vy=1
-
-		local names=system.components.tiles.names
 		local legend={}
 		for n,v in pairs( levels[1].legend ) do -- build tilemap from legend
 			if v.name then -- convert name to tile
-				legend[n]=names[v.name]
+				legend[n]=system.components.tiles.names[v.name]
 			end
 		end
 		bitdown.tile_grd( levels[1].map, legend, system.components.map.tilemap_grd, -- draw into the screen (tiles)
@@ -249,36 +207,84 @@ update=function()
 					0
 		end)
 		system.components.map.dirty(true)
-		setup_done=true
-	end
 
-	local up=ups(0) -- get all connected controls, keyboard or gamepad
-
-	if up.button("up")    then it.vy=it.vy-(1/16) end
-	if up.button("down")  then it.vy=it.vy+(1/16) end
-	if up.button("left")  then it.vx=it.vx+(1/16) end
-	if up.button("right") then it.vx=it.vx-(1/16) end
-	if up.button("fire_set") then it.vx=0 it.vy=0 end
-
-
---	ccopper.shader_uniforms.scroll[1]=ccopper.shader_uniforms.scroll[1]+it.vx
---	ccopper.shader_uniforms.scroll[2]=ccopper.shader_uniforms.scroll[2]+it.vy
-	
-    local tx=wstr.trim([[
+		local tx=wstr.trim([[
 
 Use up/down/left/right to adjust the speed of the scrolling. 
 Hit fire to reset the momentum.
 
 ]])
+		local tl=wstr.smart_wrap(tx,system.components.back.text_hx-4)
+		for i=1,#tl do
+			local t=tl[i]
+			system.components.back.text_print(t,2,1+i,28,0)
+		end
+		system.components.back.dirty(true)
+		
+		
+		system.components.map.ax=160
+		system.components.sprites.ax=160
 
-    local tl=wstr.smart_wrap(tx,cmap.text_hx-4)
-    for i=1,#tl do
-	    local t=tl[i]
-	    cmap.text_print(t,2,1+i,28,0)
-    end
-    cmap.dirty(true)
+	end,
+
+}
 
 
 
-end
+entities.systems.insert{ caste="player",
 
+	loads=function()
+
+		hardware.graphics.loads{
+
+{nil,"test_tile",[[
+7 . . 7 7 . . 7 
+. 7 . 7 7 . 7 . 
+. . 7 7 7 7 . . 
+7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 
+. . 7 7 7 7 . . 
+. 7 . 7 7 . 7 . 
+7 . . 7 7 . . 7 
+]]},
+
+		}
+
+	end,
+
+	setup=function()
+
+		local names=system.components.tiles.names
+
+	-- a player entity
+		local test_entity=entities.add{	caste="player",
+		
+			tile=names.test_tile.idx,
+			px=160,py=0,pz=0,sz=3,rz=0,
+			update=function(it)
+				local up=ups(0) -- get all connected controls, keyboard or gamepad
+
+				if up.button("fire") then
+					if up.button("up")    then it.sz=it.sz-(1/16) end
+					if up.button("down")  then it.sz=it.sz+(1/16) end
+					if up.button("left")  then it.rz=it.rz-1 end
+					if up.button("right") then it.rz=it.rz+1 end
+				else
+					if up.button("up")    then it.pz=it.pz+1 end
+					if up.button("down")  then it.pz=it.pz-1 end
+					if up.button("left")  then it.px=it.px-1 end
+					if up.button("right") then it.px=it.px+1 end
+				end
+				
+			end,
+			draw=function(it)
+				system.components.sprites.list_add({t=it.tile,px=it.px,py=it.py,pz=it.pz,s=it.sz,rz=it.rz})
+			end,
+		}
+
+	end,
+
+}
+
+-- finally load all graphics from systems defined above
+entities.systems.call("loads")
