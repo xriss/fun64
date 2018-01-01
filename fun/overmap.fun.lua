@@ -207,23 +207,30 @@ O O O O O O O O o o o o o o o o . . . . . . . .
 					0
 		end)
 		system.components.map.dirty(true)
+		
+		
+		system.components.map.ax=160
+		system.components.sprites.ax=160
 
+	end,
+
+	draw=function()
+	
+	system.components.text.text_tile =system.components.text.text_tile8x8
+	system.components.text.text_print=system.components.text.text_print2
+	
 		local tx=wstr.trim([[
 
 Use up/down/left/right to adjust the speed of the scrolling. 
 Hit fire to reset the momentum.
 
 ]])
-		local tl=wstr.smart_wrap(tx,system.components.back.text_hx-4)
+		local tl=wstr.smart_wrap(tx,system.components.text.text_hx/2-4)
 		for i=1,#tl do
 			local t=tl[i]
-			system.components.back.text_print(t,2,1+i,28,0)
+			system.components.text.text_print(t,2/2,1+i,31,0)
 		end
-		system.components.back.dirty(true)
-		
-		
-		system.components.map.ax=160
-		system.components.sprites.ax=160
+		system.components.text.dirty(true)
 
 	end,
 
