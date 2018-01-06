@@ -41,6 +41,7 @@ setup=function() entities.systems.call("setup") end
 
 
 local prefabs={
+	{name="player",id="player",sprite="test_player"},
 	{name="floor",back="test_none"},
 	{name="floor_tile",back="test_tile"},
 	{name="wall_full",back="test_wall2",is_big=true,},
@@ -58,11 +59,12 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[   0]={ name="test_empty",		items={"floor"},		},
-	[". "]={ name="test_none",		items={"floor"}			},
-	["x "]={ name="test_tile",		items={"floor_tile"}	},
-	["# "]={ name="test_wall2",		items={"wall_full"}		},
-	["= "]={ name="test_wall1",		items={"wall_half"}		},
+	[   0]={ items={"floor"},				},
+	[". "]={ items={"floor"}				},
+	["x "]={ items={"floor_tile"}			},
+	["# "]={ items={"wall_full"}			},
+	["= "]={ items={"wall_half"}			},
+	["S "]={ items={"floor_tile","player"}		},
 }
 	
 levels={}
@@ -83,10 +85,10 @@ x . . . . . . . . . . . . . x . . . x . . . . . . . . . . . . .
 . . . . x = = = = = x . . . . . . . . . . . . . . . . . . . . . 
 . . . . x # x x x # x . . . . . . . . . . . . . . . . . . . . . 
 . . . . x # x x x # x . . . . . . . . . . . . . . . . . . x . x 
-. . . . x # x x x # x . . . . . . . . . . . . . . . . . . . . . 
+. . . . x # x x S # x . . . . . . . . . . . . . . . . . . . . . 
 . . . . x # = x = # x . . . . . . . . . . . . . . . . . . . . . 
 . . . . x x x x x x x . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . S . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -314,30 +316,6 @@ j j f f j j F f j j f f g j F f
 
 	draw=function()
 	
-		local names=system.components.tiles.names
-		local g=system.components.map.tilemap_grd
-		local items=entities.systems.yarn.items
-		local level=items.level
-		local pages=level.pages
-		
-		
-		local b={}
-		for y=0,31 do
-			for x=0,31 do
-				local cell=pages.get_cell(0x8000*32+x,0x8000*32+y)
-				local back=cell[1].back
-				local idx=y*32*4 + x*4
-				local tile=names[back]
-				b[idx+1]=tile.pxt
-				b[idx+2]=tile.pyt
-				b[idx+3]=31
-				b[idx+4]=0
-			end
-		end
-		g:pixels(0,0,0,32,32,1,b)
-		system.components.map.dirty(true)
-
-
 	end,
 
 }
@@ -434,6 +412,52 @@ entities.systems.insert{ caste="yarn",
 		
 		it.items.level=it.items.levels.create()
 
+	end,
+	
+	draw=function(it)
+	
+		local names=system.components.tiles.names
+		local g=system.components.map.tilemap_grd
+
+		local items=it.items
+		local level=items.level
+		local pages=level.pages
+		
+		
+		local b={}
+		for y=0,31 do
+			for x=0,31 do
+				local cell=pages.get_cell(0x8000*32+x,0x8000*32+y)
+--				local back=cell:find("back")
+				local idx=y*32*4 + x*4
+				b[idx+1]=0
+				b[idx+2]=0
+				b[idx+3]=31
+				b[idx+4]=0
+				for i,v in ipairs(cell) do
+					if v.back then
+						local tile=names[v.back]
+						b[idx+1]=tile.pxt
+						b[idx+2]=tile.pyt
+						b[idx+3]=31
+						b[idx+4]=0
+					end
+					if v.sprite then
+
+						system.components.sprites.list_add({
+							t=names[v.sprite].idx,
+							hx=16,hy=32,ox=8,oy=16,
+							px=x*16+8,py=0,pz=-y*16-16,
+							s=1,rz=0
+						})
+
+					end
+				end
+			end
+		end
+		g:pixels(0,0,0,32,32,1,b)
+		system.components.map.dirty(true)
+	
 	end,
 
 }
