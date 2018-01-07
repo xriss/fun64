@@ -59,12 +59,11 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[   0]={ items={"floor"},				},
-	[". "]={ items={"floor"}				},
+	[   0]={ items={"floor_tile"},				},
+	[". "]={ items={"floor_tile"}				},
 	["x "]={ items={"floor_tile"}			},
 	["# "]={ items={"wall_full"}			},
 	["= "]={ items={"wall_half"}			},
-	["S "]={ items={"floor_tile","player"}		},
 }
 	
 levels={}
@@ -75,20 +74,20 @@ legend=combine_legends(default_legend,{
 }),
 title="This is a test.",
 map=[[
-. . . . . . . . . . . . . . . . x . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . x . x . . . . . . . . . . . . . . 
-x . . . . . . . . . . . . . x . . . x . . . . . . . . . . . . . 
-. x . . . . . . . . . . . x . . . . . x . . . . . . . . . . . . 
-. . x . . . . . . . . . x . . . . . . . . . . . . . . . . . . . 
-. . . x . . . . . . . x . . . . . . . . . . . . . . . . . . . . 
-. . . . x x x x x x x . . . . . . . . . . . . . . . . . . . . . 
-. . . . x = = = = = x . . . . . . . . . . . . . . . . . . . . . 
-. . . . x # x x x # x . . . . . . . . . . . . . . . . . . . . . 
-. . . . x # x x x # x . . . . . . . . . . . . . . . . . . x . x 
-. . . . x # x x S # x . . . . . . . . . . . . . . . . . . . . . 
-. . . . x # = x = # x . . . . . . . . . . . . . . . . . . . . . 
-. . . . x x x x x x x . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . S . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . = = = = = . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # = . = # . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -367,38 +366,6 @@ entities.systems.insert{ caste="player",
 
 	end,
 
-	setup=function()
-
-		local names=system.components.tiles.names
-
-	-- a player entity
-		local test_entity=entities.add{	caste="player",
-		
-			tile=names.test_player.idx,
-			px=160,py=0,pz=0,sz=1,rz=0,
-			update=function(it)
-				local up=ups(0) -- get all connected controls, keyboard or gamepad
-
-				if up.button("fire") then
-					if up.button("up")    then it.sz=it.sz-(1/16) end
-					if up.button("down")  then it.sz=it.sz+(1/16) end
-					if up.button("left")  then it.rz=it.rz-1 end
-					if up.button("right") then it.rz=it.rz+1 end
-				else
-					if up.button("up")    then it.pz=it.pz+1 end
-					if up.button("down")  then it.pz=it.pz-1 end
-					if up.button("left")  then it.px=it.px-1 end
-					if up.button("right") then it.px=it.px+1 end
-				end
-				
-			end,
-			draw=function(it)
-				system.components.sprites.list_add({t=it.tile,hx=16,hy=32,px=it.px,py=it.py,pz=it.pz,s=it.sz,rz=it.rz})
-			end,
-		}
-
-	end,
-
 }
 
 entities.systems.insert{ caste="yarn",
@@ -407,13 +374,48 @@ entities.systems.insert{ caste="yarn",
 
 		it.items=require("wetgenes.gamecake.fun.yarn.items").create()
 		
+		local items=it.items
+
 		for i,v in ipairs(levels)  do it.items.prefabs.set(v) end
 		for i,v in ipairs(prefabs) do it.items.prefabs.set(v) end
 		
-		it.items.create_pages()
+		items.create( items.prefabs.get("player") ):insert( items.pages.get_cell(0x8000*32+8,0x8000*32+8) )
+
+		local ccx=items.ids.player[0].cx
+		local ccy=items.ids.player[0].cy
+
+		it.ax=ccx*16
+		it.ay=ccy*16
+
+		it.dx=ccx*16
+		it.dy=ccy*16
 
 	end,
 	
+	update=function(it)
+		local items=it.items
+		local pages=items.pages
+
+		local up=ups(0) -- get all connected controls, keyboard or gamepad
+
+		local vx,vy=0,0
+		if up.button("up_set")    then vy=-1 end
+		if up.button("down_set")  then vy= 1 end
+		if up.button("left_set")  then vx=-1 end
+		if up.button("right_set") then vx= 1 end
+
+		local ccx=items.ids.player[0].cx+vx
+		local ccy=items.ids.player[0].cy+vy
+		
+		items.ids.player:insert( pages.get_cell(ccx,ccy) )
+		
+		it.dx=ccx*16
+		it.dy=ccy*16
+		
+		it.ax=(it.ax*14+it.dx*2)/16
+		it.ay=(it.ay*14+it.dy*2)/16
+	end,
+
 	draw=function(it)
 	
 		local names=system.components.tiles.names
@@ -422,12 +424,13 @@ entities.systems.insert{ caste="yarn",
 		local items=it.items
 		local pages=items.pages
 		
+		it.cx=items.ids.player[0].cx-16
+		it.cy=items.ids.player[0].cy-16
 		
 		local b={}
 		for y=0,31 do
 			for x=0,31 do
-				local cell=pages.get_cell(0x8000*32+x,0x8000*32+y)
---				local back=cell:find("back")
+				local cell=pages.get_cell(it.cx+x,it.cy+y)
 				local idx=y*32*4 + x*4
 				b[idx+1]=0
 				b[idx+2]=0
@@ -445,17 +448,26 @@ entities.systems.insert{ caste="yarn",
 
 						system.components.sprites.list_add({
 							t=names[v.sprite].idx,
-							hx=16,hy=32,ox=8,oy=16,
-							px=x*16+8,py=0,pz=-y*16-16,
+							hx=16,hy=32,ox=8,oy=32,
+							px=x*16+8,py=16,pz=-y*16-16,
 							s=1,rz=0
 						})
-
 					end
 				end
 			end
 		end
 		g:pixels(0,0,0,32,32,1,b)
 		system.components.map.dirty(true)
+		
+		local ax= (it.cx*16-math.floor(it.ax+0.5)+(9)*16)
+		local az=-(it.cy*16-math.floor(it.ay+0.5)+(6)*16)
+
+		system.components.map.ax=ax
+		system.components.map.ay=0
+		system.components.map.az=az
+		system.components.sprites.ax=ax
+		system.components.sprites.ay=0
+		system.components.sprites.az=az
 	
 	end,
 
