@@ -407,10 +407,10 @@ entities.systems.insert{ caste="yarn",
 
 		it.items=require("wetgenes.gamecake.fun.yarn.items").create()
 		
-		for i,v in ipairs(levels)  do it.items.prefabs.set(v) print(i,v.name) end
+		for i,v in ipairs(levels)  do it.items.prefabs.set(v) end
 		for i,v in ipairs(prefabs) do it.items.prefabs.set(v) end
 		
-		it.items.level=it.items.levels.create()
+		it.items.create_pages()
 
 	end,
 	
@@ -420,8 +420,7 @@ entities.systems.insert{ caste="yarn",
 		local g=system.components.map.tilemap_grd
 
 		local items=it.items
-		local level=items.level
-		local pages=level.pages
+		local pages=items.pages
 		
 		
 		local b={}
