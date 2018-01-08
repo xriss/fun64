@@ -40,13 +40,6 @@ setup=function() entities.systems.call("setup") end
 
 
 
-local prefabs={
-	{name="player",id="player",sprite="test_player"},
-	{name="floor",back="test_none"},
-	{name="floor_tile",back="test_tile"},
-	{name="wall_full",back="test_wall2",is_big=true,},
-	{name="wall_half",back="test_wall1",is_big=true,},
-}
 
 local combine_legends=function(...)
 	local legend={}
@@ -368,6 +361,41 @@ entities.systems.insert{ caste="player",
 
 }
 
+local prefabs={
+	{name="player",id="player",sprite="test_player",rules={"player"},},
+	{name="floor",back="test_none"},
+	{name="floor_tile",back="test_tile"},
+	{name="wall_full",back="test_wall2",is_big=true,},
+	{name="wall_half",back="test_wall1",is_big=true,},
+}
+
+local rules={
+	{
+		name="player",
+		setup=function(item)
+			print("player setup")
+		end,
+		clean=function(item)
+			print("player clean")
+		end,
+		move=function(item,vx,vy)
+--			print("player move")
+
+			local items=item.items
+			local pages=items.pages
+
+			local ccx=item[0].cx+vx
+			local ccy=item[0].cy+vy
+			local cell=pages.get_cell(ccx,ccy)
+			
+			if not cell:get_big() then
+				item:insert( cell ) -- move to a new location
+			end
+
+		end,
+	},
+}
+
 entities.systems.insert{ caste="yarn",
 
 	setup=function(it)
@@ -376,19 +404,25 @@ entities.systems.insert{ caste="yarn",
 		
 		local items=it.items
 
+-- insert my prefabs and rules
+
 		for i,v in ipairs(levels)  do it.items.prefabs.set(v) end
 		for i,v in ipairs(prefabs) do it.items.prefabs.set(v) end
-		
-		items.create( items.prefabs.get("player") ):insert( items.pages.get_cell(0x8000*32+8,0x8000*32+8) )
+		for i,v in ipairs(rules)   do it.items.rules.set(v)   end
+
+-- add a player
+
+		items.create( items.prefabs.get("player") ):insert( items.pages.get_cell(0x8000*32+16,0x8000*32+16) )
+
+-- setup view
 
 		local ccx=items.ids.player[0].cx
 		local ccy=items.ids.player[0].cy
 
-		it.ax=ccx*16
-		it.ay=ccy*16
-
-		it.dx=ccx*16
-		it.dy=ccy*16
+		it.dx=items.ids.player[0].cx*16
+		it.dy=items.ids.player[0].cy*16
+		it.ax=it.dx
+		it.ay=it.dy
 
 	end,
 	
@@ -403,17 +437,22 @@ entities.systems.insert{ caste="yarn",
 		if up.button("down_set")  then vy= 1 end
 		if up.button("left_set")  then vx=-1 end
 		if up.button("right_set") then vx= 1 end
+		
+		if not ( vx==0 and vy==0 ) then
+print("moving",vx,vy)
+			items.ids.player:apply("move",vx,vy)
+		end
+		
+-- apply view
 
-		local ccx=items.ids.player[0].cx+vx
-		local ccy=items.ids.player[0].cy+vy
+		local ccx=items.ids.player[0].cx
+		local ccy=items.ids.player[0].cy
 		
-		items.ids.player:insert( pages.get_cell(ccx,ccy) )
+		it.dx=items.ids.player[0].cx*16
+		it.dy=items.ids.player[0].cy*16
 		
-		it.dx=ccx*16
-		it.dy=ccy*16
-		
-		it.ax=(it.ax*14+it.dx*2)/16
-		it.ay=(it.ay*14+it.dy*2)/16
+		it.ax=(it.ax*31+it.dx*1)/32
+		it.ay=(it.ay*31+it.dy*1)/32
 	end,
 
 	draw=function(it)
