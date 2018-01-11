@@ -52,9 +52,10 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[   0]={ items={"floor_tile"},				},
-	[". "]={ items={"floor_tile"}				},
+	[   0]={ items={"floor_tile"},			},
+	[". "]={ items={"floor_tile"}			},
 	["x "]={ items={"floor_tile"}			},
+	["S "]={ items={"floor_spawn"}			},
 	["# "]={ items={"wall_full"}			},
 	["= "]={ items={"wall_half"}			},
 }
@@ -114,7 +115,7 @@ levels={
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . = = = = = . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # . S . # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # = . = # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -325,6 +326,41 @@ j j f f j j F f j j f f g j F f
 3 2 f f j j f f j j f f j j 2 3 
 ]]},
 
+{nil,"test_spawn",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . r . . . . . . . . . . r . . 
+. . R . . . . . . . . . . R . . 
+0 0 4 0 1 1 1 1 1 1 1 1 0 4 0 0 
+0 0 4 1 1 1 0 0 0 0 1 1 1 4 0 0 
+0 0 1 0 1 1 0 0 0 0 1 1 0 1 0 0 
+0 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0 
+1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 
+1 0 1 1 0 0 1 1 1 1 0 0 1 1 0 1 
+1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 
+1 0 0 1 1 0 0 0 0 0 0 1 1 0 0 1 
+r 0 1 1 1 0 0 0 0 0 0 1 1 1 0 r 
+R 1 1 0 1 1 0 0 0 0 1 1 0 1 1 R 
+4 1 0 0 0 1 1 1 1 1 1 0 0 0 1 4 
+4 1 1 1 1 1 1 0 0 1 1 1 1 1 1 4 
+0 1 1 0 0 0 1 0 r 1 0 0 0 1 1 0 
+0 0 1 1 0 0 1 0 R 1 0 0 1 1 0 0 
+0 0 0 1 1 1 1 1 4 1 1 1 1 0 0 0 
+0 0 0 0 0 0 1 1 4 1 0 0 0 0 0 0 
+]]},
+
 		}
 	end,
 	
@@ -404,21 +440,24 @@ local prefabs={
 	{name="player",id="player",sprite="test_player",rules={"player"},},
 	{name="floor",back="test_none"},
 	{name="floor_tile",back="test_tile"},
+	{name="floor_spawn",id="floor_spawn",back="test_spawn"},
 	{name="wall_full",back="test_wall2",is_big=true,},
 	{name="wall_half",back="test_wall1",is_big=true,},
 }
 
 local rules={
-	{
-		name="player",
+
+	{	name="player",
+	
 		setup=function(item)
-			print("player setup")
+			item.is_big=true
+			item.player={}
 		end,
+
 		clean=function(item)
-			print("player clean")
 		end,
+
 		move=function(item,vx,vy)
---			print("player move")
 
 			local items=item.items
 			local pages=items.pages
@@ -427,12 +466,13 @@ local rules={
 			local ccy=item[0].cy+vy
 			local cell=pages.get_cell(ccx,ccy)
 			
-			if not cell:get_big() then
+			if not cell:get_big() then -- if empty
 				item:insert( cell ) -- move to a new location
 			end
 
 		end,
 	},
+	
 }
 
 entities.systems.insert{ caste="yarn",
@@ -455,7 +495,8 @@ entities.systems.insert{ caste="yarn",
 
 -- add a player
 
-		items.create( items.prefabs.get("player") ):insert( items.pages.get_cell(0x8000*32+16,0x8000*32+16) )
+		items.pages.get_cell(0x8000*32,0x8000*32) -- manifest page
+		items.create( items.prefabs.get("player") ):insert( items.ids.floor_spawn[0] ) -- use spawn point
 
 -- setup view
 
@@ -506,12 +547,23 @@ print("moving",vx,vy)
 		local items=it.items
 		local pages=items.pages
 		
-		it.cx=items.ids.player[0].cx-16
-		it.cy=items.ids.player[0].cy-16
+		local px=items.ids.player[0].cx
+		local py=items.ids.player[0].cy
+		
+		it.cx=px-16
+		it.cy=py-16
 		
 		local b={}
 		for y=0,31 do
 			for x=0,31 do
+				local dx=it.cx+x-px
+				local dy=it.cy+y-py
+
+				local dark=(math.sqrt(dx*dx + dy*dy)-1)/8 -- 1 cells full and 8 cells fadeout
+				if dark>1 then dark=1 end
+				if dark<0 then dark=0 end
+				dark=1-dark
+				
 				local cell=pages.get_cell(it.cx+x,it.cy+y)
 				local idx=y*32*4 + x*4
 				b[idx+1]=0
@@ -524,7 +576,7 @@ print("moving",vx,vy)
 						b[idx+1]=tile.pxt
 						b[idx+2]=tile.pyt
 						b[idx+3]=31
-						b[idx+4]=0
+						b[idx+4]=dark*255
 					end
 					if v.sprite then
 
@@ -532,7 +584,8 @@ print("moving",vx,vy)
 							t=names[v.sprite].idx,
 							hx=16,hy=32,ox=8,oy=32,
 							px=x*16+8,py=16,pz=-y*16-16,
-							s=1,rz=0
+							s=1,rz=0,
+							color={dark,dark,dark,1}
 						})
 					end
 				end
