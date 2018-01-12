@@ -1,5 +1,6 @@
 
 local bitdown=require("wetgenes.gamecake.fun.bitdown")
+local chatdown=require("wetgenes.gamecake.fun.chatdown")
 local wstr=require("wetgenes.string")
 function ls(s) print(wstr.dump(s))end
 
@@ -14,6 +15,10 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
+--	hx=320,hy=240,
+	hx=440,hy=240,
+--	hx=220,hy=120,
+--	hx=128,hy=128,
 })
 
 hardware.screen.zxy={0,-1}
@@ -37,6 +42,118 @@ entities=require("wetgenes.gamecake.fun.entities").create({
 
 -- setup all entities
 setup=function() entities.systems.call("setup") end
+
+
+
+
+local chat_text=[[
+
+#example Conversation NPC
+
+	A rare bread of NPC who will fulfil all your conversational desires for 
+	a very good price.
+
+	=sir sir/madam
+
+	>convo
+
+		Is this the right room for a conversation?
+		
+	>welcome
+	
+		...ERROR...EOF...PLEASE...RESTART...
+
+<welcome
+
+	Good Morning {sir},
+	
+	>morning
+
+		Good morning to you too.
+
+	>afternoon
+
+		I think you will find it is now afternoon.
+
+	>sir
+
+		How dare you call me {sir}!
+
+<sir
+
+	My apologies, I am afraid that I am but an NPC with very little 
+	brain, how might I address you?
+	
+	>welcome.1?sir!=madam
+
+		You may address me as Madam.
+
+		=sir madam
+
+	>welcome.2?sir!=God
+
+		You may address me as God.
+
+		=sir God
+
+	>welcome.3?sir!=sir
+
+		You may address me as Sir.
+
+		=sir sir
+
+<afternoon
+	
+	Then good afternoon {sir},
+	
+	>convo
+
+<morning
+	
+	and how may I help {sir} today?
+	
+	>convo
+
+
+<convo
+
+	Indeed it is, would you like the full conversation or just the quick natter?
+
+	>convo_full
+	
+		How long is the full conversation?
+
+	>convo_quick
+
+		A quick natter sounds just perfect.
+
+<convo_full
+
+	The full conversation is very full and long so much so that you 
+	will have to page through many pages before you get to make a 
+	decision
+	
+	>
+		Like this?
+	<
+	
+	Yes just like this. In fact I think you can see that we are already 
+	doing it.
+			
+	
+	>exit
+		
+		EXIT
+
+<convo_quick
+
+	...
+	
+	>exit
+
+		EXIT
+]]
+
 
 
 
@@ -388,6 +505,140 @@ R 1 1 0 1 1 0 0 0 0 1 1 0 1 1 R
 }
 
 
+entities.systems.insert{ caste="menu",
+
+	setup=function(menu)
+
+		menu.stack={}
+
+		menu.screen_hx=math.floor(hardware.opts.hx/4)
+		menu.screen_hy=math.floor(hardware.opts.hy/8)
+		menu.width=menu.screen_hx/2
+		menu.cursor=0
+		menu.cx=math.floor((math.floor(hardware.opts.hx/4)-menu.width))
+		menu.cy=0
+	
+		menu.chats=chatdown.setup(chat_text)
+
+
+		menu.show=function(items)
+		
+			if not items then
+				menu.active=false
+				menu.items=nil
+				menu.lines=nil
+				return
+			end
+			menu.active=true
+
+			if items.call then items.call(items,menu) end -- refresh
+			
+			menu.items=items
+			menu.cursor=items.cursor or 1
+			
+			menu.lines={}
+			for idx=1,#items do
+				local item=items[idx]
+				local text=item.text
+				if text then
+					local ls=wstr.smart_wrap(text,menu.width-8)
+					if #ls==0 then ls={""} end -- blank line
+					for i=1,#ls do
+						local prefix=""--(i>1 and " " or "")
+						if item.cursor then prefix=" " end -- indent decisions
+						menu.lines[#menu.lines+1]={s=prefix..ls[i],idx=idx,item=item,cursor=item.cursor,color=item.color}
+					end
+				end
+			end
+
+		end
+
+		menu.show( menu.chats.get_menu_items("example") )
+
+	end,
+
+	update=function(menu)
+	
+		if not menu.items then return end
+		
+		local up0=ups(0)
+
+		if up0.button("fire_clr") then
+
+			for i,item in ipairs(menu.items) do
+			
+				if item.cursor==menu.cursor then
+			
+					if item.call then -- do this
+					
+						item.call( item , menu )
+											
+					end
+
+					if item.decision.name=="exit" then -- and exit menu
+						menu.show()
+					end
+					
+					break
+				end
+			end
+		end
+		
+		if up0.button("left_set") or up0.button("up_set") then
+		
+			menu.cursor=menu.cursor-1
+			if menu.cursor<1 then menu.cursor=menu.items.cursor_max end
+
+		end
+		
+		if up0.button("right_set") or up0.button("down_set") then
+			
+			menu.cursor=menu.cursor+1
+			if menu.cursor>menu.items.cursor_max then menu.cursor=1 end
+		
+		end
+	
+	end,
+	
+	draw=function(menu)
+
+		if not menu.lines then return end
+
+		local tprint=system.components.text.text_print
+		local tgrd=system.components.text.tilemap_grd
+		
+		menu.cy=math.floor((menu.screen_hy-(#menu.lines+4))/2)
+		
+		local fg=31
+		local bg1,bg2=9,10
+
+		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.lines+4,1):clear(bg1*0x1000000)
+		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.lines+4-2,1):clear(bg2*0x1000000)
+		
+		if menu.items.title then
+			local title=" "..(menu.items.title).." "
+			local wo2=math.floor(#title/2)
+			tprint(title,menu.cx+(menu.width/2)-wo2,menu.cy+0,fg,bg1)
+		end
+		
+		for i,v in ipairs(menu.lines) do
+			tprint(v.s,menu.cx+4,menu.cy+i+1,v.color,bg2)
+		end
+		
+		local it=nil
+		for i=1,#menu.lines do
+			if it~=menu.lines[i].item then -- first line only
+				it=menu.lines[i].item
+				if it.cursor == menu.cursor then
+					tprint(">",menu.cx+4,menu.cy+i+1,fg,bg2)
+				end
+			end
+		end
+
+		system.components.text.dirty(true)
+
+	end,
+}
 
 entities.systems.insert{ caste="player",
 
@@ -580,10 +831,11 @@ print("moving",vx,vy)
 					end
 					if v.sprite then
 
+						local spr=names[v.sprite]
 						system.components.sprites.list_add({
-							t=names[v.sprite].idx,
-							hx=16,hy=32,ox=8,oy=32,
-							px=x*16+8,py=16,pz=-y*16-16,
+							t=spr.idx,
+							hx=spr.hx,hy=spr.hy,ox=spr.hx/2,oy=spr.hy, -- handle on bottom centre of sprite
+							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
 							s=1,rz=0,
 							color={dark,dark,dark,1}
 						})
@@ -594,8 +846,15 @@ print("moving",vx,vy)
 		g:pixels(0,0,0,32,32,1,b)
 		system.components.map.dirty(true)
 		
-		local ax= (it.cx*16-math.floor(it.ax+0.5)+(9)*16)
-		local az=-(it.cy*16-math.floor(it.ay+0.5)+(6)*16)
+		local ax,az=0,0
+		
+		if entities.systems.menu.active then
+			ax= (it.cx*16-math.floor(it.ax+0.5)+(hardware.opts.hx/4-8))
+			az=-(it.cy*16-math.floor(it.ay+0.5)+(hardware.opts.hy/2-16))
+		else
+			ax= (it.cx*16-math.floor(it.ax+0.5)+(hardware.opts.hx/2-8))
+			az=-(it.cy*16-math.floor(it.ay+0.5)+(hardware.opts.hy/2-16))
+		end
 
 		system.components.map.ax=ax
 		system.components.map.ay=0
