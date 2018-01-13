@@ -15,10 +15,7 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
---	hx=320,hy=240,
 	hx=440,hy=240,
---	hx=220,hy=120,
---	hx=128,hy=128,
 })
 
 hardware.screen.zxy={0,-1}
@@ -27,7 +24,7 @@ hardware.insert{
 	component="overmap",
 	name="map",					-- same name so will replace the foreground tilemap
 	tiles="tiles",
-	tilemap_size={32,32},
+	tilemap_size={48,32},
 	tile_size={16,32,16},
 	over_size={0,16},
 	sort={-1,-1},
@@ -117,7 +114,8 @@ local chat_text=[[
 
 <convo
 
-	Indeed it is, would you like the full conversation or just the quick natter?
+	Indeed it is, would you like the full conversation or just the 
+	quick natter?
 
 	>convo_full
 	
@@ -239,20 +237,20 @@ levels={
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # # # # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . . . . . . . . . # . # . . . . . . S . . . . . 
+. . . . . . . . . . . . . . . . # # . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . # . # # # # . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 ]],
@@ -559,9 +557,27 @@ entities.systems.insert{ caste="menu",
 
 	update=function(menu)
 	
-		if not menu.items then return end
+		if not menu.active then return end
 		
 		local up0=ups(0)
+		
+		local mx=up0.axis("mx") -- get mouse position, it will be nil if no mouse
+		local my=up0.axis("my")
+		
+		if mx~=menu.mx or my~=menu.my then -- mouse movement
+			menu.mx=mx
+			menu.my=my
+			if mx >= menu.cx*4 and mx <= (menu.cx+menu.width)*4 then -- in x within menu
+				for i,v in ipairs(menu.lines) do
+					local y=(menu.cy+i+1)*8
+					if my>=y and my<=y+8 then -- over line
+						if v.item and v.item.cursor then -- move cursor to line
+							menu.cursor=v.item.cursor
+						end
+					end
+				end
+			end
+		end
 
 		if up0.button("fire_clr") then
 
@@ -602,7 +618,7 @@ entities.systems.insert{ caste="menu",
 	
 	draw=function(menu)
 
-		if not menu.lines then return end
+		if not menu.active then return end
 
 		local tprint=system.components.text.text_print
 		local tgrd=system.components.text.tilemap_grd
@@ -688,16 +704,40 @@ entities.systems.insert{ caste="player",
 }
 
 local prefabs={
-	{name="player",id="player",sprite="test_player",rules={"player"},},
+	{name="player",id="player",sprite="test_player",rules={"player"},illumination=1,},
 	{name="floor",back="test_none"},
 	{name="floor_tile",back="test_tile"},
-	{name="floor_spawn",id="floor_spawn",back="test_spawn"},
+	{name="floor_spawn",id="floor_spawn",back="test_spawn",illumination=0.75,},
 	{name="wall_full",back="test_wall2",is_big=true,},
 	{name="wall_half",back="test_wall1",is_big=true,},
 }
 
 local rules={
 
+	{	name="cell",
+
+		update=function(cell)
+			for i,c in cell:iterate_hashrange(-1,1,-1,1) do
+				local b=0
+				for i,v in ipairs(c) do -- get local illumination
+					local l=v.illumination
+					if l and l>b then b=l end
+				end
+				for i,v in c:iterate_neighbours() do -- get neighbours illumination
+					local big=v:get_big()
+					if big and big.illumination then big=nil end -- not lightsources
+					if not big then
+						if v.illumination and v.illumination>b then b=v.illumination end
+					end
+				end
+				b=b*7/8
+				if b<0 then b=0 end
+				c.illumination=b
+			end
+		end,
+
+	},
+	
 	{	name="player",
 	
 		setup=function(item)
@@ -706,6 +746,10 @@ local rules={
 		end,
 
 		clean=function(item)
+		end,
+
+		update=function(item) -- apply light to parent
+print("player update")
 		end,
 
 		move=function(item,vx,vy)
@@ -720,6 +764,9 @@ local rules={
 			if not cell:get_big() then -- if empty
 				item:insert( cell ) -- move to a new location
 			end
+			
+			item[0].illumination=item.illumination -- apply light tp base cell
+			item[0]:apply_update(16,16)
 
 		end,
 	},
@@ -736,6 +783,8 @@ entities.systems.insert{ caste="yarn",
 
 -- insert my prefabs and rules
 
+		items.cells.metatable.rules={"cell"} -- base cell rules
+		
 		for i,v in ipairs(prefabs) do it.items.prefabs.set(v) end
 		for i,v in ipairs(rules)   do it.items.rules.set(v)   end
 		for i,v in ipairs(levels)  do it.items.prefabs.set(v) 
@@ -801,33 +850,35 @@ print("moving",vx,vy)
 		local px=items.ids.player[0].cx
 		local py=items.ids.player[0].cy
 		
-		it.cx=px-16
+		it.cx=px-24
 		it.cy=py-16
 		
 		local b={}
 		for y=0,31 do
-			for x=0,31 do
+			for x=0,47 do
 				local dx=it.cx+x-px
 				local dy=it.cy+y-py
 
-				local dark=(math.sqrt(dx*dx + dy*dy)-1)/8 -- 1 cells full and 8 cells fadeout
-				if dark>1 then dark=1 end
-				if dark<0 then dark=0 end
-				dark=1-dark
+				local lightring=(math.sqrt(dx*dx + dy*dy)-1)/8 -- 1 cells full and 8 cells fadeout
+				if lightring>1 then lightring=1 end
+				if lightring<0 then lightring=0 end
+				lightring=1-lightring
 				
 				local cell=pages.get_cell(it.cx+x,it.cy+y)
-				local idx=y*32*4 + x*4
+				local idx=y*48*4 + x*4
 				b[idx+1]=0
 				b[idx+2]=0
 				b[idx+3]=31
 				b[idx+4]=0
+				local light=cell.illumination or 0
+--				if lightring>light then light=lightring end
 				for i,v in ipairs(cell) do
 					if v.back then
 						local tile=names[v.back]
 						b[idx+1]=tile.pxt
 						b[idx+2]=tile.pyt
 						b[idx+3]=31
-						b[idx+4]=dark*255
+						b[idx+4]=light*255
 					end
 					if v.sprite then
 
@@ -837,13 +888,13 @@ print("moving",vx,vy)
 							hx=spr.hx,hy=spr.hy,ox=spr.hx/2,oy=spr.hy, -- handle on bottom centre of sprite
 							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
 							s=1,rz=0,
-							color={dark,dark,dark,1}
+							color={light,light,light,1}
 						})
 					end
 				end
 			end
 		end
-		g:pixels(0,0,0,32,32,1,b)
+		g:pixels(0,0,0,48,32,1,b)
 		system.components.map.dirty(true)
 		
 		local ax,az=0,0
