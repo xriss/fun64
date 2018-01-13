@@ -15,7 +15,7 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
-	hx=440,hy=240,
+	hx=440,hy=240, -- wide screen
 })
 
 hardware.screen.zxy={0,-1}
@@ -176,6 +176,7 @@ local default_legend={
 	[". "]={ items={"floor_tile"}			},
 	["x "]={ items={"floor_tile"}			},
 	["S "]={ items={"floor_spawn"}			},
+	["T "]={ items={"talker"}			},
 	["# "]={ items={"wall_full"}			},
 	["= "]={ items={"wall_half"}			},
 }
@@ -237,7 +238,7 @@ levels={
 . . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . S . # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . # = . = # . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # = . = # . . . . . . . . . . . . . . T . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -1017,6 +1018,40 @@ entities.systems.insert{ caste="player",
 . . . . . 7 7 7 7 7 7 7 . . . . 
 . . . . . . . . . . . . . . . . 
 ]]},
+{nil,"cursor_square",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 . . . . . . . . . . . . . . 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+]]},
 
 		}
 
@@ -1025,7 +1060,8 @@ entities.systems.insert{ caste="player",
 }
 
 local prefabs={
-	{name="player",id="player",sprite={"test_player1","test_player2","test_player3","test_player4",speed=16},rules={"player"},illumination=2,},
+	{name="player",id="player",rules={"player"},illumination=1,},
+	{name="talker",back="test_tile",rules={"talker"},},
 	{name="floor",back="test_none"},
 	{name="floor_tile",back="test_tile"},
 	{name="floor_spawn",id="floor_spawn",back="test_spawn",illumination=0.75,},
@@ -1036,9 +1072,17 @@ local prefabs={
 local rules={
 
 	{	name="cell",
+		
+		inject_time=function(cell,dx,dy)
 
-		update=function(cell)
-			for i,c in cell:iterate_hashrange(-1,1,-1,1) do
+			for i,c in cell:iterate_hashrange(-dx,dx,-dy,dy) do
+				c:apply("update")
+				for i,item in ipairs(c) do
+					item:apply("update")
+				end
+			end
+
+			for i,c in cell:iterate_rangebleed(-dx,dx,-dy,dy) do
 				local b=0
 				for i,v in ipairs(c) do -- get local illumination
 					local l=v.illumination
@@ -1055,6 +1099,7 @@ local rules={
 				if b<0 then b=0 end
 				c.illumination=b
 			end
+			
 		end,
 
 	},
@@ -1064,6 +1109,11 @@ local rules={
 		setup=function(item)
 			item.is_big=true
 			item.player={}
+			item.sprite=item.sprite or
+				{
+					"test_player1","test_player2","test_player3","test_player4",
+					speed=16,color={1,1,1,1}
+				}
 		end,
 
 		clean=function(item)
@@ -1089,11 +1139,50 @@ local rules={
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
 			
-			item[0]:apply_update(16,16)
+			item[0]:apply("inject_time",16,16)
 
 		end,
 	},
 	
+	{	name="talker",
+	
+		setup=function(item)
+			item.is_big=true
+			item.player={}
+			item.sprite=item.sprite or
+				{
+					"test_player1","test_player2","test_player3","test_player4",
+					speed=16,color={1,1/2,1/2,1}
+				}
+		end,
+
+		clean=function(item)
+		end,
+
+		update=function(item)
+--print("player update")
+		end,
+
+		move=function(item,vx,vy)
+
+			local items=item.items
+			local pages=items.pages
+
+			local ccx=item[0].cx+vx
+			local ccy=item[0].cy+vy
+			local cell=pages.get_cell(ccx,ccy)
+			
+			if not cell:get_big() then -- if empty
+				item:insert( cell ) -- move to a new location
+			end
+			
+			if vx>0 then item.sprite.flip= 1 end
+			if vx<0 then item.sprite.flip=-1 end
+			
+			item[0]:apply("inject_time",16,16)
+
+		end,
+	},
 }
 
 entities.systems.insert{ caste="yarn",
@@ -1119,7 +1208,9 @@ entities.systems.insert{ caste="yarn",
 -- add a player
 
 		items.pages.get_cell(0x8000*32,0x8000*32) -- manifest page
-		items.create( items.prefabs.get("player") ):insert( items.ids.floor_spawn[0] ) -- use spawn point
+		local spawn=items.ids.floor_spawn[0]
+		items.create( items.prefabs.get("player") ):insert( spawn ) -- use spawn point
+		spawn:apply("inject_time",16,16) -- inject some time
 
 -- setup view
 
@@ -1205,12 +1296,17 @@ entities.systems.insert{ caste="yarn",
 					end
 					if v.sprite then
 					
+						local cr,cg,cb,ca=1,1,1,1
 						local flip=1
 						local sprite=v.sprite
 						if type(sprite)=="table" then
 							flip=sprite.flip or 1
 							local speed=sprite.speed or 16
-							sprite=sprite[math.floor(system.ticks/speed)%#sprite+1]
+							cr=sprite.color and sprite.color[1] or cr
+							cg=sprite.color and sprite.color[2] or cg
+							cb=sprite.color and sprite.color[3] or cb
+							ca=sprite.color and sprite.color[4] or ca
+							sprite=sprite[math.floor(system.ticks/speed+it.cx+x+it.cy+y)%#sprite+1]
 						end
 
 						local spr=names[sprite]
@@ -1219,7 +1315,7 @@ entities.systems.insert{ caste="yarn",
 							hx=spr.hx,hy=spr.hy,ox=spr.hx/2,oy=spr.hy, -- handle on bottom centre of sprite
 							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
 							sx=flip,rz=0,
-							color={light,light,light,1}
+							color={light*cr,light*cg,light*cb,1*ca}
 						})
 					end
 				end
