@@ -87,18 +87,22 @@ local chat_text=[[
 		You may address me as Madam.
 
 		=sir madam
+		=portrait portrait_2
+
 
 	>welcome.2?sir!=God
 
 		You may address me as God.
 
 		=sir God
+		=portrait portrait_3
 
 	>welcome.3?sir!=sir
 
 		You may address me as Sir.
 
 		=sir sir
+		=portrait portrait_4
 
 <afternoon
 	
