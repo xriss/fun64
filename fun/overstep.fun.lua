@@ -51,6 +51,7 @@ local chat_text=[[
 	a very good price.
 
 	=sir sir/madam
+	=portrait portrait_1
 
 	>convo
 
@@ -505,6 +506,150 @@ R 1 1 0 1 1 0 0 0 0 1 1 0 1 1 R
 
 entities.systems.insert{ caste="menu",
 
+	loads=function()
+
+		hardware.graphics.loads{
+
+{nil,"portrait_1",[[
+o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o 
+o 1 y 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 y 1 o 
+o y y 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 y y o 
+o 1 1 y 1 2 1 1 1 1 1 1 1 1 1 1 1 1 R 1 1 1 1 1 1 1 2 1 y 1 1 o 
+2 1 2 1 1 1 1 1 1 1 R 1 1 1 R R R R 1 1 1 1 1 1 1 1 1 1 1 2 1 2 
+2 1 1 2 1 1 1 1 R 1 1 R R R R R R R R R R 1 1 1 1 1 1 1 2 1 1 2 
+2 1 1 1 1 1 1 1 1 R R R R R R R R R R R R R R 1 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 R R R R R R R R R R R R R R R R 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 R R R R R R R R s R R R R R R R 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 R R R s s s s s s s s s s s s R R R 1 1 1 1 1 1 2 
+2 1 1 1 R 1 R R R s B B B B s s s s B B B B s R R R 1 R 1 1 1 2 
+2 1 1 1 1 R 1 R s B D D D D B s s B D D D D B s R 1 R 1 1 1 1 2 
+2 1 1 1 1 1 1 R s s f f f f s s s s f f f f s s R 1 1 1 1 1 1 2 
+2 1 1 1 1 1 R R s f 7 i i 7 s 6 6 s 7 i i 7 f s R R 1 1 1 1 1 2 
+2 1 1 1 1 R 1 R s s f 7 7 f s 6 6 s f 7 7 f s s R 1 R 1 1 1 1 2 
+2 1 1 1 R 1 1 R S s s f f s s 6 6 s s f f s s S R 1 1 R 1 1 1 2 
+2 1 1 1 1 1 R 1 S S s s s s S F F S s s s s S S 1 R 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 S S S S S S F F F F S S S S S S 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 R S S S S S S F F S S S S S S R 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 R S S S S S S S S S S S S S S R 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 R 1 1 S S S I I I I I I S S S 1 1 R 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 1 1 1 S S S S 3 3 S S S S 1 1 1 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 1 1 1 1 S S S S S S S S 1 1 1 1 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 1 1 1 1 1 F S S S S F 1 1 1 1 1 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 1 1 1 1 1 F F F F F F 1 1 1 1 1 1 1 1 1 1 1 1 2 
+2 1 1 1 1 1 1 1 1 1 c I 2 2 2 F F 2 2 2 I c 1 1 1 1 1 1 1 1 1 2 
+2 1 1 2 1 1 1 1 1 c c c I 2 2 2 2 2 2 I c c c 1 1 1 1 1 2 1 1 2 
+2 1 2 1 1 1 1 1 c c B c c I I 1 1 I I c c B c c 1 1 1 1 1 2 1 2 
+o 1 1 y 1 2 1 c B B B B B c c I I c c B B B B B c 1 2 1 y 1 1 o 
+o y y 1 2 1 c B B o B o B o B c c B B B O B O B B c 1 2 1 y y o 
+o 1 y 1 1 B B B B B o B o B B B B B B B B O B B B B B 1 1 y 1 o 
+o o o o 2 B B B B B B B B B B B B B B B B B B B B B B 2 o o o o 
+]]},
+{nil,"portrait_2",[[
+y y y y f f f f f f f f f f f f f f f f f f f f f f f f y y y y 
+y j 3 j j j j j j j j j j j j j j j j j j j j j j j j j j 3 j y 
+y 3 3 j f j j j j j j j d d d d d d d d j j j j j j j f j 3 3 y 
+y j j y j f j j j j G G 1 1 1 1 1 1 1 1 G G j j j j f j y j j y 
+f j f j j j j j G G 1 1 1 1 i i i i 1 1 1 1 G G j j j j j f j f 
+f j j f j j j G 1 1 1 i i i i i i i i i i 1 1 1 G j j j f j j f 
+f j j j j j G 1 1 i i i i i i i i i i i i i i 1 1 G j j j j j f 
+f j j j j g 1 1 i i i 2 i 2 i 2 2 i 2 i 2 i i i 1 1 g j j j j f 
+f j j j j g 1 i i 2 2 2 2 2 2 2 2 2 2 2 2 2 2 i i 1 g j j j j f 
+f j j j g 1 1 i 2 2 j j j j 2 2 2 2 j j j j 2 2 i 1 1 g j j j f 
+f j j j g 1 1 i 2 2 2 5 5 2 2 2 2 2 2 5 5 2 2 2 i 1 1 g j j j f 
+f j j j g 1 1 i 2 2 5 i i 5 2 3 3 2 5 i i 5 2 2 i 1 1 g j j j f 
+f j j G 1 1 j j 2 2 5 i i 5 2 3 3 2 5 i i 5 2 2 j j 1 1 G j j f 
+f j j G 1 1 1 j F F f 7 7 f 2 3 3 2 f 7 7 f F F j 1 1 1 G j j f 
+f j j G 1 1 1 1 j F F f f F F 3 3 F F f f F F j 1 1 1 1 G j j f 
+f j j G 1 1 1 j F F F F F F F s s F F F F F F F j 1 1 1 G j j f 
+f j j G 1 1 j F F f F F F F F m m F F F F F F F F j 1 1 G j j f 
+f j j j G 1 1 F F F F F F F m m m m F F R F R F F 1 1 G j j j f 
+f j j j G 1 1 F F F F F F F F m m F F F F R F F F 1 1 G j j j f 
+f j j j G 1 1 j F F F F F j F F F F j F F F F F j 1 1 G j j j f 
+f j j j j g 1 1 F F F F F F j j j j F F F F F F 1 1 g j j j j f 
+f j j j j g 1 1 1 F F F F F F F F F F F F F F 1 1 1 g j j j j f 
+f j j j j j g 1 1 1 j F F F F F F F F F F j 1 1 1 g j j j j j f 
+f j j j j j j g 1 1 1 1 F F F f f F F F 1 1 1 1 g j j j j j j f 
+f j j j j j j j g 1 1 g j j F f f F j j g 1 1 g j j j j j j j f 
+f j j j j j j j j g 1 g j j j j j j j j g 1 g j j j j j j j j f 
+f j j f j j j j j g 1 1 g j j j j j j g 1 1 g j j j j j f j j f 
+f j f j j j j j g 1 1 1 1 g g j j g g 1 1 1 1 g j j j j j f j f 
+y j j y j f j g 1 1 1 g 1 1 1 g g 1 1 1 g 1 1 1 g j f j y j j y 
+y 3 3 j f j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j f j 3 3 y 
+y j 3 j j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j j 3 j y 
+y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y 
+]]},
+{nil,"portrait_3",[[
+y y y y f f f f f f f f f f f f f f f f f f f f f f f f y y y y 
+y j y j j j j j j j j j j j j j j j j j j j j j j j j j j y j y 
+y y y j f j j j j j j j g g g g g g g g j j j j j j j f j y y y 
+y j j y j f j j j j g g 1 1 1 1 1 1 1 1 g g j j j j f j y j j y 
+f j f j j j j j g g 1 1 1 1 j j j j 1 1 1 1 g g j j j j j f j f 
+f j j f j j j g 1 1 1 j j j j j j j j j j 1 1 1 g j j j f j j f 
+f j j j j j g 1 1 j j j j j j j j j j j j j j 1 1 g j j j j j f 
+f j j j j g 1 1 j j j F j F j F F j F j F j j j 1 1 g j j j j f 
+f j j j j g 1 j j F F F F F F F F F F F F F F j j 1 g j j j j f 
+f j j j g 1 1 j F F f f f f F F F F f f f f F F j 1 1 g j j j f 
+f j j j g 1 1 j F F F 7 7 F F F F F F 7 7 F F F j 1 1 g j j j f 
+f j j j g 1 1 j F F 7 j j 7 F s s F 7 j j 7 F F j 1 1 g j j j f 
+f j j g 1 1 j j F F 7 j j 7 F s s F 7 j j 7 F F j j 1 1 g j j f 
+f j j g 1 1 1 j F F f 7 7 f F s s F f 7 7 f F F j 1 1 1 g j j f 
+f j j g 1 1 1 1 j F F f f F F s s F F f f F F j 1 1 1 1 g j j f 
+f j j g 1 1 1 j F F F F F F F s s F F F F F F F j 1 1 1 g j j f 
+f j j g 1 1 j F F f F F F F F m m F F F F F F F F j 1 1 g j j f 
+f j j j g 1 1 F F F F F F F m m m m F F R F R F F 1 1 g j j j f 
+f j j j g 1 1 F F F F F F F F m m F F F F R F F F 1 1 g j j j f 
+f j j j g 1 1 F F F F F F f F F F F f F F F F F F 1 1 g j j j f 
+f j j j j g 1 1 F F F F F F f f f f F F F F F F 1 1 g j j j j f 
+f j j j j g 1 1 1 F F F F F F F F F F F F F F 1 1 1 g j j j j f 
+f j j j j j g 1 1 1 F F F F F F F F F F F F 1 1 1 g j j j j j f 
+f j j j j j j g 1 1 1 1 F F F j j F F F 1 1 1 1 g j j j j j j f 
+f j j j j j j j g 1 1 g f f F j j F f f g 1 1 g j j j j j j j f 
+f j j j j j j j j g 1 g f f f f f f f f g 1 g j j j j j j j j f 
+f j j f j j j j j g 1 1 g f f f f f f g 1 1 g j j j j j f j j f 
+f j f j j j j j g 1 1 1 1 g g f f g g 1 1 1 1 g j j j j j f j f 
+y j j y j f j g 1 1 1 g 1 1 1 g g 1 1 1 g 1 1 1 g j f j y j j y 
+y y y j f j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j f j y y y 
+y j y j j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j j y j y 
+y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y 
+]]},
+{nil,"portrait_4",[[
+y y y y f f f f f f f f f f f f f f f f f f f f f f f f y y y y 
+y j y j j j j j j j j j j j j j j j j j j j j j j j j j j y j y 
+y y y j f j j j j j j j g g g g g g g g j j j j j j j f j y y y 
+y j j y j f j j j j g g 1 1 1 1 1 1 1 1 g g j j j j f j y j j y 
+f j f j j j j j g g 1 1 1 1 R R R R 1 1 1 1 g g j j j j j f j f 
+f j j f j j j g 1 1 1 R R R R R R R R R R 1 1 1 g j j j f j j f 
+f j j j j j g 1 1 R R R R R R R R R R R R R R 1 1 g j j j j j f 
+f j j j j g 1 1 R R R R R R R R R R R R R R R R 1 1 g j j j j f 
+f j j j j g 1 1 R R R R R R R R R R R R R R R R 1 1 g j j j j f 
+f j j j g 1 1 R R R s s s s s s s s s s s s R R R 1 1 g j j j f 
+f j j j g 1 1 R R s B B B B s s s s B B B B s R R 1 1 g j j j f 
+f j j j g 1 1 R s B D D D D B s s B D D D D B s R 1 1 g j j j f 
+f j j g 1 1 R R s s f f f f s s s s f f f f s s R R 1 1 g j j f 
+f j j g 1 1 1 R s f 7 i i 7 s 6 6 s 7 i i 7 f s R 1 1 1 g j j f 
+f j j g 1 1 1 R s s f 7 7 f s 6 6 s f 7 7 f s s R 1 1 1 g j j f 
+f j j g 1 1 1 R S s s f f s s 6 6 s s f f s s S R 1 1 1 g j j f 
+f j j g 1 1 R 1 S S s s s s S F F S s s s s S S 1 R 1 1 g j j f 
+f j j j g 1 1 1 S S S S S S F F F F S S S S S S 1 1 1 g j j j f 
+f j j j g 1 1 1 R S S S S S S F F S S S S S S R 1 1 1 g j j j f 
+f j j j g 1 1 1 R S S S S S S S S S S S S S S R 1 1 1 g j j j f 
+f j j j j g 1 R 1 1 S S S I I I I I I S S S 1 1 R 1 g j j j j f 
+f j j j j g 1 1 1 1 1 S S S S 3 3 S S S S 1 1 1 1 1 g j j j j f 
+f j j j j j g 1 1 1 1 1 S S S S S S S S 1 1 1 1 1 g j j j j j f 
+f j j j j j j g 1 1 1 1 1 F S S S S F 1 1 1 1 1 g j j j j j j f 
+f j j j j j j j g 1 1 g 1 F F F F F F 1 g 1 1 g j j j j j j j f 
+f j j j j j j j j g 1 g 2 2 2 F F 2 2 2 g 1 g j j j j j j j j f 
+f j j f j j j j j g 1 1 g 2 2 2 2 2 2 g 1 1 g j j j j j f j j f 
+f j f j j j j j g 1 1 1 1 g g 2 2 g g 1 1 1 1 g j j j j j f j f 
+y j j y j f j g 1 1 1 g 1 1 1 g g 1 1 1 g 1 1 1 g j f j y j j y 
+y y y j f j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j f j y y y 
+y j y j j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j j y j y 
+y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y 
+]]},
+
+		}
+	end,
+
 	setup=function(menu)
 
 		menu.stack={}
@@ -518,6 +663,50 @@ entities.systems.insert{ caste="menu",
 	
 		menu.chats=chatdown.setup(chat_text)
 
+		menu.chats.chat_to_menu_items=function(chat)
+			local items={cursor=1,cursor_max=0}
+			
+			items.title=chat.description_name
+			items.portrait=chat.get_proxy("portrait")
+			
+			local ss=chat.response and chat.response.text or {} if type(ss)=="string" then ss={ss} end
+			for i,v in ipairs(ss) do
+				if i>1 then
+					items[#items+1]={text="",chat=chat} -- blank line
+				end
+				items[#items+1]={text=chat.replace_proxies(v)or"",chat=chat}
+			end
+
+			for i,v in ipairs(chat.decisions or {}) do
+
+				items[#items+1]={text="",chat=chat} -- blank line before each decision
+
+				local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
+
+				local color=30
+				if chat.viewed[v.name] then color=1 end -- we have already seen the response to this decision
+				
+				local f=function(item,menu)
+
+					if item.decision and item.decision.name then
+
+						menu.chats.changes(chat,"decision",item.decision)
+
+						chat.set_response(item.decision.name)
+
+						chat.set_proxies(item.decision.proxies)
+
+						menu.show(menu.chats.chat_to_menu_items(chat))
+
+					end
+				end
+				
+				items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,decision=v,cursor=i,call=f,color=color} -- only show first line
+				items.cursor_max=i
+			end
+
+			return items
+		end
 
 		menu.show=function(items)
 		
@@ -533,23 +722,41 @@ entities.systems.insert{ caste="menu",
 			
 			menu.items=items
 			menu.cursor=items.cursor or 1
-			
+		
 			menu.lines={}
 			for idx=1,#items do
 				local item=items[idx]
 				local text=item.text
 				if text then
-					local ls=wstr.smart_wrap(text,menu.width-8)
-					if #ls==0 then ls={""} end -- blank line
+					local portwrap=0
+					local portfix=""
+					local portmin=1
+--print(idx,text,menu.items.portrait)
+					if idx==1 and menu.items.portrait then -- show portrait
+						portwrap=10
+						portfix="          "
+						portmin=4
+					end
+					local ls=wstr.smart_wrap(text,menu.width-8-portwrap)
+--					if portmin>1 then
+--						table.insert(ls,1,"")
+--					end
+					while #ls<portmin do -- blank line or pad
+						table.insert(ls,1,"")
+--						ls[#ls+1]=""
+					end
 					for i=1,#ls do
 						local prefix=""--(i>1 and " " or "")
 						if item.cursor then prefix=" " end -- indent decisions
-						menu.lines[#menu.lines+1]={s=prefix..ls[i],idx=idx,item=item,cursor=item.cursor,color=item.color}
+						menu.lines[#menu.lines+1]={s=portfix..prefix..ls[i],idx=idx,item=item,cursor=item.cursor,color=item.color}
 					end
 				end
 			end
 
 		end
+
+
+
 
 		menu.show( menu.chats.get_menu_items("example") )
 
@@ -620,6 +827,7 @@ entities.systems.insert{ caste="menu",
 
 		if not menu.active then return end
 
+		local names=system.components.tiles.names
 		local tprint=system.components.text.text_print
 		local tgrd=system.components.text.tilemap_grd
 		
@@ -651,6 +859,13 @@ entities.systems.insert{ caste="menu",
 			end
 		end
 
+		if menu.items.portrait then
+			local image=names[menu.items.portrait]
+			if image then
+				system.components.text.text_print_image(image,menu.cx+4,menu.cy+2,fg,bg1)
+			end
+		end
+
 		system.components.text.dirty(true)
 
 	end,
@@ -662,7 +877,7 @@ entities.systems.insert{ caste="player",
 
 		hardware.graphics.loads{
 
-{nil,"test_player",[[
+{nil,"test_player1",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -677,23 +892,125 @@ entities.systems.insert{ caste="player",
 . . . . . . . 7 7 7 . . . . . . 
 . . . . . . . 7 0 7 . . . . . . 
 . . . . . . . 7 7 7 . . . . . . 
-. . . . 7 7 . 7 . 7 7 . . . . . 
-. . . . 7 . 7 7 7 7 7 . . . . . 
+. . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . 7 . 7 . 7 . . 7 7 . . . . 
+. . 7 7 . . 7 7 7 7 . 7 7 . . . 
+. . 7 . . 7 . 7 . . 7 . 7 . . . 
+. . 7 . . . 7 7 7 7 . . 7 . . . 
+. . 7 . . 7 . 7 7 . 7 . 7 . . . 
+. . 7 7 . 7 7 7 7 7 7 7 7 . . . 
+. . 7 7 . . 7 . . 7 . 7 7 . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . 7 7 7 7 7 7 7 . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+{nil,"test_player2",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . . . . 7 7 7 7 7 . . . . . 
+. . . . . . 7 0 7 0 7 . . . . . 
+. . . . . . 7 7 0 7 7 . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
 . . . . 7 7 . 7 . . 7 . . . . . 
-. . . . 7 . 7 7 7 7 7 . . . . . 
-. . . . 7 7 . 7 . . 7 . . . . . 
-. . . . 7 . 7 7 7 7 7 . . . . . 
-. . . . 7 7 . 7 7 . 7 . . . . . 
-. . . . 7 7 7 7 7 7 7 . . . . . 
-. . . . 7 7 7 . . 7 7 . . . . . 
-. . . . . 7 . . . . 7 . . . . . 
-. . . . 7 7 . . . . 7 7 . . . . 
-. . . . 7 7 . . . . 7 7 . . . . 
-. . . . 7 . . . . . 7 . . . . . 
-. . . . 7 . . . . . 7 . . . . . 
-. . . . 7 . . . . . 7 . . . . . 
-. . . . 7 . . . . . 7 . . . . . 
-. . . 7 7 7 7 . . 7 7 7 7 . . . 
+. . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . 7 . 7 . 7 . . 7 7 . . . . 
+. . . 7 . . 7 7 7 7 . 7 . . . . 
+. . 7 7 . 7 . 7 . . 7 7 7 . . . 
+. . 7 . . . 7 7 7 7 . . 7 . . . 
+. . 7 . . . . 7 . . . . 7 . . . 
+. . 7 . . 7 . 7 7 . 7 . 7 . . . 
+. . 7 7 . 7 7 7 7 7 7 7 7 . . . 
+. . 7 7 . . 7 . . 7 . 7 7 . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . 7 7 7 7 7 7 7 . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+{nil,"test_player3",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . . . . 7 7 7 7 7 . . . . . 
+. . . . . . 7 0 7 0 7 . . . . . 
+. . . . . . 7 7 0 7 7 . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . 7 7 7 . 7 . . 7 7 . . . . 
+. . . 7 . . 7 7 7 7 . 7 . . . . 
+. . . 7 . 7 . 7 . . 7 7 . . . . 
+. . 7 7 . . 7 7 7 7 . 7 7 . . . 
+. . 7 . . 7 . 7 . . 7 . 7 . . . 
+. . 7 . . . 7 7 7 7 . . 7 . . . 
+. . 7 . . . . 7 . . . . 7 . . . 
+. . 7 7 . 7 . 7 7 . 7 7 7 . . . 
+. . 7 7 . 7 7 7 7 7 7 7 7 . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . 7 7 7 7 7 7 7 . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+{nil,"test_player4",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . . . . 7 7 7 7 7 . . . . . 
+. . . . . . 7 0 7 0 7 . . . . . 
+. . . . . . 7 7 0 7 7 . . . . . 
+. . . . . . . 7 7 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . 
+. . . . . . . 7 0 7 . . . . . . 
+. . . 7 7 . . 7 7 7 . 7 . . . . 
+. . . 7 . 7 . 7 . . 7 7 . . . . 
+. . . 7 . . 7 7 7 7 . 7 . . . . 
+. . 7 7 . 7 . 7 . . 7 7 7 . . . 
+. . 7 . . . 7 7 7 7 . . 7 . . . 
+. . 7 . . 7 . 7 . . 7 . 7 . . . 
+. . 7 . . . 7 7 7 7 . . 7 . . . 
+. . 7 7 . 7 . 7 7 . 7 7 7 . . . 
+. . 7 7 . 7 7 7 7 7 7 7 7 . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 7 . 7 7 . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . . 7 . . 7 . . . . . . 
+. . . . . 7 7 7 7 7 7 7 . . . . 
 . . . . . . . . . . . . . . . . 
 ]]},
 
@@ -704,7 +1021,7 @@ entities.systems.insert{ caste="player",
 }
 
 local prefabs={
-	{name="player",id="player",sprite="test_player",rules={"player"},illumination=1,},
+	{name="player",id="player",sprite={"test_player1","test_player2","test_player3","test_player4",speed=16},rules={"player"},illumination=2,},
 	{name="floor",back="test_none"},
 	{name="floor_tile",back="test_tile"},
 	{name="floor_spawn",id="floor_spawn",back="test_spawn",illumination=0.75,},
@@ -748,8 +1065,8 @@ local rules={
 		clean=function(item)
 		end,
 
-		update=function(item) -- apply light to parent
-print("player update")
+		update=function(item)
+--print("player update")
 		end,
 
 		move=function(item,vx,vy)
@@ -765,7 +1082,9 @@ print("player update")
 				item:insert( cell ) -- move to a new location
 			end
 			
-			item[0].illumination=item.illumination -- apply light tp base cell
+			if vx>0 then item.sprite.flip= 1 end
+			if vx<0 then item.sprite.flip=-1 end
+			
 			item[0]:apply_update(16,16)
 
 		end,
@@ -823,7 +1142,7 @@ entities.systems.insert{ caste="yarn",
 		if up.button("right_set") then vx= 1 end
 		
 		if not ( vx==0 and vy==0 ) then
-print("moving",vx,vy)
+--print("moving",vx,vy)
 			items.ids.player:apply("move",vx,vy)
 		end
 		
@@ -859,10 +1178,10 @@ print("moving",vx,vy)
 				local dx=it.cx+x-px
 				local dy=it.cy+y-py
 
-				local lightring=(math.sqrt(dx*dx + dy*dy)-1)/8 -- 1 cells full and 8 cells fadeout
-				if lightring>1 then lightring=1 end
-				if lightring<0 then lightring=0 end
-				lightring=1-lightring
+--				local lightring=(math.sqrt(dx*dx + dy*dy)-1)/8 -- 1 cells full and 8 cells fadeout
+--				if lightring>1 then lightring=1 end
+--				if lightring<0 then lightring=0 end
+--				lightring=1-lightring
 				
 				local cell=pages.get_cell(it.cx+x,it.cy+y)
 				local idx=y*48*4 + x*4
@@ -881,13 +1200,21 @@ print("moving",vx,vy)
 						b[idx+4]=light*255
 					end
 					if v.sprite then
+					
+						local flip=1
+						local sprite=v.sprite
+						if type(sprite)=="table" then
+							flip=sprite.flip or 1
+							local speed=sprite.speed or 16
+							sprite=sprite[math.floor(system.ticks/speed)%#sprite+1]
+						end
 
-						local spr=names[v.sprite]
+						local spr=names[sprite]
 						system.components.sprites.list_add({
 							t=spr.idx,
 							hx=spr.hx,hy=spr.hy,ox=spr.hx/2,oy=spr.hy, -- handle on bottom centre of sprite
 							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
-							s=1,rz=0,
+							sx=flip,rz=0,
 							color={light,light,light,1}
 						})
 					end
