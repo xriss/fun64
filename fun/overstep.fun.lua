@@ -1048,38 +1048,38 @@ entities.systems.insert{ caste="player",
 . . . . . . . . . . . . . . . . 
 ]]},
 {nil,"cursor_square",[[
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
-7 . . . . . . . . . . . . . . 7 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 ]]},
 
 		}
@@ -1210,6 +1210,7 @@ local rules={
 			
 			item[0]:apply("inject_time",16,16)
 
+
 		end,
 	},
 }
@@ -1257,17 +1258,72 @@ entities.systems.insert{ caste="yarn",
 		local items=it.items
 		local pages=items.pages
 
-		local up=ups(0) -- get all connected controls, keyboard or gamepad
+		local up=ups(0) -- get all connected controls, merged together
 
-		local vx,vy=0,0
-		if up.button("up_set")    then vy=-1 end
-		if up.button("down_set")  then vy= 1 end
-		if up.button("left_set")  then vx=-1 end
-		if up.button("right_set") then vx= 1 end
+
+		local mx=up.axis("mx") -- get mouse position, it will be nil if no mouse
+		local my=up.axis("my")
+
+		if mx~=it.mx or my~=it.my then -- mouse movement
+
+			it.mx=mx
+			it.my=my
+			
+			local dx=it.cx*16-system.components.map.ax+mx
+			local dy=it.cy*16+system.components.map.az+my-16
+
+			if     dx<it.dx then		dx=-1
+			elseif dx>=it.dx+16 then 	dx=1
+			else						dx=0
+			end
+
+			if     dy<it.dy then		dy=-1
+			elseif dy>=it.dy+16 then 	dy=1
+			else						dy=0
+			end
+			
+			if dx==0 and dy==0 then 
+				it.cursor=nil -- do not show
+			else
+				it.cursor=items.ids.player[0]:get_cell_relative(dx,dy)
+			end
+
+		end
+
+		local lx=up.axis("lx") -- get left joystick
+		local ly=up.axis("ly")
+
+		if lx or ly then
+
+			local vx,vy=0,0
+
+			if ly<-32768/4	then vy=-1 end
+			if ly>32768/4	then vy= 1 end
+			if lx<-32768/4	then vx=-1 end
+			if lx>32768/4	then vx= 1 end
+
+				
+			if vx==0 and vy==0 then 
+				it.cursor=nil -- do not show
+			else
+				it.cursor=items.ids.player[0]:get_cell_relative(vx,vy)
+			end
+
+		end
+		
+
+		local vx,vy=0,0 -- check keys or dpad movement
+
+		if up.button("pad_up_set")		then vy=-1 end
+		if up.button("pad_down_set")	then vy= 1 end
+		if up.button("pad_left_set")	then vx=-1 end
+		if up.button("pad_right_set")	then vx= 1 end
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)
 			items.ids.player:apply("move",vx,vy)
+
+			entities.systems.yarn.cursor=nil -- do not show if we are using keys
 		end
 		
 -- apply view
@@ -1302,11 +1358,6 @@ entities.systems.insert{ caste="yarn",
 				local dx=it.cx+x-px
 				local dy=it.cy+y-py
 
---				local lightring=(math.sqrt(dx*dx + dy*dy)-1)/8 -- 1 cells full and 8 cells fadeout
---				if lightring>1 then lightring=1 end
---				if lightring<0 then lightring=0 end
---				lightring=1-lightring
-				
 				local cell=pages.get_cell(it.cx+x,it.cy+y)
 				local idx=y*48*4 + x*4
 				b[idx+1]=0
@@ -1314,7 +1365,6 @@ entities.systems.insert{ caste="yarn",
 				b[idx+3]=31
 				b[idx+4]=0
 				local light=cell.illumination or 0
---				if lightring>light then light=lightring end
 				for i,v in ipairs(cell) do
 					if v.back then
 						local tile=names[v.back]
@@ -1345,6 +1395,15 @@ entities.systems.insert{ caste="yarn",
 							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
 							sx=flip,rz=0,
 							color={light*cr,light*cg,light*cb,1*ca}
+						})
+					end
+					if cell==it.cursor then -- show curosr
+						local spr=names.cursor_square
+						system.components.sprites.list_add({
+							t=spr.idx,
+							hx=spr.hx,hy=spr.hy,ox=spr.hx/2,oy=spr.hy, -- handle on bottom centre of sprite
+							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
+							color={1/2,1/2,1/2,1/2}
 						})
 					end
 				end
