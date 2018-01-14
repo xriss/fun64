@@ -40,10 +40,10 @@ msg=function(m)
 	s=string.format("%6.2f %8s %2d %3d,%3d %3d %3d",m.time,m.class,m.action,m.x,m.y,m.id or 0,m.pressure or 0)
 
     elseif m.class=="padaxis" then
-	s=string.format("%6.2f %8s %2d %8s %5d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
+	s=string.format("%6.2f %8s %2d %8s %5d %3d",m.time,m.class,m.id or 0,m.name,m.value,m.code)
 
     elseif m.class=="padkey" then
-	s=string.format("%6.2f %8s %2d %8s %3d %3d",m.time,m.class,m.id,m.name,m.value,m.code)
+	s=string.format("%6.2f %8s %2d %8s %3d %3d",m.time,m.class,m.id or 0,m.name,m.value,m.code)
 
     elseif m.class=="key" then
 	s=string.format("%6.2f %8s %2d %3s %16s",m.time,m.class,m.action,m.ascii,m.keyname)
