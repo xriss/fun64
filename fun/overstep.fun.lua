@@ -867,8 +867,11 @@ o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o
 		local fg=8
 		local bg1,bg2=25,25
 
-		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.lines+4,1):clear(bg1*0x1000000)
-		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.lines+4-2,1):clear(bg2*0x1000000)
+--		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.lines+4,1):clear(bg1*0x1000000)
+--		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.lines+4-2,1):clear(bg2*0x1000000)
+
+		system.components.text.text_print_border(names.border,
+			menu.cx,menu.cy,menu.width,#menu.lines+4)
 		
 		if menu.items.title then
 			local title=" "..(menu.items.title).." "
