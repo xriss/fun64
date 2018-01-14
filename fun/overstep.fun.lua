@@ -50,7 +50,7 @@ local chat_text=[[
 	A rare bread of NPC who will fulfil all your conversational desires for 
 	a very good price.
 
-	=sir sir/madam
+	=sir Madam
 	=portrait portrait_1
 
 	>convo
@@ -63,7 +63,7 @@ local chat_text=[[
 
 <welcome
 
-	Good Morning {sir},
+	Good morning,{sir}!
 	
 	>morning
 
@@ -106,13 +106,13 @@ local chat_text=[[
 
 <afternoon
 	
-	Then good afternoon {sir},
+	Then good afternoon, {sir}.
 	
 	>convo
 
 <morning
 	
-	and how may I help {sir} today?
+	And how may I help {sir} today?
 	
 	>convo
 
@@ -134,13 +134,13 @@ local chat_text=[[
 
 	The full conversation is very full and long so much so that you 
 	will have to page through many pages before you get to make a 
-	decision
+	decision.
 	
 	>
 		Like this?
 	<
 	
-	Yes just like this. In fact I think you can see that we are already 
+	Yes, just like this. In fact I think you can see that we are already 
 	doing it.
 			
 	
@@ -248,13 +248,13 @@ levels={
 . . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . # . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . # . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . . 
-. . . . . . . . . . . . . . . . . # . # . . . . . . S . . . . . 
+. . . . . = = = = = . . . . . . . . . . . . # . . . . . . . . . 
+. . . . . # . T . # . . . . . . . . . # . . # . . . . . . . . . 
+. . . . . # . . . # . . . . . . . . . # . . . . . . . . . . . . 
+. . . . . # = . = S = . = = . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . # . . . . . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . # . S . . . . . . . # . . # . . . . . . . . . 
+. . . . . . . . . # . . . . . . . # . # . . . . . . S . . . . . 
 . . . . . . . . . . . . . . . . # # . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . # . # # # # . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -652,30 +652,30 @@ d 0 y 0 0 0 I I O O O O Y m m I I m m Y O O O O I I 0 0 0 y 0 d
 d d d d 2 2 I I I O O O Y m m I I m m Y O O O I I I 2 2 d d d d 
 ]]},
 {nil, "border",[[
-o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o 
-o 0 y 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 y 0 o 
-o y y 0 2 0 0 0 0 0 1 0 0 0 1 0 1 0 0 2 0 y y o 
-o 0 0 y 0 2 0 1 0 1 0 1 0 1 0 1 0 1 2 0 y 0 0 o 
-2 0 2 0 0 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 2 0 2 
-2 0 0 2 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 2 0 0 2 
-2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 2 
-2 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 2 
-2 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 1 0 1 2 
-2 0 0 1 0 0 0 0 1 0 1 0 0 0 1 0 0 0 0 1 0 1 0 2 
-2 0 1 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 2 
-2 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 
-2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 2 
-2 0 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 1 0 2 
-2 0 1 0 1 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 1 0 0 2 
-2 1 0 1 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 2 
-2 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 2 
-2 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 
-2 0 0 2 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 2 
-2 0 2 0 0 0 0 1 0 1 0 0 0 1 0 0 0 0 0 0 0 2 0 2 
-o 0 0 y 0 2 1 0 1 0 1 0 1 0 1 0 1 0 2 0 y 0 0 o 
-o y y 0 2 0 0 1 0 1 0 0 0 1 0 0 0 0 0 2 0 y y o 
-o 0 y 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 y 0 o 
-o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o 
+g g . . . . . . . . . . . . . . . . . . . . g g 
+g . g g . . . . . . . . . . . . . . . . g g . g 
+g . . . g g . . . . . . . . . . . . g g . . . g 
+g . . . . . g g . . . . . . . . g g . . . . . g 
+g . . . . . . . g g g . . g g g . . . . . . . g 
+. g . . . . . . . . . g g . . . . . . . . . g . 
+. g . . . . g . . 1 . . . . 1 . . g . . . . g . 
+. g . . . . . g g 1 1 . . 1 1 g g . . . . . g . 
+. . g . . . . g 1 1 1 1 1 1 1 1 g . . . . g . . 
+. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
+. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
+. . . g . . 1 1 1 1 1 1 1 1 1 1 1 . . . g . . . 
+. . . g . . . 1 1 1 1 1 1 1 1 1 1 1 . . g . . . 
+. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
+. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
+. . g . . . . g 1 1 1 1 1 1 1 1 g . . . . g . . 
+. g . . . . . g g 1 1 . . . 1 1 g . . . . . g . 
+. g . . . . g . . 1 . . . . . 1 . g . . . . g . 
+. g . . . . . . . . . g g . . . . . . . . . g . 
+g . . . . . . . g g g . . g g g . . . . . . . g 
+g . . . . . g g . . . . . . . . g g . . . . . g 
+g . . . g g . . . . . . . . . . . . g g . . . g 
+g . g g . . . . . . . . . . . . . . . . g g . g 
+g g . . . . . . . . . . . . . . . . . . . . g g  
 ]]},
 
 		}
@@ -772,9 +772,11 @@ o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o
 --					if portmin>1 then
 --						table.insert(ls,1,"")
 --					end
-					while #ls<portmin do -- blank line or pad
+					while #ls<portmin-1 do -- blank line or pad
 						table.insert(ls,1,"")
---						ls[#ls+1]=""
+					end
+					while #ls<portmin do -- blank line or pad
+						table.insert(ls,"")
 					end
 					for i=1,#ls do
 						local prefix=""--(i>1 and " " or "")
@@ -864,7 +866,7 @@ o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o
 		
 		menu.cy=math.floor((menu.screen_hy-(#menu.lines+4))/2)
 		
-		local fg=8
+		local fg=22
 		local bg1,bg2=25,25
 
 --		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.lines+4,1):clear(bg1*0x1000000)
