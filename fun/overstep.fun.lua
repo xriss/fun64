@@ -1119,10 +1119,10 @@ local rules={
 				end
 				for i,v in c:iterate_neighbours() do -- get neighbours illumination
 					local big=v:get_big()
-					if big and big.illumination then big=nil end -- not lightsources
-					if not big then
-						if v.illumination and v.illumination>b then b=v.illumination end
-					end
+					local bi=0
+					bi=v.illumination or bi
+					if big and not big.illumination  then bi=bi/2 end -- big things get darker quicker?
+					if bi>b then b=bi end
 				end
 				b=b*7/8
 				if b<0 then b=0 end
