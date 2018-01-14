@@ -45,7 +45,7 @@ setup=function() entities.systems.call("setup") end
 
 local chat_text=[[
 
-#example Conversation NPC
+#example A chance meeting
 
 	A rare bread of NPC who will fulfil all your conversational desires for 
 	a very good price.
@@ -516,139 +516,139 @@ entities.systems.insert{ caste="menu",
 
 {nil,"portrait_1",[[
 o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o 
-o 1 y 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 y 1 o 
-o y y 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 y y o 
-o 1 1 y 1 2 1 1 1 1 1 1 1 1 1 1 1 1 R 1 1 1 1 1 1 1 2 1 y 1 1 o 
-2 1 2 1 1 1 1 1 1 1 R 1 1 1 R R R R 1 1 1 1 1 1 1 1 1 1 1 2 1 2 
-2 1 1 2 1 1 1 1 R 1 1 R R R R R R R R R R 1 1 1 1 1 1 1 2 1 1 2 
-2 1 1 1 1 1 1 1 1 R R R R R R R R R R R R R R 1 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 R R R R R R R R R R R R R R R R 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 R R R R R R R R s R R R R R R R 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 R R R s s s s s s s s s s s s R R R 1 1 1 1 1 1 2 
-2 1 1 1 R 1 R R R s B B B B s s s s B B B B s R R R 1 R 1 1 1 2 
-2 1 1 1 1 R 1 R s B D D D D B s s B D D D D B s R 1 R 1 1 1 1 2 
-2 1 1 1 1 1 1 R s s f f f f s s s s f f f f s s R 1 1 1 1 1 1 2 
-2 1 1 1 1 1 R R s f 7 i i 7 s 6 6 s 7 i i 7 f s R R 1 1 1 1 1 2 
-2 1 1 1 1 R 1 R s s f 7 7 f s 6 6 s f 7 7 f s s R 1 R 1 1 1 1 2 
-2 1 1 1 R 1 1 R S s s f f s s 6 6 s s f f s s S R 1 1 R 1 1 1 2 
-2 1 1 1 1 1 R 1 S S s s s s S F F S s s s s S S 1 R 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 S S S S S S F F F F S S S S S S 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 R S S S S S S F F S S S S S S R 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 R S S S S S S S S S S S S S S R 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 R 1 1 S S S I I I I I I S S S 1 1 R 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 1 1 1 S S S S 3 3 S S S S 1 1 1 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 1 1 1 1 S S S S S S S S 1 1 1 1 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 1 1 1 1 1 F S S S S F 1 1 1 1 1 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 1 1 1 1 1 F F F F F F 1 1 1 1 1 1 1 1 1 1 1 1 2 
-2 1 1 1 1 1 1 1 1 1 c I 2 2 2 F F 2 2 2 I c 1 1 1 1 1 1 1 1 1 2 
-2 1 1 2 1 1 1 1 1 c c c I 2 2 2 2 2 2 I c c c 1 1 1 1 1 2 1 1 2 
-2 1 2 1 1 1 1 1 c c B c c I I 1 1 I I c c B c c 1 1 1 1 1 2 1 2 
-o 1 1 y 1 2 1 c B B B B B c c I I c c B B B B B c 1 2 1 y 1 1 o 
+o 1 y 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 y 1 o 
+o y y 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 y y o 
+o 0 0 y 0 2 0 0 0 0 0 0 0 0 0 0 0 0 R 0 0 0 0 0 0 0 2 0 y 0 0 o 
+2 0 2 0 0 0 0 0 0 0 R 0 0 0 R R R R 0 0 0 0 0 0 0 0 0 0 0 2 0 2 
+2 0 0 2 0 0 0 0 R 0 0 R R R R R R R R R R 0 0 0 0 0 0 0 2 0 0 2 
+2 0 0 0 0 0 0 0 0 R R R R R R R R R R R R R R 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 R R R R R R R R R R R R R R R R 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 R R R R R R R R s R R R R R R R 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 R R R s s s s s s s s s s s s R R R 0 0 0 0 0 0 2 
+2 0 0 0 R 0 R R R s B B B B s s s s B B B B s R R R 0 R 0 0 0 2 
+2 0 0 0 0 R 0 R s B D D D D B s s B D D D D B s R 0 R 0 0 0 0 2 
+2 0 0 0 0 0 0 R s s f f f f s s s s f f f f s s R 0 0 0 0 0 0 2 
+2 0 0 0 0 0 R R s f 7 i i 7 s 6 6 s 7 i i 7 f s R R 0 0 0 0 0 2 
+2 0 0 0 0 R 0 R s s f 7 7 f s 6 6 s f 7 7 f s s R 0 R 0 0 0 0 2 
+2 0 0 0 R 0 0 R S s s f f s s 6 6 s s f f s s S R 0 0 R 0 0 0 2 
+2 0 0 0 0 0 R 0 S s s s s s S F F S s s s s s S 0 R 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 S S s s s S F F F F S s s s S S 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 R S S S S S S F F S S S S S S R 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 R 0 R S S S S S S S S S S S S S S R 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 R 0 0 S S S I I I I I I S S S R 0 R 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 R S S S S 3 3 S S S S R 0 0 0 R 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 R 0 R S S S S S S S S R 0 R 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 0 0 R F S S S S F R 0 0 0 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 0 0 0 F F F F F F 0 0 0 0 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 c I 2 2 2 F F 2 2 2 I c 0 0 0 0 0 0 0 0 0 2 
+2 0 0 2 0 0 0 0 0 c c c I 2 2 2 2 2 2 I c c c 0 0 0 0 0 2 0 0 2 
+2 0 2 0 0 0 0 0 c c B c c I I 1 1 I I c c B c c 0 0 0 0 0 2 0 2 
+o 0 0 y 0 2 0 c B B B B B c c I I c c B B B B B c 0 2 0 y 0 0 o 
 o y y 1 2 1 c B B o B o B o B c c B B B O B O B B c 1 2 1 y y o 
 o 1 y 1 1 B B B B B o B o B B B B B B B B O B B B B B 1 1 y 1 o 
 o o o o 2 B B B B B B B B B B B B B B B B B B B B B B 2 o o o o 
 ]]},
 {nil,"portrait_2",[[
 y y y y f f f f f f f f f f f f f f f f f f f f f f f f y y y y 
-y j 3 j j j j j j j j j j j j j j j j j j j j j j j j j j 3 j y 
-y 3 3 j f j j j j j j j d d d d d d d d j j j j j j j f j 3 3 y 
-y j j y j f j j j j G G 1 1 1 1 1 1 1 1 G G j j j j f j y j j y 
-f j f j j j j j G G 1 1 1 1 i i i i 1 1 1 1 G G j j j j j f j f 
-f j j f j j j G 1 1 1 i i i i i i i i i i 1 1 1 G j j j f j j f 
-f j j j j j G 1 1 i i i i i i i i i i i i i i 1 1 G j j j j j f 
-f j j j j g 1 1 i i i 2 i 2 i 2 2 i 2 i 2 i i i 1 1 g j j j j f 
-f j j j j g 1 i i 2 2 2 2 2 2 2 2 2 2 2 2 2 2 i i 1 g j j j j f 
-f j j j g 1 1 i 2 2 j j j j 2 2 2 2 j j j j 2 2 i 1 1 g j j j f 
-f j j j g 1 1 i 2 2 2 5 5 2 2 2 2 2 2 5 5 2 2 2 i 1 1 g j j j f 
-f j j j g 1 1 i 2 2 5 i i 5 2 3 3 2 5 i i 5 2 2 i 1 1 g j j j f 
-f j j G 1 1 j j 2 2 5 i i 5 2 3 3 2 5 i i 5 2 2 j j 1 1 G j j f 
-f j j G 1 1 1 j F F f 7 7 f 2 3 3 2 f 7 7 f F F j 1 1 1 G j j f 
-f j j G 1 1 1 1 j F F f f F F 3 3 F F f f F F j 1 1 1 1 G j j f 
-f j j G 1 1 1 j F F F F F F F s s F F F F F F F j 1 1 1 G j j f 
-f j j G 1 1 j F F f F F F F F m m F F F F F F F F j 1 1 G j j f 
-f j j j G 1 1 F F F F F F F m m m m F F R F R F F 1 1 G j j j f 
-f j j j G 1 1 F F F F F F F F m m F F F F R F F F 1 1 G j j j f 
-f j j j G 1 1 j F F F F F j F F F F j F F F F F j 1 1 G j j j f 
-f j j j j g 1 1 F F F F F F j j j j F F F F F F 1 1 g j j j j f 
-f j j j j g 1 1 1 F F F F F F F F F F F F F F 1 1 1 g j j j j f 
-f j j j j j g 1 1 1 j F F F F F F F F F F j 1 1 1 g j j j j j f 
-f j j j j j j g 1 1 1 1 F F F f f F F F 1 1 1 1 g j j j j j j f 
-f j j j j j j j g 1 1 g j j F f f F j j g 1 1 g j j j j j j j f 
-f j j j j j j j j g 1 g j j j j j j j j g 1 g j j j j j j j j f 
-f j j f j j j j j g 1 1 g j j j j j j g 1 1 g j j j j j f j j f 
-f j f j j j j j g 1 1 1 1 g g j j g g 1 1 1 1 g j j j j j f j f 
-y j j y j f j g 1 1 1 g 1 1 1 g g 1 1 1 g 1 1 1 g j f j y j j y 
-y 3 3 j f j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j f j 3 3 y 
-y j 3 j j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j j 3 j y 
-y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y 
+y j 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 j y 
+y 3 3 0 f 0 0 0 0 0 0 0 d d d d d d d d 0 0 0 0 0 0 0 f 0 3 3 y 
+y 0 0 y 0 f 0 0 0 0 G G 1 1 1 1 1 1 1 1 G G 0 0 0 0 f 0 y 0 0 y 
+f 0 f 0 0 0 0 0 G G 1 1 1 1 i i i i 1 1 1 1 G G 0 0 0 0 0 f 0 f 
+f 0 0 f 0 0 0 G 1 1 1 i i i i i i i i i i 1 1 1 G 0 0 0 f 0 0 f 
+f 0 0 0 0 0 G 1 1 i i i i i i i i i i i i i i 1 1 G 0 0 0 0 0 f 
+f 0 0 0 0 g 1 1 i i i 2 i 2 i 2 2 i 2 i 2 i i i 1 1 g 0 0 0 0 f 
+f 0 0 0 0 g 1 i i 2 2 2 2 2 2 2 2 2 2 2 2 2 2 i i 1 g 0 0 0 0 f 
+f 0 0 0 g 1 1 i 2 2 j j j j 2 2 2 2 j j j j 2 2 i 1 1 g 0 0 0 f 
+f 0 0 0 g 1 1 i 2 2 2 5 5 2 2 2 2 2 2 5 5 2 2 2 i 1 1 g 0 0 0 f 
+f 0 0 0 g 1 1 i 2 2 5 i i 5 2 3 3 2 5 i i 5 2 2 i 1 1 g 0 0 0 f 
+f 0 0 G 1 1 j j 2 2 5 i i 5 2 3 3 2 5 i i 5 2 2 j j 1 1 G 0 0 f 
+f 0 0 G 1 1 1 j F F f 7 7 f 2 3 3 2 f 7 7 f F F j 1 1 1 G 0 0 f 
+f 0 0 G 1 1 1 1 j F F f f F F 3 3 F F f f F F j 1 1 1 1 G 0 0 f 
+f 0 0 G 1 1 1 j F F F F F F F s s F F F F F F F j 1 1 1 G 0 0 f 
+f 0 0 G 1 1 j F F f F F F F F m m F F F F F F F F j 1 1 G 0 0 f 
+f 0 0 0 G 1 1 F F F F F F F m m m m F F R F R F F 1 1 G 0 0 0 f 
+f 0 0 0 G 1 1 F F F F F F F F m m F F F F R F F F 1 1 G 0 0 0 f 
+f 0 0 0 G 1 1 j F F F F F j F F F F j F F F F F j 1 1 G 0 0 0 f 
+f 0 0 0 0 g 1 1 F F F F F F j j j j F F F F F F 1 1 g 0 0 0 0 f 
+f 0 0 0 0 g 1 1 1 F F F f f f f f f f f F F F 1 1 1 g 0 0 0 0 f 
+f 0 0 0 0 0 g 1 1 1 j f f f f i i f f f f j 1 1 1 g 0 0 0 0 0 f 
+f 0 0 0 0 0 0 g 1 1 1 1 f f f f f f f f 1 1 1 1 g 0 0 0 0 0 0 f 
+f 0 0 0 0 0 0 0 g 1 1 g j j f f f f j j g 1 1 g 0 0 0 0 0 0 0 f 
+f 0 0 0 0 0 0 0 0 g 2 g j j j j j j j j g 2 g 0 0 0 0 0 0 0 0 f 
+f 0 0 f 0 0 0 0 0 g 2 2 g j j j j j j g 2 2 g 0 0 0 0 0 f 0 0 f 
+f 0 f 0 0 0 0 0 g 2 2 2 2 g g j j g g 2 2 2 2 g 0 0 0 0 0 f 0 f 
+y 0 0 y 0 f 0 g 2 2 2 G 2 2 2 g g 2 2 2 G 2 2 2 g 0 f 0 y 0 0 y 
+y 3 3 j f j g 2 2 2 G 2 2 2 2 2 2 2 2 2 2 G 2 2 2 g j f j 3 3 y 
+y j 3 j j 2 2 2 2 G 2 2 2 2 2 2 2 2 2 2 2 2 G 2 2 2 2 j j 3 j y 
+y y y y f 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 f y y y y 
 ]]},
 {nil,"portrait_3",[[
-y y y y f f f f f f f f f f f f f f f f f f f f f f f f y y y y 
-y j y j j j j j j j j j j j j j j j j j j j j j j j j j j y j y 
-y y y j f j j j j j j j g g g g g g g g j j j j j j j f j y y y 
-y j j y j f j j j j g g 1 1 1 1 1 1 1 1 g g j j j j f j y j j y 
-f j f j j j j j g g 1 1 1 1 j j j j 1 1 1 1 g g j j j j j f j f 
-f j j f j j j g 1 1 1 j j j j j j j j j j 1 1 1 g j j j f j j f 
-f j j j j j g 1 1 j j j j j j j j j j j j j j 1 1 g j j j j j f 
-f j j j j g 1 1 j j j F j F j F F j F j F j j j 1 1 g j j j j f 
-f j j j j g 1 j j F F F F F F F F F F F F F F j j 1 g j j j j f 
-f j j j g 1 1 j F F f f f f F F F F f f f f F F j 1 1 g j j j f 
-f j j j g 1 1 j F F F 7 7 F F F F F F 7 7 F F F j 1 1 g j j j f 
-f j j j g 1 1 j F F 7 j j 7 F s s F 7 j j 7 F F j 1 1 g j j j f 
-f j j g 1 1 j j F F 7 j j 7 F s s F 7 j j 7 F F j j 1 1 g j j f 
-f j j g 1 1 1 j F F f 7 7 f F s s F f 7 7 f F F j 1 1 1 g j j f 
-f j j g 1 1 1 1 j F F f f F F s s F F f f F F j 1 1 1 1 g j j f 
-f j j g 1 1 1 j F F F F F F F s s F F F F F F F j 1 1 1 g j j f 
-f j j g 1 1 j F F f F F F F F m m F F F F F F F F j 1 1 g j j f 
-f j j j g 1 1 F F F F F F F m m m m F F R F R F F 1 1 g j j j f 
-f j j j g 1 1 F F F F F F F F m m F F F F R F F F 1 1 g j j j f 
-f j j j g 1 1 F F F F F F f F F F F f F F F F F F 1 1 g j j j f 
-f j j j j g 1 1 F F F F F F f f f f F F F F F F 1 1 g j j j j f 
-f j j j j g 1 1 1 F F F F F F F F F F F F F F 1 1 1 g j j j j f 
-f j j j j j g 1 1 1 F F F F F F F F F F F F 1 1 1 g j j j j j f 
-f j j j j j j g 1 1 1 1 F F F j j F F F 1 1 1 1 g j j j j j j f 
-f j j j j j j j g 1 1 g f f F j j F f f g 1 1 g j j j j j j j f 
-f j j j j j j j j g 1 g f f f f f f f f g 1 g j j j j j j j j f 
-f j j f j j j j j g 1 1 g f f f f f f g 1 1 g j j j j j f j j f 
-f j f j j j j j g 1 1 1 1 g g f f g g 1 1 1 1 g j j j j j f j f 
-y j j y j f j g 1 1 1 g 1 1 1 g g 1 1 1 g 1 1 1 g j f j y j j y 
-y y y j f j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j f j y y y 
-y j y j j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j j y j y 
-y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y 
+o o o o 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 o o o o 
+o 0 y 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 y 0 o 
+o y y 0 2 0 0 0 0 0 0 0 0 0 5 5 5 5 0 0 0 0 0 0 0 0 0 2 0 y y o 
+o 0 0 y 0 2 0 0 0 0 0 5 5 5 4 4 4 4 5 5 5 0 0 0 0 0 2 0 y 0 0 o 
+2 0 2 0 0 0 0 0 0 5 5 4 4 4 4 4 4 4 4 4 4 5 5 0 0 0 0 0 0 2 0 2 
+2 0 0 2 0 0 0 0 5 4 4 4 4 4 s s s s 4 4 4 4 4 5 0 0 0 0 2 0 0 2 
+2 0 0 0 0 0 0 0 4 4 5 5 s s s s s s s s 5 5 4 4 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 5 4 5 s s s s s s s s s s s s 5 4 5 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 4 5 s s f f s s s s s s f f s s 5 4 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 4 s s f 7 7 f s s s s f 7 7 f s s 4 0 0 0 0 0 0 2 
+2 0 0 0 0 0 S 4 s s 7 i i 7 s 7 7 s 7 i i 7 s s 4 S 0 0 0 0 0 2 
+2 0 0 0 0 0 s S s s 7 i i 7 s 7 7 s 7 i i 7 s s S s 0 0 0 0 0 2 
+2 0 0 0 0 0 0 S s s f 7 7 f s 7 7 s f 7 7 f s s S 0 0 0 0 0 0 2 
+2 0 0 0 1 0 0 F s s s f f s s 7 7 s s f f s s s F 0 0 1 0 0 0 2 
+2 0 0 0 0 0 0 0 s s s s s s s S S s s s s s s s 0 0 0 0 0 0 0 2 
+2 0 0 0 1 0 0 0 s s S s s s S S S S s s s S s s 0 0 0 1 0 0 0 2 
+2 0 0 1 0 1 0 0 0 s s S s F F S S F F s S s s 0 0 0 1 0 1 0 0 2 
+2 0 0 0 1 0 0 0 0 s s S s s s F F s s s S s s 0 0 0 0 1 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 s s s s 4 4 4 4 s s s s 0 0 0 0 0 0 0 0 0 2 
+2 0 0 0 1 0 0 0 0 0 s s 4 4 f f f f 4 4 s s 0 0 0 0 0 1 0 0 0 2 
+2 0 0 1 0 1 0 0 0 0 s 4 4 f 4 4 4 4 f 4 4 s 0 0 0 0 1 0 1 0 0 2 
+2 0 1 0 1 0 1 0 0 0 0 4 4 4 4 4 4 4 4 4 4 0 0 0 0 1 0 1 0 1 0 2 
+2 0 0 1 0 1 0 0 0 0 0 0 4 4 4 4 4 4 4 4 0 0 0 0 0 0 1 0 1 0 0 2 
+2 0 0 0 1 0 0 0 0 0 0 0 0 F 4 4 4 4 F 0 0 0 0 0 0 0 0 1 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 0 0 0 F F F F F F 0 0 0 0 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 m o I I I F F I I I o m 0 0 0 0 0 0 0 0 0 2 
+2 0 0 2 0 0 0 0 0 m m m o I I I I I I o m m m 0 0 0 0 0 2 0 0 2 
+2 0 2 0 0 0 0 0 m m o m m o o o o o o m m o m m 0 0 0 0 0 2 0 2 
+o 0 0 y 0 2 0 m R R o R R m m o o m m R R o R R m 0 2 0 y 0 0 o 
+o y y 0 2 0 m R R R o R R R R m m R R R R o R R R m 0 2 0 y y o 
+o 0 y 0 0 R R R R R o R R R R R R R R R R o R R R R R 0 0 y 0 o 
+o o o o 2 R R R R R M R R R R M M R R R R M R R R R R 2 o o o o 
 ]]},
 {nil,"portrait_4",[[
-y y y y f f f f f f f f f f f f f f f f f f f f f f f f y y y y 
-y j y j j j j j j j j j j j j j j j j j j j j j j j j j j y j y 
-y y y j f j j j j j j j g g g g g g g g j j j j j j j f j y y y 
-y j j y j f j j j j g g 1 1 1 1 1 1 1 1 g g j j j j f j y j j y 
-f j f j j j j j g g 1 1 1 1 R R R R 1 1 1 1 g g j j j j j f j f 
-f j j f j j j g 1 1 1 R R R R R R R R R R 1 1 1 g j j j f j j f 
-f j j j j j g 1 1 R R R R R R R R R R R R R R 1 1 g j j j j j f 
-f j j j j g 1 1 R R R R R R R R R R R R R R R R 1 1 g j j j j f 
-f j j j j g 1 1 R R R R R R R R R R R R R R R R 1 1 g j j j j f 
-f j j j g 1 1 R R R s s s s s s s s s s s s R R R 1 1 g j j j f 
-f j j j g 1 1 R R s B B B B s s s s B B B B s R R 1 1 g j j j f 
-f j j j g 1 1 R s B D D D D B s s B D D D D B s R 1 1 g j j j f 
-f j j g 1 1 R R s s f f f f s s s s f f f f s s R R 1 1 g j j f 
-f j j g 1 1 1 R s f 7 i i 7 s 6 6 s 7 i i 7 f s R 1 1 1 g j j f 
-f j j g 1 1 1 R s s f 7 7 f s 6 6 s f 7 7 f s s R 1 1 1 g j j f 
-f j j g 1 1 1 R S s s f f s s 6 6 s s f f s s S R 1 1 1 g j j f 
-f j j g 1 1 R 1 S S s s s s S F F S s s s s S S 1 R 1 1 g j j f 
-f j j j g 1 1 1 S S S S S S F F F F S S S S S S 1 1 1 g j j j f 
-f j j j g 1 1 1 R S S S S S S F F S S S S S S R 1 1 1 g j j j f 
-f j j j g 1 1 1 R S S S S S S S S S S S S S S R 1 1 1 g j j j f 
-f j j j j g 1 R 1 1 S S S I I I I I I S S S 1 1 R 1 g j j j j f 
-f j j j j g 1 1 1 1 1 S S S S 3 3 S S S S 1 1 1 1 1 g j j j j f 
-f j j j j j g 1 1 1 1 1 S S S S S S S S 1 1 1 1 1 g j j j j j f 
-f j j j j j j g 1 1 1 1 1 F S S S S F 1 1 1 1 1 g j j j j j j f 
-f j j j j j j j g 1 1 g 1 F F F F F F 1 g 1 1 g j j j j j j j f 
-f j j j j j j j j g 1 g 2 2 2 F F 2 2 2 g 1 g j j j j j j j j f 
-f j j f j j j j j g 1 1 g 2 2 2 2 2 2 g 1 1 g j j j j j f j j f 
-f j f j j j j j g 1 1 1 1 g g 2 2 g g 1 1 1 1 g j j j j j f j f 
-y j j y j f j g 1 1 1 g 1 1 1 g g 1 1 1 g 1 1 1 g j f j y j j y 
-y y y j f j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j f j y y y 
-y j y j j g 1 1 1 g 1 1 1 1 1 1 1 1 1 1 1 1 g 1 1 1 g j j y j y 
-y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y 
+d d d d 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 d d d d 
+d 0 y 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 y 0 d 
+d y y 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 y y d 
+d 0 0 y 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 y 0 0 d 
+2 0 2 0 0 0 0 0 0 0 0 0 0 0 F F F F 0 0 0 0 0 0 0 0 0 0 0 2 0 2 
+2 0 0 2 0 0 0 0 0 0 0 F F F f f f f F F F 0 0 0 0 0 0 0 2 0 0 2 
+2 0 0 0 0 0 0 0 0 F F f f f f f f f f f f F F 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 F f f f f f f f f f f f f f f F 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 f f f S f f S f f S f f S f f f 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 F f f S S S S S S S S S S S S f f F 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 f f S S f f S S S S S S f f S S f f 0 0 0 0 0 0 2 
+2 0 0 0 0 0 F f S S f 7 7 f s S S s f 7 7 f S S f F 0 0 0 0 0 2 
+2 0 0 0 0 0 f f S f 7 1 1 7 s s s s 7 1 1 7 f S f f 0 0 0 0 0 2 
+2 0 0 0 1 0 f f s s 7 1 1 7 s S S s 7 1 1 7 s s f f 0 1 0 0 0 2 
+2 0 0 0 0 0 f f s f f 7 7 f s S S s f 7 7 f f s f f 0 0 0 0 0 2 
+2 0 0 0 1 0 f f s s s f f s s S S s s f f s s s f f 0 1 0 0 0 2 
+2 0 0 1 0 f 0 0 s s m m m s F 7 7 F s m m m s s 0 0 f 0 1 0 0 2 
+2 0 0 0 1 0 0 0 s s m m m s s F F s s m m m s s 0 0 0 1 0 0 0 2 
+2 0 0 0 0 0 0 0 0 s s s s s s s s s s s s s s 0 0 0 0 0 0 0 0 2 
+2 0 0 0 1 0 0 0 0 s s s s s f s s f s s s s s 0 0 0 0 1 0 0 0 2 
+2 0 0 1 0 1 0 0 0 0 s s s s s f f s s s s s 0 0 0 0 1 0 1 0 0 2 
+2 0 1 0 1 0 1 0 0 0 0 s s s s s s s s s s 0 0 0 0 1 0 1 0 1 0 2 
+2 0 0 1 0 1 0 0 0 0 0 0 s s s s s s s s 0 0 0 0 0 0 1 0 1 0 0 2 
+2 0 0 0 1 0 0 0 0 0 0 0 0 F s s s s F 0 0 0 0 0 0 0 0 1 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 0 I b F F F F F F b I 0 0 0 0 0 0 0 0 0 0 2 
+2 0 0 0 0 0 0 0 0 0 Y I I b F F F F b I I Y 0 0 0 0 0 0 0 0 0 2 
+2 0 0 2 0 0 0 0 0 Y O Y I I b F F b I I Y O Y 0 0 0 0 0 2 0 0 2 
+2 0 2 0 0 0 0 0 O O Y Y m I I b b I I m Y Y O O 0 0 0 0 0 2 0 2 
+d 0 0 y 0 2 0 O O Y O Y m m I I I I m m Y O Y O O 0 2 0 y 0 0 d 
+d y y 0 2 0 0 O O O Y Y m m m I I m m m Y Y O O O 0 0 2 0 y y d 
+d 0 y 0 0 0 I I O O O O Y m m I I m m Y O O O O I I 0 0 0 y 0 d 
+d d d d 2 2 I I I O O O Y m m I I m m Y O O O I I I 2 2 d d d d 
 ]]},
 
 		}
@@ -670,7 +670,7 @@ y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y
 		menu.chats.chat_to_menu_items=function(chat)
 			local items={cursor=1,cursor_max=0}
 			
-			items.title=chat.description_name
+			items.title=chat.description.text[1] or chat.description_name
 			items.portrait=chat.get_proxy("portrait")
 			
 			local ss=chat.response and chat.response.text or {} if type(ss)=="string" then ss={ss} end
@@ -688,7 +688,7 @@ y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y
 				local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
 				local color=30
-				if chat.viewed[v.name] then color=1 end -- we have already seen the response to this decision
+				if chat.viewed[v.name] then color=8 end -- we have already seen the response to this decision
 				
 				local f=function(item,menu)
 
@@ -837,8 +837,8 @@ y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y
 		
 		menu.cy=math.floor((menu.screen_hy-(#menu.lines+4))/2)
 		
-		local fg=31
-		local bg1,bg2=9,10
+		local fg=8
+		local bg1,bg2=25,25
 
 		tgrd:clip(menu.cx,menu.cy,0,menu.width,#menu.lines+4,1):clear(bg1*0x1000000)
 		tgrd:clip(menu.cx+2,menu.cy+1,0,menu.width-4,#menu.lines+4-2,1):clear(bg2*0x1000000)
@@ -866,7 +866,7 @@ y y y y f g 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 g f y y y y
 		if menu.items.portrait then
 			local image=names[menu.items.portrait]
 			if image then
-				system.components.text.text_print_image(image,menu.cx+4,menu.cy+2,fg,bg1)
+				system.components.text.text_print_image(image,menu.cx+4,menu.cy+2,31,bg1)
 			end
 		end
 
