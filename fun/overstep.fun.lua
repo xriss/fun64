@@ -1295,7 +1295,7 @@ entities.systems.insert{ caste="yarn",
 		local lx=up.axis("lx") -- get left joystick
 		local ly=up.axis("ly")
 
-		if lx or ly then
+		if lx and ly then
 
 			local vx,vy=0,0
 
