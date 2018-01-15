@@ -661,30 +661,54 @@ d 0 y 0 0 0 I I O O O O Y m m I I m m Y O O O O I I 0 0 0 y 0 d
 d d d d 2 2 I I I O O O Y m m I I m m Y O O O I I I 2 2 d d d d 
 ]]},
 {nil, "border",[[
-g g . . . . . . . . . . . . . . . . . . . . g g 
-g . g g g g . . . . . . . . . . . . g g g g . g 
-g . . . . . g g . . . . . . . . g g . . . . . g 
-g . . . . . . . g g g . . g g g . . . . . . . g 
-g . . . . . . . . . . g g . . . . . . . . . . g 
-. g . . . . . . . . . . . . . . . . . . . . g . 
-. g . . . . g . . 1 . . . . 1 . . g . . . . g . 
-. g . . . . . g g 1 1 . . 1 1 g g . . . . . g . 
-. . g . . . . g 1 1 1 1 1 1 1 1 g . . . . g . . 
-. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
-. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
-. . . g . . 1 1 1 1 1 1 1 1 1 1 1 . . . g . . . 
-. . . g . . . 1 1 1 1 1 1 1 1 1 1 1 . . g . . . 
-. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
-. . g . . . . . 1 1 1 1 1 1 1 1 . . . . . g . . 
-. . g . . . . g 1 1 1 1 1 1 1 1 g . . . . g . . 
-. g . . . . . g g 1 1 . . . 1 1 g . . . . . g . 
-. g . . . . g . . 1 . . . . . 1 . g . . . . g . 
-. g . . . . . . . . . . . . . . . . . . . . g . 
-g . . . . . . . . . . g g . . . . . . . . . . g 
-g . . . . . . . g g g . . g g g . . . . . . . g 
-g . . . . . g g . . . . . . . . g g . . . . . g 
-g . g g g g . . . . . . . . . . . . g g g g . g 
-g g . . . . . . . . . . . . . . . . . . . . g g  
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 j 1 1 1 1 1 1 1 1 1 1 1 1 F 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 F 1 1 1 1 1 1 1 1 1 1 1 1 j 1 1 
+1 j 1 j F F 1 F 1 f f f f 1 F 1 F 1 F 1 f 1 f f f f 1 f 1 F 1 F 1 F 1 f f f f 1 F 1 F F j 1 j 1 
+1 1 j 1 1 1 F 1 F 1 1 1 1 F 1 1 1 F 1 F 1 f 1 1 1 1 f 1 F 1 F 1 1 1 F 1 1 1 1 F 1 F 1 1 1 j 1 1 
+1 j F j F F i F i f f f f i F 1 F i F i f i f f f f i f i F i F 1 F i f f f f i F i F F j F j 1 
+1 1 j 1 j i f i f i i i i i i F i i i 1 i i i i i i i i 1 i i i F i i i i i i f i f i j 1 j 1 1 
+1 1 j 1 j i i f i i i i i i i i i 1 i i i i i i i i i i i i 1 i i i i i i i i i f i i j 1 j 1 1 
+1 1 j 1 j i F i i 1 i i i i i i i i i 1 i i i i i i i i 1 i i i i i i i i i 1 i i F i j 1 j 1 1 
+1 1 1 F i F i F 1 i 1 1 1 i 1 i i i 1 i 1 i i i i i i 1 i 1 i i i 1 i 1 1 1 i 1 F i F i F 1 1 1 
+1 1 f 1 f i F i i 1 i i i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i i i 1 i i F i f 1 f 1 1 
+1 1 f 1 f i i i 1 1 1 1 1 i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i 1 1 1 1 1 i i i f 1 f 1 1 
+1 1 f 1 f i f i 1 i 1 i i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i i 1 i 1 i f i f 1 f 1 1 
+1 1 f 1 f i i i 1 i 1 i 1 i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i 1 i 1 i 1 i i i f 1 f 1 1 
+1 1 1 F i i i i 1 i 1 i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i 1 i 1 i i i i F 1 1 1 
+1 1 j 1 j i i i i 1 i i i 1 i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i 1 i i i 1 i i i i j 1 j 1 1 
+1 1 1 j 1 j i i 1 i 1 i 1 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 1 i 1 i 1 i i j 1 j 1 1 1 
+1 1 j 1 j i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i j 1 j 1 1 
+1 1 1 F i i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i i F 1 1 1 
+1 1 F 1 F i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i F 1 F 1 1 
+1 1 1 F i 1 i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i 1 i F 1 1 1 
+1 1 f 1 f i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i f 1 f 1 1 
+1 1 1 f i i i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i i i f 1 1 1 
+1 1 f 1 f i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i f 1 f 1 1 
+1 1 f 1 f i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i f 1 f 1 1 
+1 1 f 1 f i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i f 1 f 1 1 
+1 1 f 1 f i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i f 1 f 1 1 
+1 1 1 f i i i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i i i f 1 1 1 
+1 1 f 1 f i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i f 1 f 1 1 
+1 1 1 F i 1 i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i 1 i F 1 1 1 
+1 1 F 1 F i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i F 1 F 1 1 
+1 1 1 F i i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i i F 1 1 1 
+1 1 j 1 j i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i j 1 j 1 1 
+1 1 1 j 1 j i i 1 i 1 i 1 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 1 i 1 i 1 i i j 1 j 1 1 1 
+1 1 j 1 j i i i i 1 i i i 1 i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i 1 i i i 1 i i i i j 1 j 1 1 
+1 1 1 F i i i i 1 i 1 i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i 1 i 1 i i i i F 1 1 1 
+1 1 f 1 f i i i 1 i 1 i 1 i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i 1 i 1 i 1 i i i f 1 f 1 1 
+1 1 f 1 f i f i 1 i 1 i i i i i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i i i i i 1 i 1 i f i f 1 f 1 1 
+1 1 f 1 f i i i 1 1 1 1 1 i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i 1 1 1 1 1 i i i f 1 f 1 1 
+1 1 f 1 f i F i i 1 i i i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i i i 1 i i F i f 1 f 1 1 
+1 1 1 F i F i F 1 i 1 1 1 i 1 i 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 i 1 i 1 1 1 i 1 F i F i F 1 1 1 
+1 1 j 1 j i F i i 1 i i i i i i i i 1 i 1 i 1 i i 1 i 1 i 1 i i i i i i i i 1 i i F i j 1 j 1 1 
+1 1 j 1 j i i f i i i i i i i i i i i 1 i 1 i i i i 1 i 1 i i i i i i i i i i i f i i j 1 j 1 1 
+1 1 j 1 j i f i f i i i i i i F i 1 i i i i i i i i i i i i 1 i F i i i i i i f i f i j 1 j 1 1 
+1 j F j F F i F i f f f f i F 1 F i F i f i f f f f i f i F i F 1 F i f f f f i F i F F j F j 1 
+1 1 j 1 1 1 F 1 F 1 1 1 1 F 1 1 1 F 1 F 1 f 1 1 1 1 f 1 F 1 F 1 1 1 F 1 1 1 1 F 1 F 1 1 1 j 1 1 
+1 j 1 j F F 1 F 1 f f f f 1 F 1 F 1 F 1 f 1 f f f f 1 f 1 F 1 F 1 F 1 f f f f 1 F 1 F F j 1 j 1 
+1 1 j 1 1 1 1 1 1 1 1 1 1 1 1 F 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 F 1 1 1 1 1 1 1 1 1 1 1 1 j 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1  
 ]]},
 
 		}
