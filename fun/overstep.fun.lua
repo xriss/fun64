@@ -1554,7 +1554,8 @@ local rules={
 		
 			local menu=entities.systems.menu
 
-			menu.show( menu.chats.get_menu_items("example") )
+			menu.chats.get(item.chatname or "example").set_response("welcome")
+			menu.show(menu.chats.get_menu_items(item.chatname or "example"))
 
 		end,
 	},
@@ -1604,6 +1605,11 @@ entities.systems.insert{ caste="yarn",
 
 		local target=item[0]:get_cell_relative(vx,vy)
 		local big=target:get_big()
+
+		local face=function()
+			if vx>0 then item.sprite.flip= 1 end
+			if vx<0 then item.sprite.flip=-1 end
+		end
 		
 		-- if empty, just walk
 		if not big then return "move",function() -- we can move to this cell
@@ -1614,12 +1620,12 @@ entities.systems.insert{ caste="yarn",
 		-- there is something big there, so try and do something with it
 		
 		if big:can("talk") then return "talk",function() -- we can talk to this item
+			face()
 			big:apply("talk",big)
 		end end
 		
 		return "face",function() -- face this cell
-			if vx>0 then item.sprite.flip= 1 end
-			if vx<0 then item.sprite.flip=-1 end
+			face()
 		end
 
 	end,
@@ -1691,10 +1697,10 @@ entities.systems.insert{ caste="yarn",
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)
-			local act,doit=entities.systems.yarn:solicit(items.ids.player,vx,vy)
+			local act,cb=entities.systems.yarn:solicit(items.ids.player,vx,vy)
 			
-			print(act)
-			if doit then doit() end
+			print(act) -- action name
+			if cb then cb() end -- perform action
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
 		end
@@ -1706,6 +1712,14 @@ entities.systems.insert{ caste="yarn",
 		
 		it.dx=items.ids.player[0].cx*16
 		it.dy=items.ids.player[0].cy*16
+
+		if entities.systems.menu.active then
+			it.dx=it.dx-(hardware.opts.hx/4-8)
+			it.dy=it.dy-(hardware.opts.hy/2-16)
+		else
+			it.dx=it.dx-(hardware.opts.hx/2-8)
+			it.dy=it.dy-(hardware.opts.hy/2-16)
+		end
 		
 		it.ax=(it.ax*31+it.dx*1)/32
 		it.ay=(it.ay*31+it.dy*1)/32
@@ -1787,13 +1801,8 @@ entities.systems.insert{ caste="yarn",
 		
 		local ax,az=0,0
 		
-		if entities.systems.menu.active then
-			ax= (it.cx*16-math.floor(it.ax+0.5)+(hardware.opts.hx/4-8))
-			az=-(it.cy*16-math.floor(it.ay+0.5)+(hardware.opts.hy/2-16))
-		else
-			ax= (it.cx*16-math.floor(it.ax+0.5)+(hardware.opts.hx/2-8))
-			az=-(it.cy*16-math.floor(it.ay+0.5)+(hardware.opts.hy/2-16))
-		end
+		ax= (it.cx*16-math.floor(it.ax+0.5))
+		az=-(it.cy*16-math.floor(it.ay+0.5))
 
 		system.components.map.ax=ax
 		system.components.map.ay=0
