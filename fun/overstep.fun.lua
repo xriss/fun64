@@ -15,7 +15,7 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
-	hx=440,hy=240, -- wide screen
+	hx=416,hy=240, -- wide screen 52x30 tiles (8x8)
 })
 
 hardware.screen.zxy={0,-1}
@@ -824,7 +824,7 @@ d d d d 2 2 I I I O O O Y m m I I m m Y O O O I I I 2 2 d d d d
 
 
 
-		menu.show( menu.chats.get_menu_items("example") )
+--		menu.show( menu.chats.get_menu_items("example") )
 
 	end,
 
@@ -1538,21 +1538,10 @@ local rules={
 
 		move=function(item,vx,vy)
 
-			local items=item.items
-			local pages=items.pages
-
-			local ccx=item[0].cx+vx
-			local ccy=item[0].cy+vy
-			local cell=pages.get_cell(ccx,ccy)
-			
-			if not cell:get_big() then -- if empty
-				item:insert( cell ) -- move to a new location
-			end
-			
+			local target=item[0]:get_cell_relative(vx,vy)
+			item:insert( target ) -- move to a new location
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
-			
-			item[0]:apply("inject_time",16,16)
 
 		end,
 	},
@@ -1578,22 +1567,19 @@ local rules={
 
 		move=function(item,vx,vy)
 
-			local items=item.items
-			local pages=items.pages
-
-			local ccx=item[0].cx+vx
-			local ccy=item[0].cy+vy
-			local cell=pages.get_cell(ccx,ccy)
-			
-			if not cell:get_big() then -- if empty
-				item:insert( cell ) -- move to a new location
-			end
-			
+			local target=item[0]:get_cell_relative(vx,vy)
+			item:insert( target ) -- move to a new location
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
-			
-			item[0]:apply("inject_time",16,16)
 
+		end,
+
+		talk=function(item,player)
+		
+			local menu=entities.systems.menu
+
+			menu.chats.get(item.chatname or "example").set_response("welcome")
+			menu.show(menu.chats.get_menu_items(item.chatname or "example"))
 
 		end,
 	},
@@ -1638,6 +1624,36 @@ entities.systems.insert{ caste="yarn",
 
 	end,
 	
+-- work out what to do by default with this cell relative to us, eg move talk dig fight etc
+	solicit=function(it,item,vx,vy)
+
+		local target=item[0]:get_cell_relative(vx,vy)
+		local big=target:get_big()
+
+		local face=function()
+			if vx>0 then item.sprite.flip= 1 end
+			if vx<0 then item.sprite.flip=-1 end
+		end
+		
+		-- if empty, just walk
+		if not big then return "move",function() -- we can move to this cell
+			item:apply("move",vx,vy)
+			item[0]:apply("inject_time",16,16)
+		end end
+		
+		-- there is something big there, so try and do something with it
+		
+		if big:can("talk") then return "talk",function() -- we can talk to this item
+			face()
+			big:apply("talk",big)
+		end end
+		
+		return "face",function() -- face this cell
+			face()
+		end
+
+	end,
+
 	update=function(it)
 		local items=it.items
 		local pages=items.pages
@@ -1705,7 +1721,10 @@ entities.systems.insert{ caste="yarn",
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)
-			items.ids.player:apply("move",vx,vy)
+			local act,cb=entities.systems.yarn:solicit(items.ids.player,vx,vy)
+			
+			print(act) -- action name
+			if cb then cb() end -- perform action
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
 		end
@@ -1717,6 +1736,14 @@ entities.systems.insert{ caste="yarn",
 		
 		it.dx=items.ids.player[0].cx*16
 		it.dy=items.ids.player[0].cy*16
+
+		if entities.systems.menu.active then
+			it.dx=it.dx-(hardware.opts.hx/4-8)
+			it.dy=it.dy-(hardware.opts.hy/2-16)
+		else
+			it.dx=it.dx-(hardware.opts.hx/2-8)
+			it.dy=it.dy-(hardware.opts.hy/2-16)
+		end
 		
 		it.ax=(it.ax*31+it.dx*1)/32
 		it.ay=(it.ay*31+it.dy*1)/32
@@ -1798,13 +1825,8 @@ entities.systems.insert{ caste="yarn",
 		
 		local ax,az=0,0
 		
-		if entities.systems.menu.active then
-			ax= (it.cx*16-math.floor(it.ax+0.5)+(hardware.opts.hx/4-8))
-			az=-(it.cy*16-math.floor(it.ay+0.5)+(hardware.opts.hy/2-16))
-		else
-			ax= (it.cx*16-math.floor(it.ax+0.5)+(hardware.opts.hx/2-8))
-			az=-(it.cy*16-math.floor(it.ay+0.5)+(hardware.opts.hy/2-16))
-		end
+		ax= (it.cx*16-math.floor(it.ax+0.5))
+		az=-(it.cy*16-math.floor(it.ay+0.5))
 
 		system.components.map.ax=ax
 		system.components.map.ay=0
