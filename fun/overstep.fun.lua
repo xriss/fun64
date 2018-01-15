@@ -15,7 +15,7 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
-	hx=416,hy=240, -- wide screen
+	hx=416,hy=240, -- wide screen 52x30 tiles (8x8)
 })
 
 hardware.screen.zxy={0,-1}
@@ -800,7 +800,7 @@ g g . . . . . . . . . . . . . . . . . . . . g g
 
 
 
-		menu.show( menu.chats.get_menu_items("example") )
+--		menu.show( menu.chats.get_menu_items("example") )
 
 	end,
 
@@ -1514,21 +1514,10 @@ local rules={
 
 		move=function(item,vx,vy)
 
-			local items=item.items
-			local pages=items.pages
-
-			local ccx=item[0].cx+vx
-			local ccy=item[0].cy+vy
-			local cell=pages.get_cell(ccx,ccy)
-			
-			if not cell:get_big() then -- if empty
-				item:insert( cell ) -- move to a new location
-			end
-			
+			local target=item[0]:get_cell_relative(vx,vy)
+			item:insert( target ) -- move to a new location
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
-			
-			item[0]:apply("inject_time",16,16)
 
 		end,
 	},
@@ -1554,22 +1543,18 @@ local rules={
 
 		move=function(item,vx,vy)
 
-			local items=item.items
-			local pages=items.pages
-
-			local ccx=item[0].cx+vx
-			local ccy=item[0].cy+vy
-			local cell=pages.get_cell(ccx,ccy)
-			
-			if not cell:get_big() then -- if empty
-				item:insert( cell ) -- move to a new location
-			end
-			
+			local target=item[0]:get_cell_relative(vx,vy)
+			item:insert( target ) -- move to a new location
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
-			
-			item[0]:apply("inject_time",16,16)
 
+		end,
+
+		talk=function(item,player)
+		
+			local menu=entities.systems.menu
+
+			menu.show( menu.chats.get_menu_items("example") )
 
 		end,
 	},
@@ -1614,6 +1599,31 @@ entities.systems.insert{ caste="yarn",
 
 	end,
 	
+-- work out what to do by default with this cell relative to us, eg move talk dig fight etc
+	solicit=function(it,item,vx,vy)
+
+		local target=item[0]:get_cell_relative(vx,vy)
+		local big=target:get_big()
+		
+		-- if empty, just walk
+		if not big then return "move",function() -- we can move to this cell
+			item:apply("move",vx,vy)
+			item[0]:apply("inject_time",16,16)
+		end end
+		
+		-- there is something big there, so try and do something with it
+		
+		if big:can("talk") then return "talk",function() -- we can talk to this item
+			big:apply("talk",big)
+		end end
+		
+		return "face",function() -- face this cell
+			if vx>0 then item.sprite.flip= 1 end
+			if vx<0 then item.sprite.flip=-1 end
+		end
+
+	end,
+
 	update=function(it)
 		local items=it.items
 		local pages=items.pages
@@ -1681,7 +1691,10 @@ entities.systems.insert{ caste="yarn",
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)
-			items.ids.player:apply("move",vx,vy)
+			local act,doit=entities.systems.yarn:solicit(items.ids.player,vx,vy)
+			
+			print(act)
+			if doit then doit() end
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
 		end
