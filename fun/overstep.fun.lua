@@ -15,7 +15,7 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
-	hx=440,hy=240, -- wide screen
+	hx=376,hy=240, -- wide screen
 })
 
 hardware.screen.zxy={0,-1}
