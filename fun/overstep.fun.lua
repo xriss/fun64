@@ -243,11 +243,11 @@ levels={
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . T7. . . . . . . . . . . . . . . . 
-. . . . . = = = = = . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . # # # # # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . S . # . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . # = . = # T8. . . . . . . . . . . . . T9. . . . . . . 
+. . . . . # # . # # T8. . . . . . . . . . . . . T9. . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . T3. . . . . . . . . . . . . . . . . . . 
@@ -257,10 +257,10 @@ levels={
 . . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . # . . . . T . . . . 
-. . . . . = = = = = . . . . . . . . . . . . # . . . . . . . . . 
+. . . . . # # # # # . . . . . . . . . . . . # . . . . . . . . . 
 . . . . . # . T2. # . . . . . . . . . # . . # . . . T6. . . . . 
 . . . . . # . . . # . . . . . . . . . # . . . . . . . . . . . . 
-. . . . . # = . = S = . = = . . . . . # . . # . . . . T0. . . . 
+. . . . . # # . # S # . # # . . . . . # . . # . . . . T0. . . . 
 . . . . . . . . . # . . . . . . . . . # . . # . . . . . . . . . 
 . . . . . . . . . # . S . . . . . . . # . . # . . . . . . . . . 
 . . . . . . . . . # . . . . . . . # . # . . . . . . S . . . . . 
@@ -386,7 +386,7 @@ entities.systems.insert{ caste="map",
 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 
 ]]},
 
-{nil,"test_wall1",[[
+{nil,"test_wall",[[
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -395,65 +395,30 @@ entities.systems.insert{ caste="map",
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-4 3 2 F F F F F F F F F F 2 3 4 
-2 f F F F F F F F F F F F F f 2 
-F f F F j j j F F j j j F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-2 f F F F F F F F F F F F F f 2 
-4 3 2 F F F F F F F F F F 2 3 4 
-3 j f f j j j j j j f f j j j 3 
-2 j F f j j f f j j F f j j j 2 
-j g F f j j F F j j F f j j f j 
-j j f f g j F F j j f f j j F f 
-j g j g j j F F j j j j j j F F 
-j j f f g j F f j j f f j j F f 
-j g F F j j F f j g F F j j F f 
-j j F F j j F f g j F F j j f f 
-j j F F j j j g j g F F j j j j 
-j j F f j j f f g j F f j j f f 
-j j F f j j F F j g F f j j F F 
-j j f f j j F F j j f f j j F F 
-j j j j j j F F j j j g j j F F 
-j j f f j j F f j j f f g j F f 
-2 j F f j j F f j j F f j g f 2 
-3 2 f f j j f f j j f f j j 2 3 
-]]},
-
-{nil,"test_wall2",[[
-4 3 2 F F F F F F F F F F 2 3 4 
-3 f f f f f f f f f f f f f f 3 
-2 f F F F F F F F F F F F F f 2 
-F f F F j j j F F j j j F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-F f F F j f f F F j f f F F f F 
-2 f F F F F F F F F F F F F f 2 
-3 f f f f f f f f f f f f f f 3 
-4 3 2 F F F F F F F F F F 2 3 4 
-3 j f f j j j j j j f f j j j 3 
-2 j F f j j f f j j F f j j j 2 
-j g F f j j F F j j F f j j f j 
-j j f f g j F F j j f f j j F f 
-j g j g j j F F j j j j j j F F 
-j j f f g j F f j j f f j j F f 
-j g F F j j F f j g F F j j F f 
-j j F F j j F f g j F F j j f f 
-j j F F j j j g j g F F j j j j 
-j j F f j j f f g j F f j j f f 
-j j F f j j F F j g F f j j F F 
-j j f f j j F F j j f f j j F F 
-j j j j j j F F j j j g j j F F 
-j j f f j j F f j j f f g j F f 
-2 j F f j j F f j j F f j g f 2 
-3 2 f f j j f f j j f f j j 2 3 
+j j j j j j j j j j j j j j j j 
+F F F F F F f j F F F F F F f j 
+F F F F F F f j F F F F F F f j 
+f f f f f f f j f f f f f f f j 
+j j j j j j j j j j j j j j j j 
+F F f j F F F F F F f j F F F F 
+F F f j F F F F F F f j F F F F 
+f f f j f f f f f f f j f f f f 
+j j j j j j j j j j j j j j j j 
+F F F F F F f j F F F F F F f j 
+F F F F F F f j F F F F F F f j 
+f f f f f f f j f f f f f f f j 
+j j j j j j j j j j j j j j j j 
+F F f j F F F F F F f j F F F F 
+F F f j F F F F F F f j F F F F 
+f f f j f f f f f f f j f f f f 
+j j j j j j j j j j j j j j j j 
+f f f f f f f j f f f f f f f j 
+j j j j j j j j j j j j j j j j 
+f f f j f f f f f f f j f f f f 
+j j j j j j j j j j j j j j j j 
+f f f f f f f j f f f f f f f j 
+j j j j j j j j j j j j j j j j 
+f f f j f f f f f f f j f f f f 
 ]]},
 
 {nil,"test_spawn",[[
@@ -2294,8 +2259,8 @@ local prefabs={
 	{name="floor",back="test_none"},
 	{name="floor_tile",back="test_tile"},
 	{name="floor_spawn",id="floor_spawn",back="test_spawn",illumination=0.75,},
-	{name="wall_full",back="test_wall2",is_big=true,},
-	{name="wall_half",back="test_wall1",is_big=true,},
+	{name="wall_full",back="test_wall",is_big=true,},
+	{name="wall_half",back="test_wall",is_big=true,},
 }
 
 local rules={
