@@ -2442,6 +2442,8 @@ entities.systems.insert{ caste="yarn",
 	
 -- work out what to do by default with this cell relative to us, eg move talk dig fight etc
 	solicit=function(it,item,vx,vy)
+	
+		local ret={}
 
 		local target=item[0]:get_cell_relative(vx,vy)
 		local big=target:get_big()
@@ -2452,21 +2454,32 @@ entities.systems.insert{ caste="yarn",
 		end
 		
 		-- if empty, just walk
-		if not big then return "move",function() -- we can move to this cell
-			item:apply("move",vx,vy)
-			item[0]:apply("inject_time",16,16)
-		end end
+		if not big then -- we can move to this cell
+			ret[#ret+1]={"move",function()
+				item:apply("move",vx,vy)
+				item[0]:apply("inject_time",16,16)
+			end}
+		end
 		
 		-- there is something big there, so try and do something with it
 		
-		if big:can("talk") then return "talk",function() -- we can talk to this item
-			face()
-			big:apply("talk",big)
-		end end
-		
-		return "face",function() -- face this cell
-			face()
+		if big and big:can("talk") then -- we can talk to this item
+			ret[#ret+1]={"talk",function()
+				face()
+				big:apply("talk",big)
+			end}
 		end
+		
+		 -- finally we could just face this big cell and do nothing
+		 if big then
+			ret[#ret+1]={"face",function()
+				face()
+			end}
+		end
+		
+		for i,v in ipairs(ret) do ret[ v[1] ]=v end -- and lookup by name
+		
+		return ret
 
 	end,
 
@@ -2475,56 +2488,120 @@ entities.systems.insert{ caste="yarn",
 		local pages=items.pages
 
 		local up=ups(0) -- get all connected controls, merged together
+		local up1=ups(1)
+		local up3=ups(3)
+		
+		if	up.button("mouse_left_set") or
+			up.button("mouse_middle_set") or
+			up.button("mouse_right_set") then it.input_mode="mouse" end
+
+		if	up1.button("up_set") or
+			up1.button("down_set") or
+			up1.button("left_set") or
+			up1.button("right_set") then it.input_mode="keys" end
+
+		if	up3.button("up_set") or
+			up3.button("down_set") or
+			up3.button("left_set") or
+			up3.button("right_set") or
+			up3.button("fire_set") then it.input_mode="pad" end
 
 
-		local mx=up.axis("mx") -- get mouse position, it will be nil if no mouse
-		local my=up.axis("my")
+		if it.input_mode=="mouse" then
 
-		if mx~=it.mx or my~=it.my then -- mouse movement
+			local mx=up.axis("mx") -- get mouse position, it will be nil if no mouse
+			local my=up.axis("my")
 
-			it.mx=mx
-			it.my=my
-			
-			local dx=it.cx*16-system.components.map.ax+mx
-			local dy=it.cy*16+system.components.map.az+my-16
+			if	up.button("mouse_left_clr") and it.cursor then -- move
 
-			if     dx<it.dx then		dx=-1
-			elseif dx>=it.dx+16 then 	dx=1
-			else						dx=0
-			end
+				local vx=it.cursor.cx-items.ids.player[0].cx
+				local vy=it.cursor.cy-items.ids.player[0].cy
 
-			if     dy<it.dy then		dy=-1
-			elseif dy>=it.dy+16 then 	dy=1
-			else						dy=0
-			end
-			
-			if dx==0 and dy==0 then 
+				local acts=entities.systems.yarn:solicit(items.ids.player,vx,vy)
+				
+				if acts[1] then (acts[1][2])() end -- perform action
+
+				it.mx=nil	-- force re calculate next
+				it.my=nil
 				it.cursor=nil -- do not show
-			else
-				it.cursor=items.ids.player[0]:get_cell_relative(dx,dy)
-			end
+				
+			elseif mx~=it.mx or my~=it.my then -- or show cursor on movement
 
+				it.mx=mx
+				it.my=my
+				
+				local dx=it.cx*16-system.components.map.ax+mx
+				local dy=it.cy*16+system.components.map.az+my-16
+
+				if     dx<it.dx then		dx=-1
+				elseif dx>=it.dx+16 then 	dx=1
+				else						dx=0
+				end
+
+				if     dy<it.dy then		dy=-1
+				elseif dy>=it.dy+16 then 	dy=1
+				else						dy=0
+				end
+				
+				if dx~=0 and dy~=0 then
+					if 0==(it.cx+it.cy)%2 then
+						dy=0
+					else
+						dx=0
+					end
+				end
+				
+				if dx==0 and dy==0 then 
+					it.cursor=nil -- do not show
+				else
+					it.cursor=items.ids.player[0]:get_cell_relative(dx,dy)
+				end
+				
+			end
+		
 		end
 
-		local lx=up.axis("lx") -- get left joystick
-		local ly=up.axis("ly")
+		if it.input_mode=="pad" then
 
-		if lx and ly then
+			local lx=up.axis("lx") -- get left joystick
+			local ly=up.axis("ly")
 
-			local vx,vy=0,0
+			if	up.button("a_clr") and it.cursor then -- move
 
-			if ly<-32768/4	then vy=-1 end
-			if ly>32768/4	then vy= 1 end
-			if lx<-32768/4	then vx=-1 end
-			if lx>32768/4	then vx= 1 end
+				local vx=it.cursor.cx-items.ids.player[0].cx
+				local vy=it.cursor.cy-items.ids.player[0].cy
 
+				local acts=entities.systems.yarn:solicit(items.ids.player,vx,vy)
 				
-			if vx==0 and vy==0 then 
-				it.cursor=nil -- do not show
-			else
-				it.cursor=items.ids.player[0]:get_cell_relative(vx,vy)
-			end
+				if acts[1] then (acts[1][2])() end -- perform action
 
+				it.cursor=nil -- do not show
+				
+			elseif lx and ly then
+
+				local vx,vy=0,0
+
+				if ly<-32768/4	then vy=-1 end
+				if ly>32768/4	then vy= 1 end
+				if lx<-32768/4	then vx=-1 end
+				if lx>32768/4	then vx= 1 end
+
+				if vx~=0 and vy~=0 then
+					if 0==(it.cx+it.cy)%2 then
+						vy=0
+					else
+						vx=0
+					end
+				end
+					
+				if vx==0 and vy==0 then 
+					it.cursor=nil -- do not show
+				else
+					it.cursor=items.ids.player[0]:get_cell_relative(vx,vy)
+				end
+
+			end
+		
 		end
 		
 
@@ -2537,32 +2614,36 @@ entities.systems.insert{ caste="yarn",
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)
-			local act,cb=entities.systems.yarn:solicit(items.ids.player,vx,vy)
+			local acts=entities.systems.yarn:solicit(items.ids.player,vx,vy)
 			
-			print(act) -- action name
-			if cb then cb() end -- perform action
+			if acts[1] then
+--				print(acts[1][1]) -- action name
+				(acts[1][2])() -- perform action
+			end
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
 		end
 		
 -- apply view
 
-		local ccx=items.ids.player[0].cx
-		local ccy=items.ids.player[0].cy
+		it.cx=items.ids.player[0].cx
+		it.cy=items.ids.player[0].cy
 		
-		it.dx=items.ids.player[0].cx*16
-		it.dy=items.ids.player[0].cy*16
+		it.dx=it.cx*16
+		it.dy=it.cy*16
 
+		local dxc=0
+		local dyc=0
 		if entities.systems.menu.active then
-			it.dx=it.dx-(hardware.opts.hx/4-8)
-			it.dy=it.dy-(hardware.opts.hy/2-16)
+			dxc=(hardware.opts.hx/4-8)
+			dyc=(hardware.opts.hy/2-16)
 		else
-			it.dx=it.dx-(hardware.opts.hx/2-8)
-			it.dy=it.dy-(hardware.opts.hy/2-16)
+			dxc=(hardware.opts.hx/2-8)
+			dyc=(hardware.opts.hy/2-16)
 		end
 		
-		it.ax=(it.ax*31+it.dx*1)/32
-		it.ay=(it.ay*31+it.dy*1)/32
+		it.ax=(it.ax*31+(it.dx-dxc)*1)/32
+		it.ay=(it.ay*31+(it.dy-dyc)*1)/32
 	end,
 
 	draw=function(it)
