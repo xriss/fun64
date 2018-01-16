@@ -2468,6 +2468,8 @@ entities.systems.insert{ caste="yarn",
 		local items=it.items
 		local pages=items.pages
 
+	if not entities.systems.menu.active then
+
 		local up=ups(0) -- get all connected controls, merged together
 		local up1=ups(1)
 		local up3=ups(3)
@@ -2604,6 +2606,7 @@ entities.systems.insert{ caste="yarn",
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
 		end
+	end
 		
 -- apply view
 
