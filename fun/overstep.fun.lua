@@ -2407,6 +2407,8 @@ local rules={
 		talk=function(item,player)
 		
 			local menu=entities.systems.menu
+			
+			item.sprite.flip=-player.sprite.flip
 
 			menu.chats.get(item.chatname or "example").set_response("welcome")
 			menu.show(menu.chats.get_menu_items(item.chatname or "example"))
@@ -2480,7 +2482,7 @@ entities.systems.insert{ caste="yarn",
 		if big and big:can("talk") then -- we can talk to this item
 			ret[#ret+1]={"talk",function()
 				face()
-				big:apply("talk",big)
+				big:apply("talk",item)
 			end}
 		end
 		
