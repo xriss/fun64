@@ -1543,6 +1543,13 @@ local rules={
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
 
+			item.anim={
+				vx=-vx*16,
+				vy=-vy*16,
+				name="hop",
+				length=8,
+			}
+
 		end,
 	},
 	
@@ -1571,6 +1578,13 @@ local rules={
 			item:insert( target ) -- move to a new location
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
+			
+			item.anim={
+				vx=-vx*16,
+				vy=-vy*16,
+				name="hop",
+				length=8,
+			}
 
 		end,
 
@@ -1881,10 +1895,31 @@ entities.systems.insert{ caste="yarn",
 						end
 
 						local spr=names[sprite]
+						
+						local vx,vy,vz=0,0,0
+						if v.anim then
+							local l=v.anim.length
+							local t=v.anim.time and v.anim.time-1 or v.anim.length-1
+							v.anim.time=t
+							if t<=0 then
+								v.anim=nil
+							else
+								vx=t/l
+								vz=t/l
+								if t<=(l/2) then
+									vy=t/(l/2)
+								else
+									vy=(l-t)/(l/2)
+								end
+								vx=vx*v.anim.vx
+								vy=vy*-8
+								vz=vz*-v.anim.vy
+							end
+						end
 						system.components.sprites.list_add({
 							t=spr.idx,
 							hx=spr.hx,hy=spr.hy,ox=spr.hx/2,oy=spr.hy, -- handle on bottom centre of sprite
-							px=x*16+8,py=16,pz=-y*16-16, -- position on bottom of tile
+							px=x*16+8+vx,py=16+vy,pz=-y*16-16+vz, -- position on bottom of tile
 							sx=flip,rz=0,
 							color={light*cr,light*cg,light*cb,1*ca}
 						})
