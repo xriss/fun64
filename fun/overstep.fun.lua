@@ -2516,23 +2516,24 @@ entities.systems.insert{ caste="yarn",
 				local dx=it.cx*16-system.components.map.ax+mx
 				local dy=it.cy*16+system.components.map.az+my-16
 
-				if     dx<it.dx then		dx=-1
-				elseif dx>=it.dx+16 then 	dx=1
+				if     dx<it.dx then		dx=dx-it.dx
+				elseif dx>=it.dx+16 then 	dx=dx-it.dx-16
 				else						dx=0
 				end
-
-				if     dy<it.dy then		dy=-1
-				elseif dy>=it.dy+16 then 	dy=1
+				if     dy<it.dy then		dy=dy-it.dy
+				elseif dy>=it.dy+16 then 	dy=dy-it.dy-16
 				else						dy=0
 				end
-				
 				if dx~=0 and dy~=0 then
-					if 0==(it.cx+it.cy)%2 then
+					if dx*dx > dy*dy then
 						dy=0
 					else
 						dx=0
 					end
 				end
+				dx = dx==0 and 0 or dx>0 and 1 or -1
+				dy = dy==0 and 0 or dy>0 and 1 or -1
+
 				
 				if dx==0 and dy==0 then 
 					it.cursor=nil -- do not show
@@ -2564,18 +2565,11 @@ entities.systems.insert{ caste="yarn",
 
 				local vx,vy=0,0
 
-				if ly<-32768/4	then vy=-1 end
-				if ly>32768/4	then vy= 1 end
-				if lx<-32768/4	then vx=-1 end
-				if lx>32768/4	then vx= 1 end
+				if ly<-32768/4	and (ly*ly > lx*lx) then vy=-1 end
+				if ly>32768/4	and (ly*ly > lx*lx) then vy= 1 end
+				if lx<-32768/4	and (lx*lx > ly*ly) then vx=-1 end
+				if lx>32768/4	and (lx*lx > ly*ly) then vx= 1 end
 
-				if vx~=0 and vy~=0 then
-					if 0==(it.cx+it.cy)%2 then
-						vy=0
-					else
-						vx=0
-					end
-				end
 					
 				if vx==0 and vy==0 then 
 					it.cursor=nil -- do not show
@@ -2590,10 +2584,10 @@ entities.systems.insert{ caste="yarn",
 
 		local vx,vy=0,0 -- check keys or dpad movement
 
-		if up.button("pad_up_set")		then vy=-1 end
-		if up.button("pad_down_set")	then vy= 1 end
-		if up.button("pad_left_set")	then vx=-1 end
-		if up.button("pad_right_set")	then vx= 1 end
+		if up.button("pad_up_clr")		then vy=-1 end
+		if up.button("pad_down_clr")	then vy= 1 end
+		if up.button("pad_left_clr")	then vx=-1 end
+		if up.button("pad_right_clr")	then vx= 1 end
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)
