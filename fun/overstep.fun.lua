@@ -172,23 +172,23 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[   0]={ items={"floor_tile"},			},
-	[". "]={ items={"floor_tile"}			},
-	["x "]={ items={"floor_tile"}			},
-	["S "]={ items={"floor_spawn"}			},
-	["T "]={ items={"talker"}				},
-	["T2"]={ items={"talker2"}				},
-	["T3"]={ items={"talker3"}				},
-	["T4"]={ items={"talker4"}				},
-	["T5"]={ items={"talker5"}				},
-	["T6"]={ items={"talker6"}				},
-	["T7"]={ items={"talker7"}				},
-	["T8"]={ items={"talker8"}				},
-	["T9"]={ items={"talker9"}				},
-	["T0"]={ items={"talker0"}				},
-	["# "]={ items={"wall_full"}			},
-	["= "]={ items={"wall_half"}			},
-	["C "]={ items={"stone_cube"}			},
+	[   0]={ back="test_none", items={"floor_tile"},			},
+	[". "]={ back="test_tile", items={"floor_tile"}			},
+	["x "]={ back="test_tile", items={"floor_tile"}			},
+	["S "]={ back="test_spawn", items={"floor_spawn"}			},
+	["T "]={ back="test_tile", items={"talker"}				},
+	["T2"]={ back="test_tile", items={"talker2"}				},
+	["T3"]={ back="test_tile", items={"talker3"}				},
+	["T4"]={ back="test_tile", items={"talker4"}				},
+	["T5"]={ back="test_tile", items={"talker5"}				},
+	["T6"]={ back="test_tile", items={"talker6"}				},
+	["T7"]={ back="test_tile", items={"talker7"}				},
+	["T8"]={ back="test_tile", items={"talker8"}				},
+	["T9"]={ back="test_tile", items={"talker9"}				},
+	["T0"]={ back="test_tile", items={"talker0"}				},
+	["# "]={ back="test_wall", items={"wall_full"}			},
+	["C "]={ back="test_tile", items={"stone_cube"}			},
+	["f "]={ back="test_tile", items={"frogman"}			},
 }
 	
 levels={
@@ -250,7 +250,7 @@ levels={
 # . . . . # . . . # . . . . . . . . . . . . . . . . . . . . . # 
 # . . . . # # . # # T8. . . . . . . . . . . . . T9. . . . . . # 
 # . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . # 
-# . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . # 
+# . . . . . . f . . . . . . . . . . . . . . . . . . . . . . . # 
 # . . . . . . . . . . . T3. . . . . . . . . . . . . . . . . . # 
 # . . . . . . T5. . . . . . . . . . . . . . . . . . . . . . . # 
 # . . . . . . . . . . . . . . . . . . # # # # T8. . . . . . . # 
@@ -2312,6 +2312,78 @@ entities.systems.insert{ caste="player",
 . . . . . . 1 1 2 2 . . . . . . 
 . . . . . . . 1 2 . . . . . . . 
 ]]},
+{nil,"frogman1",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . g G G g . . . . . . 
+. . . . . g 1 g g 1 g . . . . . 
+. . . . . G G d d G G . . . . . 
+. . . . . g 1 0 0 1 g . . . . . 
+. . . . G G g m m g G G . . . . 
+. . . g G G g g g g G G g . . . 
+. . g G G G d G G d G G G g . . 
+. d d G . g d g g d g . G d d . 
+. . G . . G d G G d G . . G . . 
+. . . . . g g d d g g . . . . . 
+. . . . . G d g g d G . . . . . 
+. . . . . G G . . G G . . . . . 
+. . . . . g G . . G g . . . . . 
+. . . . d G d . . d G d . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+{nil,"frogman2",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . g G G g . . . . . . 
+. . . . . g 1 g g 1 g . . . . . 
+. . . . G G G d d G G G . . . . 
+. . . g G g 1 0 0 1 g G g . . . 
+. . g G G G g m m g G G G g . . 
+. d d G . G d G G d G . G d d . 
+. . G . . g d g g d g . . G . . 
+. . . . . G d G G d G . . . . . 
+. . . . . g g d d g g . . . . . 
+. . . . . G d g g d G . . . . . 
+. . . . . G G . . G G . . . . . 
+. . . . . g G . . G g . . . . . 
+. . . . d G d . . d G d . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+{nil,"frogman3",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . g G G g . . . . . . 
+. . . . . g 1 g g 1 g . . . . . 
+. . . . G G G d d G G G . . . . 
+. . . g G g 1 0 0 1 g G g . . . 
+. . g G G G g m m g G G G g . . 
+. d d G . g d g g d g . G d d . 
+. . G . . G d G G d G . . G . . 
+. . . . . g g d d g g . . . . . 
+. . . . . G d g g d G . . . . . 
+. . . . . G G . . G G . . . . . 
+. . . . . g G . . G g . . . . . 
+. . . . d G d . . d G d . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
+{nil,"frogman4",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . g G G g . . . . . . 
+. . . . . g 1 g g 1 g . . . . . 
+. . . . . G G d d G G . . . . . 
+. . . . . g 1 0 0 1 g . . . . . 
+. . . . G G g m m g G G . . . . 
+. . . g G G d G G d G G g . . . 
+. . g G G g d g g d g G G g . . 
+. d d G . G d G G d G . G d d . 
+. . G . . g g d d g g . . G . . 
+. . . . . G d g g d G . . . . . 
+. . . . . G G . . G G . . . . . 
+. . . . . g G . . G g . . . . . 
+. . . . d G d . . d G d . . . . 
+. . . . . . . . . . . . . . . . 
+]]},
 		}
 
 	end,
@@ -2328,22 +2400,20 @@ can be assigned to each item.
 -----------------------------------------------------------------------------
 local prefabs={
 	{name="player",id="player",rules={"player"},illumination=1,},
-	{name="talker",back="test_tile",rules={"talker"},illumination=0.25,},
-	{name="talker2",back="test_tile",rules={"talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
-	{name="talker3",back="test_tile",rules={"talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
-	{name="talker4",back="test_tile",rules={"talker"},sprite={"char41","char42","char43","char44",},illumination=0.25,},
-	{name="talker5",back="test_tile",rules={"talker"},sprite={"char51","char52","char53","char54",},illumination=0.25,},
-	{name="talker6",back="test_tile",rules={"talker"},sprite={"char61","char62","char63","char64",},illumination=1,},
-	{name="talker7",back="test_tile",rules={"talker"},sprite={"char71","char72","char73","char74",},illumination=0.25,},
-	{name="talker8",back="test_tile",rules={"talker"},sprite={"char81","char82","char83","char84",},illumination=1,},
-	{name="talker9",back="test_tile",rules={"talker"},sprite={"char91","char92","char93","char94",},illumination=0.25,},
-	{name="talker0",back="test_tile",rules={"talker"},sprite={"char0"},illumination=1,},
-	{name="floor",back="test_none"},
-	{name="floor_tile",back="test_tile"},
-	{name="floor_spawn",id="floor_spawn",back="test_spawn",illumination=0.75,},
-	{name="wall_full",back="test_wall",is_big=true,},
-	{name="wall_half",back="test_wall",is_big=true,},
-	{name="stone_cube",back="test_tile",rules={"talker"},sprite={"stone_cube"},illumination=1,},
+	{name="talker",rules={"talker"},illumination=0.25,},
+	{name="talker2",rules={"talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
+	{name="talker3",rules={"talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
+	{name="talker4",rules={"talker"},sprite={"char41","char42","char43","char44",},illumination=0.25,},
+	{name="talker5",rules={"talker"},sprite={"char51","char52","char53","char54",},illumination=0.25,},
+	{name="talker6",rules={"talker"},sprite={"char61","char62","char63","char64",},illumination=1,},
+	{name="talker7",rules={"talker"},sprite={"char71","char72","char73","char74",},illumination=0.25,},
+	{name="talker8",rules={"talker"},sprite={"char81","char82","char83","char84",},illumination=1,},
+	{name="talker9",rules={"talker"},sprite={"char91","char92","char93","char94",},illumination=0.25,},
+	{name="talker0",rules={"talker"},sprite={"char0"},illumination=1,},
+	{name="floor_spawn",id="floor_spawn",illumination=0.75,},
+	{name="wall_brick",is_big=true,},
+	{name="stone_cube",rules={"talker"},sprite={"stone_cube"},illumination=1,},
+	{name="frogman",back="test_tile",rules={"monster"},sprite={"frogman1","frogman2","frogman3","frogman4",},},
 }
 
 -----------------------------------------------------------------------------
@@ -2353,16 +2423,39 @@ How the yarn engine should behave
 
 ]]
 -----------------------------------------------------------------------------
+
+local rules_base={
+	move=function(item,vx,vy)
+
+		local target=item[0]:get_cell_relative(vx,vy)
+		item:insert( target ) -- move to a new location
+		if vx>0 then item.sprite.flip= 1 end
+		if vx<0 then item.sprite.flip=-1 end
+
+		item.anim={
+			vx=-vx*16,
+			vy=-vy*16,
+			name="hop",
+			length=8,
+		}
+
+	end,
+}
+
 local rules={
 
 	{	name="cell",
+	
+		setup=function(cell)
+			cell.illumination=cell.illumination or 0
+		end,
 		
-		inject_time=function(cell,dx,dy)
+		inject_time=function(cell,dx,dy,timestamp)
 
 			for i,c in cell:iterate_hashrange(-dx,dx,-dy,dy) do
 				c:apply("update")
 				for i,item in ipairs(c) do
-					item:apply("update")
+					item:apply("update",timestamp)
 				end
 			end
 
@@ -2374,8 +2467,7 @@ local rules={
 				end
 				for i,v in c:iterate_neighbours() do -- get neighbours illumination
 					local big=v:get_big()
-					local bi=0
-					bi=v.illumination or bi
+					local bi=v.illumination or 0
 					if big and not big.illumination  then bi=bi/2 end -- big things get darker quicker?
 					if bi>b then b=bi end
 				end
@@ -2403,25 +2495,11 @@ local rules={
 		clean=function(item)
 		end,
 
-		update=function(item)
+		update=function(item,timestamp)
 --print("player update")
 		end,
 
-		move=function(item,vx,vy)
-
-			local target=item[0]:get_cell_relative(vx,vy)
-			item:insert( target ) -- move to a new location
-			if vx>0 then item.sprite.flip= 1 end
-			if vx<0 then item.sprite.flip=-1 end
-
-			item.anim={
-				vx=-vx*16,
-				vy=-vy*16,
-				name="hop",
-				length=8,
-			}
-
-		end,
+		move=rules_base.move,
 	},
 	
 	{	name="talker",
@@ -2439,25 +2517,11 @@ local rules={
 		clean=function(item)
 		end,
 
-		update=function(item)
+		update=function(item,timestamp)
 --print("player update")
 		end,
 
-		move=function(item,vx,vy)
-
-			local target=item[0]:get_cell_relative(vx,vy)
-			item:insert( target ) -- move to a new location
-			if vx>0 then item.sprite.flip= 1 end
-			if vx<0 then item.sprite.flip=-1 end
-			
-			item.anim={
-				vx=-vx*16,
-				vy=-vy*16,
-				name="hop",
-				length=8,
-			}
-
-		end,
+		move=rules_base.move,
 
 		talk=function(item,player)
 		
@@ -2470,6 +2534,37 @@ local rules={
 
 		end,
 	},
+
+	{	name="monster",
+
+		setup=function(item)
+			item.is_big=true
+			item.monster={}
+			item.sprite=item.sprite or
+				{
+					"test_player1","test_player2","test_player3","test_player4",
+					speed=16,color={1,0,0,1}
+				}
+		end,
+
+		clean=function(item)
+		end,
+
+		update=function(item,timestamp)
+print("monster update")
+			local cell=item[0]
+			local best
+			for i,c in cell:iterate_neighbours() do
+				if not c:get_big() and ( not best or c.illumination>best.illumination ) then best=c end
+			end
+			if best and best.illumination>cell.illumination then
+				item:apply("move",best.cx-cell.cx,best.cy-cell.cy)
+			end
+		end,
+
+		move=rules_base.move,
+	},
+
 }
 
 -----------------------------------------------------------------------------
@@ -2504,7 +2599,7 @@ entities.systems.insert{ caste="yarn",
 		items.pages.get_cell(0x8000*32,0x8000*32) -- manifest page
 		local spawn=items.ids.floor_spawn[0]
 		items.create( items.prefabs.get("player") ):insert( spawn ) -- use spawn point
-		spawn:apply("inject_time",16,16) -- inject some time
+		spawn:apply("inject_time",16,16,0) -- inject some time
 
 -- setup view
 
@@ -2535,7 +2630,9 @@ entities.systems.insert{ caste="yarn",
 		if not big then -- we can move to this cell
 			ret[#ret+1]={"move",function()
 				item:apply("move",vx,vy)
-				item[0]:apply("inject_time",16,16)
+				item.age=item.age or 0 + 1
+				item.timestamp=item.timestamp or 0 + 1
+				item[0]:apply("inject_time",16,16,item.timestamp)
 			end}
 		end
 		
@@ -2743,19 +2840,20 @@ entities.systems.insert{ caste="yarn",
 
 				local cell=pages.get_cell(it.cx+x,it.cy+y)
 				local idx=y*48*4 + x*4
-				b[idx+1]=0
-				b[idx+2]=0
-				b[idx+3]=31
-				b[idx+4]=0
 				local light=cell.illumination or 0
+				if cell.back then
+					local tile=names[cell.back]
+					b[idx+1]=tile.pxt
+					b[idx+2]=tile.pyt
+					b[idx+3]=31
+					b[idx+4]=light*255
+				else
+					b[idx+1]=0
+					b[idx+2]=0
+					b[idx+3]=31
+					b[idx+4]=0
+				end
 				for i,v in ipairs(cell) do
-					if v.back then
-						local tile=names[v.back]
-						b[idx+1]=tile.pxt
-						b[idx+2]=tile.pyt
-						b[idx+3]=31
-						b[idx+4]=light*255
-					end
 					if v.sprite then
 					
 						local cr,cg,cb,ca=1,1,1,1
