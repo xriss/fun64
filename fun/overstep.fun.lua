@@ -15,7 +15,10 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
-	hx=416,hy=240, -- wide screen 52x30 tiles (8x8)
+--	hx=416,hy=240, -- wide screen 52x30    tiles (8x8)
+--	hx=320,hy=180, -- wide screen 40x22.5  tiles (8x8) 1/6 of 1920x1080
+	hx=384,hy=216, -- wide screen 48x27    tiles (8x8) 1/5 of 1920x1080
+--	hx=480,hy=270, -- wide screen 60x33.75 tiles (8x8) 1/4 of 1920x1080
 })
 
 hardware.screen.zxy={0,-1}
@@ -172,23 +175,23 @@ local combine_legends=function(...)
 end
 
 local default_legend={
-	[   0]={ back="test_none", items={"floor_tile"},			},
-	[". "]={ back="test_tile", items={"floor_tile"}			},
-	["x "]={ back="test_tile", items={"floor_tile"}			},
-	["S "]={ back="test_spawn", items={"floor_spawn"}			},
-	["T "]={ back="test_tile", items={"talker"}				},
-	["T2"]={ back="test_tile", items={"talker2"}				},
-	["T3"]={ back="test_tile", items={"talker3"}				},
-	["T4"]={ back="test_tile", items={"talker4"}				},
-	["T5"]={ back="test_tile", items={"talker5"}				},
-	["T6"]={ back="test_tile", items={"talker6"}				},
-	["T7"]={ back="test_tile", items={"talker7"}				},
-	["T8"]={ back="test_tile", items={"talker8"}				},
-	["T9"]={ back="test_tile", items={"talker9"}				},
-	["T0"]={ back="test_tile", items={"talker0"}				},
-	["# "]={ back="test_wall", items={"wall_full"}			},
-	["C "]={ back="test_tile", items={"stone_cube"}			},
-	["f "]={ back="test_tile", items={"frogman"}			},
+	[   0]={ back="test_none",										},
+	[". "]={ back="test_tile",										},
+	["# "]={ back="test_wall",		items={"wall"}					},
+	["x "]={ back="test_tile",										},
+	["S "]={ back="test_spawn",		items={"floor_spawn"}			},
+	["T "]={ back="test_tile",		items={"talker"}				},
+	["T2"]={ back="test_tile",		items={"talker2"}				},
+	["T3"]={ back="test_tile",		items={"talker3"}				},
+	["T4"]={ back="test_tile",		items={"talker4"}				},
+	["T5"]={ back="test_tile",		items={"talker5"}				},
+	["T6"]={ back="test_tile",		items={"talker6"}				},
+	["T7"]={ back="test_tile",		items={"talker7"}				},
+	["T8"]={ back="test_tile",		items={"talker8"}				},
+	["T9"]={ back="test_tile",		items={"talker9"}				},
+	["T0"]={ back="test_tile",		items={"talker0"}				},
+	["C "]={ back="test_tile",		items={"stone_cube"}			},
+	["f "]={ back="test_tile",		items={"frogman"}				},
 }
 	
 levels={
@@ -2399,7 +2402,7 @@ can be assigned to each item.
 ]]
 -----------------------------------------------------------------------------
 local prefabs={
-	{name="player",id="player",rules={"player"},illumination=1,},
+	{name="player",id="player",rules={"player"},illumination=2},
 	{name="talker",rules={"talker"},illumination=0.25,},
 	{name="talker2",rules={"talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
 	{name="talker3",rules={"talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
@@ -2411,7 +2414,7 @@ local prefabs={
 	{name="talker9",rules={"talker"},sprite={"char91","char92","char93","char94",},illumination=0.25,},
 	{name="talker0",rules={"talker"},sprite={"char0"},illumination=1,},
 	{name="floor_spawn",id="floor_spawn",illumination=0.75,},
-	{name="wall_brick",is_big=true,},
+	{name="wall",is_big=true,},
 	{name="stone_cube",rules={"talker"},sprite={"stone_cube"},illumination=1,},
 	{name="frogman",back="test_tile",rules={"monster"},sprite={"frogman1","frogman2","frogman3","frogman4",},},
 }
@@ -2496,10 +2499,10 @@ local rules={
 		end,
 
 		update=function(item,timestamp)
---print("player update")
 		end,
 
 		move=rules_base.move,
+		attack=rules_base.attack,
 	},
 	
 	{	name="talker",
@@ -2518,7 +2521,22 @@ local rules={
 		end,
 
 		update=function(item,timestamp)
---print("player update")
+			if item.timestamp and item.timestamp>=timestamp then return end
+			item.timestamp=timestamp
+--print("talker update")
+			local cell=item[0]
+			local bestmove
+			local target
+			for i,c in cell:iterate_neighbours() do
+				local big=c:get_big()
+				if big then
+				elseif ( not bestmove or c.illumination<bestmove.illumination ) then
+--					bestmove=c
+				end
+			end
+			if bestmove and bestmove.illumination<cell.illumination then
+				item:apply("move",bestmove.cx-cell.cx,bestmove.cy-cell.cy) -- move towards the light
+			end
 		end,
 
 		move=rules_base.move,
@@ -2551,18 +2569,32 @@ local rules={
 		end,
 
 		update=function(item,timestamp)
-print("monster update")
+			if item.timestamp and item.timestamp>=timestamp then return end
+			item.timestamp=timestamp
+
+--print("monster update")
 			local cell=item[0]
-			local best
+			local bestmove
+			local target
 			for i,c in cell:iterate_neighbours() do
-				if not c:get_big() and ( not best or c.illumination>best.illumination ) then best=c end
+				local big=c:get_big()
+				if big then
+					if big.player then -- attack
+						target=big
+					end
+				elseif ( not bestmove or c.illumination>bestmove.illumination ) then
+					bestmove=c
+				end
 			end
-			if best and best.illumination>cell.illumination then
-				item:apply("move",best.cx-cell.cx,best.cy-cell.cy)
+			if target then -- fight
+				item:apply("attack",target) -- attack something			
+			elseif bestmove and bestmove.illumination>cell.illumination then
+				item:apply("move",bestmove.cx-cell.cx,bestmove.cy-cell.cy) -- move towards the light
 			end
 		end,
 
 		move=rules_base.move,
+		attack=rules_base.attack,
 	},
 
 }
@@ -2621,6 +2653,13 @@ entities.systems.insert{ caste="yarn",
 		local target=item[0]:get_cell_relative(vx,vy)
 		local big=target:get_big()
 
+		local timestep=function()
+print("timestep",item.age)
+			item.age=(item.age or 0) + 1
+			item.timestamp=(item.timestamp or 0) + 1
+			item[0]:apply("inject_time",16,16,item.timestamp)
+		end
+		
 		local face=function()
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
@@ -2630,9 +2669,7 @@ entities.systems.insert{ caste="yarn",
 		if not big then -- we can move to this cell
 			ret[#ret+1]={"move",function()
 				item:apply("move",vx,vy)
-				item.age=item.age or 0 + 1
-				item.timestamp=item.timestamp or 0 + 1
-				item[0]:apply("inject_time",16,16,item.timestamp)
+				timestep()
 			end}
 		end
 		
@@ -2642,6 +2679,7 @@ entities.systems.insert{ caste="yarn",
 			ret[#ret+1]={"talk",function()
 				face()
 				big:apply("talk",item)
+				timestep()
 			end}
 		end
 		
@@ -2649,6 +2687,7 @@ entities.systems.insert{ caste="yarn",
 		 if big then
 			ret[#ret+1]={"face",function()
 				face()
+				timestep()
 			end}
 		end
 		
