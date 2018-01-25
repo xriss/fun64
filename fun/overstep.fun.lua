@@ -15,7 +15,6 @@ hardware,main=system.configurator({
 		entities.systems.call("draw")
 		entities.call("draw")
 	end,
---	hx=416,hy=240, -- wide screen 52x30    tiles (8x8)
 --	hx=320,hy=180, -- wide screen 40x22.5  tiles (8x8) 1/6 of 1920x1080
 	hx=384,hy=216, -- wide screen 48x27    tiles (8x8) 1/5 of 1920x1080
 --	hx=480,hy=270, -- wide screen 60x33.75 tiles (8x8) 1/4 of 1920x1080
@@ -37,6 +36,7 @@ hardware.insert{
 
 entities=require("wetgenes.gamecake.fun.entities").create({
 	sortby={
+		"logs",
 	},
 })
 
@@ -526,6 +526,33 @@ R 1 1 0 1 1 0 0 0 0 1 1 0 1 1 R
 
 }
 
+
+entities.systems.insert{ caste="logs",
+
+	setup=function(logs)
+		entities.systems.logs:reset_log()
+		entities.systems.logs:print_log({text="Testing 123."})
+	end,
+
+	print_log=function(logs,line)
+		logs.lines[#logs.lines+1]=line
+	end,
+
+	reset_log=function(logs)
+		logs.lines={}
+	end,
+	
+	update=function(logs)
+	end,
+
+	draw=function(logs)
+		local tprint=system.components.text.text_print
+
+		for i,line in ipairs(logs.lines) do
+			tprint(line.text,2,i,31,0)
+		end
+	end,
+}
 
 entities.systems.insert{ caste="menu",
 
@@ -2402,21 +2429,21 @@ can be assigned to each item.
 ]]
 -----------------------------------------------------------------------------
 local prefabs={
-	{name="player",id="player",rules={"player"},illumination=2},
-	{name="talker",rules={"talker"},illumination=0.25,},
-	{name="talker2",rules={"talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
-	{name="talker3",rules={"talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
-	{name="talker4",rules={"talker"},sprite={"char41","char42","char43","char44",},illumination=0.25,},
-	{name="talker5",rules={"talker"},sprite={"char51","char52","char53","char54",},illumination=0.25,},
-	{name="talker6",rules={"talker"},sprite={"char61","char62","char63","char64",},illumination=1,},
-	{name="talker7",rules={"talker"},sprite={"char71","char72","char73","char74",},illumination=0.25,},
-	{name="talker8",rules={"talker"},sprite={"char81","char82","char83","char84",},illumination=1,},
-	{name="talker9",rules={"talker"},sprite={"char91","char92","char93","char94",},illumination=0.25,},
-	{name="talker0",rules={"talker"},sprite={"char0"},illumination=1,},
+	{name="player",id="player",rules={"body","player"},illumination=2},
+	{name="talker",rules={"body","talker"},illumination=0.25,},
+	{name="talker2",rules={"body","talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
+	{name="talker3",rules={"body","talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
+	{name="talker4",rules={"body","talker"},sprite={"char41","char42","char43","char44",},illumination=0.25,},
+	{name="talker5",rules={"body","talker"},sprite={"char51","char52","char53","char54",},illumination=0.25,},
+	{name="talker6",rules={"body","talker"},sprite={"char61","char62","char63","char64",},illumination=1,},
+	{name="talker7",rules={"body","talker"},sprite={"char71","char72","char73","char74",},illumination=0.25,},
+	{name="talker8",rules={"body","talker"},sprite={"char81","char82","char83","char84",},illumination=1,},
+	{name="talker9",rules={"body","talker"},sprite={"char91","char92","char93","char94",},illumination=0.25,},
+	{name="talker0",rules={"body","talker"},sprite={"char0"},illumination=1,},
 	{name="floor_spawn",id="floor_spawn",illumination=0.75,},
 	{name="wall",is_big=true,},
 	{name="stone_cube",rules={"talker"},sprite={"stone_cube"},illumination=1,},
-	{name="frogman",back="test_tile",rules={"monster"},sprite={"frogman1","frogman2","frogman3","frogman4",},},
+	{name="frogman",back="test_tile",rules={"body","monster"},sprite={"frogman1","frogman2","frogman3","frogman4",},},
 }
 
 -----------------------------------------------------------------------------
@@ -2426,6 +2453,37 @@ How the yarn engine should behave
 
 ]]
 -----------------------------------------------------------------------------
+
+local logf=function(text,...)
+	entities.systems.logs:print_log( {text=string.format(text,...)} )
+end
+
+-- describe a relationship between pairs of tribes
+local tribes={
+	neutral={},
+	townie={},
+	player={},
+	monster={},
+}
+for n,v in pairs(tribes) do
+	for nn,vv in pairs(tribes) do
+		v[nn]=v[nn] or tribes[nn][n] or {bond=0} -- make only one table per relationship combination
+	end
+	v[n].bond=1 -- assume we are friends with our own tribe
+end
+-- monster fights with player and townie
+tribes.monster.player.bond=-1
+tribes.monster.townie.bond=-1
+-- townie it friends with player
+tribes.townie.player.bond=1
+-- neutral is even neutral to other neutrals
+tribes.neutral.neutral.bond=0
+
+local get_bond=function(a,b)
+	if a and b then
+		return tribes[a] and tribes[a][b] and tribes[a][b].bond
+	end
+end
 
 local rules_base={
 	move=function(item,vx,vy)
@@ -2443,9 +2501,50 @@ local rules_base={
 		}
 
 	end,
+	attack=function(source,target)
+		local attack=source.body and source.body.attack or 0 -- base attack
+		for i,v in ipairs(source) do
+			if v.attack then -- this item provides an attack modifier
+				attack=attack+v.attack
+			end
+		end
+		local defend=target.body and target.body.defend or 0 -- base defend
+		for i,v in ipairs(target) do
+			if v.defend then -- this item provides an defend modifier
+				defend=defend+v.defend
+			end
+		end
+		local hit=math.random(-defend,attack) -- we hit for a number in this range
+		if hit<=0 then -- hit armour / miss no damage
+			logf("missed %d",hit)
+		else
+			if hit>=(attack*0.75) then -- critical
+--				logf("critical %d",hit)
+				hit=hit*2
+			end
+			target.body.health=target.body.health-hit
+			if target.body.health<=0 then -- a death blow
+				logf("deathblow %d",hit)
+			else -- a normal hit
+				logf("hit %d",hit)
+			end
+		end
+	end,
 }
 
+
 local rules={
+
+	{	name="body",
+
+		setup=function(item)
+			item.body=item.body or {} -- need a body
+			item.body.physique = item.body.physique or 10 -- physique is max health
+			item.body.health   = item.body.health   or item.body.physique
+			item.body.attack   = item.body.attack   or math.ceil(item.body.physique/3)
+			item.body.defend   = item.body.defend   or 0
+		end,
+	},
 
 	{	name="cell",
 	
@@ -2486,8 +2585,8 @@ local rules={
 	{	name="player",
 	
 		setup=function(item)
+			item.tribe=item.tribe or "player"
 			item.is_big=true
-			item.player={}
 			item.sprite=item.sprite or
 				{
 					"test_player1","test_player2","test_player3","test_player4",
@@ -2508,8 +2607,8 @@ local rules={
 	{	name="talker",
 	
 		setup=function(item)
+			item.tribe=item.tribe or "townie"
 			item.is_big=true
-			item.player={}
 			item.sprite=item.sprite or
 				{
 					"char1",
@@ -2556,8 +2655,8 @@ local rules={
 	{	name="monster",
 
 		setup=function(item)
+			item.tribe=item.tribe or "monster"
 			item.is_big=true
-			item.monster={}
 			item.sprite=item.sprite or
 				{
 					"test_player1","test_player2","test_player3","test_player4",
@@ -2579,7 +2678,8 @@ local rules={
 			for i,c in cell:iterate_neighbours() do
 				local big=c:get_big()
 				if big then
-					if big.player then -- attack
+					local bond=get_bond(item.tribe,big.tribe)
+					if bond and bond<0 and big.body then -- attack
 						target=big
 					end
 				elseif ( not bestmove or c.illumination>bestmove.illumination ) then
@@ -2587,6 +2687,7 @@ local rules={
 				end
 			end
 			if target then -- fight
+				print("monster attack")
 				item:apply("attack",target) -- attack something			
 			elseif bestmove and bestmove.illumination>cell.illumination then
 				item:apply("move",bestmove.cx-cell.cx,bestmove.cy-cell.cy) -- move towards the light
@@ -2652,9 +2753,15 @@ entities.systems.insert{ caste="yarn",
 
 		local target=item[0]:get_cell_relative(vx,vy)
 		local big=target:get_big()
+		
+		local header=function()
+			entities.systems.logs:reset_log()
+			logf("time %d",item.age or 0)
+		end
+		local footer=function()
+		end
 
 		local timestep=function()
-print("timestep",item.age)
 			item.age=(item.age or 0) + 1
 			item.timestamp=(item.timestamp or 0) + 1
 			item[0]:apply("inject_time",16,16,item.timestamp)
@@ -2668,8 +2775,10 @@ print("timestep",item.age)
 		-- if empty, just walk
 		if not big then -- we can move to this cell
 			ret[#ret+1]={"move",function()
+				header()
 				item:apply("move",vx,vy)
 				timestep()
+				footer()
 			end}
 		end
 		
@@ -2677,17 +2786,31 @@ print("timestep",item.age)
 		
 		if big and big:can("talk") then -- we can talk to this item
 			ret[#ret+1]={"talk",function()
+				header()
 				face()
 				big:apply("talk",item)
 				timestep()
+				footer()
 			end}
 		end
 		
+		if big and big:can("attack") then -- we can attack this item
+			ret[#ret+1]={"attack",function()
+				header()
+				face()
+				item:apply("attack",big)
+				timestep()
+				footer()
+			end}
+		end
+
 		 -- finally we could just face this big cell and do nothing
 		 if big then
 			ret[#ret+1]={"face",function()
+				header()
 				face()
 				timestep()
+				footer()
 			end}
 		end
 		
