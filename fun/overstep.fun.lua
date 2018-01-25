@@ -2414,6 +2414,24 @@ entities.systems.insert{ caste="player",
 . . . . d G d . . d G d . . . . 
 . . . . . . . . . . . . . . . . 
 ]]},
+{nil,"corpse",[[
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . 7 7 7 . . . . 
+. . . . . . . . . 7 0 7 7 . . . 
+. . . . . 7 . 7 7 7 7 7 7 . . . 
+. 7 . . . 7 0 7 0 0 7 7 7 . . . 
+7 7 . . . 7 0 0 7 7 0 7 7 . . . 
+7 7 7 7 . 7 7 7 0 7 7 7 0 . 7 . 
+7 0 7 7 7 0 0 0 0 0 0 0 7 7 7 7 
+0 . 0 0 7 7 7 7 0 7 7 7 7 7 7 0 
+. . . . 0 0 7 7 7 7 7 0 0 0 0 . 
+. . . . . 7 7 7 7 7 7 7 0 7 . . 
+. 7 . 7 7 7 7 0 0 0 7 7 7 7 7 . 
+7 7 7 7 7 0 0 . . . 0 0 7 7 0 . 
+0 7 7 0 0 . . . . . . 0 7 0 . . 
+. 0 7 . . . . . . . . . 0 . . . 
+]]},
 		}
 
 	end,
@@ -2430,6 +2448,7 @@ can be assigned to each item.
 -----------------------------------------------------------------------------
 local prefabs={
 	{name="player",id="player",rules={"body","player"},illumination=2},
+	{name="corpse",rules={"corpse"},},
 	{name="talker",rules={"body","talker"},illumination=0.25,},
 	{name="talker2",rules={"body","talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
 	{name="talker3",rules={"body","talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
@@ -2501,6 +2520,11 @@ local rules_base={
 		}
 
 	end,
+	die=function(item)
+		local items=entities.systems.yarn.items
+		items.create( items.prefabs.get("corpse") ):insert(item[0])
+		item:destroy()
+	end,
 	attack=function(source,target)
 		local attack=source.body and source.body.attack or 0 -- base attack
 		for i,v in ipairs(source) do
@@ -2516,17 +2540,17 @@ local rules_base={
 		end
 		local hit=math.random(-defend,attack) -- we hit for a number in this range
 		if hit<=0 then -- hit armour / miss no damage
-			logf("missed %d",hit)
+			logf("%s missed %s",source.name,target.name,hit)
 		else
 			if hit>=(attack*0.75) then -- critical
---				logf("critical %d",hit)
 				hit=hit*2
 			end
 			target.body.health=target.body.health-hit
 			if target.body.health<=0 then -- a death blow
-				logf("deathblow %d",hit)
+				logf("%s killed %s",source.name,target.name,hit)
+				target:apply("die")
 			else -- a normal hit
-				logf("hit %d",hit)
+				logf("%s hit %s for %d damage",source.name,target.name,hit)
 			end
 		end
 	end,
@@ -2543,6 +2567,13 @@ local rules={
 			item.body.health   = item.body.health   or item.body.physique
 			item.body.attack   = item.body.attack   or math.ceil(item.body.physique/3)
 			item.body.defend   = item.body.defend   or 0
+		end,
+	},
+
+	{	name="corpse",
+
+		setup=function(item)
+			item.sprite=item.sprite or {"corpse"}
 		end,
 	},
 
@@ -2650,6 +2681,7 @@ local rules={
 			menu.show(menu.chats.get_menu_items(item.chatname or "example"))
 
 		end,
+		die=rules_base.die,
 	},
 
 	{	name="monster",
@@ -2687,7 +2719,7 @@ local rules={
 				end
 			end
 			if target then -- fight
-				print("monster attack")
+--				print("monster attack")
 				item:apply("attack",target) -- attack something			
 			elseif bestmove and bestmove.illumination>cell.illumination then
 				item:apply("move",bestmove.cx-cell.cx,bestmove.cy-cell.cy) -- move towards the light
@@ -2696,6 +2728,7 @@ local rules={
 
 		move=rules_base.move,
 		attack=rules_base.attack,
+		die=rules_base.die,
 	},
 
 }
@@ -2756,7 +2789,7 @@ entities.systems.insert{ caste="yarn",
 		
 		local header=function()
 			entities.systems.logs:reset_log()
-			logf("time %d",item.age or 0)
+--			logf("time %d",item.age or 0)
 		end
 		local footer=function()
 		end
