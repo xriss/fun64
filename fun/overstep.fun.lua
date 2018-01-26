@@ -300,11 +300,11 @@ levels={
 # . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . # 
 # . . . . . . . . . . . . . . . . . . # . . . . . . . . . . . # 
 # . . . . . # . # . . . . . . . . . . # . . . . . . . . . . . # 
-# . . . . . # . # . . . . . . . . . . . . . # . . . . . . . . # 
+# . . . . # # . # # . . . . . . . . . . . . # . . . . . . . . # 
 # . . . # # . . . # # . . . . . . . . . . . # . . . . . . . . # 
 . . . . . . . C . . . . . . . . . . . # . . # . . . . . . . . # 
 # . . . # # . . . # # . . . . . . . . # . . . . . . . . . . . # 
-# . . . . . # . # . . . . . . . . . . # . . # . . . . . . . . # 
+# . . . . # # . # # . . . . . . . . . # . . # . . . . . . . . # 
 # . . . . . # . # . . . . . . . . . . # . . # . . . . . . . . # 
 # . . . . . . . . . . . . . . . . . . # . . # . . . . . . . . # 
 # . . . . . . . . . . . . . . . . # . # . . . . . . . . . . . # 
@@ -2447,22 +2447,22 @@ can be assigned to each item.
 ]]
 -----------------------------------------------------------------------------
 local prefabs={
-	{name="player",id="player",rules={"body","player"},illumination=2},
+	{name="player",id="player",rules={"body","player"},illumination=1.5},
 	{name="corpse",rules={"corpse"},},
-	{name="talker",rules={"body","talker"},illumination=0.25,},
+	{name="talker",rules={"body","talker"},illumination=0,},
 	{name="talker2",rules={"body","talker"},sprite={"char21","char22","char23","char24",},illumination=0,},
-	{name="talker3",rules={"body","talker"},sprite={"char31","char32","char33","char34",},illumination=1,},
-	{name="talker4",rules={"body","talker"},sprite={"char41","char42","char43","char44",},illumination=0.25,},
-	{name="talker5",rules={"body","talker"},sprite={"char51","char52","char53","char54",},illumination=0.25,},
-	{name="talker6",rules={"body","talker"},sprite={"char61","char62","char63","char64",},illumination=1,},
-	{name="talker7",rules={"body","talker"},sprite={"char71","char72","char73","char74",},illumination=0.25,},
-	{name="talker8",rules={"body","talker"},sprite={"char81","char82","char83","char84",},illumination=1,},
-	{name="talker9",rules={"body","talker"},sprite={"char91","char92","char93","char94",},illumination=0.25,},
-	{name="talker0",rules={"body","talker"},sprite={"char0"},illumination=1,},
+	{name="talker3",rules={"body","talker"},sprite={"char31","char32","char33","char34",},illumination=0,},
+	{name="talker4",rules={"body","talker"},sprite={"char41","char42","char43","char44",},illumination=0,},
+	{name="talker5",rules={"body","talker"},sprite={"char51","char52","char53","char54",},illumination=0,},
+	{name="talker6",rules={"body","talker"},sprite={"char61","char62","char63","char64",},illumination=0,},
+	{name="talker7",rules={"body","talker"},sprite={"char71","char72","char73","char74",},illumination=0,},
+	{name="talker8",rules={"body","talker"},sprite={"char81","char82","char83","char84",},illumination=0,},
+	{name="talker9",rules={"body","talker"},sprite={"char91","char92","char93","char94",},illumination=0,},
+	{name="talker0",rules={"body","talker"},sprite={"char0"},illumination=0,},
 	{name="floor_spawn",id="floor_spawn",illumination=0.75,},
 	{name="wall",is_big=true,},
-	{name="stone_cube",rules={"talker"},sprite={"stone_cube"},illumination=1,},
-	{name="frogman",back="test_tile",rules={"body","monster"},sprite={"frogman1","frogman2","frogman3","frogman4",},},
+	{name="stone_cube",rules={"talker"},sprite={"stone_cube"},illumination=0.75,},
+	{name="frogman",back="test_tile",rules={"body","monster"},sprite={"frogman1","frogman2","frogman3","frogman4",},illumination=0},
 }
 
 -----------------------------------------------------------------------------
@@ -2526,21 +2526,15 @@ local rules_base={
 		item:destroy()
 	end,
 	attack=function(source,target)
-		local attack=source.body and source.body.attack or 0 -- base attack
-		for i,v in ipairs(source) do
-			if v.attack then -- this item provides an attack modifier
-				attack=attack+v.attack
-			end
-		end
-		local defend=target.body and target.body.defend or 0 -- base defend
-		for i,v in ipairs(target) do
-			if v.defend then -- this item provides an defend modifier
-				defend=defend+v.defend
-			end
-		end
+
+--		logf("%s health= %d attack= %d defend= %d",source.name,source.body.health or 0,source:get_attack(),source:get_defend())
+--		logf("%s health= %d attack= %d defend= %d",target.name,target.body.health or 0,target:get_attack(),target:get_defend())
+--		logf("")
+		local attack=source.body and source:get_attack() or 0 -- attack
+		local defend=target.body and target:get_attack() or 0 -- defend
 		local hit=math.random(-defend,attack) -- we hit for a number in this range
 		if hit<=0 then -- hit armour / miss no damage
-			logf("%s missed %s",source.name,target.name,hit)
+			logf("%s missed %s",source.name,target.name,target.body.health)
 		else
 			if hit>=(attack*0.75) then -- critical
 				hit=hit*2
@@ -2550,9 +2544,27 @@ local rules_base={
 				logf("%s killed %s",source.name,target.name,hit)
 				target:apply("die")
 			else -- a normal hit
-				logf("%s hit %s for %d damage",source.name,target.name,hit)
+				logf("%s did %d damage to %s",source.name,hit,target.name)
 			end
 		end
+	end,
+	get_attack=function(item)
+		local attack=item.body and item.body.attack or 0 -- base attack
+		for i,v in ipairs(item) do
+			if v.attack then -- this item provides an attack modifier
+				attack=attack+v.attack
+			end
+		end
+		return attack
+	end,
+	get_defend=function(item)
+		local defend=item.body and item.body.defend or 0 -- base defend
+		for i,v in ipairs(item) do
+			if v.defend then -- this item provides an defend modifier
+				defend=defend+v.defend
+			end
+		end
+		return defend
 	end,
 }
 
@@ -2567,6 +2579,8 @@ local rules={
 			item.body.health   = item.body.health   or item.body.physique
 			item.body.attack   = item.body.attack   or math.ceil(item.body.physique/3)
 			item.body.defend   = item.body.defend   or 0
+			item.get_attack=rules_base.get_attack --  add extra functions
+			item.get_defend=rules_base.get_defend
 		end,
 	},
 
@@ -2603,6 +2617,12 @@ local rules={
 					local bi=v.illumination or 0
 					if big and not big.illumination  then bi=bi/2 end -- big things get darker quicker?
 					if bi>b then b=bi end
+				end
+				for i,v in c:iterate_corners() do -- get corners illumination
+					local big=v:get_big()
+					local bi=v.illumination or 0
+					if big and not big.illumination  then bi=bi/2 end -- big things get darker quicker?
+					if bi*15/16>b then b=bi*15/16 end -- corners spread slightly less light
 				end
 				b=b*7/8
 				if b<0 then b=0 end
@@ -2790,6 +2810,9 @@ entities.systems.insert{ caste="yarn",
 		local header=function()
 			entities.systems.logs:reset_log()
 --			logf("time %d",item.age or 0)
+			local player=it.items.ids.player
+			logf("player health=%d attack=%d defence=%d",player.body.health or 0,player:get_attack(),player:get_defend())
+			logf("")
 		end
 		local footer=function()
 		end
