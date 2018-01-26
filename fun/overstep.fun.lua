@@ -2531,14 +2531,11 @@ local rules_base={
 --		logf("%s health= %d attack= %d defend= %d",target.name,target.body.health or 0,target:get_attack(),target:get_defend())
 --		logf("")
 		local attack=source.body and source:get_attack() or 0 -- attack
-		local defend=target.body and target:get_attack() or 0 -- defend
-		local hit=math.random(-defend,attack) -- we hit for a number in this range
+		local defend=target.body and target:get_defend() or 0 -- defend
+		local hit=math.random(attack-defend,attack) -- we hit for a number in this range
 		if hit<=0 then -- hit armour / miss no damage
 			logf("%s missed %s",source.name,target.name,target.body.health)
 		else
-			if hit>=(attack*0.75) then -- critical
-				hit=hit*2
-			end
 			target.body.health=target.body.health-hit
 			if target.body.health<=0 then -- a death blow
 				logf("%s killed %s",source.name,target.name,hit)
@@ -2577,7 +2574,7 @@ local rules={
 			item.body=item.body or {} -- need a body
 			item.body.physique = item.body.physique or 10 -- physique is max health
 			item.body.health   = item.body.health   or item.body.physique
-			item.body.attack   = item.body.attack   or math.ceil(item.body.physique/3)
+			item.body.attack   = item.body.attack   or math.ceil(item.body.physique/2)
 			item.body.defend   = item.body.defend   or 0
 			item.get_attack=rules_base.get_attack --  add extra functions
 			item.get_defend=rules_base.get_defend
@@ -2615,13 +2612,13 @@ local rules={
 				for i,v in c:iterate_neighbours() do -- get neighbours illumination
 					local big=v:get_big()
 					local bi=v.illumination or 0
-					if big and not big.illumination  then bi=bi/2 end -- big things get darker quicker?
+					if big and not big.illumination  then bi=0 end -- big things get darker quicker?
 					if bi>b then b=bi end
 				end
 				for i,v in c:iterate_corners() do -- get corners illumination
 					local big=v:get_big()
 					local bi=v.illumination or 0
-					if big and not big.illumination  then bi=bi/2 end -- big things get darker quicker?
+					if big and not big.illumination  then bi=0 end -- big things get darker quicker?
 					if bi*15/16>b then b=bi*15/16 end -- corners spread slightly less light
 				end
 				b=b*7/8
@@ -2811,8 +2808,8 @@ entities.systems.insert{ caste="yarn",
 			entities.systems.logs:reset_log()
 --			logf("time %d",item.age or 0)
 			local player=it.items.ids.player
-			logf("player health=%d attack=%d defence=%d",player.body.health or 0,player:get_attack(),player:get_defend())
-			logf("")
+--			logf("player health=%d attack=%d defence=%d",player.body.health or 0,player:get_attack(),player:get_defend())
+--			logf("")
 		end
 		local footer=function()
 		end
