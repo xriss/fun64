@@ -4538,8 +4538,8 @@ entities.systems.insert{ caste="yarn",
 				local light=cell.illumination or 0
 				if cell.back then
 					local tile=names[cell.back]
-					b[idx+1]=tile.pxt
-					b[idx+2]=tile.pyt
+					b[idx+1]=tile.pxt+(((it.cx+x)*2)%tile.hxt)
+					b[idx+2]=tile.pyt+(((it.cy+y)*4)%tile.hxt)
 					b[idx+3]=31
 					b[idx+4]=light*255
 				else
