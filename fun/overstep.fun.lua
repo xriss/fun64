@@ -4425,6 +4425,15 @@ local rules_base={
 	end,
 	attack=function(source,target)
 
+		if source[0] and target[0] then
+			source.anim={
+				vx=(target[0].cx-source[0].cx)*16,
+				vy=(target[0].cy-source[0].cy)*16,
+				name="hit",
+				length=8,
+			}
+		end
+
 --		logf("%s health= %d attack= %d defend= %d",source.name,source.body.health or 0,source:get_attack(),source:get_defend())
 --		logf("%s health= %d attack= %d defend= %d",target.name,target.body.health or 0,target:get_attack(),target:get_defend())
 --		logf("")
@@ -4722,6 +4731,15 @@ entities.systems.insert{ caste="yarn",
 			if vx>0 then item.sprite.flip= 1 end
 			if vx<0 then item.sprite.flip=-1 end
 		end
+		local hitface=function()
+			face()
+			item.anim={
+				vx=0,--vx*16,
+				vy=0,--vy*16,
+				name="hit",
+				length=8,
+			}
+		end
 		
 		-- if empty, just walk
 		if not big then -- we can move to this cell
@@ -4759,7 +4777,7 @@ entities.systems.insert{ caste="yarn",
 		 if big then
 			ret[#ret+1]={"face",function()
 				header()
-				face()
+				hitface()
 				timestep()
 				footer()
 			end}
@@ -4992,16 +5010,31 @@ entities.systems.insert{ caste="yarn",
 							if t<=0 then
 								v.anim=nil
 							else
-								vx=t/l
-								vz=t/l
-								if t<=(l/2) then
-									vy=t/(l/2)
-								else
-									vy=(l-t)/(l/2)
+								if v.anim.name=="hop" then
+									vx=t/l
+									vz=t/l
+									if t<=(l/2) then
+										vy=t/(l/2)
+									else
+										vy=(l-t)/(l/2)
+									end
+									vx=vx*v.anim.vx
+									vy=vy*-8
+									vz=vz*-v.anim.vy
+								elseif v.anim.name=="hit" then
+									if t<=(l/2) then
+										vy=t/(l/2)
+										vx=t/l/2
+										vz=t/l/2
+									else
+										vy=(l-t)/(l/2)
+										vx=(l-t)/l/2
+										vz=(l-t)/l/2
+									end
+									vx=vx*v.anim.vx
+									vy=vy*-8
+									vz=vz*-v.anim.vy
 								end
-								vx=vx*v.anim.vx
-								vy=vy*-8
-								vz=vz*-v.anim.vy
 							end
 						end
 						system.components.sprites.list_add({
