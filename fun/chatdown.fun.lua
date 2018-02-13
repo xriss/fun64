@@ -13,6 +13,28 @@ local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
 local chat_text=[[
+- This is a single line comment
+-- Start of a multi-line comment
+
+All lines are now comment lines until we see a line that begins with a 
+control character leading white space is ignored. If for some reason 
+you need to start a text line with a special character then it can be 
+escaped by preceding it with a #
+
+What follows is a list of these characters
+
+	1. #name (short description)
+
+		The beginning of a characters data, all other text chunks belong 
+		to the character with the given name.
+
+	2. -comment
+
+	3. >reply
+
+	4. <response
+
+	5. =assignment
 
 #example Conversation NPC
 
