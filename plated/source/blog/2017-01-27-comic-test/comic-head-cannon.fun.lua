@@ -727,16 +727,16 @@ local fat_controller=coroutine.create(function()
 
 		if letters>0 then panel=1 end
 		speach({[[
-I think we may have just shipped another one of them game things.
+All I need now is a name.
 
 ]],[[
-Well, you know what they say...
+Wha?
 
 ]],},2+1,1)
 
 		if letters>0 then panel=2 end
 		speach({[[
-Uhm, "What doesn't kill you slowly chips away at your soul until you finally seek the sweet release of death."?
+What would you call a super villain with a canon for a head and a stubborn refusal to accept the mainstream interpretation of popular fiction.
 
 ]],[[
 ]],},32+1,1)
@@ -744,17 +744,20 @@ Uhm, "What doesn't kill you slowly chips away at your soul until you finally see
 
 		if letters>0 then panel=3 end
 		speach({"",[[
-NO!
-
-Not those voices...
-
 ]],[[
-What do you mean? What other voices are there?
+]],[[
+...
+
+Canonhead!
+]],[[
+
+Perfect!
+lets publish it.
 
 ]]},62+1,1)
 
 		local bprint=system.components.text_back.text_print
-		bprint("Post naval depression.",2,0,25,0)
+		bprint("Headcanon.",2,0,25,0)
 		bprint("4lfa.com",82,15,25,0)
 
 		system.components.text_back.dirty(true)
