@@ -11,30 +11,85 @@ local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 
 
-
 local chat_text=[[
 - This is a single line comment
--- Start of a multi-line comment
+-- This is the start of a multi-line comment
 
 All lines are now comment lines until we see a line that begins with a 
 control character leading white space is ignored. If for some reason 
 you need to start a text line with a special character then it can be 
 escaped by preceding it with a #
 
-What follows is a list of these characters
+What follows is a list of these characters and a brief description 
+about the parser state they switch to.
 
-	1. #name (short description)
+	1. - (text to ignore)
+	
+		A single line comment that does not change parser state and 
+		only this line will be ignored so it can be inserted inside 
+		other chunks without losing our place.
 
-		The beginning of a characters data, all other text chunks belong 
-		to the character with the given name.
+	2. -- (text to ignore)
+	
+		Begin a comment chunk, this line and all lines that follow this 
+		line will be considered comments and ignored until we switch to 
+		a new parser state.
 
-	2. -comment
+	3. #chat_name (short description)
 
-	3. >reply
+		Begin a new chat chunk, all future chunks will belong to this chat.
+		
+		The rest of the text on the same line is the short description 
+		intended for use inside menus.
+		
+		The text that follows this until the next chunk is the longer 
+		description for when you examine the character and need to 
+		display a long description.
 
-	4. <response
+	4. >topic_name
+	
+		Begin a topic chunk, the lines that follow are how the 
+		character responds when questioned about this topic followed by 
+		one or more gotos as possible responses.
+		
+	5. <goto_topic_name
+	
+		Begin a goto chunk, this is probably best thought of as a 
+		question that will get a reply from the character. This is a 
+		choice made by the player that causes a logical jump to another 
+		topic.
+		
+		Essentially this means GOTO another topic and there will be 
+		multiple GOTO options associated with each topic.
+		
+	6. =set_variable_name to this value
+	
+		Begin a variable chunk, the rest of this line and all following 
+		lines will be assigned to the named variable.
+		
+		This assignment can happen at various places, for instance if 
+		it is part of the long description then it will be the starting 
+		value for a variable but if it is linked to a topic or goto 
+		then it will be a change to this variable as the conversation 
+		happens.
+		
+		Variables can be used inside text chunks or even GOTO labels by 
+		tightly wrapping with {} eg {name} would be replaced with the 
+		value of name.
+		
+		Because this is a parser state change and the value may span 
+		multiple lines these assignment chunks must be placed at the 
+		end of the CHAT , TOPIC or GOTO chunks that they are to be 
+		associated with.
+		
 
-	5. =assignment
+The hierarchy of these chunks can be expressed by indentation as all 
+white space is ignored and combined into a single space. Each CHAT will 
+have multiple TOPICs associated with it and each TOPIC will have 
+multiple GOTOs as options to jump between TOPICs. SETs can be 
+associated with any of these 3 levels and will be evaluated as the 
+conversation flows through these points.
+
 
 #example Conversation NPC
 
