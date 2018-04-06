@@ -2447,17 +2447,17 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 			local items={cursor=1,cursor_max=0}
 			
 			items.title=chat.description.text[1] or chat.description_name
-			items.portrait=chat.get_proxy("portrait")
+			items.portrait=chat.get_tag("portrait")
 			
-			local ss=chat.response and chat.response.text or {} if type(ss)=="string" then ss={ss} end
+			local ss=chat.topic and chat.topic.text or {} if type(ss)=="string" then ss={ss} end
 			for i,v in ipairs(ss) do
 				if i>1 then
 					items[#items+1]={text="",chat=chat} -- blank line
 				end
-				items[#items+1]={text=chat.replace_proxies(v)or"",chat=chat}
+				items[#items+1]={text=chat.replace_tags(v)or"",chat=chat}
 			end
 
-			for i,v in ipairs(chat.decisions or {}) do
+			for i,v in ipairs(chat.gotos or {}) do
 
 				items[#items+1]={text="",chat=chat} -- blank line before each decision
 
@@ -2472,16 +2472,16 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 
 						menu.chats.changes(chat,"decision",item.decision)
 
-						chat.set_response(item.decision.name)
+						chat.set_topic(item.decision.name)
 
-						chat.set_proxies(item.decision.proxies)
+						chat.set_tags(item.decision.tags)
 
 						menu.show(menu.chats.chat_to_menu_items(chat))
 
 					end
 				end
 				
-				items[#items+1]={text=chat.replace_proxies(ss[1])or"",chat=chat,decision=v,cursor=i,call=f,color=color} -- only show first line
+				items[#items+1]={text=chat.replace_tags(ss[1])or"",chat=chat,decision=v,cursor=i,call=f,color=color} -- only show first line
 				items.cursor_max=i
 			end
 
@@ -2497,6 +2497,8 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 				return
 			end
 			menu.active=true
+
+print(#items)
 
 			if items.call then items.call(items,menu) end -- refresh
 			
@@ -4601,7 +4603,7 @@ local rules={
 			
 			item.sprite.flip=-player.sprite.flip
 
-			menu.chats.get(item.chatname or "example").set_response("welcome")
+			menu.chats.get(item.chatname or "example").set_topic("welcome")
 			menu.show(menu.chats.get_menu_items(item.chatname or "example"))
 
 		end,
