@@ -203,8 +203,8 @@ O O O O O O O O o o o o o o o o . . . . . . . .
 			nil,nil,nil,nil,function(tile,rx,ry)
 			return	tile.pxt+(math.floor(rx/3)%(tile.hxt/3)) ,
 					tile.pyt+(math.floor(ry/3)%(tile.hyt/3)) ,
-					31 ,
-					0
+					31 , -- color index tint
+					255  -- lightness
 		end)
 		system.components.map.dirty(true)
 		
