@@ -62,18 +62,18 @@ about the parser state they switch to.
 		Essentially this means GOTO another topic and there will be 
 		multiple GOTO options associated with each topic.
 		
-	6. =set_variable_name to this value
+	6. =set_tag_name to this value
 	
-		Begin a variable chunk, the rest of this line and all following 
-		lines will be assigned to the named variable.
+		Begin a tag chunk, the rest of this line and all following 
+		lines will be assigned to the named tag.
 		
 		This assignment can happen at various places, for instance if 
 		it is part of the long description then it will be the starting 
-		value for a variable but if it is linked to a topic or goto 
-		then it will be a change to this variable as the conversation 
+		value for a tag but if it is linked to a topic or goto 
+		then it will be a change to this tag as the conversation 
 		happens.
 		
-		Variables can be used inside text chunks or even GOTO labels by 
+		Tags can be used inside text chunks or even GOTO labels by 
 		tightly wrapping with {} eg {name} would be replaced with the 
 		value of name.
 		
@@ -86,7 +86,7 @@ about the parser state they switch to.
 The hierarchy of these chunks can be expressed by indentation as all 
 white space is ignored and combined into a single space. Each CHAT will 
 have multiple TOPICs associated with it and each TOPIC will have 
-multiple GOTOs as options to jump between TOPICs. SETs can be 
+multiple GOTOs as options to jump between TOPICs. TAGs can be 
 associated with any of these 3 levels and will be evaluated as the 
 conversation flows through these points.
 
