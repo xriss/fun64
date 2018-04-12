@@ -48,15 +48,20 @@ setup=function() entities.systems.call("setup") end
 
 local chat_text=[[
 
-#example Wakey wakey
+#example
 
-	A mysterious blue blob floats in the air, awaiting orders. It's rather grumpy.
+	=title Wakey wakey
 
 	=portrait portrait_blob
 
+	A mysterious blue blob floats in the air, awaiting orders. It's 
+	rather grumpy.
+
+
 	>convo
 
-		No, I do not see at all! This is not getting any clearer and you're ignoring my questions.
+		No, I do not see at all! This is not getting any clearer and 
+		you're ignoring my questions.
 		
 	>welcome
 	
@@ -64,7 +69,8 @@ local chat_text=[[
 
 <welcome
 
-	Finally, you've decided to join the rest of the living. I suppose living might be pushing it.
+	Finally, you've decided to join the rest of the living. I suppose 
+	living might be pushing it.
 	
 	>place
 
@@ -80,7 +86,9 @@ local chat_text=[[
 
 <living
 
-	Mmm, yes. You see, from the looks of it, one might say you were undead, don't you think? Besides the point really, you'll soon realise what I mean.
+	Mmm, yes. You see, from the looks of it, one might say you were 
+	undead, don't you think? Besides the point really, you'll soon 
+	realise what I mean.
 	
 	=portrait portrait_blob1
 	
@@ -89,14 +97,16 @@ local chat_text=[[
 
 <place
 	
-	So many questions, so little time. Yes, well, time - that is the essense around here, you see?
+	So many questions, so little time. Yes, well, time - that is the 
+	essense around here, you see?
 	
 	>convo
 
 
 <convo
 
-	Calm down! You're not the one waiting for sleeping beauty to wake up these hundreds of years so forgive me for being a little snappy.
+	Calm down! You're not the one waiting for sleeping beauty to wake 
+	up these hundreds of years so forgive me for being a little snappy.
 	
 	=portrait portrait_blob2
 
@@ -110,7 +120,9 @@ local chat_text=[[
 
 <convo_full
 
-	Yes, you see - I've watched seasons go by, day and night come and go, they all have a turn while I stay here motionless, unable to move but awake the entire time.
+	Yes, you see - I've watched seasons go by, day and night come and 
+	go, they all have a turn while I stay here motionless, unable to 
+	move but awake the entire time.
 	
 	=portrait portrait_blob
 	
@@ -118,7 +130,8 @@ local chat_text=[[
 		...
 	<
 	
-	Dust from things that were once alive dissipate into the ground that was once moist with green and flora.
+	Dust from things that were once alive dissipate into the ground 
+	that was once moist with green and flora.
 	
 	=portrait portrait_blob
 	
@@ -126,7 +139,9 @@ local chat_text=[[
 		...
 	<
 	
-	Yes, exactly like I said. With every cycle of the decade, the light gets dimmer and dimmer - the oceans no longer ripple and the tides no longer make any sound.
+	Yes, exactly like I said. With every cycle of the decade, the light 
+	gets dimmer and dimmer - the oceans no longer ripple and the tides 
+	no longer make any sound.
 	
 	=portrait portrait_blob	
 	
@@ -142,7 +157,8 @@ local chat_text=[[
 		...
 	<
 		
-	Do you see now? Everything will soon be awoken. Everything and everyone - I'm just the first. Now, go.
+	Do you see now? Everything will soon be awoken. Everything and 
+	everyone - I'm just the first. Now, go.
 	
 	=portrait portrait_blob1		
 	
@@ -152,7 +168,8 @@ local chat_text=[[
 
 <convo_quick
 
-	Very well. Everything will soon be awoken. Everything and everyone - I'm just the first. Now, go.
+	Very well. Everything will soon be awoken. Everything and everyone 
+	- I'm just the first. Now, go.
 	
 	=portrait portrait_blob1
 	
@@ -2446,7 +2463,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 		menu.chats.chat_to_menu_items=function(chat)
 			local items={cursor=1,cursor_max=0}
 			
-			items.title=chat.description.text[1] or chat.description_name
+			items.title=chat.get_tag("title")
 			items.portrait=chat.get_tag("portrait")
 			
 			local ss=chat.topic and chat.topic.text or {} if type(ss)=="string" then ss={ss} end
@@ -2497,8 +2514,6 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 				return
 			end
 			menu.active=true
-
-print(#items)
 
 			if items.call then items.call(items,menu) end -- refresh
 			
