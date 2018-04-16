@@ -2594,7 +2594,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 											
 					end
 
-					if item.decision.name=="exit" then -- and exit menu
+					if item.topic.name=="exit" then -- and exit menu
 						menu.show()
 					end
 					
@@ -4615,7 +4615,7 @@ local rules={
 			
 			item.sprite.flip=-player.sprite.flip
 
-			local chat=menu.chats:set(item.chatname or "example")
+			local chat=menu.chats:set_subject(item.chatname or "example")
 			chat:set_topic( chat:get_tag("welcome") or "welcome") -- {welcome} or welcome is the topic of conversation?
 			menu.show( menu.chat_to_menu_items( chat ) ) -- display menu
 
