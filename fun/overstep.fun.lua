@@ -50,9 +50,8 @@ local chat_text=[[
 
 #example
 
-	=title Wakey wakey
-
-	=portrait portrait_blob
+	=title			Wakey wakey
+	=portrait		portrait_blob
 
 	A mysterious blue blob floats in the air, awaiting orders. It's 
 	rather grumpy.
@@ -90,7 +89,7 @@ local chat_text=[[
 	undead, don't you think? Besides the point really, you'll soon 
 	realise what I mean.
 	
-	=portrait portrait_blob1
+	=portrait		portrait_blob1
 	
 	>convo
 
@@ -108,7 +107,7 @@ local chat_text=[[
 	Calm down! You're not the one waiting for sleeping beauty to wake 
 	up these hundreds of years so forgive me for being a little snappy.
 	
-	=portrait portrait_blob2
+	=portrait		portrait_blob2
 
 	>convo_full
 	
@@ -124,7 +123,7 @@ local chat_text=[[
 	go, they all have a turn while I stay here motionless, unable to 
 	move but awake the entire time.
 	
-	=portrait portrait_blob
+	=portrait		portrait_blob
 	
 	>
 		...
@@ -143,7 +142,7 @@ local chat_text=[[
 	gets dimmer and dimmer - the oceans no longer ripple and the tides 
 	no longer make any sound.
 	
-	=portrait portrait_blob	
+	=portrait		portrait_blob	
 	
 	>
 		...
@@ -151,7 +150,7 @@ local chat_text=[[
 	
 	Silence, as it were, all awaiting and on standby for this very moment.
 	
-	=portrait portrait_blob
+	=portrait		portrait_blob
 	
 	>
 		...
@@ -160,7 +159,7 @@ local chat_text=[[
 	Do you see now? Everything will soon be awoken. Everything and 
 	everyone - I'm just the first. Now, go.
 	
-	=portrait portrait_blob1		
+	=portrait		portrait_blob1		
 	
 	>exit
 		
@@ -171,7 +170,7 @@ local chat_text=[[
 	Very well. Everything will soon be awoken. Everything and everyone 
 	- I'm just the first. Now, go.
 	
-	=portrait portrait_blob1
+	=portrait		portrait_blob1
 	
 	>exit
 
@@ -2458,47 +2457,49 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 		menu.cx=math.floor((math.floor(hardware.opts.hx/4)-menu.width))
 		menu.cy=0
 	
-		menu.chats=chatdown.setup(chat_text)
+		menu.chats=chatdown.setup_chats(chat_text)
 
-		menu.chats.chat_to_menu_items=function(chat)
+--ls(menu.chats.rawsubjects)
+
+		menu.chat_to_menu_items=function(chat)
 			local items={cursor=1,cursor_max=0}
 			
-			items.title=chat.get_tag("title")
-			items.portrait=chat.get_tag("portrait")
+			items.title=chat:get_tag("title")
+			items.portrait=chat:get_tag("portrait")
 			
 			local ss=chat.topic and chat.topic.text or {} if type(ss)=="string" then ss={ss} end
 			for i,v in ipairs(ss) do
 				if i>1 then
 					items[#items+1]={text="",chat=chat} -- blank line
 				end
-				items[#items+1]={text=chat.replace_tags(v)or"",chat=chat}
+				items[#items+1]={text=chat:replace_tags(v)or"",chat=chat}
 			end
 
 			for i,v in ipairs(chat.gotos or {}) do
 
-				items[#items+1]={text="",chat=chat} -- blank line before each decision
+				items[#items+1]={text="",chat=chat} -- blank line before each goto
 
 				local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
 
 				local color=30
-				if chat.viewed[v.name] then color=8 end -- we have already seen the response to this decision
+				if chat.viewed[v.name] then color=8 end -- we have already seen the response to this goto
 				
 				local f=function(item,menu)
 
-					if item.decision and item.decision.name then
+					if item.topic and item.topic.name then
 
-						menu.chats.changes(chat,"decision",item.decision)
+						menu.chats.changes(chat,"topic",item.topic)
 
-						chat.set_topic(item.decision.name)
+						chat:set_topic(item.topic.name)
 
-						chat.set_tags(item.decision.tags)
+						chat:set_tags(item.topic.tags)
 
-						menu.show(menu.chats.chat_to_menu_items(chat))
+						menu.show(menu.chat_to_menu_items(chat))
 
 					end
 				end
 				
-				items[#items+1]={text=chat.replace_tags(ss[1])or"",chat=chat,decision=v,cursor=i,call=f,color=color} -- only show first line
+				items[#items+1]={text=chat:replace_tags(ss[1])or"",chat=chat,topic=v,cursor=i,call=f,color=color} -- only show first line
 				items.cursor_max=i
 			end
 
@@ -2554,10 +2555,6 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 
 		end
 
-
-
-
---		menu.show( menu.chats.get_menu_items("example") )
 
 	end,
 
@@ -4618,8 +4615,9 @@ local rules={
 			
 			item.sprite.flip=-player.sprite.flip
 
-			menu.chats.get(item.chatname or "example").set_topic("welcome")
-			menu.show(menu.chats.get_menu_items(item.chatname or "example"))
+			local chat=menu.chats:set(item.chatname or "example")
+			chat:set_topic( chat:get_tag("welcome") or "welcome") -- {welcome} or welcome is the topic of conversation?
+			menu.show( menu.chat_to_menu_items( chat ) ) -- display menu
 
 		end,
 		die=rules_base.die,
