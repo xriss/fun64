@@ -334,8 +334,9 @@ if (typeof(document.isFullscreen === undefined)) {
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
 		Module.canvas_fullscreen=fullscreen;
-		Module.memoryInitializerPrefixURL="../exe/";
-		Module.wasmBinaryFile="../exe/gamecake.wasm";
+		Module.locateFile=function(inurl){
+			return "../exe/"+inurl;
+		};
 		Module.monitorRunDependencies=show_progress;
 		Module.preRun=function(){
 			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
@@ -343,9 +344,6 @@ if (typeof(document.isFullscreen === undefined)) {
 			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
 			FS.mkdir("/lua");
 			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
-		};
-
-		Module.onRuntimeInitialized=function() {
 
 			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 
