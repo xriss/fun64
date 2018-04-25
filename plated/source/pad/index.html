@@ -345,6 +345,10 @@ if (typeof(document.isFullscreen === undefined)) {
 			FS.mkdir("/lua");
 			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 
+		};
+
+		Module.onRuntimeInitialized=function() {
+
 			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
 
 			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');

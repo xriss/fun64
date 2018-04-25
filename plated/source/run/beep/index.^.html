@@ -188,8 +188,9 @@ if (typeof(document.isFullscreen === undefined)) {
 		Module={};
 		Module.canvas=document.getElementById("gamecake_canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
-		Module.memoryInitializerPrefixURL="../../exe/";
-		Module.wasmBinaryFile="../../exe/gamecake.wasm";
+		Module.locateFile=function(inurl){
+			return "../../exe/"+inurl;
+		};
 		Module.monitorRunDependencies=show_progress;
 		Module.preRun=function(){
 			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
