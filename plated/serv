@@ -5,9 +5,8 @@ source settings
 echo
 echo You may now view the plated web site locally at:
 echo
-echo http://0.0.0.0:8000$PLATED_ROOT
+echo http://0.0.0.0:8000/
 echo
 
-./node_modules/.bin/ecstatic --baseDir=$PLATED_ROOT --root=$PLATED_OUTPUT
+./node_modules/.bin/ecstatic --root=$PLATED_OUTPUT
 
-# --mime-types=$PLATED_SOURCE/mime.types
