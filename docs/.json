@@ -1,0 +1,747 @@
+{
+ "_dirname": "{_root}docs",
+ "_docs": [
+  {
+   "count": 59,
+   "name": "lua"
+  },
+  {
+   "count": 58,
+   "name": "lua.wetgenes"
+  },
+  {
+   "count": 57,
+   "name": "lua.wetgenes.gamecake"
+  },
+  {
+   "count": 56,
+   "name": "lua.wetgenes.gamecake.fun"
+  },
+  {
+   "count": 19,
+   "name": "lua.wetgenes.gamecake.fun.chatdown"
+  },
+  {
+   "count": 6,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.get_tag"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.replace_tags"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tag"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tags"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_topic"
+  },
+  {
+   "count": 7,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.changes"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_subject"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_tag"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_subject"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_tag"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.dotnames"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.parse"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.setup"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.setup_chat"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.text"
+  },
+  {
+   "count": 13,
+   "name": "lua.wetgenes.gamecake.fun.entities"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.add"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.call"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.caste"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.get"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.manifest"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.reset"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.set"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.sortby_update"
+  },
+  {
+   "count": 4,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems.call"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems.insert"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems.remove"
+  },
+  {
+   "count": 23,
+   "name": "lua.wetgenes.gamecake.fun.yarn"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.cells"
+  },
+  {
+   "count": 14,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.cells"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.create"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.create_pages"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.destroy"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.find"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.get_big"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.insert"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_dotnames"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_parents"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.metatable"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.prefabs"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.remove"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.rules"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.pages"
+  },
+  {
+   "count": 2,
+   "name": "lua.wetgenes.gamecake.fun.yarn.prefabs"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.prefabs.set"
+  },
+  {
+   "count": 4,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules.apply"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules.can"
+  },
+  {
+   "count": 1,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules.set"
+  }
+ ],
+ "_docs_json": {
+  "dirname": "{_root}docs",
+  "dirs": {
+   "../../../gamecake/lua/wetgenes/gamecake/fun": ".lua"
+  },
+  "ignore": {
+   "node_modules": true
+  },
+  "urlprefix": {
+   "../../gamecake/lua/": "https://github.com/xriss/gamecake/blob/master/lua/"
+  }
+ },
+ "_filename": "{_root}docs",
+ "_flags": {
+  "body": {
+   "trim": "ends"
+  },
+  "css": {
+   "same": "append"
+  },
+  "footer": {
+   "trim": "ends"
+  },
+  "head": {
+   "trim": "ends"
+  },
+  "html": {
+   "trim": "ends"
+  },
+  "menuwrap": {
+   "trim": "ends"
+  },
+  "menuwrap_link": {
+   "trim": "ends"
+  },
+  "navigation": {
+   "trim": "ends"
+  },
+  "title": {
+   "trim": "ends"
+  }
+ },
+ "_list": [
+  {
+   "body": "",
+   "count": 59,
+   "name": "lua"
+  },
+  {
+   "body": "",
+   "count": 58,
+   "name": "lua.wetgenes"
+  },
+  {
+   "body": "",
+   "count": 57,
+   "name": "lua.wetgenes.gamecake"
+  },
+  {
+   "body": "",
+   "count": 56,
+   "name": "lua.wetgenes.gamecake.fun"
+  },
+  {
+   "body": "",
+   "count": 19,
+   "name": "lua.wetgenes.gamecake.fun.chatdown"
+  },
+  {
+   "body": "",
+   "count": 6,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat"
+  },
+  {
+   "body": "<pre><code>tag_value = chat:get_tag(tag_name)\n</code></pre><p>The same as chats:get_tag but the subject of this chat is the \ndefault root.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 276,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.get_tag",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>output = chat:replace_tags(input)\n</code></pre><p>The same as chats:replace_tags but the subject of this chat is the \ndefault root.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 304,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.replace_tags",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>tag_value = chat:set_tag(tag_name,tag_value)\n</code></pre><p>The same as chats:set_tag but the subject of this chat is the \ndefault root.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 290,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tag",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>chat:set_tags(tags)\n</code></pre><p>Set all the values in the given table of {tag_name=tag_value} pairs.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 318,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tags",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>chat:set_topic(topic_name)\n</code></pre><p>Set the current topic for this chat object, information about this \ntopic and its gotos are built from and stored in this chat object.</p>\n<pre><code>chat.topic_name\n</code></pre><p>Will be set to the given topic name.</p>\n<p>We merge all gotos found in this topic and all topic parents by \niterating over the dotnames. We only use add each topic once and each \ntopic may have a bit of logic that decides if it should be displayed.</p>\n<pre><code>&lt;topic_name?logic_test\n</code></pre><p>So this would goto the topic_name if the logic_test passes. The logic \ntest is written simmilar to a url query after the question mark comes a \nnumber of tests that are then &amp; or | together in left to right order \n(no operator precedence).</p>\n<pre><code>&lt;topic_name?count&lt;10&amp;seen==false\n</code></pre><p>So this would display the goto option if count is less than 10 and seen \nis set to false. These variables we are testing are tag_names and \ndefault to the current subject chat but could reference other subjects \nby explicitly including a root.</p>\n<p>Available logic tests are</p>\n<pre><code>name==value\nname=value\n</code></pre><p>True if the tag is set to this value.</p>\n<pre><code>name!=value\n</code></pre><p>True if the tag is not set to this value.</p>\n<pre><code>name&lt;value\n</code></pre><p>True if the tag is less than this value (numeric test).</p>\n<pre><code>name&gt;value\n</code></pre><p>True if the tag is more than this value (numeric test).</p>\n<pre><code>name&lt;=value\n</code></pre><p>True if the tag is less than or equal to this value (numeric test).</p>\n<pre><code>name&gt;=value\n</code></pre><p>True if the tag is more than or equal to  this value (numeric test).</p>\n<p>All of these tests can be preceded by a ! to negate them so</p>\n<pre><code>name!=vale\n!name==value\n</code></pre><p>Are both a test for inequality.</p>\n<p>Multiple tests can be joined together by &amp; (and) or | (or) this logic \nwill be applied to a running total moving from left to right as the \nvalues are evaluated with the final value deciding if this goto will be \ndisplayed.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 333,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_topic",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "",
+   "count": 7,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats"
+  },
+  {
+   "body": "<pre><code>chats.changes(chat,change,...)\n\nchats.changes(chat,&quot;subject&quot;)\nchats.changes(chat,&quot;topic&quot;,topic)\nchats.changes(chat,&quot;goto&quot;,goto)\nchats.changes(chat,&quot;tag&quot;,tag_name,tag_value)\n</code></pre><p>This is a callback hook, replace to be notified of changes and possibly \nalter then, by default we print debuging information. Replace this \nfunction with an empty function to prevent this eg</p>\n<pre><code>chats.changes=function()end\n</code></pre>",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 668,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.changes",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>chat = chats:get_subject(subject_name)\nchat = chats:get_subject()\n</code></pre><p>Get the chat for the given subject or the chat for the last subject \nselected with set_subject if no subject_name is given.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 560,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_subject",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>tag_value = chats:get_tag(tag_name,subject_name)\n</code></pre><p>Get the tag_value for the given tag_name which can either be \n&quot;tag_root/tag_name&quot; or &quot;tag_name&quot;. The subject_name is the default root \nto use if no tag_root is given in the tag_name.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 575,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_tag",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>output = chats:replace_tags(input,subject_name)\n</code></pre><p>Tags in the input text can be wrapped in {tag_name} and will be \nreplaced with the appropriate tag_value. This is done recursively so \ntag_values can contain references to other tags. If a tag does not \nexist then it will not expand and {tag_name} will remain in the output \ntext.</p>\n<p>Again if any tag name does not contain an explicit root then \nsubject_name will be used as the default chat subject.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 636,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>chat = chats:set_subject(subject_name)\n</code></pre><p>Set the current subject for this chats object, this subject becomes the \nchat that you will get if you call get_subject with no arguments.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 543,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_subject",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>tag_value = chats:set_tag(tag_name,tag_value,subject_name)\n</code></pre><p>Alter the value of the given tag_name. If the value string begins with \na &quot;+&quot; or a &quot;-&quot; Then the values will be treated as numbers and added or \nsubtracted from the current value. This allows for simple incremental \nflag values.</p>\n<p>Again if the tag name does not contain an explicit  root then \nsubject_name will be used as the default chat subject.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 593,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_tag",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>for part_name in chatdown.dotnames(full_name) do\n    print(part_name)\nend\n</code></pre><p>Iterate all dotnames so if given &quot;aa.bb.cc&quot; we would iterate through \n&quot;aa.bb.cc&quot; , &quot;aa.bb&quot; and &quot;aa&quot;. This is used to inherit data using just \na naming convention.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 253,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.dotnames",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>rawsubjects = chatdown.parse(text)\n</code></pre><p>Parse text from flat text chatdown format into heirachical chat data, \nwhich we refer to as rawsubjects, something that can be output easily \nas json.</p>\n<p>This gives us a readonly rawsubjects structure that can be used to control \nwhat text is displayed during a chat session.</p>\n<p>This is intended to be descriptive and logic less, any real logic \nshould be added using a real language that operates on this rawsubjects and \ngets triggered by the names used. EG, filter out gotos unless certain \ncomplicated conditions are met or change topics to redirect to an \nalternative.</p>\n<p>A self documented example of chatdown formated text can be found in \nlua.wetgenes.gamecake.fun.chatdown.text</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 17,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.parse",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>chats = chatdown.setup_chats(chat_text,changes)\n</code></pre><p>parse and initialise state data for every subjects chunk creating a \nglobal chats with a chat object for each subject.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 697,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.setup",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>chat = chatdown.setup_chat(chats,subject_name)\n</code></pre><p>Setup the initial chat state for a subject. This is called \nautomatically by chatdown.setup and probably should not be used \nelsewhere.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 505,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.setup_chat",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<p>Here is some example chatdown formatted text full of useful \ninformation, it it is intended to be a self documented example.</p>\n<pre><code>\n- This is a single line comment\n-- This is the start of a multi-line comment\n\nAll lines are now comment lines until we see a line that begins with a \ncontrol character leading white space is ignored. If for some reason \nyou need to start a text line with a special character then it can be \nescaped by preceding it with a #\n\nWhat follows is a list of these characters and a brief description \nabout the parser state they switch to.\n\n    1. - (text to ignore)\n\n        A single line comment that does not change parser state and \n        only this line will be ignored so it can be inserted inside \n        other chunks without losing our place.\n\n    2. -- (text to ignore)\n\n        Begin a comment chunk, this line and all lines that follow this \n        line will be considered comments and ignored until we switch to \n        a new parser state.\n\n    3. #subject_name\n\n        Begin a new subject chunk, all future topic,goto or tag chunks will \n        belong to this subject.\n\n        The text that follows this until the next chunk is the long \n        description intended for when you examine the character.\n\n        Although it makes sense for a subject chunk to belong to one \n        character it could also a group conversation with tags being \n        set to change the current talker as the conversation flows.\n\n        subject names have simple cascading inheritance according to their \n        name with each level separated by a dot. A chunk named a.b.c \n        will inherit data from any chunks defined for a.b and a in that \n        order of priority.\n\n    4. &gt;topic_name\n\n        Begin a topic chunk, all future goto or tag chunks will belong \n        to this topic, the lines that follow are how the character \n        responds when questioned about this topic followed by one or \n        more gotos as possible responses that will lead you onto \n        another topic.\n\n        Topics can be broken into parts, to create a pause, by using an \n        unnamed goto followed by an unnamed topic which will both \n        automatically be given the same generated name and hence linked \n        together.\n\n    5. &lt;goto_topic_name\n\n        Begin a goto chunk, all future tag chunks will belong to this \n        goto, this is probably best thought of as a question that will \n        get a reply from the character. This is a choice made by the \n        player that causes a logical jump to another topic.\n\n        Essentially this means GOTO another topic and there can be \n        multiple GOTO options associated with each topic which the \n        reader is expected to choose between.\n\n    6. =set_tag_name to this value\n\n        If there is any text on the rest of this line then it will be \n        assigned to the tag without changing the current parse state so \n        it can be used in the middle of another chunk without losing \n        our place.\n\n        This single line tag assignment is usually all you need. \n        Alternatively, if there is no text on the rest of this first \n        line, only white space, then the parse state will change and \n        text on all following lines will be assigned to the named tag.\n\n        This assignment can happen at various places, for instance if \n        it is part of the subject then it will be the starting \n        value for a tag but if it is linked to a topic or goto then the \n        value will be a change as the conversation happens. In all \n        cases the tags are set in a single batch as the state changes \n        so the placement and order makes no difference.\n\n        Tags can be used inside text chunks or even GOTO labels by \n        tightly wrapping with {} eg {name} would be replaced with the \n        value of name. Tags from other subjects can be referenced by \n        prefixing the tag name with the subject name followed by a forward \n        slash like so {subject/tag}\n\n\nThe hierarchy of these chunks can be expressed by indentation as all \nwhite space is ignored and combined into a single space. Each SUBJECT will \nhave multiple TOPICs associated with it and each TOPIC will have \nmultiple GOTOs as options to jump between TOPICs. TAGs can be \nassociated with any of these 3 levels and will be evaluated as the \nconversation flows through these points.\n\nSo the chunk hierarchy expressed using indentation to denote children \nof.\n\n    SUBJECT\n        TAG\n        GOTO\n            TAG\n        TOPIC\n            TAG\n            GOTO\n                TAG\n\nThe GOTO chunks in the root SUBJECT chunk are used as prototypes so if a \nGOTO is used in multiple topics its text can be placed within a GOTO \ninside the main SUBJECT chunk rather than repeated constantly. This will \nthen be inherited by a GOTO with no text. An alternative to this \nshorthand is to assign an oft-used piece of text to a tag and reference \nthat in each topic instead.\n\nSUBJECTs and TOPICs also have simple inheritance based on their names this \nenables the building of a prototype which is later expanded. Each \ninheritance level is separated by a dot so aa.bb.cc will inherit from \naa.bb and aa with the data in the longer names having precedence. This \ninheritance is additive only so for instance a TAG can not be unset and \nwould have to be changed to another value by aa.bb.cc if it existed in \naa.bb or aa.\n\nIn practise this means\n&lt;br/&gt;\n&lt;br/&gt;\n\n</code></pre>",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+   "line": 728,
+   "name": "lua.wetgenes.gamecake.fun.chatdown.text",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+  },
+  {
+   "body": "<pre><code>fun_entities = require(&quot;wetgenes.gamecake.fun.entities&quot;)\n</code></pre><p>Manage a simple structure to help group, update and draw discrete game \nobjects.</p>\n<p>This module contains only one function which can be used to create an \nentities instance and the rest of this documentation concerns the \nreturn from this create function, not the module</p>\n<pre><code>entities = fun_entities.create()\nentities = fun_entities.create( { sortby={&quot;first&quot;,&quot;second,...} } )\n</code></pre><p>Create and return an entities object. A base object can be passed in \nand will be filled in and returned. This can used to supply a sortby \ntable to help control the order of updates of different castes.</p>\n<p>If passed in sortby is a table of [caste_name]=weight values to help \ncontrol the order of updates by caste and make it consistent. For \ninstance you might find it useful to force monsters to update before \nthe player.</p>\n",
+   "count": 13,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 7,
+   "name": "lua.wetgenes.gamecake.fun.entities",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.add(it,caste)\nentities.add(it)\n</code></pre><p>Add a new entity of caste or it.caste to the list of things to update.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 186,
+   "name": "lua.wetgenes.gamecake.fun.entities.add",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.call(fname,...)\n</code></pre><p>for every entity call the function named fname like so</p>\n<pre><code>it[fname](it,...)\n</code></pre>",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 205,
+   "name": "lua.wetgenes.gamecake.fun.entities.call",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.caste(caste)\n</code></pre><p>Get the list of entities of a given caste, eg &quot;bullets&quot; or &quot;enemies&quot;</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 162,
+   "name": "lua.wetgenes.gamecake.fun.entities.caste",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.get(name)\n</code></pre><p>get a value previously saved, this is an easy way to find a unique \nentity, eg the global space but it can be used to save any values you \nwish not just to bookmark unique entities.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 231,
+   "name": "lua.wetgenes.gamecake.fun.entities.get",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.manifest(name,value)\n</code></pre><p>get a value previously saved, or initalize it to the given value if it \ndoes not already exist. The default value is {} as this is intended for \nlists.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 260,
+   "name": "lua.wetgenes.gamecake.fun.entities.manifest",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.reset()\n</code></pre><p>Empty the list of entities to update and draw, this does not reset the \nsystems table that should be modified with the insert and remove \nfunctions.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 145,
+   "name": "lua.wetgenes.gamecake.fun.entities.reset",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.set(name,value)\n</code></pre><p>save a value by a unique name</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 246,
+   "name": "lua.wetgenes.gamecake.fun.entities.set",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.sortby_update()\n</code></pre><p>A function that takes the array part of entities.sortby and reverses \nthe key=value so a simple order list can be provided without any \nexplicit weights. The first caste name in the array gets a weight of 1, \nsecond 2 and so on.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 128,
+   "name": "lua.wetgenes.gamecake.fun.entities.sortby_update",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.systems={name=system,[1]=sytem1}\n</code></pre><p>A sorted table and lookup by caste name of each system. Table is sorted \nso it will be traversed backwards, backwards traversal allows the \ncurrent item to delete itself.</p>\n",
+   "count": 4,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 37,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.systems.call(fname,...)\n</code></pre><p>For every system call the function called fname like so.</p>\n<pre><code>system[fname](system,...)\n</code></pre><p>Returns the number of calls made, which will be the number of systems \nthat had an fname function to call.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 99,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems.call",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>entities.systems.insert(system)\n</code></pre><p>Insert a new system replacing any system of the same caste. \nsystem.caste should be set to the caste of the system for this to work. \nAs we also keep some functions in this table, the names &quot;insert&quot;, \n&quot;remove&quot; and &quot;call&quot; are not available as caste names.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 68,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems.insert",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "<pre><code>system = entities.systems.remove(caste)\n</code></pre><p>Remove and return the system of the given caste.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/entities.lua",
+   "line": 50,
+   "name": "lua.wetgenes.gamecake.fun.entities.systems.remove",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua"
+  },
+  {
+   "body": "",
+   "count": 23,
+   "name": "lua.wetgenes.gamecake.fun.yarn"
+  },
+  {
+   "body": "<pre><code>cells = require(&quot;wetgenes.gamecake.fun.yarn.cells&quot;).create(items)\n</code></pre><p>This module contains only one function which can be used to create an \ncells instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/cells.lua",
+   "line": 6,
+   "name": "lua.wetgenes.gamecake.fun.yarn.cells",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/cells.lua"
+  },
+  {
+   "body": "<pre><code>items = require(&quot;wetgenes.gamecake.fun.yarn.items&quot;).create()\n</code></pre><p>This module contains only one function which can be used to create an \nitems instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+   "count": 14,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 6,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>items.cells\n</code></pre><p>We automatically create a cells object bound to this set of items, this \ncells object should be used to define all your custom game cells.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 259,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.cells",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>item = items.create()\nitem = items.create({})\nitem = items.create({},metatable)\n</code></pre><p>Create a single item, optionally pass in a base item table that will be \nturned into a proper item (using setmetatable to add methods). This \nshould always be a new table and will also be returned. If no \nmetatable is provided then items.metatable will be used.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 73,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.create",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>items.pages\n</code></pre><p>We automatically create a pages object bound to this set of items, this \npages object should be used to define all your custom game pages.</p>\n<p>This can be considered a level and you may need multiple pages which \nare moved in and out of items.pages</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 271,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.create_pages",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>item = items.destroy(item)\nitem = item:destroy()\n</code></pre><p>Destroy an item, remove it from the master table dump so it will be \ngarbage collected.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 101,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.destroy",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>child_item = item:find(keyname)\n</code></pre><p>Get the first child item that has a [keyname] value in it. All child \nitems are searched, but this is not recursive.</p>\n<p>returns nil if no child item is found.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 215,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.find",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>big_item = item:get_big()\n</code></pre><p>Get the first big item from this container, returns nil if we do not \ncontain a big item.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 199,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.get_big",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>item = item:insert(parent)\n</code></pre><p>Insert this item into the given parent. Item will automatically be \nremoved from its current parent. If the item is_big then it will be \ninserted into the front of the list otherwise it will go at the end. \nThis is to help with finding big items, since there should only be one \nper container we only have to check the first child.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 173,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.insert",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>for name,tail in items.iterate_dotnames(names) do ... end\n</code></pre><p>Iterator over a names string, start with the full string and cut off \nthe tail on each iteration. This is used for simple inheritance merging \nof named prefabs and rules or anything else.</p>\n<p>Second return value is the tail of the string or the string if not \ntail.</p>\n<p>for example the following input string</p>\n<pre><code>&quot;one.two.three.four&quot;\n</code></pre><p>would get you the following iteration loops, one line per loop</p>\n<pre><code>&quot;one.two.three.four&quot; , &quot;four&quot;\n&quot;one.two.three&quot;      , &quot;three&quot;\n&quot;one.two&quot;            , &quot;two&quot;\n&quot;one&quot;                , &quot;one&quot;\n</code></pre>",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 24,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_dotnames",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>for it in item:iterate_parents() do\n    ...\nend\n</code></pre><p>Iterate over the parent chain going upwards. The first iteration is the \nparent of this object and so on.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 128,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_parents",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>items.metatable\n</code></pre><p>Expose the item metatable so more methods can easily be added.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 59,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.metatable",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>items.prefabs\n</code></pre><p>We automatically create a prefabs object bound to this set of items, this \nprefabs object should be used to define all your custom game prefabs.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 247,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.prefabs",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>item = item:remove()\n</code></pre><p>Remove this item from its parents table or do nothing if the item does \nnot have a parent.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 146,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.remove",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>items.rules\n</code></pre><p>We automatically create a rules object bound to this set of items, this \nrules object should be used to define all your custom game rules.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+   "line": 235,
+   "name": "lua.wetgenes.gamecake.fun.yarn.items.rules",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+  },
+  {
+   "body": "<pre><code>pages = require(&quot;wetgenes.gamecake.fun.yarn.pages&quot;).create(items)\n</code></pre><p>This module contains only one function which can be used to create an \npages instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/pages.lua",
+   "line": 8,
+   "name": "lua.wetgenes.gamecake.fun.yarn.pages",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/pages.lua"
+  },
+  {
+   "body": "<pre><code>prefabs = require(&quot;wetgenes.gamecake.fun.yarn.prefabs&quot;).create(items)\n</code></pre><p>This module contains only one function which can be used to create an \nprefabs instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+   "count": 2,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/prefabs.lua",
+   "line": 7,
+   "name": "lua.wetgenes.gamecake.fun.yarn.prefabs",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/prefabs.lua"
+  },
+  {
+   "body": "<pre><code>prefab = prefabs:get(name)\nprefab = prefabs:get(name,prefab)\n</code></pre><p>Build and return a table with all prefab values inherited from all its \nparents. Optionally pass in a prefab to override values and also have \nit returned.</p>\n<p>If name doesn&#39;t exist at any level and a table is not passed in then nil \nwill be returned.</p>\n<p>Names are hierarchical, separated by dots, see items.iterate_dotnames</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/prefabs.lua",
+   "line": 44,
+   "name": "lua.wetgenes.gamecake.fun.yarn.prefabs.set",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/prefabs.lua"
+  },
+  {
+   "body": "<pre><code>rules = require(&quot;wetgenes.gamecake.fun.yarn.rules&quot;).create(items)\n</code></pre><p>This module contains only one function which can be used to create an \nrules instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+   "count": 4,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+   "line": 6,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+  },
+  {
+   "body": "<pre><code>item = rules.apply(item,method,...)\n</code></pre><p>item.rules must be a list of rule names and the order in which they should \nbe applied to this item.</p>\n<p>Call the given method in each rule with the item and the remaining arguments.</p>\n<p>If the method returns a value then no more methods will be applied even \nif more rules are listed.</p>\n<p>We always return the passed in item so that calls can be chained.</p>\n<pre><code>item = item:apply(method,...)\n</code></pre><p>This function is inserted into the items.metatable so it can be called \ndirectly from an item.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+   "line": 62,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules.apply",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+  },
+  {
+   "body": "<pre><code>yes = rules.can(item,method)\n</code></pre><p>Returns true if any rule in this item has the given method.</p>\n<pre><code>yes = item:can(method)\n</code></pre><p>This function is inserted into the items.metatable so it can be called \ndirectly from an item.</p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+   "line": 96,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules.can",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+  },
+  {
+   "body": "<pre><code>rule = rules.set(rule)\n</code></pre><p>Set this base rule into the name space using rule.name which must \nbe a string.</p>\n<p>Multiple rules can be applied to an item and each rule will be applied \nin the order listed.</p>\n<p>A rule is a table of named functions that can be applied to an item.</p>\n<pre><code>rule.setup(item)\n</code></pre><p>Must setup the item so that it is safe to call the other rules on it.</p>\n<pre><code>rule.clean(item)\n</code></pre><p>Should cleanup anything that needs cleaning.</p>\n<pre><code>rule.tick(item)\n</code></pre><p>Should perform a single time tick update on the item.\n<br/>\n<br/></p>\n",
+   "count": 1,
+   "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+   "line": 28,
+   "name": "lua.wetgenes.gamecake.fun.yarn.rules.set",
+   "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+  }
+ ],
+ "_output_filename": "docs/",
+ "_root": "../",
+ "_site": "{_root}",
+ "_sourcename": "docs/.",
+ "body": "<div style=\"width:90%;margin:auto;min-width:960px;\"><div style=\"width:30%;display:inline-block;min-width:320px;vertical-align:top;\">\n\n\t<div style=\"margin:64px 0px;\">\n\t<a style=\"display:block;\" href=\"{_docs_json.dirname}\">/</a>\n\t{_docs:menuwrap}\n\t</div>\n\n</div><div style=\"width:60%;display:inline-block;min-width:640px;\">\n\n\t{_list:wrap}\n\n</div></div>\n",
+ "css": "@import url('https://fonts.googleapis.com/css?family=Cabin:400,700');\n\n*, *::after, *::before{box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; -ms-box-sizing:border-box;}\n\n\na,img{border:0; outline:none;}textarea:focus,input:focus{outline:0;}*:focus{outline:0;}\n\nhtml\t\t{height:100%;}\nbody, html\t{-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; width:100%; padding:0; margin:0 auto;}\nbody\t\t{background:#58656b; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#3a3a3a; font-size-adjust:0.4; font-weight:normal; font-style:normal; min-width:100%; min-height:100%; display:table;}\na\t\t\t{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; -ms-transition:all .2s ease-in-out; transition:all .2s ease-in-out; cursor:pointer; overflow-wrap:break-word; word-wrap:break-word; word-break:break-word; -ms-hyphens:auto; -moz-hyphens:auto; -webkit-hyphens:auto; hyphens:auto;} /* Fix long urls */\nh1\t\t\t{font-size:4em; font-weight:normal; color:#1400ff;}\nh2\t\t\t{font-size:2em; font-weight:normal;}\n\na\t\t\t{color:#1400ff; text-decoration:none;}\na:hover\t\t{cursor:pointer;}\nb\t\t\t{font-weight:700;}\n\n.wrap\t\t{width:1024px; margin:0 auto;}\n.wrap.max\t{width:100%;}\n.wrap.max.beep\t{background:url('/fun64/data/beep_back.png'); height:100px; background-size:cover;}\n.wrap.eg\t{padding-bottom:60px;}\n#content\t{display:table-row-group;}\n\n\n.page_link\t{display:inline-block; width:50%; vertical-align:top; margin-top:80px; margin-bottom:80px;}\n.page_link.page_top\t{margin-top:20px; margin-bottom:20px;}\n.page_link:nth-of-type(2)\t{text-align:right;}\n\n\n/*\tINDEX styles\n\t============================================= */\n.fun_bits\t\t{width:1024px; margin:0 auto; font-size:14px; line-height:16px; color:#0b0088; position:relative; margin-top:80px;}\n.fun_bits pre\t{width:1000px; margin:0 auto;}\n\n\n/*\tINDEX NAVIGATION BAR styles\n\t============================================= */\n.navi_wrap\t\t{width:100%; margin:0 auto; background:#58656b; position:fixed; z-index:666; font-family:'Cabin',monospace,sans-serif;}\n.navi\t\t\t{width:1024px; margin:0 auto; padding:20px 0;}\n.navi a\t\t\t{text-decoration:none;}\n.navi a:hover\t{color:#fff;}\na.navi_link_home{display:inline-block; width:55%; color:#eaeaea; vertical-align:top; font-weight:700;}\na.navi_link_all\t{display:inline-block; width:11%; text-align:right; color:#eaeaea;}\na.navi_link_home span:before {background:url('{_root}data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:\"\"; margin-right:10px; zoom:70%;}\na.navi_link_all.pad_link span:before {background:url('{_root}data/icon_pad.png')no-repeat center center; display:inline-block; background-size:contain; width:24px; height:24px; content:\"\"; margin-right:10px; zoom:70%;}\na.navi_link_all.beep_link span:before{background:url('{_root}data/icon_beep.png')no-repeat center center; display:inline-block; background-size:contain; width:20px; height:20px; content:\"\"; margin-right:10px; zoom:70%;}\n\n\n/*\tINDEX TOP SECTION styles\n\t============================================= */\n.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:15%; left:0;}\n.fun_about\t\t{color:#fff; font-size:38px; line-height:50px; width:50%; text-align:center; margin:0 auto;}\na.fun_try\t\t{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}\na.fun_try:hover\t{background-color:#FFEB3B;}\n.wasm_notice\t{display:none; text-align:center; margin-top:20px;}\n\n\n/*\tINDEX Beep\n\t============================================= */\n.wrap.max.beep a\t{width:100%; height:100%; background-color:rgba(28,50,64,0.8); display:block; margin-top:20px;}\n.wrap.max.beep a:hover\t{background-color:rgba(30,72,99, 0.8);}\n.wrap.max.beep span\t{text-align:center; display:block; color:#FFF; font-size:30px; line-height:100px;}\n.wrap.max.beep span:before {content:\"\"; background:url(/fun64/data/icon_beep.png)no-repeat center center; width:30px; height:24px; display:inline-block; background-size:contain; margin-right:10px;}\n\n\n/*\tINDEX EXAMPLES SECTION styles\n\t============================================= */\na.example\t\t{position:relative; display:block; margin:0 auto; margin-top:20px; margin-bottom:20px; text-decoration:none;}\na.example span\t{display:block;}\nspan.example_text_wrap\t{position:absolute; width:350px; height:214px; background-color:#131b1f; color:#fff; right:0; top:0; padding:30px 40px;}\n.wrap a:nth-of-type(even) span.example_text_wrap\t{left:0;}\nspan.example_text_info\t{color:#126a94;}\nspan.example_text_head\t{font-weight:700; font-size:28px; line-height:34px; padding:10px 0;}\nspan.example_text\t\t{}\n\na.example:before, a.example:after\t{content:\"\"; background-color:#1c3240; width:70%; position:absolute; left:-65%; top:0; bottom:0; -webkit-transform:skewX(-20deg); transform:skewX(-20deg);}\n.wrap.eg a:nth-of-type(even):before\t{display:none;}\n.wrap.eg a:nth-of-type(even):after\t{left:auto; right:-18px; width:0; background-color:#437288; height:0; border-bottom:100px solid #eab000; border-left:100px solid transparent;}\n\na.example:hover span.example_text_wrap\t{background-color:#252263; transition:all .2s ease-in-out}\n\n/*\tFOOTER styles\n\t============================================= */\n\t\n.foot\t\t{background-color:#3e484c; color:#eee; border-top:1px solid #ddd; display:table-footer-group}\n.foot_wrap\t{width:1024px; margin:0 auto; padding:60px; padding-bottom:20px; position:relative;}\n.foot_wrap a{color:#fff; text-decoration:none; font-weight:700;}\n.foot_wrap p a:hover{border-bottom:1px solid #00adff;}\n.foot_wrap p a:after{content:\"\\279a\"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}\n.text\t\t{font-weight:400;}\n.text span\t{font-weight:700;}\n.text.wetus\t{position:absolute; right:60px; bottom:20px;}\n.text.wetus *\t{vertical-align:baseline;}\n.text.wetus img\t{width:initial;}\n\n.text_head\t{font-size:42px; font-weight:700; margin-bottom:40px;}\n\na.hi\t\t\t{display:block; position:relative; padding:20px;}\na.hi span\t\t{position:absolute; top:-10px; right:20px; padding:5px 10px; color:#fff; display:none;}\na.hi:hover span\t{display:block;}\n\na.back_top\t\t{display:block; text-align:center; text-decoration:none; color:#aaa; padding:20px 0; font-size:12px;}\na.back_top:hover{background-color:#2d3538;}\n\n\n/*\tBLOG styles\n\t============================================= */\n\n.blog_bits, .post_page\t{margin-top:100px;}\n\n.blog_head\t\t\t{width:1024px; margin:0 auto; margin-top:20px;}\n.blog_head a:hover\t{background-color:#e2e0e8;}\n\nspan.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:700;}\nspan.blog_post_user\t{display:block; font-size:16px; margin-bottom:20px;}\n\n.blog_list_wrap\t\t{width:1024px; margin:0 auto;}\n.line\t\t\t\t{border-top:1px dashed #1400ff; margin-top:40px; margin-bottom:40px; position:relative;}\n.blog_info\t\t\t{position:absolute; right:10px; top:10px;}\n\n.blog_wrap\t\t\t{width:700px; margin:auto; font-size:20px; line-height:30px; border:0;}\n\n\n/*\tBLOG post styles\n\t============================================= */\n\na.blog_post_link\t{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:30px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}\na.blog_post_link:nth-of-type(odd)\t{background-color:#1400ff; color:#fff;}\na.blog_post_link:nth-of-type(3n)\t{margin-right:0;}\na.blog_post_link:nth-of-type(1), a.blog_post_link:nth-of-type(2), a.blog_post_link:nth-of-type(3)\t{margin-top:0;}\na.blog_post_link:hover\t{background-color:rgba(0,0,0,0.4); color:#fff;}\n\na.blog_post_link span.blog_post_title\t{display:block; font-size:26px; line-height:30px; font-weight:700;}\na.blog_post_link span.blog_post_snip\t{display:block; height:180px; overflow:hidden;}\na.blog_post_link span.blog_post_user\t{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}\n\n\n/*\tBLOG paging links\n\t============================================= */\n\n.paging div a\t{text-decoration:none; color:#3a3a3a;}\n.paging div a:before {display:inline-block; vertical-align:top; content:\"\\021D0\"; margin-right:5px;}\n.paging div:nth-of-type(2) a:before\t{display:none;}\n.paging div:nth-of-type(2) a:after\t{display:inline-block; vertical-align:top; content:\"\\0279C\"; margin-left:5px;}\n.paging div a:hover {background-color:#e2e0e8;}\n\n\n/*\tBLOG FUNPAD LINK - found beneath each post\n\t============================================= */\n\n.blog_embed_wrap\t{margin:0 auto; margin-top:60px;}\n.blog_embed_head\t{width:700px; margin:auto;}\n\na.bar\t\t\t\t{display:block; width:100%; color:#f7f4fd; font-size:24px; text-align:center; background-color:#3a3a3a; border-radius:4px; padding:15px; text-decoration:none;}\na.bar:hover\t\t\t{background-color:#1400ff;}\n\n.blog_wrap code\t\t{display:block; font-size:16px; overflow-x:scroll;}\n\n\n/*\tPace loading bar - currently not in use\n\t============================================= */\n.pace .pace-progress {height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%;}\n.pace-inactive {display:none;}\n.pace {-webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none;}\n\n\n/*\tFIREFOX font fix\n\t============================================= */\n\t\n@-moz-document url-prefix() {\n    body,html\t\t{font-size:20px; line-height:1;}\n    .fun_bits pre\t{font-size:18px; margin-left:35px;}\n    span.example_text_head\t{font-size:32px;}\n    a.back_top\t\t{font-size:14px;}\n}\n\n\n/*\tMOBILE post styles\n\t============================================= */\n@media screen and (max-width:1024px) {\n\n\tbody\t\t{padding:0;}\t\n\tpre\t\t\t{margin:0 auto;}\n\t.fun_bits, .navi, .blog_head{width:100%; margin:0 auto; padding:50px 0;}\n\t\n\t.fun_bits\t{font-size:12px; padding:80px 0; margin-top:80px;}\n\t.navi a\t\t{font-size:40px; width:25%; text-align:center;}\n\ta.navi_link_home span:before\t{zoom:70%;}\n\ta.navi_link_all.git\t{display:none;}\n\t\n\t.blog_head\t{padding:50px; font-size:42px;}\n\t.wrap\t\t{width:100%; margin:0 auto;}\n\t.fun_bits pre\t{width:93%; margin:0 auto; margin-left:7%;}\n\t.blog_list_wrap, a.blog_post_link\t{width:860px;}\n\t.wrap.eg\t{padding-bottom:0; overflow-x:hidden;}\n\t\n\ta.example\t\t{margin:0; width:100%; height:500px;}\n\ta.example:before, a.example:after\t{display:none;}\n\t\n\t.wrap.eg a:nth-of-type(1)\t{background:url('{_root}data/example_01.png')no-repeat -900px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(2)\t{background:url('{_root}data/example_03.png')no-repeat center center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(3)\t{background:url('{_root}data/example_04.png')no-repeat -1255px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(4)\t{background:url('{_root}data/example_05.png')no-repeat -1200px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(5)\t{background:url('{_root}data/example_02.png')no-repeat -1200px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(6)\t{background:url('{_root}data/example_06.png')no-repeat -200px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(7)\t{background:url('{_root}data/example_07.png')no-repeat center center; background-size:cover;}\n\t\n\t.fun_about_wrap\t{top:10%;}\n\t.fun_about\t\t{font-size:60px; line-height:80px; width:70%;}\n\ta.fun_try\t\t{font-size:42px; display:inline-block; padding:30px 40px; width:initial; margin-top:25px;}\n\t.wasm_notice\t{display:block; font-size:28px; line-height:45px;}\n\t\n\t.wrap img\t\t{width:100%; display:none;}\n\t.foot_wrap .text_head img\t{display:inline-block; vertical-align:top; width:50px; margin-top:-17px;}\n\t.foot_wrap p\t{font-size:38px; line-height:58px; padding:10px 0;}\n\t.text.wetus\t\t{position:initial;}\n\t.text.wetus img\t{width:80px;}\n\ta.back_top\t\t{padding:60px 0; font-size:32px;}\n\t.foot_wrap p a:after\t{font-size:38px;}\n\t\n\tspan.example_text_wrap\t{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}\n\tspan.example_text_head\t{font-size:1.25em; line-height:1.25em;}\n\tspan.example_text_info\t{margin-top:10px;}\n\t\n\t.blog_bits, .post_page\t{margin-top:140px;}\n\t\n\t.blog_wrap p\t\t\t{margin:60px 0; font-size:42px; line-height:82px;}\n\tspan.blog_post_user\t\t{font-size:24px;}\n\tspan.blog_post_title\t{font-size:60px; line-height:72px;}\n\t\n\t.blog_embed_head, .blog_wrap\t\t\t{width:800px;}\n\ta.blog_post_link\t\t\t\t\t\t{display:block; margin:0 auto; margin-bottom:40px; font-size:38px; line-height:54px; height:400px;}\n\ta.blog_post_link span.blog_post_title\t{font-size:48px; line-height:68px;}\n\ta.blog_post_link span.blog_post_snip\t{height:200px;}\n\ta.blog_post_link span.blog_post_user\t{font-size:24px; width:960px;}\n\t\n\t.page_link, .page_link:nth-of-type(2)\t{text-align:center;}\n\t.page_link a\t{font-size:38px;}\n\t\n\t.paging div a:before {font-size:55px; margin-top:-15px;}\n\t.paging div:nth-of-type(2) a:after {font-size:38px;}\n\t\n\ta.bar\t\t\t{font-size:36px; padding:40px 0;}\n\t\n\t.text_head\t\t{margin-top:40px; margin-bottom:40px; font-size:48px;}\n\t\n\t.foot_wrap\t\t{font-size:1.8em; width:100%;}\n\t\n\t@-moz-document url-prefix() {\n    .fun_bits pre\t{width:100%; margin:0;}\n    }\n   \n}\n",
+ "footer": "<div class=\"wrap max foot\">\n\t<span id=\"about\"></span>\n\t<div class=\"foot_wrap\">\n\t\t<div class=\"text\">\n\t\t\t<div class=\"text_head\"><img src=\"{_root}data/favicon.png\" width=\"40px\"/> Fun64</div>\n\t\t\t<p><a href=\"{_root}\"><b>Fun64</b></a> is a super simple super lowrez single file game engine powered by <a href=\"https://github.com/xriss/gamecake\">Gamecake</a>, <a href=\"http://webassembly.org/\">WebAssembly JS</a> and <a href=\"https://www.lua.org/about.html\">Lua</a>.</p>\n\t\t\t<p>The <a href=\"https://xriss.github.io/fun64/pad/\">FunPad</a> lets you edit and run Fun64 code in any modern browser using <a href=\"https://gist.github.com/search?q=fun64+lua\">Github Gist</a> as storage, creating a unique url that you can share with others to play and collaborate on.</p>\n\t\t\t<p><a href=\"https://xriss.github.io/fun64/run/beep/\">Beep</a> is a simple frequency modulation synthesizer you can use to create sound effects <i>(or questionable tunes)</i> for your applications.</p>\n\t\t</div>\n\t\t<div><p><a href=\"http://github.com/xriss/fun64\">Fun64 is on Github</a></p></div>\n\t\t<div><p>Some documentation for functions can be found <a href=\"https://xriss.github.io/gamecake/\">here</a>.</p></div>\n\t\t<div class=\"text wetus\"><a href=\"http://wetgenes.com\" class=\"hi\"><span>hi!</span><img src=\"{_root}data/wetus.png\"/></a></div>\n\t</div>\n\t<a class=\"back_top\" href=\"#\">BACK TO TOP</a>\n</div>\n<script>\n\t$('.back_top').click(function(){ \n\t\t$('html,body').animate({scrollTop:0}, 400);\n\t\treturn false; \n\t});\n</script>",
+ "head": "<meta name=\"viewport\" content=\"width=device-width\">\n<meta name=\"theme-color\" content=\"#131b1f\">\n<title>{title}</title>\n<style>\n{css}\n</style>\n<script>\n\t\n\tvar ua = navigator.userAgent.toLowerCase();\n\tvar is_android = ua.indexOf(\"android\") > -1; //&& ua.indexOf(\"mobile\");\n\tvar is_firefox = ua.indexOf('firefox') > -1;\n\tif(is_firefox && is_android)\n\t{\n\t// alert ('FF');\n\tdocument.write('<meta name=\"viewport\" content=\"user-scalable=1\"/><!--320-->');\n\t} else {\n\t// alert ('NoFF');\n\tdocument.write('<meta name=\"viewport\" content=\"user-scalable=0\"/><!--320-->');\n\t}\n</script>\n<script\tsrc=\"{_root}js/jquery-3.1.1.min.js\" ></script>\n<script\tsrc=\"{_root}js/google-code-prettify/prettify.js\" ></script>\n<script\tsrc=\"{_root}js/google-code-prettify/lang-lua.js\" ></script>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"{_root}js/google-code-prettify/skins/sons-of-obsidian.css\" />\n<link rel=\"icon\" type=\"image/png\" href=\"{_root}data/favicon.png\" />",
+ "html": "<html>\n\t<head>\n\t\t<title>{title}</title>\n\t\t<link rel='stylesheet' href='{_docs_json.dirname}/docs.css' />\n\t</head>\n\t<body>{body}</body>\n</html>\n",
+ "menuwrap": "{_it.count>1&&_it:menuwrap_link}",
+ "menuwrap_link": "<a style=\"display:block;\" href=\"{_docs_json.dirname}/{_it.name}\">/{_it.name}</a>",
+ "navigation": "<div class=\"navi_wrap\">\n    <div class=\"navi\">\n        <a href=\"{_root}\" class=\"navi_link_home\"><span>Fun64</span></a><a href=\"{_root}blog\" class=\"navi_link_all log_link\">Devlog</a><a href=\"{_root}pad\" class=\"navi_link_all pad_link\"><span>FunPad</span></a><a href=\"{_root}run/beep\" class=\"navi_link_all beep_link\"><span>Beep</span></a><a href=\"https://github.com/xriss/fun64\" class=\"navi_link_all git\">Github</a>\n    </div>\n</div>",
+ "title": "Welcome to docs!",
+ "wrap": "\n<div style=\"margin:64px 0px;\">\n<h1><a href=\"{_docs_json.dirname}/{_it.name}\">{_it.name}</a></h1>\n<div><a href=\"{_it.url}#L{_it.line}\">{_it.url}</a></div>\n<div>{[[}{_it.body}{]]}</div>\n</div>\n"
+}

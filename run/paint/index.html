@@ -1,0 +1,256 @@
+<html>
+<head>
+	<title>Fun64pad edit and run.</title>
+	<script data-pace-options='{ "eventLag": false }' src="../../js/pace.min.js"></script>
+	<script src="../../js/jquery-3.1.1.min.js"></script>
+	<script src="../../js/jquery.splitter.js"></script>
+	<link  href="../../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
+	<script src="../../js/ace/ace.js"></script>
+	<style>
+.pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
+.pace-inactive { display:none; }
+.pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+
+*		{box-sizing:border-box;}
+html	{overflow:hidden;}
+body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px;}
+h1		{font-size:4em; font-weight:normal; color:#1400ff;}
+h2		{font-size:2em; font-weight:normal;}
+
+a		{color:#88f;}
+
+#editor {
+	margin: 0;
+	position: absolute;
+	top: 32;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+
+#gamecake_container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.splitter_panel .vsplitter {
+    background-color: #222;
+}
+
+.splitter_panel .hsplitter {
+    background-color: #222;
+}
+
+#iconbar { width:100%; height:32px; background-color: #333; position:relative; }
+
+a:focus { 
+    outline: none; 
+}
+
+#iconbar a {
+	display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    width: 20%;
+    height: 100%;
+    padding: 5px 4px;
+    margin: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+    overflow: hidden;
+}
+
+#iconbar a:hover { background-color: #000; }
+
+#iconbar a:hover { background-color: #000; }
+
+#gamecake_log {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    color: #4c4;
+}
+
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(128, 128, 128, 0.1);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(128, 128, 128, 0.5);
+}
+
+
+	</style>
+</head>
+<body>
+
+		<div id="gamecake_container">
+			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
+		</div>
+
+
+<script id="paint_config" type="text/lua">
+--<![CDATA[
+
+{
+ ["fat"]={
+  ["bloom"]=1,
+  ["width"]=3,
+  ["escher"]=0,
+  ["pickme"]=4,
+  ["height"]=3,
+ },
+ ["pix"]={
+  ["width"]=320,
+  ["height"]=240,
+  ["depth"]=1,
+ },
+ ["pal"]={
+	0x00000000,
+	0xff336622,
+	0xff448822,
+	0xff66aa33,
+	0xff66bb77,
+	0xff66cccc,
+	0xff5599cc,
+	0xff5577cc,
+	0xff445599,
+	0xff333366,
+	0xff332244,
+	0xff442233,
+	0xff663333,
+	0xff884433,
+	0xffbb7766,
+	0xffeeaa99,
+	0xffee88bb,
+	0xffdd6666,
+	0xffcc3333,
+	0xffdd5533,
+	0xffdd7733,
+	0xffddaa33,
+	0xffdddd44,
+	0xff888833,
+	0xff000000,
+	0xff222222,
+	0xff444444,
+	0xff666666,
+	0xff888888,
+	0xffaaaaaa,
+	0xffcccccc,
+	0xffffffff,
+ }
+}
+
+--]]>
+</script>
+
+<script>
+	
+if (typeof(document.isFullscreen === undefined)) {
+  document.isFullscreen = function() {
+ return !((document.fullScreenElement !== undefined && document.fullScreenElement === null) || 
+ (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || 
+ (document.mozFullScreen !== undefined && !document.mozFullScreen) || 
+ (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen));
+  }
+}
+
+	var params={};
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+
+	
+	var show_progress=function(n)
+	{
+		window.show_progress_max=window.show_progress_max || 0;
+		if(window.show_progress_max<n) { window.show_progress_max=n; }
+		var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+		console.log("GameCake Loading "+pct+"%");
+	};
+
+	var gamecake_load_cake=function(cakefile)
+	{
+		var resize=function(){
+			if(!document.isFullscreen())
+			{
+				var e=document.getElementById("gamecake_container");
+				var w=parseFloat(window.getComputedStyle(e).width);
+				var h=parseFloat(window.getComputedStyle(e).height);
+				Module.setCanvasSize(w,h);
+				if(window.gamecake_post)
+				{
+					gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				}
+			}
+		};
+
+		window.addEventListener("resize",function(){setTimeout(resize,500);});
+		Module={};
+		Module.canvas=document.getElementById("gamecake_canvas");
+		Module.canvas_resize=function(){setTimeout(resize,500);};
+		Module.locateFile=function(inurl){
+			return "../../exe/"+inurl;
+		};
+		Module.monitorRunDependencies=show_progress;
+		Module.preRun=function(){
+			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
+			FS.createPreloadedFile('/', "gamecake.zip", cakefile, true, false);
+
+		};
+
+		Module.onRuntimeInitialized=function() {
+
+			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+
+			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+
+			gamecake_post('cmd=lua\n',
+'local win=require("wetgenes.win")\n'+
+'local oven=win.oven\n'+
+'local paint=oven.rebake(oven.modname..".main_paint")\n'+
+'paint.configure( [==['+document.getElementById("paint_config").innerHTML+']==] )\n');
+		
+		
+// create a pulse function and call it every frame
+			Module._pulse=function() {
+				cancelAnimationFrame(Module._pulseid);
+				if(!Module._pulse) { return; } // in the middle of reboot
+				Module._pulseid=requestAnimationFrame(Module._pulse);
+				var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
+				if(ret!=0) { cancelAnimationFrame(Module._pulseid); } // stop updating on error
+			};
+			Module._pulse();
+
+			setTimeout(resize,500); // call resize in a little while
+		};
+
+		(function(d, script) {
+			script = d.createElement('script');
+			script.type = 'text/javascript';
+			script.async = true;
+			script.src = '../../exe/gamecake.js';
+			d.getElementsByTagName('head')[0].appendChild(script);
+		}(document));
+	}
+	
+	gamecake_load_cake("../zips/swanky-paint.zip");
+
+$(document).keydown(function(event){
+    if(event.keyCode==112){return false;} // disable browsers F1
+    if(event.keyCode==122){return false;} // disable browsers F11
+});
+
+</script>
+
+</body>
+</html>

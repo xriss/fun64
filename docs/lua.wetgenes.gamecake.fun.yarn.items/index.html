@@ -1,0 +1,168 @@
+<html>
+	<head>
+		<title>Welcome to docs!</title>
+		<link rel='stylesheet' href='../../docs/docs.css' />
+	</head>
+	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
+
+	<div style="margin:64px 0px;">
+	<a style="display:block;" href="../../docs">/</a>
+	<a style="display:block;" href="../../docs/lua">/lua</a><a style="display:block;" href="../../docs/lua.wetgenes">/lua.wetgenes</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake">/lua.wetgenes.gamecake</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun">/lua.wetgenes.gamecake.fun</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.chatdown">/lua.wetgenes.gamecake.fun.chatdown</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat">/lua.wetgenes.gamecake.fun.chatdown.chat</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chats">/lua.wetgenes.gamecake.fun.chatdown.chats</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.entities">/lua.wetgenes.gamecake.fun.entities</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.entities.systems">/lua.wetgenes.gamecake.fun.entities.systems</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn">/lua.wetgenes.gamecake.fun.yarn</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn.items">/lua.wetgenes.gamecake.fun.yarn.items</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn.prefabs">/lua.wetgenes.gamecake.fun.yarn.prefabs</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn.rules">/lua.wetgenes.gamecake.fun.yarn.rules</a>
+	</div>
+
+</div><div style="width:60%;display:inline-block;min-width:640px;">
+
+	
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items">lua.wetgenes.gamecake.fun.yarn.items</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L6">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>items = require(&quot;wetgenes.gamecake.fun.yarn.items&quot;).create()
+</code></pre><p>This module contains only one function which can be used to create an 
+items instance and the rest of this documentation concerns the return 
+from this create function, not the module itself.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.cells">lua.wetgenes.gamecake.fun.yarn.items.cells</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L259">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>items.cells
+</code></pre><p>We automatically create a cells object bound to this set of items, this 
+cells object should be used to define all your custom game cells.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.create">lua.wetgenes.gamecake.fun.yarn.items.create</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L73">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>item = items.create()
+item = items.create({})
+item = items.create({},metatable)
+</code></pre><p>Create a single item, optionally pass in a base item table that will be 
+turned into a proper item (using setmetatable to add methods). This 
+should always be a new table and will also be returned. If no 
+metatable is provided then items.metatable will be used.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.create_pages">lua.wetgenes.gamecake.fun.yarn.items.create_pages</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L271">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>items.pages
+</code></pre><p>We automatically create a pages object bound to this set of items, this 
+pages object should be used to define all your custom game pages.</p>
+<p>This can be considered a level and you may need multiple pages which 
+are moved in and out of items.pages</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.destroy">lua.wetgenes.gamecake.fun.yarn.items.destroy</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L101">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>item = items.destroy(item)
+item = item:destroy()
+</code></pre><p>Destroy an item, remove it from the master table dump so it will be 
+garbage collected.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.find">lua.wetgenes.gamecake.fun.yarn.items.find</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L215">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>child_item = item:find(keyname)
+</code></pre><p>Get the first child item that has a [keyname] value in it. All child 
+items are searched, but this is not recursive.</p>
+<p>returns nil if no child item is found.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.get_big">lua.wetgenes.gamecake.fun.yarn.items.get_big</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L199">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>big_item = item:get_big()
+</code></pre><p>Get the first big item from this container, returns nil if we do not 
+contain a big item.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.insert">lua.wetgenes.gamecake.fun.yarn.items.insert</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L173">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>item = item:insert(parent)
+</code></pre><p>Insert this item into the given parent. Item will automatically be 
+removed from its current parent. If the item is_big then it will be 
+inserted into the front of the list otherwise it will go at the end. 
+This is to help with finding big items, since there should only be one 
+per container we only have to check the first child.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.iterate_dotnames">lua.wetgenes.gamecake.fun.yarn.items.iterate_dotnames</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L24">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>for name,tail in items.iterate_dotnames(names) do ... end
+</code></pre><p>Iterator over a names string, start with the full string and cut off 
+the tail on each iteration. This is used for simple inheritance merging 
+of named prefabs and rules or anything else.</p>
+<p>Second return value is the tail of the string or the string if not 
+tail.</p>
+<p>for example the following input string</p>
+<pre><code>&quot;one.two.three.four&quot;
+</code></pre><p>would get you the following iteration loops, one line per loop</p>
+<pre><code>&quot;one.two.three.four&quot; , &quot;four&quot;
+&quot;one.two.three&quot;      , &quot;three&quot;
+&quot;one.two&quot;            , &quot;two&quot;
+&quot;one&quot;                , &quot;one&quot;
+</code></pre></div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.iterate_parents">lua.wetgenes.gamecake.fun.yarn.items.iterate_parents</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L128">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>for it in item:iterate_parents() do
+    ...
+end
+</code></pre><p>Iterate over the parent chain going upwards. The first iteration is the 
+parent of this object and so on.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.metatable">lua.wetgenes.gamecake.fun.yarn.items.metatable</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L59">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>items.metatable
+</code></pre><p>Expose the item metatable so more methods can easily be added.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.prefabs">lua.wetgenes.gamecake.fun.yarn.items.prefabs</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L247">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>items.prefabs
+</code></pre><p>We automatically create a prefabs object bound to this set of items, this 
+prefabs object should be used to define all your custom game prefabs.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.remove">lua.wetgenes.gamecake.fun.yarn.items.remove</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L146">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>item = item:remove()
+</code></pre><p>Remove this item from its parents table or do nothing if the item does 
+not have a parent.</p>
+</div>
+</div>
+
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.items.rules">lua.wetgenes.gamecake.fun.yarn.items.rules</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L235">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
+<div><pre><code>items.rules
+</code></pre><p>We automatically create a rules object bound to this set of items, this 
+rules object should be used to define all your custom game rules.</p>
+</div>
+</div>
+
+
+</div></div>
+</body>
+</html>

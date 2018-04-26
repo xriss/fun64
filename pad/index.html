@@ -1,0 +1,571 @@
+<html>
+<head>
+	<title>FunPad for Fun64 - Edit and Run</title>
+	<script data-pace-options='{ "eventLag": false }' src="../js/pace.min.js"></script>
+	<script src="../js/head.min.js"></script>
+	<script src="../js/jquery-3.1.1.min.js"></script>
+	<script src="../js/jquery.splitter.js"></script>
+	<link  href="../js/jquery.splitter.css" type="text/css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
+	<script src="../js/ace/ace.js"></script>
+	<link rel="icon" type="image/png" href="{_root}data/favicon.png" />
+	<style>
+*		{box-sizing:border-box;}
+html	{overflow:hidden;}
+body	{background:#000; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#ccc; width:100%; padding:0; margin:0 auto; position:relative;}
+h1		{font-size:4em; font-weight:normal; color:#1400ff;}
+h2		{font-size:2em; font-weight:normal;}
+a		{color:#88f;}
+a		{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; -ms-transition:all .2s ease-in-out; transition:all .2s ease-in-out; cursor:pointer; overflow-wrap:break-word; word-wrap:break-word; word-break:break-word; -ms-hyphens:auto; -moz-hyphens:auto; -webkit-hyphens:auto; hyphens:auto;} /* Fix long urls */
+b		{font-weight:700;}
+
+#editor {margin:0; position:absolute; top:32; bottom:0; left:0; right:0;}
+#gamecake_container {overflow:hidden; width:100%; height:100%;}
+
+.splitter_panel .vsplitter {background-color:#222;}
+.splitter_panel .hsplitter {background-color:#222;}
+
+#iconbar	{width:100%; height:32px; background-color:#232323; position:relative; }
+a:focus		{outline: none;}
+#iconbar a	{display:inline-block; text-align:center; text-decoration:none; width:23.5%; height:100%; padding:5px 4px; margin:0; transition:all 0.3s ease; color:#ccc; overflow:hidden;}
+#iconbar a:hover {background-color:#00ff80; color:#444; cursor:pointer;}
+#iconbar a#iconbar_about:hover {background-color:#eab000;}
+
+#gamecake_log {width:100%; height:100%; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:0 10px;}
+#gamecake_canvas:-webkit-full-screen {width:100%; height:100%;}
+
+/*	Fullscreen button	*/
+a#iconbar_full {font-size:32px; line-height:17px; width:6%; position:absolute; right:0; top:0;}
+
+::-webkit-scrollbar			{width: 12px;  /* for vertical scrollbars */ 
+							 height: 12px; /* for horizontal scrollbars */}
+::-webkit-scrollbar-track	{background:rgba(128,128,128,0.1);}
+::-webkit-scrollbar-thumb	{background:rgba(128,128,128,0.5);}
+
+/*	WRAPPERS	*/
+
+.pop_wrapper	{transition:opacity 0.2s;}
+.pop_wrapper	{padding:50px 150px; background-color:rgba(64,67,70,0.8); overflow:hidden; position:absolute; top:0; left:0; bottom:0; right:0; z-index:999;}
+
+/*	ABOUT link popup	*/
+.pop_wrap		{height:100%; width:100%; background-color:#000; box-sizing:border-box; border:5px solid #00ff80; border-radius:4px; box-shadow:1px 1px 20px rgba(0,0,0,0.5); overflow:auto;}
+.pop_text		{padding:40px 60px 20px 60px;}
+.pop_head		{font-size:24px; line-height:30px; margin-top:20px;}
+.pop_head.title	{margin-top:40px; margin-bottom:20px;}
+.pop_head a		{text-decoration:none; color:#fff; font-weight:700;}
+.pop_head a:hover	{color:#00ff80;}
+.pop_head a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
+.pop_head a:before	{background:url('../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; zoom:70%;}
+.pop_head.title a:before	{display:none;}
+.pop_close_wrap	{position:relative; width:100%;}
+a.pop_close		{position:absolute; display:block; top:15px; right:15px; width:40px; height:40px; font-size:35px; line-height:35px; text-align:center; color:#00ff80;}
+a.pop_close:hover{color:#42F89E; cursor:pointer;}
+
+.pop_div		{display:inline-block; vertical-align:top; width:33.33%; padding-right:6%; padding-top:5%; padding-bottom:5%; position:relative;}
+
+.pop_div span	{display:inline; background-color:#00ff80; padding:5px 15px; color:#222; font-size:20px; font-weight:400; box-shadow:3px 3px 0px rgba(255,0,153,0.77);}
+.pop_info		{margin-top:20px; font-size:18px; line-height:26px;}
+.pop_info a		{text-decoration:none; color:#fff; font-weight:700;}
+.pop_info a:hover	{color:#00ff80;}
+.pop_info a:after	{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
+
+.pop_wrapper.load .pop_div	{height:140px;}
+.pop_div.gist1	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_01.png')no-repeat center center;}
+.pop_div.gist2	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_03.png')no-repeat center center;}
+.pop_div.gist3	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_04.png')no-repeat center center;}
+.pop_div.gist4	{background:linear-gradient(rgba(0,0,0,1), 	  rgba(0,0,0,0.45)),url('../data/example_05.png')no-repeat -1065px center;}
+.pop_div.gist5	{background:linear-gradient(rgba(63,81,181,1),rgba(0,0,0,0.45)),url('../data/example_02.png')no-repeat -803px center;}
+.pop_div.gist6	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_06.png')no-repeat center center;}
+.pop_div.gist7	{background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),url('../data/example_07.png')no-repeat center center;}
+
+.pop_wrapper.load .pop_div:hover	{background-color:#000;}
+.pop_wrapper.load .pop_div:hover .pop_info	{color:#fff;}
+
+.pop_wrapper.load .pop_info	{font-weight:700; text-align:center; width:90%; position:absolute; top:35px; left:5%; font-size:24px; color:#ccc; line-height:30px; text-shadow:1px 2px 5px rgba(0,0,0,0.8);}
+
+span.pad_icon:before	{background:url('../data/icon_pad.png')no-repeat center center; display:inline-block; background-size:contain; width:24px; height:24px; content:""; margin-right:10px;}
+span.fun64_icon:before	{background:url('../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; margin-right:10px; zoom:70%;}
+
+/*	LOAD link popup	*/
+
+.pop_wrapper.about	{display:none;}
+.pop_wrapper.load	{display:none;}
+
+input#gamecake_text_input	{width:100%; font-size:x-large; padding:5px 10px;}
+
+
+.ace_editor		{font-size:16px;}
+.ace-twilight .ace_gutter	{color:#666 !important;}
+
+	</style>
+</head>
+<body>
+<div id="split">
+	<div id="split_left">
+		<div id="iconbar"><!--
+		--><a id="iconbar_about"    		 title="What is Fun64?" 	onclick="$('.pop_wrapper.about').toggle();"    	>ABOUT</a><!--
+		--><a id="iconbar_run"      href="#" title="Refresh and restart the running code" 								>RUN</a><!--
+		--><a id="iconbar_patch"    		 title="Open a URL" 		onclick="$('.pop_wrapper.load').toggle();" 		>OPEN</a><!--
+		--><a id="iconbar_revert"   href="#" title="Restore code to original state"       								>REVERT</a><!--
+		--><a id="iconbar_full" 	href="#" title="Go fullscreen"                       								>&#8689;</a><!--
+		--></div>
+<pre id="editor">
+--
+-- Paste your code below and click on 'RUN' to start your application :D
+--
+hardware,main=system.configurator({
+	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
+	update=function() update() end, -- called repeatedly to update+draw
+})
+
+
+-- we will call this once in the update function
+setup=function()
+
+--    system.components.screen.bloom=0
+--    system.components.screen.filter=nil
+--    system.components.screen.shadow=nil
+    
+    print("Setup complete!")
+
+end
+
+
+-- updates are run at 60fps
+update=function()
+    
+    if setup then setup() setup=nil end
+
+    local ctext=system.components.text
+    local bg=9
+    local fg=system.ticks%32 -- cycle the foreground color
+
+	ctext.text_clear(0x01000000*bg) -- clear text forcing a background color
+	
+	ctext.text_print("Hello World!",34,15,fg,bg) -- (text,x,y,color,background)
+	
+end
+</pre>
+	</div>
+	<div id="split_right">
+		<div id="gamecake_container">
+			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
+		</div>
+		<pre id="gamecake_log"></pre>
+	</div>
+</div>
+
+<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
+
+	local hx,hy,ss=320,240,3
+
+	local opts={
+		times=true, -- request simple time keeping samples
+
+		width=hx*ss,	-- display basics
+		height=hy*ss,
+		screen_scale=ss,
+	--	show="full",
+		title="fun",
+		start="wetgenes.gamecake.fun.main",
+		fun="start",
+		fps=60,
+		... -- include commandline opts
+	}
+
+	math.randomseed( os.time() ) -- try and randomise a little bit better
+
+	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+
+	return oven:serv()
+
+--]]></script>
+
+
+<script>
+	
+if (typeof(document.isFullscreen === undefined)) {
+  document.isFullscreen = function() {
+ return !((document.fullScreenElement !== undefined && document.fullScreenElement === null) || 
+ (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || 
+ (document.mozFullScreen !== undefined && !document.mozFullScreen) || 
+ (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen));
+  }
+}
+
+	window.gamecake_original_code=document.getElementById("editor").innerHTML;
+
+	(function () {
+		var newlog = function () {
+			var logger = document.getElementById('gamecake_log');
+			if( logger )
+			{
+				for (var i = 0; i < arguments.length; i++) {
+					if (typeof arguments[i] == 'object') {
+						s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
+					} else {
+						s=arguments[i] + "\n";
+					}
+				}
+				
+				var sticky=( logger.scrollTop >= (logger.scrollHeight-logger.clientHeight) );
+				
+				var t=logger.innerHTML || "";
+				if(t.length>4096) { t=t.slice(-4096); } // limit
+				logger.innerHTML=t+s;
+
+				if(sticky)
+				{
+					logger.scrollTop=(logger.scrollHeight-logger.clientHeight);
+				}
+			}		
+		}
+	//	console.error=newlog;
+		console.warn=newlog;
+		console.log=newlog;
+	})();
+
+	var params={};
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+	if(params.url) // fill pad with this code
+	{
+		var aa=params.url.split("/");
+		if(aa[2]=="gist.github.com") // convert gist page into raw link
+		{
+			params.url="https://gist.githubusercontent.com/"+aa[3]+"/"+aa[4]+"/raw"
+		}
+	}
+
+	var resize_timeout;
+	var resize_func=function(event) {
+		var f=function() {
+			window.dispatchEvent(new Event('resize'));
+		};
+		clearTimeout(resize_timeout);
+		timresize_timeouteout=setTimeout(f,100);
+	};
+	
+	$("#split").height("100%").split({orientation:'vertical',limit:5,position:'50%',onDrag: resize_func });
+	$("#split_right").split({orientation:'horizontal',limit:5,position:'90%',onDrag: resize_func });
+	
+    var editor = ace.edit("editor");
+    editor.$blockScrolling = Infinity;
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/lua");
+
+	editor.getSession().setUseWrapMode(true);
+
+	// load any saved code at the start
+	var code_filename=params.url || "start.fun.lua";
+	var code = localStorage.getItem(code_filename);
+	if(code)
+	{
+		editor.setValue(code);
+		editor.clearSelection();
+		editor.focus();
+		params.url_donotload=true;
+	}
+	else
+	{
+		code=window.gamecake_original_code;
+	}
+	
+	// autosave any edits to local storage
+	editor.on('change', function(e){ 
+		var code = editor.getValue();
+		localStorage.setItem(code_filename, code)
+	});
+	
+	
+	var show_progress=function(n)
+	{
+		window.show_progress_max=window.show_progress_max || 0;
+		if(window.show_progress_max<n) { window.show_progress_max=n; }
+		var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+		console.log("GameCake Loading "+pct+"%");
+	};
+
+	var gamecake_load_fun=function(code)
+	{
+		var resize=function(){
+			var container;
+			if(document.isFullscreen())
+			{
+				container=$("#gamecake_canvas"); // fullscreen does funky stuff, try not to disturb it.
+			}
+			else
+			{
+				container=$("#gamecake_container"); // fit canvas to this size
+			}			
+			var w=container.width();
+			var h=container.height();
+			
+			if(!document.isFullscreen()) // it seems better not to call this when fullscreen
+			{
+				Module.setCanvasSize(w,h);
+			}
+
+			if(window.gamecake_post)
+			{
+				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')'); // but this might help?
+			}
+		};
+
+		var fullscreen=function(yesno){
+			$("#gamecake_container")[0].focus();
+			if(window.gamecake_post)
+			{
+				if(yesno) // fullscreen is flakey, need to doubletap to get a sure response
+				{
+					gamecake_post('cmd=lua\n','local win=require("wetgenes.win").oven.win win:show() win:show("full") win:show() win:show("full")');
+				}
+				else
+				{
+					gamecake_post('cmd=lua\n','local win=require("wetgenes.win").oven.win win:show("full") win:show() win:show("full") win:show()');
+				}
+			}
+		};
+
+		window.addEventListener("resize",function(){setTimeout(resize,500);});
+		window.addEventListener("fullscreenchange",function(){setTimeout(resize,500);});
+		window.addEventListener("orientationchange",function(){setTimeout(resize,500);});
+		Module={};
+		Module.canvas=document.getElementById("gamecake_canvas");
+		Module.canvas_resize=function(){setTimeout(resize,500);};
+		Module.canvas_fullscreen=fullscreen;
+		Module.locateFile=function(inurl){
+			return "../exe/"+inurl;
+		};
+		Module.monitorRunDependencies=show_progress;
+		Module.preRun=function(){
+			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
+
+			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
+			FS.mkdir("/lua");
+			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+
+		};
+
+		Module.onRuntimeInitialized=function() {
+
+			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+
+			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+
+// create a pulse function and call it every frame
+			Module._pulse=function() {
+				cancelAnimationFrame(Module._pulseid);
+				if(!Module._pulse) { return; } // in the middle of reboot
+				Module._pulseid=requestAnimationFrame(Module._pulse);
+				var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
+				if(ret!=0) { cancelAnimationFrame(Module._pulseid); } // stop updating on error
+			};
+			Module._pulse();
+
+			setTimeout(resize,500); // call resize in a little while
+			
+			if (head.mobile){
+				Module.canvas_fullscreen(true);
+			};
+		};
+
+		(function(d, script) {
+			script = d.createElement('script');
+			script.type = 'text/javascript';
+			script.async = true;
+			script.src = '../exe/gamecake.js';
+			d.getElementsByTagName('head')[0].appendChild(script);
+		}(document));
+	}
+	
+	$("#iconbar_run").click(function(e){
+		e.preventDefault();
+		
+		var code = editor.getValue();
+
+		if(window.Module) // update
+		{
+			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
+			gamecake_post('cmd=lua\n',"oven.next='wetgenes.gamecake.fun.main'");
+			Module.canvas_resize();
+			Module._pulse(); // make sure the pulse is running again it may have stoped on error
+
+		}
+		else
+		{
+			gamecake_load_fun(code);
+		}
+		
+	});
+	$("#iconbar_patch").click(function(e){
+		e.preventDefault();
+	});
+	$("#iconbar_clearlog").click(function(e){
+		e.preventDefault();
+		$("#gamecake_log").text("");
+	});
+	$("#iconbar_revert").click(function(e){
+		e.preventDefault();
+		
+		var code=window.gamecake_original_code;
+
+		editor.setValue(code);
+		editor.clearSelection();
+		editor.focus();
+	});
+			
+	if(params.url && !params.url_donotload ) // fill pad with this code
+	{
+//		gamecake_load_fun("hardware,main=system.configurator({mode=\"fun64\"})");
+		
+		$.get(params.url,function(code){
+			window.gamecake_original_code=code;
+			editor.setValue(code);
+			editor.clearSelection();
+			editor.focus();
+			gamecake_load_fun(code);
+		});		
+	}
+	else
+	if(params.url) // fetch but do not run
+	{
+		$.get(params.url,function(code){
+			window.gamecake_original_code=code;
+		});		
+		gamecake_load_fun(code);
+	}
+	else
+	{
+		gamecake_load_fun(code);
+	}
+			
+$(document).keydown(function(event){
+    if(event.keyCode==112){return false;} // disable browsers F1
+    if(event.keyCode==122){return false;} // disable browsers F11
+});
+
+</script>
+
+<!--	Fullscreen button	-->
+<script>
+	$("#iconbar_full").on("mousedown",function(){
+		Module.canvas_fullscreen(true);
+	});
+</script>
+
+
+
+<div class="pop_wrapper about">
+	<div class="pop_wrap">
+		<div class="pop_close_wrap">
+			<a class="pop_close" onclick="$('.pop_wrapper.about').fadeToggle('fast');">x</a>
+		</div>
+		<div class="pop_text">
+			<div class="pop_head">
+				The FunPad lets you edit and run <a href="https://xriss.github.io/fun64" target="_blank">Fun64</a> code in any modern browser.
+				<p>Just paste your code into the editor and click <b>RUN</b> to start your application.</p>
+			</div>
+			<div class="pop_div">
+				<span>RUN</span>
+				<div class="pop_info">
+					Refresh this page and restart the running code. This code is saved locally on your browser until you clear the browser cache.
+				</div>
+			</div><div class="pop_div">
+				<span>OPEN</span>
+				<div class="pop_info">
+					Paste the link to a FUN64 code on <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a> or any raw fun.lua file online. Share the link with your friends for them to play your app.
+				</div>
+			</div><div class="pop_div">
+				<span>REVERT</span>
+				<div class="pop_info">
+					Restore code to the original state. The original state is the code that you copied into the pad.
+				</div>
+			</div><div class="pop_div">
+				<span>FULLSCREEN</span>
+				<div class="pop_info">
+					<p><b>Option 1</b></p>
+					Click on the game and and press F11 to run the app in fullscreen mode. Please enable WebAssembly if you're running the Edge browser.
+				</div>
+			</div><div class="pop_div">
+				<span>&#8689;</span>
+				<div class="pop_info">
+					<p><b>Option 2</b></p>
+					Go fullscreen. The size of the game screen will resize according to your presets; ie. move the divider to make it bigger or smaller.
+				</div>
+			</div><div class="pop_div">
+				<div class="pop_info">
+					<img src="../data/favicon.png" width="16px" height="16px"/> <b>Fun64</b> is a simple game engine designed for single file game sketches.
+					<p><a href="http://xriss.github.io/fun64" target="_blank">Visit the official site</a></p>
+					<p><a href="http://github.com/xriss/fun64" target="_blank">View the project on Github</a></p>
+				</div>
+			</div>
+			<div class="pop_head">
+				<p><span class="pad_icon">FunPad</span> is powered by Gamecake, WebAssembly JS and Lua.</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="pop_wrapper load">
+	<div class="pop_wrap" id="gamecake_div_input">
+		<div class="pop_close_wrap">
+			<a class="pop_close" onclick="$('.pop_wrapper.load').fadeToggle('fast');">x</a>
+		</div>
+		<div class="pop_text">
+			<div id="div_page_url">
+				<div class="pop_head">Paste the URL of your <i>gist</i> or <i>fun.lua</i> file &amp; press Enter</div>
+				<p><input type=text id="gamecake_text_input" autofocus="autofocus" placeholder="For example; https://gist.github.com/search?q=fun64+lua"></p>
+			</div>
+			<div class="pop_head title">Play some of the examples below</div>
+			<a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e" class="pop_div gist1">
+				<div class="pop_info">
+					Hello, World!
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F90f8c1d2e9cb0b9d307fe68aebb4b9c3" class="pop_div gist2">
+				<div class="pop_info">
+					Shadertoy
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatform.fun.lua" class="pop_div gist3">
+				<div class="pop_info">
+					Platform game
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatobj.fun.lua" class="pop_div gist4">
+				<div class="pop_info">
+					NPC Conversation
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fe6965fb7b34b9353fd744e223b0f6af6" class="pop_div gist5">
+				<div class="pop_info">
+					Swanky32 Colour Palette
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F0a3b22b101edf1a97fe5b2ca3e865dce" class="pop_div gist6">
+				<div class="pop_info">
+					Space Shooter
+				</div>
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F18eac9295deb6e51b097334639d6d55c" class="pop_div gist7">
+				<div class="pop_info">
+					Starfield shader
+				</div>
+			</a>
+			<div class="pop_head title">Or choose one from <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">Github Gist</a></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	
+	var params={};
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+		function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+	
+	{
+		$("#gamecake_text_input").keyup(function(e){
+			if(e.keyCode == 13)
+			{
+				params.url=$("#gamecake_text_input").val();
+				window.location="../pad/?"+$.param(params);
+			}
+		});
+	}
+	
+</script>
+</body>
+</html>

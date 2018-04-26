@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>Welcome to docs!</title>
+		<link rel='stylesheet' href='../../docs/docs.css' />
+	</head>
+	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
+
+	<div style="margin:64px 0px;">
+	<a style="display:block;" href="../../docs">/</a>
+	<a style="display:block;" href="../../docs/lua">/lua</a><a style="display:block;" href="../../docs/lua.wetgenes">/lua.wetgenes</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake">/lua.wetgenes.gamecake</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun">/lua.wetgenes.gamecake.fun</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.chatdown">/lua.wetgenes.gamecake.fun.chatdown</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat">/lua.wetgenes.gamecake.fun.chatdown.chat</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chats">/lua.wetgenes.gamecake.fun.chatdown.chats</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.entities">/lua.wetgenes.gamecake.fun.entities</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.entities.systems">/lua.wetgenes.gamecake.fun.entities.systems</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn">/lua.wetgenes.gamecake.fun.yarn</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn.items">/lua.wetgenes.gamecake.fun.yarn.items</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn.prefabs">/lua.wetgenes.gamecake.fun.yarn.prefabs</a><a style="display:block;" href="../../docs/lua.wetgenes.gamecake.fun.yarn.rules">/lua.wetgenes.gamecake.fun.yarn.rules</a>
+	</div>
+
+</div><div style="width:60%;display:inline-block;min-width:640px;">
+
+	
+<div style="margin:64px 0px;">
+<h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.parse">lua.wetgenes.gamecake.fun.chatdown.parse</a></h1>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L17">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
+<div><pre><code>rawsubjects = chatdown.parse(text)
+</code></pre><p>Parse text from flat text chatdown format into heirachical chat data, 
+which we refer to as rawsubjects, something that can be output easily 
+as json.</p>
+<p>This gives us a readonly rawsubjects structure that can be used to control 
+what text is displayed during a chat session.</p>
+<p>This is intended to be descriptive and logic less, any real logic 
+should be added using a real language that operates on this rawsubjects and 
+gets triggered by the names used. EG, filter out gotos unless certain 
+complicated conditions are met or change topics to redirect to an 
+alternative.</p>
+<p>A self documented example of chatdown formated text can be found in 
+lua.wetgenes.gamecake.fun.chatdown.text</p>
+</div>
+</div>
+
+
+</div></div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+
+if [[ $# -eq 0 ]] ; then
+    echo 'Pick a .fun.lua file to run, eg'
+    echo './start platform'
+    ls *.fun.lua
+    exit 0
+fi
+
+../exe/gamecake -lfun $* --console

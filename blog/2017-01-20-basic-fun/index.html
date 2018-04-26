@@ -1,0 +1,387 @@
+<html lang="en">
+<head><meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#131b1f">
+<title>Basic fun!</title>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Cabin:400,700');
+
+*, *::after, *::before{box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; -ms-box-sizing:border-box;}
+
+
+a,img{border:0; outline:none;}textarea:focus,input:focus{outline:0;}*:focus{outline:0;}
+
+html		{height:100%;}
+body, html	{-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; width:100%; padding:0; margin:0 auto;}
+body		{background:#58656b; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#3a3a3a; font-size-adjust:0.4; font-weight:normal; font-style:normal; min-width:100%; min-height:100%; display:table;}
+a			{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; -ms-transition:all .2s ease-in-out; transition:all .2s ease-in-out; cursor:pointer; overflow-wrap:break-word; word-wrap:break-word; word-break:break-word; -ms-hyphens:auto; -moz-hyphens:auto; -webkit-hyphens:auto; hyphens:auto;} /* Fix long urls */
+h1			{font-size:4em; font-weight:normal; color:#1400ff;}
+h2			{font-size:2em; font-weight:normal;}
+
+a			{color:#1400ff; text-decoration:none;}
+a:hover		{cursor:pointer;}
+b			{font-weight:700;}
+
+.wrap		{width:1024px; margin:0 auto;}
+.wrap.max	{width:100%;}
+.wrap.max.beep	{background:url('/fun64/data/beep_back.png'); height:100px; background-size:cover;}
+.wrap.eg	{padding-bottom:60px;}
+#content	{display:table-row-group;}
+
+
+.page_link	{display:inline-block; width:50%; vertical-align:top; margin-top:80px; margin-bottom:80px;}
+.page_link.page_top	{margin-top:20px; margin-bottom:20px;}
+.page_link:nth-of-type(2)	{text-align:right;}
+
+
+/*	INDEX styles
+	============================================= */
+.fun_bits		{width:1024px; margin:0 auto; font-size:14px; line-height:16px; color:#0b0088; position:relative; margin-top:80px;}
+.fun_bits pre	{width:1000px; margin:0 auto;}
+
+
+/*	INDEX NAVIGATION BAR styles
+	============================================= */
+.navi_wrap		{width:100%; margin:0 auto; background:#58656b; position:fixed; z-index:666; font-family:'Cabin',monospace,sans-serif;}
+.navi			{width:1024px; margin:0 auto; padding:20px 0;}
+.navi a			{text-decoration:none;}
+.navi a:hover	{color:#fff;}
+a.navi_link_home{display:inline-block; width:55%; color:#eaeaea; vertical-align:top; font-weight:700;}
+a.navi_link_all	{display:inline-block; width:11%; text-align:right; color:#eaeaea;}
+a.navi_link_home span:before {background:url('../../data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:""; margin-right:10px; zoom:70%;}
+a.navi_link_all.pad_link span:before {background:url('../../data/icon_pad.png')no-repeat center center; display:inline-block; background-size:contain; width:24px; height:24px; content:""; margin-right:10px; zoom:70%;}
+a.navi_link_all.beep_link span:before{background:url('../../data/icon_beep.png')no-repeat center center; display:inline-block; background-size:contain; width:20px; height:20px; content:""; margin-right:10px; zoom:70%;}
+
+
+/*	INDEX TOP SECTION styles
+	============================================= */
+.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:15%; left:0;}
+.fun_about		{color:#fff; font-size:38px; line-height:50px; width:50%; text-align:center; margin:0 auto;}
+a.fun_try		{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}
+a.fun_try:hover	{background-color:#FFEB3B;}
+.wasm_notice	{display:none; text-align:center; margin-top:20px;}
+
+
+/*	INDEX Beep
+	============================================= */
+.wrap.max.beep a	{width:100%; height:100%; background-color:rgba(28,50,64,0.8); display:block; margin-top:20px;}
+.wrap.max.beep a:hover	{background-color:rgba(30,72,99, 0.8);}
+.wrap.max.beep span	{text-align:center; display:block; color:#FFF; font-size:30px; line-height:100px;}
+.wrap.max.beep span:before {content:""; background:url(/fun64/data/icon_beep.png)no-repeat center center; width:30px; height:24px; display:inline-block; background-size:contain; margin-right:10px;}
+
+
+/*	INDEX EXAMPLES SECTION styles
+	============================================= */
+a.example		{position:relative; display:block; margin:0 auto; margin-top:20px; margin-bottom:20px; text-decoration:none;}
+a.example span	{display:block;}
+span.example_text_wrap	{position:absolute; width:350px; height:214px; background-color:#131b1f; color:#fff; right:0; top:0; padding:30px 40px;}
+.wrap a:nth-of-type(even) span.example_text_wrap	{left:0;}
+span.example_text_info	{color:#126a94;}
+span.example_text_head	{font-weight:700; font-size:28px; line-height:34px; padding:10px 0;}
+span.example_text		{}
+
+a.example:before, a.example:after	{content:""; background-color:#1c3240; width:70%; position:absolute; left:-65%; top:0; bottom:0; -webkit-transform:skewX(-20deg); transform:skewX(-20deg);}
+.wrap.eg a:nth-of-type(even):before	{display:none;}
+.wrap.eg a:nth-of-type(even):after	{left:auto; right:-18px; width:0; background-color:#437288; height:0; border-bottom:100px solid #eab000; border-left:100px solid transparent;}
+
+a.example:hover span.example_text_wrap	{background-color:#252263; transition:all .2s ease-in-out}
+
+/*	FOOTER styles
+	============================================= */
+	
+.foot		{background-color:#3e484c; color:#eee; border-top:1px solid #ddd; display:table-footer-group}
+.foot_wrap	{width:1024px; margin:0 auto; padding:60px; padding-bottom:20px; position:relative;}
+.foot_wrap a{color:#fff; text-decoration:none; font-weight:700;}
+.foot_wrap p a:hover{border-bottom:1px solid #00adff;}
+.foot_wrap p a:after{content:"\279a"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}
+.text		{font-weight:400;}
+.text span	{font-weight:700;}
+.text.wetus	{position:absolute; right:60px; bottom:20px;}
+.text.wetus *	{vertical-align:baseline;}
+.text.wetus img	{width:initial;}
+
+.text_head	{font-size:42px; font-weight:700; margin-bottom:40px;}
+
+a.hi			{display:block; position:relative; padding:20px;}
+a.hi span		{position:absolute; top:-10px; right:20px; padding:5px 10px; color:#fff; display:none;}
+a.hi:hover span	{display:block;}
+
+a.back_top		{display:block; text-align:center; text-decoration:none; color:#aaa; padding:20px 0; font-size:12px;}
+a.back_top:hover{background-color:#2d3538;}
+
+
+/*	BLOG styles
+	============================================= */
+
+.blog_bits, .post_page	{margin-top:100px;}
+
+.blog_head			{width:1024px; margin:0 auto; margin-top:20px;}
+.blog_head a:hover	{background-color:#e2e0e8;}
+
+span.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:700;}
+span.blog_post_user	{display:block; font-size:16px; margin-bottom:20px;}
+
+.blog_list_wrap		{width:1024px; margin:0 auto;}
+.line				{border-top:1px dashed #1400ff; margin-top:40px; margin-bottom:40px; position:relative;}
+.blog_info			{position:absolute; right:10px; top:10px;}
+
+.blog_wrap			{width:700px; margin:auto; font-size:20px; line-height:30px; border:0;}
+
+
+/*	BLOG post styles
+	============================================= */
+
+a.blog_post_link	{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:30px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}
+a.blog_post_link:nth-of-type(odd)	{background-color:#1400ff; color:#fff;}
+a.blog_post_link:nth-of-type(3n)	{margin-right:0;}
+a.blog_post_link:nth-of-type(1), a.blog_post_link:nth-of-type(2), a.blog_post_link:nth-of-type(3)	{margin-top:0;}
+a.blog_post_link:hover	{background-color:rgba(0,0,0,0.4); color:#fff;}
+
+a.blog_post_link span.blog_post_title	{display:block; font-size:26px; line-height:30px; font-weight:700;}
+a.blog_post_link span.blog_post_snip	{display:block; height:180px; overflow:hidden;}
+a.blog_post_link span.blog_post_user	{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}
+
+
+/*	BLOG paging links
+	============================================= */
+
+.paging div a	{text-decoration:none; color:#3a3a3a;}
+.paging div a:before {display:inline-block; vertical-align:top; content:"\021D0"; margin-right:5px;}
+.paging div:nth-of-type(2) a:before	{display:none;}
+.paging div:nth-of-type(2) a:after	{display:inline-block; vertical-align:top; content:"\0279C"; margin-left:5px;}
+.paging div a:hover {background-color:#e2e0e8;}
+
+
+/*	BLOG FUNPAD LINK - found beneath each post
+	============================================= */
+
+.blog_embed_wrap	{margin:0 auto; margin-top:60px;}
+.blog_embed_head	{width:700px; margin:auto;}
+
+a.bar				{display:block; width:100%; color:#f7f4fd; font-size:24px; text-align:center; background-color:#3a3a3a; border-radius:4px; padding:15px; text-decoration:none;}
+a.bar:hover			{background-color:#1400ff;}
+
+.blog_wrap code		{display:block; font-size:16px; overflow-x:scroll;}
+
+
+/*	Pace loading bar - currently not in use
+	============================================= */
+.pace .pace-progress {height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%;}
+.pace-inactive {display:none;}
+.pace {-webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none;}
+
+
+/*	FIREFOX font fix
+	============================================= */
+	
+@-moz-document url-prefix() {
+    body,html		{font-size:20px; line-height:1;}
+    .fun_bits pre	{font-size:18px; margin-left:35px;}
+    span.example_text_head	{font-size:32px;}
+    a.back_top		{font-size:14px;}
+}
+
+
+/*	MOBILE post styles
+	============================================= */
+@media screen and (max-width:1024px) {
+
+	body		{padding:0;}	
+	pre			{margin:0 auto;}
+	.fun_bits, .navi, .blog_head{width:100%; margin:0 auto; padding:50px 0;}
+	
+	.fun_bits	{font-size:12px; padding:80px 0; margin-top:80px;}
+	.navi a		{font-size:40px; width:25%; text-align:center;}
+	a.navi_link_home span:before	{zoom:70%;}
+	a.navi_link_all.git	{display:none;}
+	
+	.blog_head	{padding:50px; font-size:42px;}
+	.wrap		{width:100%; margin:0 auto;}
+	.fun_bits pre	{width:93%; margin:0 auto; margin-left:7%;}
+	.blog_list_wrap, a.blog_post_link	{width:860px;}
+	.wrap.eg	{padding-bottom:0; overflow-x:hidden;}
+	
+	a.example		{margin:0; width:100%; height:500px;}
+	a.example:before, a.example:after	{display:none;}
+	
+	.wrap.eg a:nth-of-type(1)	{background:url('../../data/example_01.png')no-repeat -900px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(2)	{background:url('../../data/example_03.png')no-repeat center center; background-size:cover;}
+	.wrap.eg a:nth-of-type(3)	{background:url('../../data/example_04.png')no-repeat -1255px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(4)	{background:url('../../data/example_05.png')no-repeat -1200px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(5)	{background:url('../../data/example_02.png')no-repeat -1200px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(6)	{background:url('../../data/example_06.png')no-repeat -200px center; background-size:cover;}
+	.wrap.eg a:nth-of-type(7)	{background:url('../../data/example_07.png')no-repeat center center; background-size:cover;}
+	
+	.fun_about_wrap	{top:10%;}
+	.fun_about		{font-size:60px; line-height:80px; width:70%;}
+	a.fun_try		{font-size:42px; display:inline-block; padding:30px 40px; width:initial; margin-top:25px;}
+	.wasm_notice	{display:block; font-size:28px; line-height:45px;}
+	
+	.wrap img		{width:100%; display:none;}
+	.foot_wrap .text_head img	{display:inline-block; vertical-align:top; width:50px; margin-top:-17px;}
+	.foot_wrap p	{font-size:38px; line-height:58px; padding:10px 0;}
+	.text.wetus		{position:initial;}
+	.text.wetus img	{width:80px;}
+	a.back_top		{padding:60px 0; font-size:32px;}
+	.foot_wrap p a:after	{font-size:38px;}
+	
+	span.example_text_wrap	{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}
+	span.example_text_head	{font-size:1.25em; line-height:1.25em;}
+	span.example_text_info	{margin-top:10px;}
+	
+	.blog_bits, .post_page	{margin-top:140px;}
+	
+	.blog_wrap p			{margin:60px 0; font-size:42px; line-height:82px;}
+	span.blog_post_user		{font-size:24px;}
+	span.blog_post_title	{font-size:60px; line-height:72px;}
+	
+	.blog_embed_head, .blog_wrap			{width:800px;}
+	a.blog_post_link						{display:block; margin:0 auto; margin-bottom:40px; font-size:38px; line-height:54px; height:400px;}
+	a.blog_post_link span.blog_post_title	{font-size:48px; line-height:68px;}
+	a.blog_post_link span.blog_post_snip	{height:200px;}
+	a.blog_post_link span.blog_post_user	{font-size:24px; width:960px;}
+	
+	.page_link, .page_link:nth-of-type(2)	{text-align:center;}
+	.page_link a	{font-size:38px;}
+	
+	.paging div a:before {font-size:55px; margin-top:-15px;}
+	.paging div:nth-of-type(2) a:after {font-size:38px;}
+	
+	a.bar			{font-size:36px; padding:40px 0;}
+	
+	.text_head		{margin-top:40px; margin-bottom:40px; font-size:48px;}
+	
+	.foot_wrap		{font-size:1.8em; width:100%;}
+	
+	@-moz-document url-prefix() {
+    .fun_bits pre	{width:100%; margin:0;}
+    }
+   
+}
+body {background:#f7f4fd;}
+
+</style>
+<script>
+	
+	var ua = navigator.userAgent.toLowerCase();
+	var is_android = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+	var is_firefox = ua.indexOf('firefox') > -1;
+	if(is_firefox && is_android)
+	{
+	// alert ('FF');
+	document.write('<meta name="viewport" content="user-scalable=1"/><!--320-->');
+	} else {
+	// alert ('NoFF');
+	document.write('<meta name="viewport" content="user-scalable=0"/><!--320-->');
+	}
+</script>
+<script	src="../../js/jquery-3.1.1.min.js" ></script>
+<script	src="../../js/google-code-prettify/prettify.js" ></script>
+<script	src="../../js/google-code-prettify/lang-lua.js" ></script>
+<link rel="stylesheet" type="text/css" href="../../js/google-code-prettify/skins/sons-of-obsidian.css" />
+<link rel="icon" type="image/png" href="../../data/favicon.png" /></head>
+<body><div id="content" role="main"><div class="navi_wrap">
+    <div class="navi">
+        <a href="../../" class="navi_link_home"><span>Fun64</span></a><a href="../../blog" class="navi_link_all log_link">Devlog</a><a href="../../pad" class="navi_link_all pad_link"><span>FunPad</span></a><a href="../../run/beep" class="navi_link_all beep_link"><span>Beep</span></a><a href="https://github.com/xriss/fun64" class="navi_link_all git">Github</a>
+    </div>
+</div><div class="wrap post_page"><div class="blog_head">You are reading: <a href="../../blog">Fun64 dev blog</a></div></div>
+
+<div class="wrap paging">
+	<div class="page_link page_top"></div><div class="page_link page_top"><a href="../../blog/2017-01-27-comic-test/">Newer post</a>
+</div>
+</div>
+
+<div class="blog_wrap">
+	<span class="blog_post_user">
+		<span>~ xriss</span>
+		<span><i>2017-01-20</i></span>
+	</span>
+	<span class="blog_post_title">Basic fun!</span>
+	<p>A cut down and basic fun example, we do not make many assumptions so 
+you are free to configure and setup your code to your own tastes.</p>
+<p>There are only two parts that you must provide for fun to work. The 
+first is a table describing the virtual hardware component setup, eg 
+the resolution of screen and tilemaps and sprite layers to display.</p>
+<pre><code>hardware={
+    {
+        component=&quot;screen&quot;,
+        size={424,240}, -- lowrez with a 1920x1080 aspect
+        scale=3, -- draw in a window at 3 times scale
+        fps=60, -- 60 fps please
+    },
+    ...
+}
+</code></pre><p>This requests the virtual hardware that will be setup before main is 
+called. system is a global table that will be created according to your 
+requested hardware and can then be referenced when the main function is 
+called.</p>
+<p>The second is a main function which will be called as a yield-able 
+co-routine with a table that should be treated as an incoming message. 
+Use the basic skeleton below to receive need.setup/update/draw 
+requests. As you can see it is possible to have multiple needs at once 
+and this call structure allows for a setup, repeat update/draw then cleanup 
+flow of code within this co-routine.</p>
+<pre><code>function main(need)
+    if not need.setup then need=coroutine.yield() end -- wait for setup request
+
+    -- perform setup
+
+    local done=false while not done do
+        need=coroutine.yield()
+
+        if need.update then
+
+            -- perform update
+
+        end
+
+        if need.draw then
+
+            -- perform draw
+
+        end            
+
+        if need.clean then done=true end -- cleanup requested
+    end
+
+    -- perform cleanup
+
+end
+</code></pre>	
+</div>
+
+
+<div class="blog_embed_wrap">
+	<div class="blog_embed_head">
+		<div><a href="../../pad/?url=../../blog/2017-01-20-basic-fun/basic.fun.lua" class="bar">View this program in FunPad</a></div>
+	</div>	
+</div>
+
+
+
+<div class="wrap paging">
+	<div class="page_link"></div><div class="page_link"><a href="../../blog/2017-01-27-comic-test/">Newer post</a>
+</div>
+</div>
+
+</div><div class="wrap max foot">
+	<span id="about"></span>
+	<div class="foot_wrap">
+		<div class="text">
+			<div class="text_head"><img src="../../data/favicon.png" width="40px"/> Fun64</div>
+			<p><a href="../../"><b>Fun64</b></a> is a super simple super lowrez single file game engine powered by <a href="https://github.com/xriss/gamecake">Gamecake</a>, <a href="http://webassembly.org/">WebAssembly JS</a> and <a href="https://www.lua.org/about.html">Lua</a>.</p>
+			<p>The <a href="https://xriss.github.io/fun64/pad/">FunPad</a> lets you edit and run Fun64 code in any modern browser using <a href="https://gist.github.com/search?q=fun64+lua">Github Gist</a> as storage, creating a unique url that you can share with others to play and collaborate on.</p>
+			<p><a href="https://xriss.github.io/fun64/run/beep/">Beep</a> is a simple frequency modulation synthesizer you can use to create sound effects <i>(or questionable tunes)</i> for your applications.</p>
+		</div>
+		<div><p><a href="http://github.com/xriss/fun64">Fun64 is on Github</a></p></div>
+		<div><p>Some documentation for functions can be found <a href="https://xriss.github.io/gamecake/">here</a>.</p></div>
+		<div class="text wetus"><a href="http://wetgenes.com" class="hi"><span>hi!</span><img src="../../data/wetus.png"/></a></div>
+	</div>
+	<a class="back_top" href="#">BACK TO TOP</a>
+</div>
+<script>
+	$('.back_top').click(function(){ 
+		$('html,body').animate({scrollTop:0}, 400);
+		return false; 
+	});
+</script></body>
+</html>

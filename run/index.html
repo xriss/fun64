@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title>fun64 gist player</title>
+	<script src="../exe/jquery.min.js"></script>
+	<style>
+.pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
+.pace-inactive { display:none; }
+.pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+
+*		{box-sizing:border-box;}
+html	{overflow:hidden;}
+body	{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px;}
+h1		{font-size:4em; font-weight:normal; color:#1400ff;}
+h2		{font-size:2em; font-weight:normal;}
+
+a		{color:#88f;}
+
+	</style>
+</head>
+<body>
+
+
+	<div id="gamecake_div_input" style="width:70%;display:block;margin:256px auto;" >
+		<div id="div_page_url">
+			<p>Paste in the address of a fun64 <a href="https://gist.github.com/search?q=fun64+lua" target="_blank">gist</a> or fun.lua file and press return to run it.</p>
+			<input type=text id="gamecake_text_input" style="width:100%;font-size:x-large">
+			<p>or use <a href="../pad" >funpad</a> to paste and run any code.</p>
+			<p>or try running one of these example gists.</p>
+			<p>
+<a href="../pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e">Hello World</a>
+</p>
+<p>
+<a href="../pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fe6965fb7b34b9353fd744e223b0f6af6">Palette Dump</a>
+</p>
+<p>
+<a href="../pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F90f8c1d2e9cb0b9d307fe68aebb4b9c3">Shader Toy</a>
+</p>
+
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		
+		var params={};
+		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+			function(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );
+		
+		if(params.url) // redirect to pad for all running now
+		{
+			window.location="../pad/?"+$.param(params);
+		}
+		else
+		{
+			$("#gamecake_div_input").show();
+
+			$("#gamecake_text_input").keyup(function(e){
+				if(e.keyCode == 13)
+				{
+					params.url=$("#gamecake_text_input").val();
+					window.location="../pad/?"+$.param(params);
+				}
+			});
+		}
+		
+	</script>
+	
+</body>
+</html>

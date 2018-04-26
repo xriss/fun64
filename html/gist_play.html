@@ -1,0 +1,113 @@
+<html>
+<head>
+	<title>fun64 gist player</title>
+	<script data-pace-options='{ "eventLag": false }' src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+	<script src="../exe/jquery.min.js"></script>
+	<style>
+.pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }
+.pace-inactive { display:none; }
+.pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+	</style>
+</head>
+<body style=" margin:0; padding:0; border:0; overflow:hidden; background:#000;">
+
+<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
+
+	local hx,hy,ss=424,240,3
+
+	local opts={
+		times=true, -- request simple time keeping samples
+
+		width=hx*ss,	-- display basics
+		height=hy*ss,
+		screen_scale=ss,
+	--	show="full",
+		title="fun",
+		start="wetgenes.gamecake.fun.main",
+		fun="start",
+		fps=60,
+		... -- include commandline opts
+	}
+
+	math.randomseed( os.time() ) -- try and randomise a little bit better
+
+	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
+
+	return oven:serv()
+
+--]]></script>
+
+
+	<div id="gamecake_container" style=" width:100%; height:100%; position:absolute; ">
+		<canvas id="gamecake_canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>
+		<script type="text/javascript">
+
+// query params
+
+			var params={};
+			window.location.search
+			  .replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
+				params[key] = value;
+			  }
+			);
+
+// check for gist
+			if(!params.gist) { alert("Need gist to run EG. ...?gist=urlofrawgist"); }
+
+			var gamecake_start=function() {
+
+//initialise lua
+				gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
+//				gamecake_post('cmd=lua\n',document.getElementById("gamecake_init_lua").innerHTML);
+
+// create a pulse function and call it every frame
+				var pulse;
+				pulse=function() {
+					requestAnimationFrame(pulse); // we need to always ask to be called again
+					gamecake_post('cmd=lua\n','return gamecake_pulse()');
+//					gamecake_post('cmd=lua\n','return oven:serv_pulse()');
+				};
+				requestAnimationFrame(pulse); // start the updates
+			}
+
+			var show_progress=function(n)
+			{
+				window.show_progress_max=window.show_progress_max || 0;
+				if(window.show_progress_max<n) { window.show_progress_max=n; }
+				var pct=Math.floor(100*(1-(n/window.show_progress_max)));
+				console.log("GameCake Loading "+pct+"%");
+			};
+			var resize=function(){
+				var e=document.getElementById("gamecake_container");
+				var w=parseFloat(window.getComputedStyle(e).width);
+				var h=parseFloat(window.getComputedStyle(e).height);
+				Module.setCanvasSize(w,h);
+				if(gamecake_post)
+				{
+					gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+				}
+			};
+			window.addEventListener("resize",resize);
+			Module={};
+			Module.canvas=document.getElementById("gamecake_canvas");
+			Module.canvas_resize=resize;
+			Module.memoryInitializerPrefixURL="../exe/";
+			Module['_main'] = function() {
+				gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
+				gamecake_start();
+				resize();
+			};
+			Module["preInit"] = function() {
+				FS.createPreloadedFile('/', "start.fun.lua", params.gist, true, false);
+				FS.mkdir("/lua");
+				FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+
+			};
+			Module["monitorRunDependencies"]=show_progress;
+
+
+		</script>
+		<script type="text/javascript" src="../exe/gamecake.js"></script>
+	</div>
+</body>
+</html>
