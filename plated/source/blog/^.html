@@ -1,20 +1,17 @@
 #^------------------------------
 #^title trim=ends
-#^------------------------------
 
 Fun64 Devlog
 
 
 #^------------------------------
 #^_blog_json
-#^------------------------------
 {
 	posts_per_page:12,
 }
 
 #^------------------------------
 #^_blog_page_body
-#^------------------------------
 <div class="wrap blog_bits"><div class="blog_head">You are reading: <span>Fun64 dev blog</span></div></div>
 
 <div class="wrap paging">
@@ -29,9 +26,10 @@ Fun64 Devlog
 
 
 #^------------------------------
-#^-Paging for main blog list page
+
+Paging for main blog list page
+
 #^link_older_page
-#^------------------------------
 <a href="{_it}">Older posts</a>
 
 #^link_newer_page
@@ -39,16 +37,18 @@ Fun64 Devlog
 
 
 #^------------------------------
-#^-This is for the blog list
+
+This is for the blog list
+
 #^blog_list
-#^------------------------------
 {_it._body}
 
 
 #^------------------------------
-#^-This is a single blog post viewed on its own page
+
+This is a single blog post viewed on its own page
+
 #^_blog_post_body_one
-#^------------------------------
 <div class="wrap post_page"><div class="blog_head">You are reading: <a href="{_root}blog">Fun64 dev blog</a></div></div>
 
 <div class="wrap paging">
@@ -72,9 +72,10 @@ Fun64 Devlog
 
 
 #^------------------------------
-#^-This is for the blog list
+
+This is for the blog list
+
 #^_blog_post_body_many
-#^------------------------------
 <a href="{_dirname}" class="blog_post_link">
 	<span class="blog_post_title">{_blog_post_json.title}</span>
 	<span class="blog_post_snip">{_blog_post_body}</span>
@@ -94,17 +95,17 @@ Fun64 Devlog
 
 #^------------------------------
 #^link_older_post
-#^------------------------------
 <a href="{_it}">Older post</a>
 
 #^------------------------------
 #^link_newer_post
-#^------------------------------
 <a href="{_it}">Newer post</a>
 
-#^------------------------------(used in single post)
-#^fun_blog_embed
 #^------------------------------
+
+(used in single post)
+
+#^fun_blog_embed
 
 <div class="blog_embed_wrap">
 	<div class="blog_embed_head">
