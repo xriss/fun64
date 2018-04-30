@@ -582,8 +582,8 @@ setup=function()
 
 			if player.near_npc then
 				local chats=entities.get("chats")
-				local chat=chats.get(player.near_npc.name)
-				s=chat.description and chat.description.text or chat.description_name
+				local chat=chats:get_subject(player.near_npc.name)
+				s=chat:get_tag("title") or s
 			end
 		end
 
@@ -769,9 +769,9 @@ controls=function(it,fast)
 			local callbacks=entities.manifest("callbacks")
 			callbacks[#callbacks+1]=function()
 
-				local chat=chats.get(it.near_npc.name)
-				chat.set_response("welcome")
-				menu.show( menu.chat(chat) )
+				local chat=chats:get_subject(subject_name)
+				chat:set_topic("welcome")
+				menu.show( menu.chat_to_menu_items(chat) )
 
 			end -- call later so we do not process menu input this frame
 
@@ -996,7 +996,9 @@ entities.systems.npc={
 
 chat_text=[[
 
-#npc1 A door shaped like a dead man.
+#npc1
+
+	=title A door shaped like a dead man.
 
 	=donuts 0
 
@@ -1028,8 +1030,8 @@ chat_text=[[
 		Be seeing you.
 	
 ]],
-chat_hook_decision=function(chat,a)
-	if chat.name=="npc1" then
+chat_hook_topic=function(chat,a)
+	if chat.subject_name=="npc1" then
 		if a.name=="exit" then
 			if not entities.get("added_donuts") then
 				entities.set("added_donuts",true)
@@ -1284,7 +1286,7 @@ add=function(opts)
 			space:remove(donut.body)
 			
 			local chats=entities.get("chats")
-			chats.set_proxy("npc1/donuts","+1")
+			chats:set_tag("npc1/donuts","+1")
 		end
 	end
 		
@@ -1655,15 +1657,7 @@ setup=function(items)
 	local chat_hook=function(chat,change,...)
 		local a,b=...
 
-		if     change=="description" then			print("description",chat.name,a.name)
-
-			for n,v in pairs(entities.systems) do
-				if v.chat_hook_description then 
-				   v.chat_hook_description(chat,a)
-				end
-			end
-
-		elseif change=="response"    then			print("response   ",chat.name,a.name)
+		if change=="subject"     then			print("subject ",chat.subject_name)
 
 			for n,v in pairs(entities.systems) do
 				if v.chat_hook_response then
@@ -1671,19 +1665,27 @@ setup=function(items)
 				end
 			end
 
-		elseif change=="decision"    then			print("decision   ",chat.name,a.name)
+		elseif change=="topic"   then			print("topic   ",chat.subject_name,a and a.name)
 
 			for n,v in pairs(entities.systems) do
-				if v.chat_hook_decision then
-				   v.chat_hook_decision(chat,a)
+				if v.chat_hook_topic then
+				   v.chat_hook_topic(chat,a)
 				end
 			end
 
-		elseif change=="proxy"       then			print("proxy      ",chat.name,a,b)
+		elseif change=="goto"   then			print("goto   ",chat.subject_name,a and a.name)
 
 			for n,v in pairs(entities.systems) do
-				if v.chat_hook_proxy then
-				   v.chat_hook_proxy(chat,a,b)
+				if v.chat_hook_goto then
+				   v.chat_hook_goto(chat,a)
+				end
+			end
+
+		elseif change=="tag"     then			print("tag     ",chat.subject_name,a,b)
+
+			for n,v in pairs(entities.systems) do
+				if v.chat_hook_tag then
+				   v.chat_hook_tag(chat,a,b)
 				end
 			end
 
@@ -1691,7 +1693,7 @@ setup=function(items)
 		
 	end
 
-	local chats=entities.set( "chats", chatdown.setup(chat_texts,chat_hook) )
+	local chats=entities.set( "chats", chatdown.setup_chats(chat_texts,chat_hook) )
 
 	local wstr=require("wetgenes.string")
 
@@ -1705,6 +1707,57 @@ setup=function(items)
 	menu.cx=math.floor((80-menu.width)/2)
 	menu.cy=0
 	
+	menu.chat_to_menu_items=function(chat)
+		local items={cursor=1,cursor_max=0}
+		
+		items.title=chat:get_tag("title")
+		items.portrait=chat:get_tag("portrait")
+		
+		local ss=chat.topic and chat.topic.text or {} if type(ss)=="string" then ss={ss} end
+		for i,v in ipairs(ss) do
+			if i>1 then
+				items[#items+1]={text="",chat=chat} -- blank line
+			end
+			items[#items+1]={text=chat:replace_tags(v)or"",chat=chat}
+		end
+
+		for i,v in ipairs(chat.gotos or {}) do
+
+			items[#items+1]={text="",chat=chat} -- blank line before each goto
+
+			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
+
+			local color=30
+			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this goto
+			
+			local f=function(item,menu)
+
+				if item.topic and item.topic.name then
+
+					chats.changes(chat,"topic",item.topic)
+
+					chat:set_topic(item.topic.name)
+
+					chat:set_tags(item.topic.tags)
+					
+					if item.topic.name=="exit" then
+						menu.show(nil)
+					else
+						menu.show(menu.chat_to_menu_items(chat))
+					end
+
+
+				end
+			end
+			
+			items[#items+1]={text=chat:replace_tags(ss[1])or"",chat=chat,topic=v,cursor=i,call=f,color=color} -- only show first line
+			items.cursor_max=i
+		end
+
+		return items
+	end
+
+--[[
 	menu.chat=function(chat)
 		local items={cursor=1,cursor_max=0}
 		
@@ -1748,8 +1801,22 @@ setup=function(items)
 
 		return items
 	end
+]]
 
-	function menu.show(items)
+	function menu.show(items,subject_name,topic_name)
+	
+		if subject_name and topic_name then
+
+			local chat=chats:get_subject(subject_name)
+			chat:set_topic(topic_name)
+			items=menu.chat_to_menu_items(chat)
+
+		elseif subject_name then
+
+			local chat=chats:get_subject(subject_name)
+			items=menu.chat_to_menu_items(chat)
+
+		end
 	
 		if not items then
 			menu.items=nil
