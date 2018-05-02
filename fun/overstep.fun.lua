@@ -2461,6 +2461,22 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 
 --ls(menu.chats.rawsubjects)
 
+		menu.auto_menu_items=function(it,action)
+		
+			local items={cursor=1,cursor_max=0}
+			
+			items.title="Inventory"
+			items.cursor_max=0
+			
+			for i=1,10 do
+				items.cursor_max=items.cursor_max+1
+				items[#items+1]={text="Test "..i,cursor=items.cursor_max}
+			end
+			
+
+			return items
+		end
+
 		menu.chat_to_menu_items=function(chat)
 			local items={cursor=1,cursor_max=0}
 			
@@ -2515,6 +2531,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 				return
 			end
 			menu.active=true
+			menu.skip_update=1
 
 			if items.call then items.call(items,menu) end -- refresh
 			
@@ -2561,6 +2578,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 	update=function(menu)
 	
 		if not menu.active then return end
+		if menu.skip_update then menu.skip_update=nil return end
 		
 		local up0=ups(0)
 		
@@ -2582,7 +2600,11 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 			end
 		end
 
-		if up0.button("fire_clr") then
+		if up0.button("b_clr") then
+
+			menu.show()
+
+		elseif up0.button("fire_clr") then
 
 			for i,item in ipairs(menu.items) do
 			
@@ -2594,7 +2616,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 											
 					end
 
-					if item.topic.name=="exit" then -- and exit menu
+					if item.topic and item.topic.name=="exit" then -- and exit menu
 						menu.show()
 					end
 					
@@ -4939,6 +4961,15 @@ entities.systems.insert{ caste="yarn",
 			end
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
+			
+		elseif	up.button("b_clr") then -- menu
+
+print("menu")
+
+				local menu=entities.systems.menu
+
+				menu.show( menu.auto_menu_items(items.ids.player[0],"inventory") )
+
 		end
 	end
 		
