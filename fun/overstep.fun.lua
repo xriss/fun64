@@ -4,6 +4,26 @@ local chatdown=require("wetgenes.gamecake.fun.chatdown")
 local wstr=require("wetgenes.string")
 function ls(s) print(wstr.dump(s))end
 
+local best_hx=320
+local best_hy=200
+do
+	local shy=math.floor((system.fullscreen_height or 1920)/best_hy) -- require at least 200 pixels high
+	if shy<1 then shy=1 end -- sanity
+
+	local shx=math.floor((system.fullscreen_width  or 1080)/best_hx) -- require at least 320 pixels wide
+	if shx<1 then shx=1 end -- sanity
+	
+	if shx<shy then shy=shx end -- pick the smallest divider
+
+-- these may be slightly higher than the inputs, to fully cover available screen aspect ratio
+	best_hx=math.floor(system.fullscreen_width/shy)
+	best_hy=math.floor(system.fullscreen_height/shy)
+
+-- for 1920x1080 we would get 384x216
+--	print( "myscreensize" , best_hx , best_hy , "x"..shy )
+
+end
+
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	update=function() -- called at a steady 60fps
@@ -16,8 +36,10 @@ hardware,main=system.configurator({
 		entities.call("draw")
 	end,
 --	hx=320,hy=180, -- wide screen 40x22.5  tiles (8x8) 1/6 of 1920x1080
-	hx=384,hy=216, -- wide screen 48x27    tiles (8x8) 1/5 of 1920x1080
+--	hx=384,hy=216, -- wide screen 48x27    tiles (8x8) 1/5 of 1920x1080
 --	hx=480,hy=270, -- wide screen 60x33.75 tiles (8x8) 1/4 of 1920x1080
+
+	hx=best_hx,hy=best_hy, -- autoscale, with at least 320x200
 })
 
 hardware.screen.zxy={0,-1}
