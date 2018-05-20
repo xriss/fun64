@@ -19,6 +19,7 @@ for f,it in ipairs{
 	fp:write("local fontdata"..it.hx.."x"..it.hy.."={}\n")
 	for i=32,127 do
 
+		local s=string.char(i)
 		local x=i%16
 		local y=(i-x)/16
 		
@@ -26,7 +27,7 @@ for f,it in ipairs{
 		
 		print(f,i,x,y)
 		
-		fp:write("fontdata"..it.hx.."x"..it.hy.."["..i.."]=[[\n"..p.."]]\n")
+		fp:write("fontdata"..it.hx.."x"..it.hy.."["..i.."]=[[\n"..p.."]]-- "..s.."\n")
 
 	end
 
