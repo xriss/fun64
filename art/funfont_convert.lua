@@ -45,34 +45,34 @@ local g4x8=wgrd.create("U8_INDEXED",4*16,8*8,1)
 g4x8:palette(0,256,p) -- palette
 g4x8:pixels(0,0,4*16,8*8,g:pixels(0,0,4*16,8*8)) -- copy
 mips[2]=g4x8:create_convert("U8_RGBA")
-g4x8:create_convert("U8_RGBA"):save("funfont_4x8.png")
+g4x8:create_convert("U8_RGBA"):save("funfont64_4x8.png")
 g4x8:scale(4*16*4,8*8*4,1)
 g4x8:palette(0,256,p) -- temp bugfix
-g4x8:create_convert("U8_RGBA"):save("funfont_4x8.fat.png")
+g4x8:create_convert("U8_RGBA"):save("funfont64_4x8.fat.png")
 
 local g8x8=wgrd.create("U8_INDEXED",8*16,8*8,1)
 g8x8:palette(0,256,p) -- palette
 g8x8:pixels(0,0,8*16,8*8,g:pixels(0,64,8*16,8*8)) -- copy
-g8x8:create_convert("U8_RGBA"):save("funfont_8x8.png")
+g8x8:create_convert("U8_RGBA"):save("funfont64_8x8.png")
 g8x8:scale(8*16*4,8*8*4,1)
 g8x8:palette(0,256,p) -- temp bugfix
-g8x8:create_convert("U8_RGBA"):save("funfont_8x8.fat.png")
+g8x8:create_convert("U8_RGBA"):save("funfont64_8x8.fat.png")
 
 local g8x16=wgrd.create("U8_INDEXED",8*16,16*8,1)
 g8x16:palette(0,256,p) -- palette
 g8x16:pixels(0,0,8*16,16*8,g:pixels(0,128,8*16,16*8)) -- copy
 mips[1]=g8x16:create_convert("U8_RGBA")
-g8x16:create_convert("U8_RGBA"):save("funfont_8x16.png")
+g8x16:create_convert("U8_RGBA"):save("funfont64_8x16.png")
 --g8x16:create_convert("U8_RGBA"):scale(8*16,8*8,1):save("funfont_8x8_grey.png")
 --g8x16:create_convert("U8_RGBA"):scale(4*16,8*8,1):save("funfont_4x8_grey.png")
 g8x16:scale(8*16*4,16*8*4,1)
 g8x16:palette(0,256,p) -- temp bugfix
-g8x16:create_convert("U8_RGBA"):save("funfont_8x16.fat.png")
+g8x16:create_convert("U8_RGBA"):save("funfont64_8x16.fat.png")
 
 
 g:scale(128*4,256*4,1)
 g:palette(0,256,p) -- temp bugfix
-g:create_convert("U8_RGBA"):save("funfont_noalpha.fat.png")
+g:create_convert("U8_RGBA"):save("funfont64_noalpha.fat.png")
 
 
 mips[3]=mips[2]:duplicate():scale(4*16/ 2,8*8/ 2,1)
@@ -92,9 +92,9 @@ for i=2,8 do
 	gmip:pixels(x,y,g.width,g.height,g:pixels(0,0,g.width,g.height))
 	x=x+g.width
 end
-gmip:save("funfont_mips.png")
+gmip:save("funfont64_mips.png")
 gmip:convert("U8_INDEXED")
 local p2=gmip:palette(0,256)
 gmip:scale(8*16*4,16*8*1.5*4,1)
 gmip:palette(0,256,p2) -- temp bugfix
-gmip:convert("U8_RGBA"):save("funfont_mips.fat.png")
+gmip:convert("U8_RGBA"):save("funfont64_mips.fat.png")
