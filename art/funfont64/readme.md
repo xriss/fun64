@@ -20,7 +20,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_mips.fat.png
+![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_mips.fat.png "FunFont64")
 
 
 FunFont64
