@@ -10,17 +10,23 @@ local bitdown=require("wetgenes.gamecake.fun.bitdown")
 
 local g=wgrd.create():load("funfont.png")
 
-local fp=io.open("funfont.lua","w")
-
 local rawpos={
 	{ hx=4,hy= 8,	px= 16,py= 0,  },
 	{ hx=8,hy= 8,	px=112,py= 0,  },
 	{ hx=8,hy=16,	px=112,py=128, },
 }
 
+
+-- write out a lua data module using bitdown format
+
+local fp=io.open("funfont64.lua","w")
+
+fp:write("local funfont64={}\n")
+
 for f,it in ipairs(rawpos) do
 
-	fp:write("local fontdata"..it.hx.."x"..it.hy.."={}\n")
+	fp:write("local data"..it.hx.."x"..it.hy.."={}\n")
+	fp:write("funfont64.data"..it.hx.."x"..it.hy.."=fontdata"..it.hx.."x"..it.hy.."\n")
 	for i=0,255 do
 		if ( i>=0x20 and i<=0x7e ) or ( i>=0xa0 and i<=0xff ) then -- valid
 
@@ -32,14 +38,17 @@ for f,it in ipairs(rawpos) do
 			
 			print(f,i,x,y)
 			
-			fp:write("fontdata"..it.hx.."x"..it.hy.."["..i.."]=[[\n"..p.."]]-- "..s.."\n")
+			fp:write("data"..it.hx.."x"..it.hy.."["..i.."]=[[\n"..p.."]]-- "..s.."\n")
 
 		end
 	end
 
 end
+fp:write("return funfont64\n")
 
 fp:close()
+
+
 
 local mips={}
 

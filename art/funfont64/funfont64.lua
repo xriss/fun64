@@ -1,4 +1,6 @@
+local funfont64={}
 local fontdata4x8={}
+funfont64.data4x8=fontdata4x8
 fontdata4x8[32]=[[
 . . . . 
 . . . . 
@@ -1910,6 +1912,7 @@ fontdata4x8[255]=[[
 7 7 7 . 
 ]]-- ÿ
 local fontdata8x8={}
+funfont64.data8x8=fontdata8x8
 fontdata8x8[32]=[[
 . . . . . . . . 
 . . . . . . . . 
@@ -3821,6 +3824,7 @@ fontdata8x8[255]=[[
 7 7 7 7 7 7 . . 
 ]]-- ÿ
 local fontdata8x16={}
+funfont64.data8x16=fontdata8x16
 fontdata8x16[32]=[[
 . . . . . . . . 
 . . . . . . . . 
@@ -7259,3 +7263,4 @@ fontdata8x16[255]=[[
 7 7 7 7 7 7 . . 
 7 7 7 7 7 7 . . 
 ]]-- ÿ
+return funfont64
