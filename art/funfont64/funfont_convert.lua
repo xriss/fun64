@@ -10,6 +10,18 @@ local bitdown=require("wetgenes.gamecake.fun.bitdown")
 
 local g=wgrd.create():load("funfont.png")
 
+-- font is drawn as ISO 8859-15 , so this maps us back to unicode , may need to add in more chars?
+local unimap={
+	[0xa4]=0x20ac,
+	[0xa6]=0x0160,
+	[0xa8]=0x0161,
+	[0xb4]=0x017d,
+	[0xb8]=0x017e,
+	[0xbc]=0x0152,
+	[0xbd]=0x0153,
+	[0xbe]=0x0178,
+}
+
 local rawpos={
 	{ hx=4,hy= 8,	px= 16,py= 0,  },
 	{ hx=8,hy= 8,	px=112,py= 0,  },
@@ -26,11 +38,11 @@ fp:write("local funfont64={}\n")
 for f,it in ipairs(rawpos) do
 
 	fp:write("local data"..it.hx.."x"..it.hy.."={}\n")
-	fp:write("funfont64.data"..it.hx.."x"..it.hy.."=fontdata"..it.hx.."x"..it.hy.."\n")
+	fp:write("funfont64.data"..it.hx.."x"..it.hy.."=data"..it.hx.."x"..it.hy.."\n")
 	for i=0,255 do
 		if ( i>=0x20 and i<=0x7e ) or ( i>=0xa0 and i<=0xff ) then -- valid
 
-			local s=utf8.char(i)
+			local s=utf8.char( unimap[i] or i )
 			local x=i%16
 			local y=(i-x)/16
 			
