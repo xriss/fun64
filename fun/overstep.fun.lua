@@ -7,7 +7,7 @@ function ls(s) print(wstr.dump(s))end
 local best_hx=320
 local best_hy=200
 do
-	local fsx,fsy=system.fullscreen_height or 1920,system.fullscreen_width  or 1080
+	local fsx,fsy=system.fullscreen_width  or 1920,system.fullscreen_height or 1080
 	local shy=math.floor((fsy)/best_hy) -- require at least 200 pixels high
 	if shy<1 then shy=1 end -- sanity
 
@@ -17,11 +17,11 @@ do
 	if shx<shy then shy=shx end -- pick the smallest divider
 
 -- these may be slightly higher than the inputs, to fully cover available screen aspect ratio
-	best_hx=math.floor(fsx/shy)
+	best_hx=math.floor(fsx/shx)
 	best_hy=math.floor(fsy/shy)
 
 -- for 1920x1080 we would get 384x216
---	print( "myscreensize" , best_hx , best_hy , "x"..shy )
+	print( "myscreensize" , best_hx , best_hy , "x"..shy )
 
 end
 
