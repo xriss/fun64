@@ -17,7 +17,7 @@ do
 	if shx<shy then shy=shx end -- pick the smallest divider
 
 -- these may be slightly higher than the inputs, to fully cover available screen aspect ratio
-	best_hx=math.floor(fsx/shx)
+	best_hx=math.floor(fsx/shy)
 	best_hy=math.floor(fsy/shy)
 
 -- for 1920x1080 we would get 384x216
