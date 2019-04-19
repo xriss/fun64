@@ -1,6 +1,6 @@
 cd `dirname $0`
 
-source settings
+. ./settings
 
 echo
 echo You may now view the plated web site locally at:
@@ -9,4 +9,7 @@ echo http://0.0.0.0:8000/
 echo
 
 ./node_modules/.bin/ecstatic --root=$PLATED_OUTPUT
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6220165d06226864fa706b2734721375c03409b7
