@@ -11,7 +11,7 @@ echo
 cd ../pages
 git status
 
-git add ..
+git add .
 git commit -m"publish bump"
 git pull
 git push
