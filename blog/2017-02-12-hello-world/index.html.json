@@ -1,7 +1,12 @@
 {
  "_blog_json": {
   "dir": "blog/.",
-  "posts_per_page": 12
+  "feed": {
+   "title": "Title"
+  },
+  "posts_per_feed": 20,
+  "posts_per_page": 12,
+  "url": "/"
  },
  "_blog_page_body": "<div class=\"wrap blog_bits\"><div class=\"blog_head\">You are reading: <span>Fun64 dev blog</span></div></div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link page_top\">{_blog_page_older:link_older_page}</div><div class=\"page_link page_top\">{_blog_page_newer:link_newer_page}</div>\n</div>\n\n<div class=\"blog_list_wrap\">{_list:blog_list}</div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link\">{_blog_page_older:link_older_page}</div><div class=\"page_link\">{_blog_page_newer:link_newer_page}</div>\n</div>\n\n",
  "_blog_post_body": "<p>Apparently if your hello world example is longer than a couple of lines \nthen you are open to ridicule.</p>\n<p>I suspect people who say this are blissfully unaware exactly what _main \ngets up to before your code runs and lets not even think about C++.</p>\n<p>Still it helps to remove as much gubbins as possible so the code that&#39;s \nrunning becomes obvious. Fun64 is built around the idea that you should \ndefine the hardware before the program runs so lets hide all that away \ninside a builtin function that will set you up a basic looking screen \nto work with.</p>\n<p>Introducing the configurator, this function will provide various setups \ndepending on the mode requested and also provide a main function that \nwill allow you to provide a single update function rather than dealing \nwith more complexities. A single update function is less optimal but a \nperfectly reasonable way to write short bits of test code.</p>\n<p>So far the only mode we have is &quot;fun64&quot; which will get you a 60fps \n320x240 screen with three layers and the Swanky32 palette. The three \nlayers gives us a copper background, a tile+sprite foreground and \nfinally a text overlay on the very top. For graphical memory we have a \n64x64 area of 8x8 tiles (4096 in total) and we auto upload the 4x8 \nfun64 font to the very first line for use by the text layer.</p>\n<p>NB: If you clobber this top line all your text will go funny, just like \non real hardware.</p>\n<p>The main point of the layers is so we can have drop shadows between \nthem, the text layer on top gives us some very cheap 80s looking text \nmenus when used with solid blocks of background color.</p>\n",

@@ -1,4 +1,4 @@
-
+echo `dirname $0`
 if [ -e "`dirname $0`/gamecake.nix" ] ; then
 	`dirname $0`/gamecake.nix "$@"
 
@@ -9,7 +9,7 @@ elif [ "`uname`" = "Darwin" ] ; then
 	`dirname $0`/gamecake.osx "$@"
 
 elif [ "`uname -m`" = "armv6l" ] ; then
-	`dirname $0`/gamecake.raspi "$@"
+	`dirname $0`/gamecake.arm "$@"
 
 elif [ "`getconf LONG_BIT`" = "64" ] ; then
 	`dirname $0`/gamecake.x64 "$@"

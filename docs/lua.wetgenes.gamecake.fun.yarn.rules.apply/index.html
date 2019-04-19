@@ -16,15 +16,13 @@
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.rules.apply">lua.wetgenes.gamecake.fun.yarn.rules.apply</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua#L62">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua</a></div>
-<div><pre><code>item = rules.apply(item,method,...)
-</code></pre><p>item.rules must be a list of rule names and the order in which they should 
+<div><pre><code>item = rules.apply(item,method,...)</code></pre><p>item.rules must be a list of rule names and the order in which they should 
 be applied to this item.</p>
 <p>Call the given method in each rule with the item and the remaining arguments.</p>
 <p>If the method returns a value then no more methods will be applied even 
 if more rules are listed.</p>
 <p>We always return the passed in item so that calls can be chained.</p>
-<pre><code>item = item:apply(method,...)
-</code></pre><p>This function is inserted into the items.metatable so it can be called 
+<pre><code>item = item:apply(method,...)</code></pre><p>This function is inserted into the items.metatable so it can be called 
 directly from an item.</p>
 </div>
 </div>

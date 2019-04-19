@@ -13,9 +13,11 @@ local ls=function(t) print(require("wetgenes.string").dump(t)) end
 
 local chat_text=[[
 
-#example Conversation NPC
+#example
 
-	A rare bread of NPC who will fulfil all your conversational desires for 
+	=title Hello!!!
+
+	A rare breed of NPC who will fulfil all your conversational desires for 
 	a very good price.
 
 	=sir sir/madam
@@ -131,8 +133,10 @@ menu.show(items) then call update and draw each frame.
 
 ]]
 -----------------------------------------------------------------------------
-function setup_menu(items)
+function setup_menu(chats)
 
+	if type(chats)=="string" then chats=chatdown.setup_chats(chats) end
+	
 	local wstr=require("wetgenes.string")
 
 	local menu={}
@@ -144,7 +148,20 @@ function setup_menu(items)
 	menu.cx=math.floor((80-menu.width)/2)
 	menu.cy=0
 	
-	function menu.show(items)
+	function menu.show(items,subject_name,topic_name)
+	
+		if subject_name and topic_name then
+
+			local chat=chats:get_subject(subject_name)
+			chat:set_topic(topic_name)
+			items=menu.chat_to_menu_items(chat)
+
+		elseif subject_name then
+
+			local chat=chats:get_subject(subject_name)
+			items=menu.chat_to_menu_items(chat)
+
+		end
 
 		if items.call then items.call(items,menu) end -- refresh
 		
@@ -221,6 +238,51 @@ function setup_menu(items)
 	
 	end
 	
+	menu.chat_to_menu_items=function(chat)
+		local items={cursor=1,cursor_max=0}
+		
+		items.title=chat:get_tag("title")
+		items.portrait=chat:get_tag("portrait")
+		
+		local ss=chat.topic and chat.topic.text or {} if type(ss)=="string" then ss={ss} end
+		for i,v in ipairs(ss) do
+			if i>1 then
+				items[#items+1]={text="",chat=chat} -- blank line
+			end
+			items[#items+1]={text=chat:replace_tags(v)or"",chat=chat}
+		end
+
+		for i,v in ipairs(chat.gotos or {}) do
+
+			items[#items+1]={text="",chat=chat} -- blank line before each goto
+
+			local ss=v and v.text or {} if type(ss)=="string" then ss={ss} end
+
+			local color=30
+			if chat.viewed[v.name] then color=28 end -- we have already seen the response to this goto
+			
+			local f=function(item,menu)
+
+				if item.topic and item.topic.name then
+
+					chats.changes(chat,"topic",item.topic)
+
+					chat:set_topic(item.topic.name)
+
+					chat:set_tags(item.topic.tags)
+
+					menu.show(menu.chat_to_menu_items(chat))
+
+				end
+			end
+			
+			items[#items+1]={text=chat:replace_tags(ss[1])or"",chat=chat,topic=v,cursor=i,call=f,color=color} -- only show first line
+			items.cursor_max=i
+		end
+
+		return items
+	end
+
 	menu.draw=function()
 
 		local tprint=system.components.text.text_print
@@ -257,8 +319,6 @@ function setup_menu(items)
 
 	end
 	
-
-	if items then menu.show(items) end	
 	return menu
 end
 
@@ -275,8 +335,8 @@ Update and draw loop, called every frame.
 update=function()
 
 	if not setup_done then
-		chats=chatdown.setup(chat_text)
-		menu=setup_menu( chats.get_menu_items("example") )
+		menu=setup_menu( chat_text )
+		menu.show(nil,"example","welcome")
 		setup_done=true
 	end
 	

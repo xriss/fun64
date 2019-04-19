@@ -15,11 +15,16 @@
 	
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.entities.call">lua.wetgenes.gamecake.fun.entities.call</a></h1>
-<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua#L205">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua</a></div>
-<div><pre><code>entities.call(fname,...)
-</code></pre><p>for every entity call the function named fname like so</p>
-<pre><code>it[fname](it,...)
-</code></pre></div>
+<div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua#L332">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/entities.lua</a></div>
+<div><pre><code>entities.call(fname,...)</code></pre><p>If fname is a string then that method will be invoked for every item 
+where it exists like so.</p>
+<pre><code>if it[fname] then it[fname](it,...) end</code></pre><p>if fname is a function then it will result in every item geting 
+called with that function like so.</p>
+<pre><code>fname(it,...)</code></pre><p>The calls are always made backwards through the table so that an item 
+can choose to delete itself.</p>
+<p>Finally we return the number of calls we made so you can keep track of 
+currently active items.</p>
+</div>
 </div>
 
 

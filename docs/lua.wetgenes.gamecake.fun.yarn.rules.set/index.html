@@ -16,18 +16,14 @@
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.rules.set">lua.wetgenes.gamecake.fun.yarn.rules.set</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua#L28">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua</a></div>
-<div><pre><code>rule = rules.set(rule)
-</code></pre><p>Set this base rule into the name space using rule.name which must 
+<div><pre><code>rule = rules.set(rule)</code></pre><p>Set this base rule into the name space using rule.name which must 
 be a string.</p>
 <p>Multiple rules can be applied to an item and each rule will be applied 
 in the order listed.</p>
 <p>A rule is a table of named functions that can be applied to an item.</p>
-<pre><code>rule.setup(item)
-</code></pre><p>Must setup the item so that it is safe to call the other rules on it.</p>
-<pre><code>rule.clean(item)
-</code></pre><p>Should cleanup anything that needs cleaning.</p>
-<pre><code>rule.tick(item)
-</code></pre><p>Should perform a single time tick update on the item.
+<pre><code>rule.setup(item)</code></pre><p>Must setup the item so that it is safe to call the other rules on it.</p>
+<pre><code>rule.clean(item)</code></pre><p>Should cleanup anything that needs cleaning.</p>
+<pre><code>rule.tick(item)</code></pre><p>Should perform a single time tick update on the item.
 <br/>
 <br/></p>
 </div>

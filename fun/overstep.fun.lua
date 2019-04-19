@@ -4,6 +4,27 @@ local chatdown=require("wetgenes.gamecake.fun.chatdown")
 local wstr=require("wetgenes.string")
 function ls(s) print(wstr.dump(s))end
 
+local best_hx=320
+local best_hy=200
+do
+	local fsx,fsy=system.fullscreen_width  or 1920,system.fullscreen_height or 1080
+	local shy=math.floor((fsy)/best_hy) -- require at least 200 pixels high
+	if shy<1 then shy=1 end -- sanity
+
+	local shx=math.floor((fsx)/best_hx) -- require at least 320 pixels wide
+	if shx<1 then shx=1 end -- sanity
+	
+	if shx<shy then shy=shx end -- pick the smallest divider
+
+-- these may be slightly higher than the inputs, to fully cover available screen aspect ratio
+	best_hx=math.floor(fsx/shy)
+	best_hy=math.floor(fsy/shy)
+
+-- for 1920x1080 we would get 384x216
+	print( "myscreensize" , best_hx , best_hy , "x"..shy )
+
+end
+
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	update=function() -- called at a steady 60fps
@@ -16,8 +37,10 @@ hardware,main=system.configurator({
 		entities.call("draw")
 	end,
 --	hx=320,hy=180, -- wide screen 40x22.5  tiles (8x8) 1/6 of 1920x1080
-	hx=384,hy=216, -- wide screen 48x27    tiles (8x8) 1/5 of 1920x1080
+--	hx=384,hy=216, -- wide screen 48x27    tiles (8x8) 1/5 of 1920x1080
 --	hx=480,hy=270, -- wide screen 60x33.75 tiles (8x8) 1/4 of 1920x1080
+
+	hx=best_hx,hy=best_hy, -- autoscale, with at least 320x200
 })
 
 hardware.screen.zxy={0,-1}
@@ -2461,6 +2484,22 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 
 --ls(menu.chats.rawsubjects)
 
+		menu.auto_menu_items=function(it,action)
+		
+			local items={cursor=1,cursor_max=0}
+			
+			items.title="Inventory"
+			items.cursor_max=0
+			
+			for i=1,10 do
+				items.cursor_max=items.cursor_max+1
+				items[#items+1]={text="Test "..i,cursor=items.cursor_max}
+			end
+			
+
+			return items
+		end
+
 		menu.chat_to_menu_items=function(chat)
 			local items={cursor=1,cursor_max=0}
 			
@@ -2515,6 +2554,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 				return
 			end
 			menu.active=true
+			menu.skip_update=1
 
 			if items.call then items.call(items,menu) end -- refresh
 			
@@ -2561,6 +2601,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 	update=function(menu)
 	
 		if not menu.active then return end
+		if menu.skip_update then menu.skip_update=nil return end
 		
 		local up0=ups(0)
 		
@@ -2582,7 +2623,11 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 			end
 		end
 
-		if up0.button("fire_clr") then
+		if up0.button("b_clr") then
+
+			menu.show()
+
+		elseif up0.button("fire_clr") then
 
 			for i,item in ipairs(menu.items) do
 			
@@ -2594,7 +2639,7 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 											
 					end
 
-					if item.topic.name=="exit" then -- and exit menu
+					if item.topic and item.topic.name=="exit" then -- and exit menu
 						menu.show()
 					end
 					
@@ -4939,6 +4984,15 @@ entities.systems.insert{ caste="yarn",
 			end
 
 			entities.systems.yarn.cursor=nil -- do not show if we are using keys
+			
+		elseif	up.button("b_clr") then -- menu
+
+print("menu")
+
+				local menu=entities.systems.menu
+
+				menu.show( menu.auto_menu_items(items.ids.player[0],"inventory") )
+
 		end
 	end
 		

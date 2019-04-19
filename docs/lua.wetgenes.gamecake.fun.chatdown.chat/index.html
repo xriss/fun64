@@ -22,8 +22,7 @@
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat.get_tag">lua.wetgenes.gamecake.fun.chatdown.chat.get_tag</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L276">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>tag_value = chat:get_tag(tag_name)
-</code></pre><p>The same as chats:get_tag but the subject of this chat is the 
+<div><pre><code>tag_value = chat:get_tag(tag_name)</code></pre><p>The same as chats:get_tag but the subject of this chat is the 
 default root.</p>
 </div>
 </div>
@@ -31,8 +30,7 @@ default root.</p>
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat.replace_tags">lua.wetgenes.gamecake.fun.chatdown.chat.replace_tags</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L304">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>output = chat:replace_tags(input)
-</code></pre><p>The same as chats:replace_tags but the subject of this chat is the 
+<div><pre><code>output = chat:replace_tags(input)</code></pre><p>The same as chats:replace_tags but the subject of this chat is the 
 default root.</p>
 </div>
 </div>
@@ -40,8 +38,7 @@ default root.</p>
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat.set_tag">lua.wetgenes.gamecake.fun.chatdown.chat.set_tag</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L290">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>tag_value = chat:set_tag(tag_name,tag_value)
-</code></pre><p>The same as chats:set_tag but the subject of this chat is the 
+<div><pre><code>tag_value = chat:set_tag(tag_name,tag_value)</code></pre><p>The same as chats:set_tag but the subject of this chat is the 
 default root.</p>
 </div>
 </div>
@@ -49,50 +46,38 @@ default root.</p>
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat.set_tags">lua.wetgenes.gamecake.fun.chatdown.chat.set_tags</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L318">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>chat:set_tags(tags)
-</code></pre><p>Set all the values in the given table of {tag_name=tag_value} pairs.</p>
+<div><pre><code>chat:set_tags(tags)</code></pre><p>Set all the values in the given table of {tag_name=tag_value} pairs.</p>
 </div>
 </div>
 
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chat.set_topic">lua.wetgenes.gamecake.fun.chatdown.chat.set_topic</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L333">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>chat:set_topic(topic_name)
-</code></pre><p>Set the current topic for this chat object, information about this 
+<div><pre><code>chat:set_topic(topic_name)</code></pre><p>Set the current topic for this chat object, information about this 
 topic and its gotos are built from and stored in this chat object.</p>
-<pre><code>chat.topic_name
-</code></pre><p>Will be set to the given topic name.</p>
+<pre><code>chat.topic_name</code></pre><p>Will be set to the given topic name.</p>
 <p>We merge all gotos found in this topic and all topic parents by 
 iterating over the dotnames. We only use add each topic once and each 
 topic may have a bit of logic that decides if it should be displayed.</p>
-<pre><code>&lt;topic_name?logic_test
-</code></pre><p>So this would goto the topic_name if the logic_test passes. The logic 
+<pre><code>&lt;topic_name?logic_test</code></pre><p>So this would goto the topic_name if the logic_test passes. The logic 
 test is written simmilar to a url query after the question mark comes a 
 number of tests that are then &amp; or | together in left to right order 
 (no operator precedence).</p>
-<pre><code>&lt;topic_name?count&lt;10&amp;seen==false
-</code></pre><p>So this would display the goto option if count is less than 10 and seen 
+<pre><code>&lt;topic_name?count&lt;10&amp;seen==false</code></pre><p>So this would display the goto option if count is less than 10 and seen 
 is set to false. These variables we are testing are tag_names and 
 default to the current subject chat but could reference other subjects 
 by explicitly including a root.</p>
 <p>Available logic tests are</p>
 <pre><code>name==value
-name=value
-</code></pre><p>True if the tag is set to this value.</p>
-<pre><code>name!=value
-</code></pre><p>True if the tag is not set to this value.</p>
-<pre><code>name&lt;value
-</code></pre><p>True if the tag is less than this value (numeric test).</p>
-<pre><code>name&gt;value
-</code></pre><p>True if the tag is more than this value (numeric test).</p>
-<pre><code>name&lt;=value
-</code></pre><p>True if the tag is less than or equal to this value (numeric test).</p>
-<pre><code>name&gt;=value
-</code></pre><p>True if the tag is more than or equal to  this value (numeric test).</p>
+name=value</code></pre><p>True if the tag is set to this value.</p>
+<pre><code>name!=value</code></pre><p>True if the tag is not set to this value.</p>
+<pre><code>name&lt;value</code></pre><p>True if the tag is less than this value (numeric test).</p>
+<pre><code>name&gt;value</code></pre><p>True if the tag is more than this value (numeric test).</p>
+<pre><code>name&lt;=value</code></pre><p>True if the tag is less than or equal to this value (numeric test).</p>
+<pre><code>name&gt;=value</code></pre><p>True if the tag is more than or equal to  this value (numeric test).</p>
 <p>All of these tests can be preceded by a ! to negate them so</p>
 <pre><code>name!=vale
-!name==value
-</code></pre><p>Are both a test for inequality.</p>
+!name==value</code></pre><p>Are both a test for inequality.</p>
 <p>Multiple tests can be joined together by &amp; (and) or | (or) this logic 
 will be applied to a running total moving from left to right as the 
 values are evaluated with the final value deciding if this goto will be 

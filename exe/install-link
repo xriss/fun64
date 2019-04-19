@@ -19,7 +19,7 @@ elif [ "`uname`" = "Darwin" ] ; then
         SRCEXT="osx"
 
 elif [ "`uname -m`" = "armv6l" ] ; then
-        SRCEXT="raspi"
+        SRCEXT="arm"
 
 elif [ "`getconf LONG_BIT`" = "64" ] ; then
         SRCEXT="x64"

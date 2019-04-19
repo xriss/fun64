@@ -1,7 +1,12 @@
 {
  "_blog_json": {
   "dir": "blog/.",
-  "posts_per_page": 12
+  "feed": {
+   "title": "Title"
+  },
+  "posts_per_feed": 20,
+  "posts_per_page": 12,
+  "url": "/"
  },
  "_blog_page_body": "<div class=\"wrap blog_bits\"><div class=\"blog_head\">You are reading: <span>Fun64 dev blog</span></div></div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link page_top\">{_blog_page_older:link_older_page}</div><div class=\"page_link page_top\">{_blog_page_newer:link_newer_page}</div>\n</div>\n\n<div class=\"blog_list_wrap\">{_list:blog_list}</div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link\">{_blog_page_older:link_older_page}</div><div class=\"page_link\">{_blog_page_newer:link_newer_page}</div>\n</div>\n\n",
  "_blog_post_body": "<p>Lets see if we can build 4lfa.com style comics using just fun64 :)</p>\n",
