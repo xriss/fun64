@@ -1,8 +1,4 @@
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6220165d06226864fa706b2734721375c03409b7
 # The directory to write output files into
 
 PLATED_OUTPUT=../pages
