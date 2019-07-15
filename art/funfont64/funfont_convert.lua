@@ -39,7 +39,7 @@ fp:write("local funfont64={}\n")
 
 for f,it in ipairs(rawpos) do
 
-	fp:write("local data"..it.hx.."x"..it.hy.."={}\n")
+	fp:write("local data"..it.hx.."x"..it.hy..it.style.."={}\n")
 	fp:write("funfont64.data"..it.hx.."x"..it.hy..it.style.."=data"..it.hx.."x"..it.hy..it.style.."\n")
 	for i=0,255 do
 		if ( i>=0x20 and i<=0x7e ) or ( i>=0xa0 and i<=0xff ) then -- valid

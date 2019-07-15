@@ -7263,7 +7263,7 @@ data8x16[255]=[[
 7 7 7 7 7 7 . . 
 7 7 7 7 7 7 . . 
 ]]-- ÿ
-local data8x16={}
+local data8x16r={}
 funfont64.data8x16r=data8x16r
 data8x16r[32]=[[
 . . . . . . . . 
