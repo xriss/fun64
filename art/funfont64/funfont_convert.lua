@@ -8,7 +8,7 @@ local wgrd=require("wetgenes.grd")
 local bitdown=require("wetgenes.gamecake.fun.bitdown")
 
 
-local g=wgrd.create():load("funfont.png")
+local gfun=wgrd.create():load("funfont.png")
 
 -- font is drawn as ISO 8859-15 , so this maps us back to unicode , may need to add in more chars?
 local unimap={
@@ -23,14 +23,16 @@ local unimap={
 }
 
 local rawpos={
-	{ hx=4,hy= 8,	px= 16,py= 0,  },
-	{ hx=8,hy= 8,	px=112,py= 0,  },
-	{ hx=8,hy=16,	px=112,py=128, },
+	{ hx=4,hy= 8,	px= 16,py= 0,  style="", },
+	{ hx=8,hy= 8,	px=112,py= 0,  style="", },
+	{ hx=8,hy=16,	px=112,py=128, style="", },
+	{ hx=8,hy=16,	px=272,py=128, style="r", },
 }
 
 
 -- write out a lua data module using bitdown format
 
+local g=gfun
 local fp=io.open("funfont64.lua","w")
 
 fp:write("local funfont64={}\n")
@@ -38,7 +40,7 @@ fp:write("local funfont64={}\n")
 for f,it in ipairs(rawpos) do
 
 	fp:write("local data"..it.hx.."x"..it.hy.."={}\n")
-	fp:write("funfont64.data"..it.hx.."x"..it.hy.."=data"..it.hx.."x"..it.hy.."\n")
+	fp:write("funfont64.data"..it.hx.."x"..it.hy..it.style.."=data"..it.hx.."x"..it.hy..it.style.."\n")
 	for i=0,255 do
 		if ( i>=0x20 and i<=0x7e ) or ( i>=0xa0 and i<=0xff ) then -- valid
 
@@ -50,7 +52,7 @@ for f,it in ipairs(rawpos) do
 			
 			print(f,i,x,y)
 			
-			fp:write("data"..it.hx.."x"..it.hy.."["..i.."]=[[\n"..p.."]]-- "..s.."\n")
+			fp:write("data"..it.hx.."x"..it.hy..it.style.."["..i.."]=[[\n"..p.."]]-- "..s.."\n")
 
 		end
 	end
@@ -63,6 +65,8 @@ fp:close()
 
 
 local mips={}
+
+local g=gfun
 
 g:palette(0,2,{0,0,0,255}) -- remove transparency
 local p=g:palette(0,256)
@@ -100,6 +104,16 @@ g8x16:palette(0,256,p) -- temp bugfix
 g8x16:create_convert("U8_RGBA"):save("funfont64_8x16.fat.png")
 
 
+local g=gfun
+local g8x16r=wgrd.create("U8_INDEXED",8*chx,16*chy,1)
+g8x16r:palette(0,256,p) -- palette
+g8x16r:pixels(0,0,8*chx,16*chy,g:pixels(rawpos[4].px,rawpos[4].py,8*chx,16*chy)) -- copy
+g8x16r:create_convert("U8_RGBA"):save("funfont64_8x16r.png")
+g8x16r:scale(8*chx*4,16*chy*4,1)
+g8x16r:palette(0,256,p) -- temp bugfix
+g8x16r:create_convert("U8_RGBA"):save("funfont64_8x16r.fat.png")
+
+
 g:scale(g.width*4,g.height*4,1)
 g:palette(0,256,p) -- temp bugfix
 g:create_convert("U8_RGBA"):save("funfont64_noalpha.fat.png")
@@ -128,3 +142,5 @@ local p2=gmip:palette(0,256)
 gmip:scale(gmip.width*4,gmip.height*4,1)
 gmip:palette(0,256,p2) -- temp bugfix
 gmip:convert("U8_RGBA"):save("funfont64_mips.fat.png")
+
+
