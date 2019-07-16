@@ -99,9 +99,10 @@ mips[1]=g8x16:create_convert("U8_RGBA")
 g8x16:create_convert("U8_RGBA"):save("funfont64_8x16.png")
 --g8x16:create_convert("U8_RGBA"):scale(8*16,8*8,1):save("funfont_8x8_grey.png")
 --g8x16:create_convert("U8_RGBA"):scale(4*16,8*8,1):save("funfont_4x8_grey.png")
-g8x16:scale(8*chx*4,16*chy*4,1)
-g8x16:palette(0,256,p) -- temp bugfix
-g8x16:create_convert("U8_RGBA"):save("funfont64_8x16.fat.png")
+g=g8x16:duplicate()
+g:scale(8*chx*4,16*chy*4,1)
+g:palette(0,256,p) -- temp bugfix
+g:create_convert("U8_RGBA"):save("funfont64_8x16.fat.png")
 
 
 local g=gfun
@@ -109,11 +110,13 @@ local g8x16r=wgrd.create("U8_INDEXED",8*chx,16*chy,1)
 g8x16r:palette(0,256,p) -- palette
 g8x16r:pixels(0,0,8*chx,16*chy,g:pixels(rawpos[4].px,rawpos[4].py,8*chx,16*chy)) -- copy
 g8x16r:create_convert("U8_RGBA"):save("funfont64_8x16r.png")
-g8x16r:scale(8*chx*4,16*chy*4,1)
-g8x16r:palette(0,256,p) -- temp bugfix
-g8x16r:create_convert("U8_RGBA"):save("funfont64_8x16r.fat.png")
+g=g8x16r:duplicate()
+g:scale(8*chx*4,16*chy*4,1)
+g:palette(0,256,p) -- temp bugfix
+g:create_convert("U8_RGBA"):save("funfont64_8x16r.fat.png")
 
 
+local g=gfun:duplicate()
 g:scale(g.width*4,g.height*4,1)
 g:palette(0,256,p) -- temp bugfix
 g:create_convert("U8_RGBA"):save("funfont64_noalpha.fat.png")
@@ -137,10 +140,22 @@ for i=2,8 do
 	y=y+g.height
 end
 gmip:save("funfont64_mips.png")
-gmip:convert("U8_INDEXED")
-local p2=gmip:palette(0,256)
-gmip:scale(gmip.width*4,gmip.height*4,1)
-gmip:palette(0,256,p2) -- temp bugfix
-gmip:convert("U8_RGBA"):save("funfont64_mips.fat.png")
+
+local gf=gmip:duplicate():convert("U8_INDEXED")
+local p2=gf:palette(0,256)
+gf:scale(gmip.width*4,gf.height*4,1)
+gf:palette(0,256,p2) -- temp bugfix
+gf:convert("U8_RGBA"):save("funfont64_mips.fat.png")
+
+gmip:pixels(0,0,g8x16r.width,g8x16r.height,g8x16r:create_convert("U8_RGBA"):pixels(0,0,g8x16r.width,g8x16r.height))
+gmip:save("funfont64r_mips.png")
+
+local gf=gmip:duplicate():convert("U8_INDEXED")
+local p2=gf:palette(0,256)
+gf:scale(gmip.width*4,gf.height*4,1)
+gf:palette(0,256,p2) -- temp bugfix
+gf:convert("U8_RGBA"):save("funfont64r_mips.fat.png")
+
+
 
 

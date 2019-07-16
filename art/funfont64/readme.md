@@ -1,6 +1,7 @@
 
 ![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_mips.fat.png "FunFont64")
 
+![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64r_mips.fat.png "FunFont64")
 
 FunFont64
 =========
@@ -8,9 +9,7 @@ FunFont64
 FunFont64 is primarily a 4x8 fixed width pixel font designed for use in 
 Fun64 as the smallest fixed font you can get away with.
 
-This base 4x8 font has been upscaled by hand to 8x8 and 8x16, we may 
-need to add a 16x32 as well but for now 8x16 is big enough for my 
-needs.
+This base 4x8 font has been upscaled by hand to 8x8 and 8x16.
 
 At 8x16 it is a readable console font on 1080p displays.
 
@@ -18,6 +17,8 @@ As a sideffect of this upscaling the strokes are rather thick so
 perhaps consider this font bold by default. This also makes us sans 
 serif, although a small amount of serif hackery is used on thin glyphs 
 to help cover the fixed width.
+
+A non bold version at 8x16 has also been included.
 
 Although we have an 8x8 version I would avoid using it for walls of 
 text as the fatness and lack of linespace makes it looked rather ugly. 
