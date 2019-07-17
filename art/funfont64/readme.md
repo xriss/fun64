@@ -1,7 +1,7 @@
 
-![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_mips.fat.png "FunFont64")
-
-![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64r_mips.fat.png "FunFont64")
+![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_bold_mips.fat.png "FunFont64")
+![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_regular_mips.fat.png "FunFont64")
+![FunFont64](https://github.com/xriss/fun64/blob/master/art/funfont64/funfont64_italic_mips.fat.png "FunFont64")
 
 FunFont64
 =========

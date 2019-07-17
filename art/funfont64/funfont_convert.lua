@@ -64,99 +64,116 @@ fp:write("return funfont64\n")
 fp:close()
 
 
-
-local mips={}
-
-local g=gfun
-
-g:palette(0,2,{0,0,0,255}) -- remove transparency
-local p=g:palette(0,256)
-g:save("funfont_noalpha.png")
-
 local chx=16
 local chy=16
 
-local g4x8=wgrd.create("U8_INDEXED",4*chx,8*chy,1)
-g4x8:palette(0,256,p) -- palette
-g4x8:pixels(0,0,4*chx,8*chy,g:pixels(rawpos[1].px,rawpos[1].py,4*chx,8*chy)) -- copy
-mips[2]=g4x8:create_convert("U8_RGBA")
-g4x8:create_convert("U8_RGBA"):save("funfont64_4x8.png")
-g4x8:scale(4*chx*4,8*chy*4,1)
-g4x8:palette(0,256,p) -- temp bugfix
-g4x8:create_convert("U8_RGBA"):save("funfont64_4x8.fat.png")
-
-local g8x8=wgrd.create("U8_INDEXED",8*chx,8*chy,1)
-g8x8:palette(0,256,p) -- palette
-g8x8:pixels(0,0,8*chx,8*chy,g:pixels(rawpos[2].px,rawpos[2].py,8*chx,8*chy)) -- copy
-g8x8:create_convert("U8_RGBA"):save("funfont64_8x8.png")
-g8x8:scale(8*chx*4,8*chy*4,1)
-g8x8:palette(0,256,p) -- temp bugfix
-g8x8:create_convert("U8_RGBA"):save("funfont64_8x8.fat.png")
-
-local g8x16=wgrd.create("U8_INDEXED",8*chx,16*chy,1)
-g8x16:palette(0,256,p) -- palette
-g8x16:pixels(0,0,8*chx,16*chy,g:pixels(rawpos[3].px,rawpos[3].py,8*chx,16*chy)) -- copy
-mips[1]=g8x16:create_convert("U8_RGBA")
-g8x16:create_convert("U8_RGBA"):save("funfont64_8x16.png")
---g8x16:create_convert("U8_RGBA"):scale(8*16,8*8,1):save("funfont_8x8_grey.png")
---g8x16:create_convert("U8_RGBA"):scale(4*16,8*8,1):save("funfont_4x8_grey.png")
-g=g8x16:duplicate()
-g:scale(8*chx*4,16*chy*4,1)
-g:palette(0,256,p) -- temp bugfix
-g:create_convert("U8_RGBA"):save("funfont64_8x16.fat.png")
-
-
 local g=gfun
+
+print("funfont_noalpha.png")
+
+gfun:palette(0,2,{ 0,0,0,255 , 255,255,255,255 }) -- remove transparency 
+local pal=gfun:palette(0,256) -- remember palette
+
+
+print("funfont64_4x8b.png")
+
+local g4x8b=wgrd.create("U8_INDEXED",4*chx,8*chy,1)
+g4x8b:palette(0,256,pal) -- palette
+g4x8b:pixels(0,0,4*chx,8*chy,g:pixels(rawpos[1].px,rawpos[1].py,4*chx,8*chy)) -- copy
+g4x8b:create_convert("U8_RGBA"):save("funfont64_4x8b.png")
+
+
+print("funfont64_8x8b.png")
+
+local g8x8b=wgrd.create("U8_INDEXED",8*chx,8*chy,1)
+g8x8b:palette(0,256,pal) -- palette
+g8x8b:pixels(0,0,8*chx,8*chy,g:pixels(rawpos[2].px,rawpos[2].py,8*chx,8*chy)) -- copy
+g8x8b:create_convert("U8_RGBA"):save("funfont64_8x8b.png")
+
+
+print("funfont64_8x16b.png")
+
+local g8x16b=wgrd.create("U8_INDEXED",8*chx,16*chy,1)
+g8x16b:palette(0,256,pal) -- palette
+g8x16b:pixels(0,0,8*chx,16*chy,g:pixels(rawpos[3].px,rawpos[3].py,8*chx,16*chy)) -- copy
+g8x16b:create_convert("U8_RGBA"):save("funfont64_8x16b.png")
+
+
+print("funfont64_8x16r.png")
+
 local g8x16r=wgrd.create("U8_INDEXED",8*chx,16*chy,1)
-g8x16r:palette(0,256,p) -- palette
+g8x16r:palette(0,256,pal) -- palette
 g8x16r:pixels(0,0,8*chx,16*chy,g:pixels(rawpos[4].px,rawpos[4].py,8*chx,16*chy)) -- copy
 g8x16r:create_convert("U8_RGBA"):save("funfont64_8x16r.png")
-g=g8x16r:duplicate()
-g:scale(8*chx*4,16*chy*4,1)
-g:palette(0,256,p) -- temp bugfix
-g:create_convert("U8_RGBA"):save("funfont64_8x16r.fat.png")
+
+print("funfont64_8x16r.png")
+
+local g8x16i=wgrd.create("U8_INDEXED",8*chx,16*chy,1)
+g8x16i:palette(0,256,pal) -- palette
+g8x16i:pixels(0,0,8*chx,16*chy,g:pixels(rawpos[5].px,rawpos[5].py,8*chx,16*chy)) -- copy
+g8x16i:create_convert("U8_RGBA"):save("funfont64_8x16i.png")
 
 
-local g=gfun:duplicate()
-g:scale(g.width*4,g.height*4,1)
-g:palette(0,256,p) -- temp bugfix
-g:create_convert("U8_RGBA"):save("funfont64_noalpha.fat.png")
+local buildmips=function(m1,m2,m3,m4,m5,m6,m7,m8)
+
+	local mips={m1,m2,m3,m4,m5,m6,m7,m8}
+
+	mips[2]=mips[2] or mips[1]:duplicate():scale(4*chx/ 1,8*chy/ 1,1)
+	mips[3]=mips[3] or mips[2]:duplicate():scale(4*chx/ 2,8*chy/ 2,1)
+	mips[4]=mips[4] or mips[3]:duplicate():scale(4*chx/ 4,8*chy/ 4,1)
+	mips[5]=mips[5] or mips[4]:duplicate():scale(4*chx/ 8,8*chy/ 8,1)
+	mips[6]=mips[6] or mips[5]:duplicate():scale(4*chx/16,8*chy/16,1)
+	mips[7]=mips[7] or mips[6]:duplicate():scale(4*chx/32,8*chy/32,1)
+	mips[8]=mips[8] or mips[7]:duplicate():scale(4*chx/64,8*chy/64,1)
 
 
-mips[3]=mips[2]:duplicate():scale(4*chx/ 2,8*chy/ 2,1)
-mips[4]=mips[2]:duplicate():scale(4*chx/ 4,8*chy/ 4,1)
-mips[5]=mips[2]:duplicate():scale(4*chx/ 8,8*chy/ 8,1)
-mips[6]=mips[2]:duplicate():scale(4*chx/16,8*chy/16,1)
-mips[7]=mips[2]:duplicate():scale(4*chx/32,8*chy/32,1)
-mips[8]=mips[2]:duplicate():scale(4*chx/64,8*chy/64,1)
+-- first mip is on the left
+	local gmip=wgrd.create():load("funfont_mips_background.png"):convert("U8_RGBA") -- ,8*16,16*8*1.5,1)
+	local g=mips[1]:create_convert("U8_RGBA")
+	gmip:pixels(0,0,g.width,g.height,g:pixels(0,0,g.width,g.height))
+-- all other mips are on the right
+	local x=g.width
+	local y=0
+	for i=2,8 do
+		local g=mips[i]:create_convert("U8_RGBA")
+		gmip:pixels(x,y,g.width,g.height,g:pixels(0,0,g.width,g.height))
+		y=y+g.height
+	end
 
-local gmip=wgrd.create():load("funfont_mips_background.png"):convert("U8_RGBA") -- ,8*16,16*8*1.5,1)
-local g=mips[1]
-gmip:pixels(0,0,g.width,g.height,g:pixels(0,0,g.width,g.height))
-local x=g.width
-local y=0
-for i=2,8 do
-	local g=mips[i]
-	gmip:pixels(x,y,g.width,g.height,g:pixels(0,0,g.width,g.height))
-	y=y+g.height
+	return gmip
 end
-gmip:save("funfont64_mips.png")
 
-local gf=gmip:duplicate():convert("U8_INDEXED")
-local p2=gf:palette(0,256)
-gf:scale(gmip.width*4,gf.height*4,1)
-gf:palette(0,256,p2) -- temp bugfix
-gf:convert("U8_RGBA"):save("funfont64_mips.fat.png")
+print("mipmaping funfont64_bold_mips.png")
+buildmips( g8x16b:create_convert("U8_RGBA") , g4x8b:create_convert("U8_RGBA") ):save("funfont64_bold_mips.png")
 
-gmip:pixels(0,0,g8x16r.width,g8x16r.height,g8x16r:create_convert("U8_RGBA"):pixels(0,0,g8x16r.width,g8x16r.height))
-gmip:save("funfont64r_mips.png")
+print("mipmaping funfont64_regular_mips.png")
+buildmips( g8x16r:create_convert("U8_RGBA") ):save("funfont64_regular_mips.png")
 
-local gf=gmip:duplicate():convert("U8_INDEXED")
-local p2=gf:palette(0,256)
-gf:scale(gmip.width*4,gf.height*4,1)
-gf:palette(0,256,p2) -- temp bugfix
-gf:convert("U8_RGBA"):save("funfont64r_mips.fat.png")
+print("mipmaping funfont64_italic_mips.png")
+buildmips( g8x16i:create_convert("U8_RGBA") ):save("funfont64_italic_mips.png")
 
 
+-- create fat versions
 
+for i,name in ipairs{
+
+	"funfont64_4x8b",
+	"funfont64_8x8b",
+	"funfont64_8x16b",
+	"funfont64_8x16i",
+	"funfont64_8x16r",
+
+	"funfont64_bold_mips",
+	"funfont64_regular_mips",
+	"funfont64_italic_mips",
+
+} do
+
+print("fatening "..name..".png")
+	
+	local g=wgrd.create():load(name..".png")
+	g:scale(g.width*4,g.width*4,1)
+	g:create_convert("U8_RGBA"):save(name..".fat.png")
+
+end
 
