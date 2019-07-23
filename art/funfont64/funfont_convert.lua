@@ -171,7 +171,7 @@ for i,name in ipairs{
 
 print("fatening "..name..".png")
 	
-	local g=wgrd.create():load(name..".png")
+	local g=wgrd.create():load(name..".png"):convert("U8_INDEXED")
 	g:scale(g.width*4,g.width*4,1)
 	g:create_convert("U8_RGBA"):save(name..".fat.png")
 
