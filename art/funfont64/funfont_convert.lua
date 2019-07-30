@@ -152,11 +152,13 @@ build_IEC_8859_15(
 
 for i,name in ipairs{
 
+--[[
 	"funfont64_4x8b",
 	"funfont64_8x8b",
 	"funfont64_8x16b",
 	"funfont64_8x16i",
 	"funfont64_8x16r",
+]]
 
 	"funfont64_mips",
 
