@@ -20,6 +20,8 @@ local unimap={
 	[0xbc]=0x0152,
 	[0xbd]=0x0153,
 	[0xbe]=0x0178,
+	[0x7f]=0x25A0, -- black box
+
 }
 
 local rawpos={
@@ -43,15 +45,18 @@ for f,it in ipairs(rawpos) do
 	fp:write("local data"..it.hx.."x"..it.hy..it.style.."={}\n")
 	fp:write("funfont64.data"..it.hx.."x"..it.hy..it.style.."=data"..it.hx.."x"..it.hy..it.style.."\n")
 	for i=0,255 do
-		if ( i>=0x20 and i<=0x7e ) or ( i>=0xa0 and i<=0xff ) then -- valid
+		if ( i>=0x20 and i<=0x7f ) or ( i>=0xa0 and i<=0xff ) then -- valid
 
-			local s=utf8.char( unimap[i] or i )
+			local c=unimap[i] or i
+			local s=utf8.char( c )
 			local x=i%16
 			local y=(i-x)/16
 			
+			if i<32 or ( i>127 and i<128+32 ) then s="" end -- bad control codes
+			
 			p=bitdown.grd_pix_idx(g,nil,it.px+x*it.hx,it.py+y*it.hy,it.hx,it.hy)
 			
-			print(f,i,x,y)
+			print(f,i,x,y,c,s)
 			
 			fp:write("data"..it.hx.."x"..it.hy..it.style.."["..i.."]=[[\n"..p.."]]-- "..s.."\n")
 
