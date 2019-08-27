@@ -16,9 +16,8 @@ Which is mostly the first 256 unicode glyphs and mostly covers Western
 European text, mostly.
 
 The .psf and .psf.gz files can be used with the linux console via setfont.
-On linux you can download the .psf.gz files and put them in /usr/share/consolefonts then
-switch to a real terminal with CTRL+ALT+F3 or whichever F key gets you a login prompt,
-login and run.
+On linux you can download the .psf.gz files and put them in /usr/share/consolefonts/ 
+switch to a real fullscreen terminal with CTRL+ALT+F3 then login and run.
 
 	setfont funfont_8x16r
 
