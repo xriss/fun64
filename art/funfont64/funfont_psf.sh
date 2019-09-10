@@ -14,8 +14,8 @@ psf2bdf funfont_8x16i.psf funfont_8x16i.bdf
 psf2bdf funfont_8x16r.psf funfont_8x16r.bdf
 
 
-#fontforge --lang=ff -c 'Open("funfont_4x8b.fon"); Generate("funfont_4x8b.ttf")'
-#fontforge --lang=ff -c 'Open("funfont_8x16b.fon"); Generate("funfont_8x16b.ttf")'
-#fontforge --lang=ff -c 'Open("funfont_8x16i.fon"); Generate("funfont_8x16i.ttf")'
-#fontforge --lang=ff -c 'Open("funfont_8x16r.fon"); Generate("funfont_8x16r.ttf")'
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont4 -w Bold    -n funfont4Bold   -N funfont4Bold   -O funfont_4x8b.bdf
 
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont8 -w Bold    -n funfont8Bold   -N funfont8Bold   -O funfont_8x16b.bdf
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont8 -w Normal  -n funfont8       -N funfont8       -O funfont_8x16r.bdf
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont8 -w Italic  -n funfont8Italic -N funfont8Italic -O funfont_8x16i.bdf
