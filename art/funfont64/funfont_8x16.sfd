@@ -1,7 +1,7 @@
 SplineFontDB: 3.0
 FontName: funfont_8x16
 FullName: funfont_8x16
-FamilyName: funfont8
+FamilyName: funfont_8x16
 Weight: Normal
 Copyright: Copyright (c) 2019, kriss,,,
 UComments: "2019-9-10: Created with FontForge (http://fontforge.org)"
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 173 97557833 3093052]
+XUID: [1021 759 -1756833063 10881536]
 StyleMap: 0x0040
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1568139563
-ModificationTime: 1568139563
+CreationTime: 1568139635
+ModificationTime: 1568139635
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5

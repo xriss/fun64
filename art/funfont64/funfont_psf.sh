@@ -14,8 +14,8 @@ psf2bdf funfont_8x16i.psf funfont_8x16i.bdf
 psf2bdf funfont_8x16r.psf funfont_8x16r.bdf
 
 
-fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont4 -w Bold    -n funfont_4x8Bold    -N funfont_4x8Bold    -O funfont_4x8b.bdf
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont_4x8  -w Bold    -n funfont_4x8Bold    -N funfont_4x8Bold    -O funfont_4x8b.bdf
 
-fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont8 -w Bold    -n funfont_8x16Bold   -N funfont_8x16Bold   -O funfont_8x16b.bdf
-fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont8 -w Normal  -n funfont_8x16       -N funfont_8x16       -O funfont_8x16r.bdf
-fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont8 -w Italic  -n funfont_8x16Italic -N funfont_8x16Italic -O funfont_8x16i.bdf
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont_8x16 -w Bold    -n funfont_8x16Bold   -N funfont_8x16Bold   -O funfont_8x16b.bdf
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont_8x16 -w Normal  -n funfont_8x16       -N funfont_8x16       -O funfont_8x16r.bdf
+fontforge -lang=py -script ./mkttf.py -V "" -A ' -a -1' -f funfont_8x16 -w Italic  -n funfont_8x16Italic -N funfont_8x16Italic -O funfont_8x16i.bdf
