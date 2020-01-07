@@ -55,7 +55,7 @@ local create_c=function( name , glyphs , xh , yh )
 		datas[#datas+1]=s
 	end
 
-	return "const unsigned "..ss.." "..name.."={\n"..table.concat(datas).."};\n\n"
+	return "const unsigned "..ss.." "..name.."[]={\n"..table.concat(datas).."};\n\n"
 
 end
 
