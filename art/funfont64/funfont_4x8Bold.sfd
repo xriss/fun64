@@ -3,8 +3,8 @@ FontName: funfont_4x8Bold
 FullName: funfont_4x8Bold
 FamilyName: funfont_4x8
 Weight: Bold
-Copyright: Copyright (c) 2019, kriss,,,
-UComments: "2019-9-10: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2020, kriss,,,
+UComments: "2020-1-26: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 493 -1774614467 1222812]
+XUID: [1021 396 1665340894 712751]
 StyleMap: 0x0020
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1568139635
-ModificationTime: 1568139635
+CreationTime: 1580077143
+ModificationTime: 1580077143
 PfmFamily: 48
 TTFWeight: 700
 TTFWidth: 5

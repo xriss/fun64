@@ -3,8 +3,8 @@ FontName: funfont_8x16Bold
 FullName: funfont_8x16Bold
 FamilyName: funfont_8x16
 Weight: Bold
-Copyright: Copyright (c) 2019, kriss,,,
-UComments: "2019-9-10: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2020, kriss,,,
+UComments: "2020-1-26: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 216 2007860128 1052332]
+XUID: [1021 255 2019361107 5403277]
 StyleMap: 0x0020
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1568139635
-ModificationTime: 1568139635
+CreationTime: 1580077143
+ModificationTime: 1580077143
 PfmFamily: 48
 TTFWeight: 700
 TTFWidth: 5
@@ -2194,9 +2194,9 @@ BDFChar: 34 34 8 0 7 -4 11
 BDFChar: 35 35 8 0 7 -4 11
 !!$hOD#S6erbQCez
 BDFChar: 36 36 8 0 7 -4 11
-!"aP/d*R.U(=mjEz
+!"aP/d*Q_O()GJK&-)\1
 BDFChar: 37 37 8 0 7 -4 11
-!!!48C^_-t0K*NNz
+!!$VC$k*si0JI*Nz
 BDFChar: 38 38 8 0 7 -4 11
 !!$ujf[t/shV?n0z
 BDFChar: 39 39 8 0 7 -4 11
@@ -2218,35 +2218,35 @@ zz!!"],z
 BDFChar: 47 47 8 0 7 -4 11
 !!!E9(`4q\?spdcz
 BDFChar: 48 48 8 0 7 -4 11
-!!*#<`l?$<`l?$tz
+!!%I[AnGXeAnGY(z
 BDFChar: 49 49 8 0 7 -4 11
-!!)LB0JG170JG3Yz
+!!"tq(`4),(`4*=z
 BDFChar: 50 50 8 0 7 -4 11
-!!*!&"pY(B^qdbbz
+!!%HP"pTNa?smAkz
 BDFChar: 51 51 8 0 7 -4 11
-!!*!&"pY&2"pP;2z
+!!%HP"pTM\"pP9\z
 BDFChar: 52 52 8 0 7 -4 11
-!!($Y`l@u^"pP89z
+!!$VCAnHJr"pP89z
 BDFChar: 53 53 8 0 7 -4 11
-!!*#6^qfpR"pP;2z
+!!%IU?snEf"pP9\z
 BDFChar: 54 54 8 0 7 -4 11
-!!*#6^qfrh`l?$tz
+!!%IU?snFqAnGY(z
 BDFChar: 55 55 8 0 7 -4 11
-!!*!&"pP89"pP89z
+!!%HP"pP89"pP89z
 BDFChar: 56 56 8 0 7 -4 11
-!!*#<`lA"t`l?$tz
+!!%I[AnHL(AnGY(z
 BDFChar: 57 57 8 0 7 -4 11
-!!*#<`l@u^"pP89z
+!!%I[AnHJr"pP89z
 BDFChar: 58 58 8 0 7 -4 11
-!!!!Q0E;(Q!&-),z
+z0JEJ,!&-),z
 BDFChar: 59 59 8 0 7 -4 11
-!!!!Q0E;(Q!&-*7z
+z0JEJ,!&-*7z
 BDFChar: 60 60 8 0 7 -4 11
-!!!iQ0JHmB0JF=\z
+z$lC[+0Gk2uz
 BDFChar: 61 61 8 0 7 -4 11
-z!;lfsqu?]sz
+z!!)osqu?]sz
 BDFChar: 62 62 8 0 7 -4 11
-!!"],(`3Yi(`4q\z
+z?n`E+(bf=tz
 BDFChar: 63 63 8 0 7 -4 11
 !!%Dd`l8uP0E<d\z
 BDFChar: 64 64 8 0 7 -4 11
@@ -2304,11 +2304,11 @@ BDFChar: 89 89 8 0 7 -4 11
 BDFChar: 90 90 8 0 7 -4 11
 !!*!&"q2>&@)0SWz
 BDFChar: 91 91 8 0 7 -4 11
-!!%CS?smAM?smAiz
+!!%CS?smAM?smAMHiO-H
 BDFChar: 92 92 8 0 7 -4 11
 !!'gM?skZB(`3Yiz
 BDFChar: 93 93 8 0 7 -4 11
-!!)d2(`4),(`4+bz
+!!%BT$k*OQ$k*OQHiO-H
 BDFChar: 94 94 8 0 7 -4 11
 !!"]tbQ%VCzz
 BDFChar: 95 95 8 0 7 -4 11
@@ -2368,11 +2368,11 @@ z!63$u`l?#I"pP;0
 BDFChar: 122 122 8 0 7 -4 11
 z!<*BD0OV]qz
 BDFChar: 123 123 8 0 7 -4 11
-!!"],?skZB?skZBz
+!!!KG(`4r70GkWD%KHJ/
 BDFChar: 124 124 8 0 7 -4 11
 !!"],0JG170JG17z
 BDFChar: 125 125 8 0 7 -4 11
-!!$D70JHmB0JHmBz
+!!(q20JF=P(bdWthuE`W
 BDFChar: 126 126 8 0 7 -4 11
 !!$R-QiI*dzz
 BDFChar: 127 127 8 0 7 -4 11

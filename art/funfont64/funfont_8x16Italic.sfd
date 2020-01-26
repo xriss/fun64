@@ -3,8 +3,8 @@ FontName: funfont_8x16Italic
 FullName: funfont_8x16Italic
 FamilyName: funfont_8x16
 Weight: Italic
-Copyright: Copyright (c) 2019, kriss,,,
-UComments: "2019-9-10: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2020, kriss,,,
+UComments: "2020-1-26: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 655 725801676 11315434]
+XUID: [1021 903 -1659897754 15959933]
 StyleMap: 0x0201
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1568139635
-ModificationTime: 1568139635
+CreationTime: 1580077143
+ModificationTime: 1580077143
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5
@@ -2194,9 +2194,9 @@ BDFChar: 34 34 8 0 7 -4 11
 BDFChar: 35 35 8 0 7 -4 11
 !!!]I'RhGYr(p3dz
 BDFChar: 36 36 8 0 7 -4 11
-!!jPo-n$&L'N@%'z
+!!jPo-n#oH'GOM+&-)\1
 BDFChar: 37 37 8 0 7 -4 11
-!!"-=;BuMZ,YEpsz
+!$G*8+p8/_+@M(o"98E%
 BDFChar: 38 38 8 0 7 -4 11
 !!!u_+s\!T9SeLHz
 BDFChar: 39 39 8 0 7 -4 11
@@ -2218,35 +2218,35 @@ zz!!",az
 BDFChar: 47 47 8 0 7 -4 11
 !!!'%":,8E+@&2Bz
 BDFChar: 48 48 8 0 7 -4 11
-!!#5,+[SL^6A1$iz
+!!#2,,"+ge7#6Zoz
 BDFChar: 49 49 8 0 7 -4 11
 !!"ta#S7OY&0N+jz
 BDFChar: 50 50 8 0 7 -4 11
-!!#4a!<R^85_+C_z
+!!#1a!X*m95_+C[z
 BDFChar: 51 51 8 0 7 -4 11
-!!#4a!<R]O!X&Z(z
+!!#1a!X*lR":,;.z
 BDFChar: 52 52 8 0 7 -4 11
-!!"/c+[UVZ!X&W/z
+!!"2e,"-e]":,8=z
 BDFChar: 53 53 8 0 7 -4 11
-!!#5++@(AW!X&Z(z
+!!#2*+@(;W":,;.z
 BDFChar: 54 54 8 0 7 -4 11
-!!#5++@(BB6A1$iz
+!!#2*+@(<B7#6Zoz
 BDFChar: 55 55 8 0 7 -4 11
-!!#4a!<N<(!X&W/z
+!!#1a!X&W/":,8=z
 BDFChar: 56 56 8 0 7 -4 11
-!!#5,+[UWE6A1$iz
+!!#2,,"-fH7#6Zoz
 BDFChar: 57 57 8 0 7 -4 11
-!!#5,+[UVZ!X&W/z
+!!#2,,"-e]":,8=z
 BDFChar: 58 58 8 0 7 -4 11
-!!!!)#QOi)!$EBaz
+z#RCD1!$EBaz
 BDFChar: 59 59 8 0 7 -4 11
-!!!!)#QOi)!$ECLz
+z#RCD1!$ECLz
 BDFChar: 60 60 8 0 7 -4 11
-!!!''#S8+$&.f*Qz
+z!X&c?&-rC=z
 BDFChar: 61 61 8 0 7 -4 11
-z!'UA_HiO-Hz
+z!!#1_HiO-Hz
 BDFChar: 62 62 8 0 7 -4 11
-!!!QA#RCP9#S8+Dz
+z+:nea&0O4<z
 BDFChar: 63 63 8 0 7 -4 11
 !!"&`5sY\\&-*h<z
 BDFChar: 64 64 8 0 7 -4 11
@@ -2368,11 +2368,11 @@ z!$NLP6@sl<":,;&
 BDFChar: 122 122 8 0 7 -4 11
 z!'^Mf(a)*Az
 BDFChar: 123 123 8 0 7 -4 11
-!!!--&.f*Q&0N),z
+!!!*(#RCta+:o(q$ig8-
 BDFChar: 124 124 8 0 7 -4 11
 !!!91#S7OY&0N)<z
 BDFChar: 125 125 8 0 7 -4 11
-!!!Q9#S8+$&.fsLz
+!!"\Y#RCP9#S7Oi5QCca
 BDFChar: 126 126 8 0 7 -4 11
 !!!T\6i[2ezz
 BDFChar: 127 127 8 0 7 -4 11
