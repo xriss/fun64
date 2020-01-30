@@ -4,7 +4,7 @@ FullName: funfont_8x16Italic
 FamilyName: funfont_8x16
 Weight: Italic
 Copyright: Copyright (c) 2020, kriss,,,
-UComments: "2020-1-26: Created with FontForge (http://fontforge.org)"
+UComments: "2020-1-30: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 903 -1659897754 15959933]
+XUID: [1021 22 -385702105 3173080]
 StyleMap: 0x0201
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1580077143
-ModificationTime: 1580077143
+CreationTime: 1580362452
+ModificationTime: 1580362452
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5
@@ -2248,9 +2248,9 @@ z!!#1_HiO-Hz
 BDFChar: 62 62 8 0 7 -4 11
 z+:nea&0O4<z
 BDFChar: 63 63 8 0 7 -4 11
-!!"&`5sY\\&-*h<z
+!!!E?+sI-q&-*h<z
 BDFChar: 64 64 8 0 7 -4 11
-!!"&`+\GX+5_+N4z
+!!"&`+^.cK5_+N4z
 BDFChar: 65 65 8 0 7 -4 11
 !!"&`+[UWE6A1#Fz
 BDFChar: 66 66 8 0 7 -4 11
@@ -2292,9 +2292,9 @@ BDFChar: 83 83 8 0 7 -4 11
 BDFChar: 84 84 8 0 7 -4 11
 !!#1g#S7OY&0N)<z
 BDFChar: 85 85 8 0 7 -4 11
-!!"/c+[SL^KS5#'z
+!!"2e,"+geLkpk+z
 BDFChar: 86 86 8 0 7 -4 11
-!!"/c+[SL^6:<45z
+!!"2e,"+geLknkMz
 BDFChar: 87 87 8 0 7 -4 11
 !!"/c+[SL^KXAsVz
 BDFChar: 88 88 8 0 7 -4 11
@@ -2334,7 +2334,7 @@ BDFChar: 104 104 8 0 7 -4 11
 BDFChar: 105 105 8 0 7 -4 11
 !!!-)!!iiA&0N*7z
 BDFChar: 106 106 8 0 7 -4 11
-!!!$#!!**%6:-A'z
+!!!$#!!33)6puk+z
 BDFChar: 107 107 8 0 7 -4 11
 !!!QA+=&@S:e6Cqz
 BDFChar: 108 108 8 0 7 -4 11
@@ -2356,9 +2356,9 @@ z!$<=K49>Z\z
 BDFChar: 116 116 8 0 7 -4 11
 !!!91#X/M*&.fsHz
 BDFChar: 117 117 8 0 7 -4 11
-z!$NLP6:=4$z
+z!$WUT6qBj&z
 BDFChar: 118 118 8 0 7 -4 11
-z!$NLP6qC,sz
+z!$WUT6qC,sz
 BDFChar: 119 119 8 0 7 -4 11
 z!$NLP6;m0'z
 BDFChar: 120 120 8 0 7 -4 11
@@ -2556,13 +2556,13 @@ z!(84H.#7j'z
 BDFChar: 216 216 8 0 7 -4 11
 !!")a,>(R+;T+7`z
 BDFChar: 217 217 8 0 7 -4 11
-#Qu:o+[SL^6A1#:z
+#Qu=q,"+ge7#6Y<z
 BDFChar: 218 218 8 0 7 -4 11
-":-.o+[SL^6A1#:z
+":-1q,"+ge7#6Y<z
 BDFChar: 219 219 8 0 7 -4 11
-#S\F*+[SL^6A1#:z
+#S\I,,"+ge7#6Y<z
 BDFChar: 220 220 8 0 7 -4 11
-!"pFu+[SL^6A1#:z
+!"pJ","+ge7#6Y<z
 BDFChar: 221 221 8 0 7 -4 11
 ":-1q,"-ei&0N)<z
 BDFChar: 222 222 8 0 7 -4 11
@@ -2620,13 +2620,13 @@ z#QOjP!!",Az
 BDFChar: 248 248 8 0 7 -4 11
 z!'NY<>/Z*hz
 BDFChar: 249 249 8 0 7 -4 11
-!!i]-!('"=6A1#:z
+!!i]-!(94C7#6Y<z
 BDFChar: 250 250 8 0 7 -4 11
-!!EQ-!('"=6A1#:z
+!!EQ-!(94C7#6Y<z
 BDFChar: 251 251 8 0 7 -4 11
-!!j8=!('"=6A1#:z
+!!j8=!(94C7#6Y<z
 BDFChar: 252 252 8 0 7 -4 11
-!!!W3!('"=6A1#:z
+!!!W3!(94C7#6Y<z
 BDFChar: 253 253 8 0 7 -4 11
 !!EQ-!('"=6A1#>"9\l&
 BDFChar: 254 254 8 0 7 -4 11
