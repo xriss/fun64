@@ -1,10 +1,10 @@
-SplineFontDB: 3.0
+SplineFontDB: 3.2
 FontName: funfont_8x16Italic
 FullName: funfont_8x16Italic
 FamilyName: funfont_8x16
 Weight: Italic
-Copyright: Copyright (c) 2020, kriss,,,
-UComments: "2020-1-30: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2020, kriss
+UComments: "2020-5-8: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 22 -385702105 3173080]
+XUID: [1021 26 752243731 1981983]
 StyleMap: 0x0201
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1580362452
-ModificationTime: 1580362452
+CreationTime: 1588975335
+ModificationTime: 1588975335
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5
@@ -2332,7 +2332,7 @@ z!$3:M6:-?Q":0g&
 BDFChar: 104 104 8 0 7 -4 11
 !!!QA+?gr86:-?Yz
 BDFChar: 105 105 8 0 7 -4 11
-!!!-)!!iiA&0N*7z
+!!!'%!!EE1#S7P,z
 BDFChar: 106 106 8 0 7 -4 11
 !!!$#!!33)6puk+z
 BDFChar: 107 107 8 0 7 -4 11
@@ -2594,13 +2594,13 @@ BDFChar: 234 234 8 0 7 -4 11
 BDFChar: 235 235 8 0 7 -4 11
 !!!W3!'ES7I"6lpz
 BDFChar: 236 236 8 0 7 -4 11
-!"]D9#T*gY&0N*7z
+!!i]-":PD=#S7P,z
 BDFChar: 237 237 8 0 7 -4 11
-!!j,9#T*gY&0N*7z
+!!EQ-":PD=#S7P,z
 BDFChar: 238 238 8 0 7 -4 11
-!!j8=#T*gY&0N*7z
+!!EW/":PD=#S7P,z
 BDFChar: 239 239 8 0 7 -4 11
-!!!]5#T*gY&0N*7z
+!!!?+":PD=#S7P,z
 BDFChar: 240 240 8 0 7 -4 11
 !#,\Q!^&e96A1#:z
 BDFChar: 241 241 8 0 7 -4 11

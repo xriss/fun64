@@ -1,10 +1,10 @@
-SplineFontDB: 3.0
+SplineFontDB: 3.2
 FontName: funfont_8x16Bold
 FullName: funfont_8x16Bold
 FamilyName: funfont_8x16
 Weight: Bold
-Copyright: Copyright (c) 2020, kriss,,,
-UComments: "2020-1-30: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2020, kriss
+UComments: "2020-5-8: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 101 -1447927042 8834036]
+XUID: [1021 697 -2013917600 13060673]
 StyleMap: 0x0020
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1580362452
-ModificationTime: 1580362452
+CreationTime: 1588975335
+ModificationTime: 1588975335
 PfmFamily: 48
 TTFWeight: 700
 TTFWidth: 5
@@ -2332,7 +2332,7 @@ z!.;f+`l?#I"pW(p
 BDFChar: 104 104 8 0 7 -4 11
 !!'gM_#23l`l?$<z
 BDFChar: 105 105 8 0 7 -4 11
-!!!iQ!&tf4(`4)Pz
+!!!E9!#uCU$k*Ocz
 BDFChar: 106 106 8 0 7 -4 11
 !!!3-!!WW3AnGY(z
 BDFChar: 107 107 8 0 7 -4 11
@@ -2594,13 +2594,13 @@ BDFChar: 234 234 8 0 7 -4 11
 BDFChar: 235 235 8 0 7 -4 11
 !!"8E!.;f+r4p="z
 BDFChar: 236 236 8 0 7 -4 11
-!$DgQ0Q8^"0JG2*z
+!"]D9(cW?L(`4)Pz
 BDFChar: 237 237 8 0 7 -4 11
-!"^7Q0Q8^"0JG2*z
+!!j,9(cW?L(`4)Pz
 BDFChar: 238 238 8 0 7 -4 11
-!"^OY0Q8^"0JG2*z
+!!j8=(cW?L(`4)Pz
 BDFChar: 239 239 8 0 7 -4 11
-!!"DI0Q8^"0JG2*z
+!!!]5(cW?L(`4)Pz
 BDFChar: 240 240 8 0 7 -4 11
 !)Oe7#^jY3`l?#Gz
 BDFChar: 241 241 8 0 7 -4 11
