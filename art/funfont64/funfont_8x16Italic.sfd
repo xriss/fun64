@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 26 752243731 1981983]
+XUID: [1021 646 1146496310 3712988]
 StyleMap: 0x0201
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1588975335
-ModificationTime: 1588975335
+CreationTime: 1588977109
+ModificationTime: 1588977109
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5
@@ -2356,9 +2356,9 @@ z!$<=K49>Z\z
 BDFChar: 116 116 8 0 7 -4 11
 !!!91#X/M*&.fsHz
 BDFChar: 117 117 8 0 7 -4 11
-z!$WUT6qBj&z
+z!"fee+s\ENz
 BDFChar: 118 118 8 0 7 -4 11
-z!$WUT6qC,sz
+z!"fee+s\QJz
 BDFChar: 119 119 8 0 7 -4 11
 z!$NLP6;m0'z
 BDFChar: 120 120 8 0 7 -4 11
@@ -2620,13 +2620,13 @@ z#QOjP!!",Az
 BDFChar: 248 248 8 0 7 -4 11
 z!'NY<>/Z*hz
 BDFChar: 249 249 8 0 7 -4 11
-!!i]-!(94C7#6Y<z
+!!E?'!$WU2,"+gYz
 BDFChar: 250 250 8 0 7 -4 11
-!!EQ-!(94C7#6Y<z
+!!39'!$WU2,"+gYz
 BDFChar: 251 251 8 0 7 -4 11
-!!j8=!(94C7#6Y<z
+!!EW/!$WU2,"+gYz
 BDFChar: 252 252 8 0 7 -4 11
-!!!W3!(94C7#6Y<z
+!!!<*!$WU2,"+gYz
 BDFChar: 253 253 8 0 7 -4 11
 !!EQ-!('"=6A1#>"9\l&
 BDFChar: 254 254 8 0 7 -4 11
