@@ -354,9 +354,8 @@ void main(void)
 	vec4 dir2=vec4(reflect(direction.xyz,nrm.xyz),0.0);
 	vec4 hit2=march(pos+dir2*1.0,dir2);
 
-	vec4 pos2=pos + hit2.w * dir2;
-	vec4 nrm2=hit_normal(pos2);
-	
+//	vec4 pos2=pos + hit2.w * dir2;
+//	vec4 nrm2=hit_normal(pos2);
 //	vec4 dir3=vec4(reflect(dir2.xyz,nrm2.xyz),0.0);
 //	vec4 hit3=march(pos2+dir3*1.0,dir3);
 
