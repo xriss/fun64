@@ -259,59 +259,46 @@ const vec4 ZEROS = vec4( 0.0 , 1.0 , -1.0 , 1.0/32.0 );
 
 const float MIN_DISTANCE = 1.0/1024.0;
 const float MAX_DISTANCE = 1024.0;
-const int MAX_STEPS = 32;
+const int MAX_STEPS = 128;
 
 
 
-vec4 scene_floor_cheque( vec4 best, vec4 pos , vec4 a,vec4 b,vec4 c,vec4 d)
+void scene_floor_cheque( inout vec4 best, vec4 pos, vec4 dir , vec4 a,vec4 b,vec4 c,vec4 d)
 {
 	vec3 cheque=floor( (pos.xyz-b.xyz)/a.w );
 	vec4 try=vec4( mix( a.xyz , d.xyz , mod(cheque.x+cheque.z,2.0) ) ,
 		dot((pos.xyz-b.xyz),c.xyz) );
-	if(try.w<best.w) { return try; } else { return best; }
+	if(try.w<best.w) { best=try; }
 }
 
-vec4 scene_floor( vec4 best, vec4 pos , vec4 a,vec4 b,vec4 c)
+void scene_floor( inout vec4 best, vec4 pos, vec4 dir , vec4 a,vec4 b,vec4 c)
 {
 	vec4 try=vec4( a.xyz, dot((pos.xyz-b.xyz),c.xyz) );
-	if(try.w<best.w) { return try; } else { return best; }
+	if(try.w<best.w) { best=try; }
 }
 
-vec4 scene_ball( vec4 best, vec4 pos , vec4 a,vec4 b)
+void scene_ball( inout vec4 best, vec4 pos, vec4 dir , vec4 a,vec4 b)
 {
 	vec4 try=vec4( a.xyz, length(pos.xyz-b.xyz)-a.w );
-	if(try.w<best.w) { return try; } else { return best; }
+	if(try.w<best.w) { best=try; }
 }
 
-vec4 scene(vec4 pos)
+vec4 scene(vec4 pos, vec4 dir)
 {
 	float t=iGlobalTime;
 	
 	vec4 best=vec4( 0.0, 0.0, 0.0, MAX_DISTANCE );
 	
-	best=scene_ball( best, pos , vec4( 1.0, 0.0, 0.0, 64.0+sin(t*1.3)*16.0 ), vec4( 0.0, 0.0, 512.0+sin(t*5.0)*64.0, 0.0 ) );
-	best=scene_ball( best, pos , vec4( 0.0, 1.0, 0.0, 64.0+sin(t*1.7)*16.0 ), vec4( 128.0*cos(t), 128.0*sin(t), 512.0+sin(t*7.0)*64.0, 0.0 ) );
-	best=scene_ball( best, pos , vec4( 0.0, 0.0, 1.0, 64.0+sin(t*1.9)*16.0 ), vec4( -64.0*cos(t*1.5), -64.0*sin(t*1.5), 512.0+sin(t*9.0)*64.0, 0.0 ) );
+	scene_ball( best,pos,dir , vec4( 1.0, 0.0, 0.0, 64.0+sin(t*1.3)*16.0 ), vec4( 0.0, 0.0, 512.0+sin(t*5.0)*64.0, 0.0 ) );
+	scene_ball( best,pos,dir , vec4( 0.0, 1.0, 0.0, 64.0+sin(t*1.7)*16.0 ), vec4( 128.0*cos(t), 128.0*sin(t), 512.0+sin(t*7.0)*64.0, 0.0 ) );
+	scene_ball( best,pos,dir , vec4( 0.0, 0.0, 1.0, 64.0+sin(t*1.9)*16.0 ), vec4( -64.0*cos(t*1.5), -64.0*sin(t*1.5), 512.0+sin(t*9.0)*64.0, 0.0 ) );
 
-	best=scene_floor_cheque( best, pos , vec4( 1.0, 1.0, 1.0, 32.0 ), vec4( 0.0, 160.0+sin(t)*16.0, 0.0, 0.0 ), normalize( vec4( 0.1, -1.0, -0.1, 0.0 ) ) , vec4(1.0,0.0,0.0,0.0) );
+	scene_floor_cheque( best,pos,dir , vec4( 1.0, 1.0, 1.0, 32.0 ), vec4( 0.0, 160.0+sin(t)*16.0, 0.0, 0.0 ), normalize( vec4( 0.1, -1.0, -0.1, 0.0 ) ) , vec4(1.0,0.0,0.0,0.0) );
 	
 	return best;
 }
 
-vec4 hit_normal(vec4 position)
-{
-    float base = scene(position).w;
-	return normalize(
-		vec4(
-			base-scene(position-ZEROS.wxxx).w,
-			base-scene(position-ZEROS.xwxx).w,
-			base-scene(position-ZEROS.xxwx).w,
-			0.0
-		)
-	);
-}
-
-vec4 march(vec4 position, vec4 direction)
+vec4 march(vec4 start, vec4 direction)
 {
 
 	float distance = 0.0;
@@ -319,9 +306,9 @@ vec4 march(vec4 position, vec4 direction)
 
 	for( int i=0; i<MAX_STEPS; i++ )
 	{
-		vec4 pos = position + distance * direction;
+		vec4 pos = start + distance * direction;
 
-		vec4 hit = scene(vec4(pos.xyz,distance));
+		vec4 hit = scene(vec4(pos.xyz,distance),direction);
 
 		if (hit.w < MIN_DISTANCE)
 		{
@@ -339,32 +326,48 @@ vec4 march(vec4 position, vec4 direction)
 	return vec4( hit.xyz, distance );
 }
 
+vec4 probe_normal(vec4 pos)
+{
+    float base = scene(pos,vec4(1.0)).w;
+	return normalize(
+		vec4(base)-vec4(
+			scene(pos-ZEROS.wxxx,vec4(1.0)).w,
+			scene(pos-ZEROS.xwxx,vec4(1.0)).w,
+			scene(pos-ZEROS.xxwx,vec4(1.0)).w,
+			base
+		)
+	);
+}
+
+void probe(vec4 start, vec4 direction, out vec4 hit, out vec4 pos, out vec4 nrm, out vec4 bnc)
+{
+	hit=march(start,direction);
+	pos=start + hit.w * direction;
+	nrm=probe_normal(pos);
+	bnc=vec4(reflect(direction.xyz,nrm.xyz),0.0);
+}
 
 void main(void)
 {
     vec2 uv=2.0/iResolution.y*(v_texcoord-(iResolution.xy*0.5));
 
-	vec4 position=vec4( 0, 0, 0, 0.0 );
-	vec4 direction=normalize( vec4( uv , 2.0, 0.0 ) );
+	vec4 start=vec4( 0, 0, 0, 0.0 );
+	vec4 direction=normalize( vec4( uv , 1.0, 0.0 ) );
 	
-	vec4 hit=march(position,direction);
-	vec4 pos=position + hit.w * direction;
-	vec4 nrm=hit_normal(pos);
+	vec4 hit1,pos1,nrm1,bnc1;
+	probe(start,direction,hit1,pos1,nrm1,bnc1);
+	gl_FragColor=mix( vec4( hit1.rgb*0.5, 1.0) , vec4( hit1.rgb, 1.0) , pow(-nrm1.z,4.0) );
 
-	vec4 dir2=vec4(reflect(direction.xyz,nrm.xyz),0.0);
-	vec4 hit2=march(pos+dir2*1.0,dir2);
+	vec4 hit2,pos2,nrm2,bnc2;
+	probe(pos1+bnc1,bnc1,hit2,pos2,nrm2,bnc2);
+	gl_FragColor+=vec4( hit2.rgb*0.25, 1.0);
 
-//	vec4 pos2=pos + hit2.w * dir2;
-//	vec4 nrm2=hit_normal(pos2);
-//	vec4 dir3=vec4(reflect(dir2.xyz,nrm2.xyz),0.0);
-//	vec4 hit3=march(pos2+dir3*1.0,dir3);
+	vec4 hit3,pos3,nrm3,bnc3;
+	probe(pos2+bnc2,bnc2,hit3,pos3,nrm3,bnc3);
+	gl_FragColor+=vec4( hit3.rgb*0.125, 1.0);
 
-	gl_FragColor=mix( vec4( hit.rgb*0.5, 1.0) , vec4( hit.rgb, 1.0) , pow(-nrm.z,4.0) );
-
-	gl_FragColor+=vec4( hit2.rgb*0.125, 1.0);
-//	gl_FragColor+=vec4( hit3.rgb*0.125, 1.0);
 	
-	gl_FragColor=mix( gl_FragColor , vec4( 0.2, 0.2, 0.4, 1.0) , clamp( hit.w/MAX_DISTANCE*1.0 , 0.25 , 1.0) );
+	gl_FragColor=mix( gl_FragColor , vec4( 0.2, 0.2, 0.4, 1.0) , clamp( hit1.w/MAX_DISTANCE*1.0 , 0.25 , 1.0) );
 
 }
 
