@@ -262,6 +262,8 @@ const float MAX_DISTANCE = 1024.0;
 const int MAX_STEPS = 128;
 
 
+#define REFLECTIONS 1
+
 
 void scene_floor_cheque( inout vec4 best, vec4 pos, vec4 dir , vec4 a,vec4 b,vec4 c,vec4 d)
 {
@@ -358,13 +360,20 @@ void main(void)
 	probe(start,direction,hit1,pos1,nrm1,bnc1);
 	gl_FragColor=mix( vec4( hit1.rgb*0.5, 1.0) , vec4( hit1.rgb, 1.0) , pow(-nrm1.z,4.0) );
 
+#if REFLECTIONS >= 1
+
 	vec4 hit2,pos2,nrm2,bnc2;
 	probe(pos1+bnc1,bnc1,hit2,pos2,nrm2,bnc2);
 	gl_FragColor+=vec4( hit2.rgb*0.25, 1.0);
 
+#if REFLECTIONS >= 2
+
 	vec4 hit3,pos3,nrm3,bnc3;
 	probe(pos2+bnc2,bnc2,hit3,pos3,nrm3,bnc3);
 	gl_FragColor+=vec4( hit3.rgb*0.125, 1.0);
+
+#endif
+#endif
 
 	
 	gl_FragColor=mix( gl_FragColor , vec4( 0.2, 0.2, 0.4, 1.0) , clamp( hit1.w/MAX_DISTANCE*1.0 , 0.25 , 1.0) );
