@@ -5,8 +5,7 @@ Try the live html version of the example projects here, this site can be fund in
 
 https://xriss.github.io/fun64
 
-Be sure to clone with submodules as the engine binaries live in a 
-permanently orphaned branch. The recomended way to do this is like so...
+Be sure to use git-pull to get latest gamecake binaries into the exe directory
 
 	git clone https://github.com/xriss/fun64.git
 	cd fun64

@@ -7,15 +7,12 @@ plated/upgrade
 
 if cd exe; then
 
-	git checkout exe
 	git pull
 	cd .. 
 
-else git clone https://github.com/xriss/gamecake.git
+else
 
-	cd exe
-	git checkout exe
-	cd ..
+	git clone --depth 1 https://github.com/xriss/gamecake.git -b exe exe
 
 fi
 
