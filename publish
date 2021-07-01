@@ -1,0 +1,11 @@
+cd `dirname $0`
+
+plated/build
+
+cd docs
+git add .
+git commit -m"build"
+git pull
+git push
+cd ..
+
