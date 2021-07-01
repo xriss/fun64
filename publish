@@ -2,10 +2,13 @@ cd `dirname $0`
 
 plated/build
 
-cd docs
+if cd docs ; then
+
 git add .
 git commit -m"build"
 git pull
 git push
 cd ..
+
+fi
 
