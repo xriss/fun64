@@ -1,4 +1,3 @@
-echo `dirname $0`
 if [ -e "`dirname $0`/gamecake.nix" ] ; then
 	`dirname $0`/gamecake.nix "$@"
 

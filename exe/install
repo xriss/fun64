@@ -31,7 +31,8 @@ fi
 echo
 echo " Installing ${SRCDIR}/gamecake.${SRCEXT} to ${DESTDIR}/bin/gamecake "
 cp ${SRCDIR}/gamecake.${SRCEXT} ${DESTDIR}/bin/gamecake
-cp ${SRCDIR}/gamecake-grd ${DESTDIR}/bin/gamecake-grd
+cp ${SRCDIR}/gamecake.grd ${DESTDIR}/bin/gamecake.grd
+cp ${SRCDIR}/gamecake.midi ${DESTDIR}/bin/gamecake.midi
 echo
 
 #echo
