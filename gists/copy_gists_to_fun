@@ -1,8 +1,0 @@
-cd `dirname $0`
-
-for dname in $( find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n' ); do
-	for pname in $dname/*.fun.lua ; do
-		fname=$(basename $pname)
-		cp -v ./$dname/$fname ../fun/$fname
-	done
-done

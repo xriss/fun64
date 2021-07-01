@@ -1,7 +1,7 @@
 
 # The directory to write output files into
 
-PLATED_OUTPUT=../pages
+PLATED_OUTPUT=../docs
 
 
 # The directory to read input files from
