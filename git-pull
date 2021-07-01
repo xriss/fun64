@@ -5,10 +5,19 @@ git checkout master
 
 plated/upgrade
 
-echo " exe worktree to track exe branch "
-git branch -f --track exe origin/exe
-git worktree add exe exe
+if cd exe; then
 
+	git checkout exe
+	git pull
+	cd .. 
+
+else git clone https://github.com/xriss/gamecake.git
+
+	cd exe
+	git checkout exe
+	cd ..
+
+fi
 
 echo " docs worktree to track gh-pages branch "
 git branch -f --track gh-pages origin/gh-pages
