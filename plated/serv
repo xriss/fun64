@@ -8,8 +8,6 @@ echo
 echo http://0.0.0.0:8000/
 echo
 
-./node_modules/.bin/ecstatic --root=$PLATED_OUTPUT
-<<<<<<< HEAD
+./node_modules/.bin/ecstatic --root=$PLATED_OUTPUT --header "Cross-Origin-Opener-Policy: same-origin" --header "Cross-Origin-Embedder-Policy: require-corp"
 
-=======
->>>>>>> 6220165d06226864fa706b2734721375c03409b7
+
