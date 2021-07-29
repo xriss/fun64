@@ -8,7 +8,7 @@ echo
 
 ./build
 
-cd ../pages
+cd ../docs
 git status
 
 git add .
