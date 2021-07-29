@@ -130,11 +130,11 @@ gamecake_loader=function(opts)
 
 	gamecake.engine="emcc";
 	
-	gamecake.listener=template_element('<div style="width:100%;height:100%;position:relative; background-color:#000;"></div>'); // Main container of stuff
+	gamecake.listener=template_element('<div id="gamecake_listener" style="width:100%;height:100%;position:relative; background-color:#000;"></div>'); // Main container of stuff
 	gamecake.progress_bar=template_element('<progress value="0" style="width:100%; position:absolute;" title="Loading GameCake"></progress>');
 	gamecake.progress_about=template_element(
 		'<div style="font-family:sans-serif; font-size:2em; color:#fff; line-height:1.5em; text-align:center; width:66%; margin:auto; ">'+readme+'</div>');
-	gamecake.canvas=template_element('<canvas id="canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>');
+	gamecake.canvas=template_element('<canvas onclick="this.focus();" tabindex="-1" id="canvas" style=" width:100%; height:100%; position:absolute; " oncontextmenu="event.preventDefault()"></canvas>');
 
 	gamecake.listener.appendChild(gamecake.progress_bar)
 	gamecake.listener.appendChild(gamecake.progress_about)
@@ -204,6 +204,10 @@ gamecake_loader=function(opts)
 	Module.preInit = function() {
 		gamecake.status="init"
 		gamecake.FS=FS
+//		ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "#gamecake_listener";
+
+		gamecake.canvas.focus()
+		
 		if(opts.cakefile)
 		{
 			console.log("fetching "+opts.cakefile);
