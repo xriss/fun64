@@ -233,7 +233,7 @@
    "body": "<pre><code>chat = chatdown.setup_chat(chats,subject_name)</code></pre><p>Setup the initial chat state for a subject. This is called \nautomatically by chatdown.setup and probably should not be used \nelsewhere.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 506,
+   "line": 508,
    "name": "lua.wetgenes.gamecake.fun.chatdown.setup_chat",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }

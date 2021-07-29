@@ -233,7 +233,7 @@
    "body": "<pre><code>chat = chats:set_subject(subject_name)</code></pre><p>Set the current subject for this chats object, this subject becomes the \nchat that you will get if you call get_subject with no arguments.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 544,
+   "line": 546,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_subject",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }

@@ -233,7 +233,7 @@
    "body": "<pre><code>chats = chatdown.setup_chats(chat_text,changes)</code></pre><p>parse and initialise state data for every subjects chunk creating a \nglobal chats with a chat object for each subject.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 698,
+   "line": 700,
    "name": "lua.wetgenes.gamecake.fun.chatdown.setup",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }

@@ -1,5 +1,6 @@
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>FunPad for Fun64 - Edit and Run</title>
 	<script data-pace-options='{ "eventLag": false }' src="../js/pace.min.js"></script>
 	<script src="../js/head.min.js"></script>
@@ -32,7 +33,7 @@ a:focus		{outline: none;}
 #iconbar a#iconbar_about:hover {background-color:#eab000;}
 
 #gamecake_log {width:100%; height:100%; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:0 10px;}
-#gamecake_canvas:-webkit-full-screen {width:100%; height:100%;}
+#canvas:-webkit-full-screen {width:100%; height:100%;}
 
 /*	Fullscreen button	*/
 a#iconbar_full {font-size:32px; line-height:17px; width:6%; position:absolute; right:0; top:0;}
@@ -148,10 +149,6 @@ end
 </pre>
 	</div>
 	<div id="split_right">
-		<div id="gamecake_container">
-			<canvas id="gamecake_canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
-		</div>
-		<pre id="gamecake_log"></pre>
 	</div>
 </div>
 
@@ -195,6 +192,15 @@ if (typeof(document.isFullscreen === undefined)) {
 
 	window.gamecake_original_code=document.getElementById("editor").innerHTML;
 
+/*
+
+		<div id="gamecake_container">
+			<canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
+		</div>
+		<pre id="gamecake_log"></pre>
+
+
+
 	(function () {
 		var newlog = function () {
 			var logger = document.getElementById('gamecake_log');
@@ -220,10 +226,9 @@ if (typeof(document.isFullscreen === undefined)) {
 				}
 			}		
 		}
-	//	console.error=newlog;
-		console.warn=newlog;
-		console.log=newlog;
+		window.print=newlog
 	})();
+*/
 
 	var params={};
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -277,6 +282,44 @@ if (typeof(document.isFullscreen === undefined)) {
 		localStorage.setItem(code_filename, code)
 	});
 	
+	var gamecake_load_fun=function(code)
+	{
+
+		console.log("TBD")
+
+		var iframe=$('<iframe style="width:100%;height:100%;position:relative; background-color:#000;" src="../exe/index.html#no_load_gamecakejs=1" ></iframe>');
+		$("#split_right").empty().append(iframe);
+
+
+		var ff;ff=function(){
+
+			var gamecake=iframe[0].contentWindow.gamecake
+
+			if( gamecake && gamecake.load_gamecakejs ) // ready
+			{
+
+				console.log(gamecake)
+				gamecake.loading_hook=function(){
+					gamecake.FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
+					gamecake.FS.mkdir("/lua");
+					gamecake.FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
+				}
+				gamecake.load_gamecakejs()
+
+			}
+			else
+			{
+				console.log("wait")
+				requestAnimationFrame(ff);
+			}
+			
+		}
+		ff()
+
+
+	}
+
+/*
 	
 	var show_progress=function(n)
 	{
@@ -292,7 +335,7 @@ if (typeof(document.isFullscreen === undefined)) {
 			var container;
 			if(document.isFullscreen())
 			{
-				container=$("#gamecake_canvas"); // fullscreen does funky stuff, try not to disturb it.
+				container=$("#canvas"); // fullscreen does funky stuff, try not to disturb it.
 			}
 			else
 			{
@@ -344,7 +387,11 @@ if (typeof(document.isFullscreen === undefined)) {
 		window.addEventListener("fullscreenchange",Module.window_event_fullscreenchange);
 		window.addEventListener("orientationchange",Module.window_event_orientationchange);
 
-		Module.canvas=document.getElementById("gamecake_canvas");
+		Module.print=window.print
+		Module.printErr=window.print
+		Module.noInitialRun=true
+		
+		Module.canvas=document.getElementById("canvas");
 		Module.canvas_resize=function(){setTimeout(resize,500);};
 		Module.canvas_fullscreen=fullscreen;
 		Module.locateFile=function(inurl){
@@ -352,7 +399,7 @@ if (typeof(document.isFullscreen === undefined)) {
 		};
 		Module.monitorRunDependencies=show_progress;
 		Module.preRun=function(){
-			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "gamecake_container";
+			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "#gamecake_container";
 
 			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
 			FS.mkdir("/lua");
@@ -391,25 +438,13 @@ if (typeof(document.isFullscreen === undefined)) {
 			d.getElementsByTagName('head')[0].appendChild(script);
 		}(document));
 	}
+*/
+
 	
 	$("#iconbar_run").click(function(e){
 		e.preventDefault();
-		
 		var code = editor.getValue();
-
-		if(window.Module) // update
-		{
-			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
-			gamecake_post('cmd=lua\n',"oven.next='wetgenes.gamecake.fun.main'");
-			Module.canvas_resize();
-			Module._pulse(); // make sure the pulse is running again it may have stoped on error
-
-		}
-		else
-		{
-			gamecake_load_fun(code);
-		}
-		
+		gamecake_load_fun(code);
 	});
 	$("#iconbar_patch").click(function(e){
 		e.preventDefault();
@@ -452,7 +487,8 @@ if (typeof(document.isFullscreen === undefined)) {
 	{
 		gamecake_load_fun(code);
 	}
-			
+
+
 $(document).keydown(function(event){
     if(event.keyCode==112){return false;} // disable browsers F1
     if(event.keyCode==122){return false;} // disable browsers F11

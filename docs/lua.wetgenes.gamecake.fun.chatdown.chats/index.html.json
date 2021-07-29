@@ -238,7 +238,7 @@
    "body": "<pre><code>chats.changes(chat,change,...)\n\nchats.changes(chat,&quot;subject&quot;)\nchats.changes(chat,&quot;topic&quot;,topic)\nchats.changes(chat,&quot;goto&quot;,goto)\nchats.changes(chat,&quot;tag&quot;,tag_name,tag_value)</code></pre><p>This is a callback hook, replace to be notified of changes and possibly \nalter then, by default we print debuging information. Replace this \nfunction with an empty function to prevent this eg</p>\n<pre><code>chats.changes=function()end</code></pre>",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 669,
+   "line": 671,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.changes",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   },
@@ -246,7 +246,7 @@
    "body": "<pre><code>chat = chats:get_subject(subject_name)\nchat = chats:get_subject()</code></pre><p>Get the chat for the given subject or the chat for the last subject \nselected with set_subject if no subject_name is given.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 561,
+   "line": 563,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_subject",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   },
@@ -254,7 +254,7 @@
    "body": "<pre><code>tag_value = chats:get_tag(tag_name,subject_name)</code></pre><p>Get the tag_value for the given tag_name which can either be \n&quot;tag_root/tag_name&quot; or &quot;tag_name&quot;. The subject_name is the default root \nto use if no tag_root is given in the tag_name.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 576,
+   "line": 578,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_tag",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   },
@@ -262,7 +262,7 @@
    "body": "<pre><code>output = chats:replace_tags(input,subject_name)</code></pre><p>Tags in the input text can be wrapped in {tag_name} and will be \nreplaced with the appropriate tag_value. This is done recursively so \ntag_values can contain references to other tags. If a tag does not \nexist then it will not expand and {tag_name} will remain in the output \ntext.</p>\n<p>Again if any tag name does not contain an explicit root then \nsubject_name will be used as the default chat subject.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 637,
+   "line": 639,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   },
@@ -270,7 +270,7 @@
    "body": "<pre><code>chat = chats:set_subject(subject_name)</code></pre><p>Set the current subject for this chats object, this subject becomes the \nchat that you will get if you call get_subject with no arguments.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 544,
+   "line": 546,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_subject",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   },
@@ -278,7 +278,7 @@
    "body": "<pre><code>tag_value = chats:set_tag(tag_name,tag_value,subject_name)</code></pre><p>Alter the value of the given tag_name. If the value string begins with \na &quot;+&quot; or a &quot;-&quot; Then the values will be treated as numbers and added or \nsubtracted from the current value. This allows for simple incremental \nflag values.</p>\n<p>Again if the tag name does not contain an explicit  root then \nsubject_name will be used as the default chat subject.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 594,
+   "line": 596,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_tag",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }

@@ -233,7 +233,7 @@
    "body": "<pre><code>tag_value = chat:set_tag(tag_name,tag_value)</code></pre><p>The same as chats:set_tag but the subject of this chat is the \ndefault root.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 290,
+   "line": 292,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tag",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }

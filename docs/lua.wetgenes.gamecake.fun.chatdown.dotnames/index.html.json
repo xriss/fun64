@@ -233,7 +233,7 @@
    "body": "<pre><code>for part_name in chatdown.dotnames(full_name) do\n    print(part_name)\nend</code></pre><p>Iterate all dotnames so if given &quot;aa.bb.cc&quot; we would iterate through \n&quot;aa.bb.cc&quot; , &quot;aa.bb&quot; and &quot;aa&quot;. This is used to inherit data using just \na naming convention.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 253,
+   "line": 255,
    "name": "lua.wetgenes.gamecake.fun.chatdown.dotnames",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }

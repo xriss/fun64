@@ -233,7 +233,7 @@
    "body": "<pre><code>tag_value = chats:get_tag(tag_name,subject_name)</code></pre><p>Get the tag_value for the given tag_name which can either be \n&quot;tag_root/tag_name&quot; or &quot;tag_name&quot;. The subject_name is the default root \nto use if no tag_root is given in the tag_name.</p>\n",
    "count": 1,
    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
-   "line": 576,
+   "line": 578,
    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_tag",
    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
   }
