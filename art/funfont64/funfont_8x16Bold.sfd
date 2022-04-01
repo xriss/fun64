@@ -3,8 +3,8 @@ FontName: funfont_8x16Bold
 FullName: funfont_8x16Bold
 FamilyName: funfont_8x16
 Weight: Bold
-Copyright: Copyright (c) 2021, kriss
-UComments: "2021-5-30: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2022, kriss
+UComments: "2022-4-2: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 895 1117725449 7617906]
+XUID: [1021 404 524678544 6975179]
 StyleMap: 0x0020
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1622356504
-ModificationTime: 1622356504
+CreationTime: 1648857163
+ModificationTime: 1648857163
 PfmFamily: 48
 TTFWeight: 700
 TTFWidth: 5
@@ -2082,7 +2082,7 @@ BDFChar: 106 106 8 0 7 -4 11
 BDFChar: 107 107 8 0 7 -4 11
 !!'gM^tA/7nCYt)z
 BDFChar: 108 108 8 0 7 -4 11
-!!$sl0JG170JG1Ez
+z!5QCc^qdbbz
 BDFChar: 109 109 8 0 7 -4 11
 z!:Kj;`l?$<z
 BDFChar: 110 110 8 0 7 -4 11
