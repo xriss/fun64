@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 6 -1636906485 10854199]
+XUID: [1021 673 -1280579862 7610416]
 StyleMap: 0x0201
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1648858450
-ModificationTime: 1648858450
+CreationTime: 1648858938
+ModificationTime: 1648858938
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5
@@ -2082,7 +2082,7 @@ BDFChar: 106 106 8 0 7 -4 11
 BDFChar: 107 107 8 0 7 -4 11
 !!!QA+=&@S:e6Cqz
 BDFChar: 108 108 8 0 7 -4 11
-z!$ECL5_+C_z
+!!"ta#RC\I&.fsHz
 BDFChar: 109 109 8 0 7 -4 11
 z!&H2n6:-?Yz
 BDFChar: 110 110 8 0 7 -4 11
