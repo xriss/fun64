@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 404 524678544 6975179]
+XUID: [1021 933 603430582 1392492]
 StyleMap: 0x0020
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1648857163
-ModificationTime: 1648857163
+CreationTime: 1648858450
+ModificationTime: 1648858450
 PfmFamily: 48
 TTFWeight: 700
 TTFWidth: 5
@@ -2036,9 +2036,9 @@ BDFChar: 83 83 8 0 7 -4 11
 BDFChar: 84 84 8 0 7 -4 11
 !!)pN0JG170JG17z
 BDFChar: 85 85 8 0 7 -4 11
-!!$VCAnGXeAnGX;z
+!!($Y`l?$<`l?#Gz
 BDFChar: 86 86 8 0 7 -4 11
-!!$VCAnGXeAnF.Bz
+!!($Y`l?$<`l<Bcz
 BDFChar: 87 87 8 0 7 -4 11
 !!($Y`l?$<`r>DGz
 BDFChar: 88 88 8 0 7 -4 11
@@ -2100,9 +2100,9 @@ z!.M`!Hj0fQz
 BDFChar: 116 116 8 0 7 -4 11
 !!"],0`3UY0JG1Ez
 BDFChar: 117 117 8 0 7 -4 11
-z!+ohTAnGX;z
+z!63$u`l?#Gz
 BDFChar: 118 118 8 0 7 -4 11
-z!+ohTAnF.Bz
+z!63$u`l<Bcz
 BDFChar: 119 119 8 0 7 -4 11
 z!63$u`r>DGz
 BDFChar: 120 120 8 0 7 -4 11
@@ -2306,7 +2306,7 @@ BDFChar: 218 218 8 0 7 -4 11
 BDFChar: 219 219 8 0 7 -4 11
 &1GQ<`l?$<`l?#Gz
 BDFChar: 220 220 8 0 7 -4 11
-!$oS(`l?$<`l?#Gz
+!%>k,`l?$<`l?#Gz
 BDFChar: 221 221 8 0 7 -4 11
 #S>5(bfou=0JG17z
 BDFChar: 222 222 8 0 7 -4 11

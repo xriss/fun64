@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 839 -1855948824 7249820]
+XUID: [1021 424 916840191 7015654]
 StyleMap: 0x0040
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1648857164
-ModificationTime: 1648857164
+CreationTime: 1648858450
+ModificationTime: 1648858450
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5
@@ -2036,9 +2036,9 @@ BDFChar: 83 83 8 0 7 -4 11
 BDFChar: 84 84 8 0 7 -4 11
 !!%BX&.fBa&.fBaz
 BDFChar: 85 85 8 0 7 -4 11
-!!#DT6psF26psF&z
+!!#>P6:+"*6:+"$z
 BDFChar: 86 86 8 0 7 -4 11
-!!#DT6psF26prF7z
+!!#>P6:+"*6:)q7z
 BDFChar: 87 87 8 0 7 -4 11
 !!#>P6:+"*6<[tfz
 BDFChar: 88 88 8 0 7 -4 11
@@ -2100,9 +2100,9 @@ z!'WY549>S3z
 BDFChar: 116 116 8 0 7 -4 11
 !!!QA&:>$#&.fBoz
 BDFChar: 117 117 8 0 7 -4 11
-z!$WU2+sJ3Nz
+z!('"=6:+"$z
 BDFChar: 118 118 8 0 7 -4 11
-z!$WU2+sI^,z
+z!('"=6:)q7z
 BDFChar: 119 119 8 0 7 -4 11
 z!('"=6<[tfz
 BDFChar: 120 120 8 0 7 -4 11
@@ -2300,13 +2300,13 @@ z!(84H-q"%8z
 BDFChar: 216 216 8 0 7 -4 11
 !!#/K7S69N;IVu*z
 BDFChar: 217 217 8 0 7 -4 11
-&-tZl6psF26psF&z
+&-tTh6:+"*6:+"$z
 BDFChar: 218 218 8 0 7 -4 11
-#S9Bl6psF26psF&z
+#S9<h6:+"*6:+"$z
 BDFChar: 219 219 8 0 7 -4 11
-&1Bq76psF26psF&z
+&1Bk36:+"*6:+"$z
 BDFChar: 220 220 8 0 7 -4 11
-!$js#6psF26psF&z
+!$jlt6:+"*6:+"$z
 BDFChar: 221 221 8 0 7 -4 11
 #S9Bl6puD6&.fBaz
 BDFChar: 222 222 8 0 7 -4 11
@@ -2364,13 +2364,13 @@ z&-)]X!!!Q1z
 BDFChar: 248 248 8 0 7 -4 11
 z!'NY<>%0h2z
 BDFChar: 249 249 8 0 7 -4 11
-!!i]-!$WU2+sJ3Nz
+!!i]-!('"=6:+"$z
 BDFChar: 250 250 8 0 7 -4 11
-!!EQ-!$WU2+sJ3Nz
+!!EQ-!('"=6:+"$z
 BDFChar: 251 251 8 0 7 -4 11
-!!j8=!$WU2+sJ3Nz
+!!j8=!('"=6:+"$z
 BDFChar: 252 252 8 0 7 -4 11
-!!!W3!$WU2+sJ3Nz
+!!!W3!('"=6:+"$z
 BDFChar: 253 253 8 0 7 -4 11
 !!j,9!('"=6:+"&!WiFN
 BDFChar: 254 254 8 0 7 -4 11
