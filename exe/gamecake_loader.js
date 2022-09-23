@@ -5,6 +5,7 @@ gamecake_loader=function(opts)
 {
 	opts=opts || {};
 	opts.div=opts.div || "#gamecake"; // where to put it
+	opts.term=opts.term || "#terminal"; // where to log
 	opts.dir=opts.dir || "./"; // where to load stuff from
 	
 //	opts.cakefile=opts.cakefile || "game.cake"; // http location of cakefile
@@ -20,6 +21,37 @@ gamecake_loader=function(opts)
 		template.innerHTML = html.trim();
 		return template.content.firstChild;
 	}
+
+	var log=(function () {
+		return function (...args) {
+			console.log(...args)
+			if( opts.terminal )
+			{
+				var logger = document.querySelector( opts.term );
+				if( logger )
+				{
+					for (var i = 0; i < arguments.length; i++) {
+						if (typeof arguments[i] == 'object') {
+							s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
+						} else {
+							s=arguments[i] + "\n";
+						}
+					}
+					
+					var sticky=( logger.scrollTop >= (logger.scrollHeight-logger.clientHeight) );
+					
+					var t=logger.innerHTML || "";
+					if(t.length>4096) { t=t.slice(-4096); } // limit
+					logger.innerHTML=t+s;
+
+					if(sticky)
+					{
+						logger.scrollTop=(logger.scrollHeight-logger.clientHeight);
+					}
+				}
+			}
+		}
+	})();
 
 	gamecake.post=function(a,b){}
 
@@ -67,7 +99,7 @@ gamecake_loader=function(opts)
 
 		if(m.cmd=="print") // basic print command (we cant do this from within nacl)
 		{
-			console.log(d);
+			log(d);
 		}
 		else
 		if(m.cmd=="loading") // loading progress
@@ -150,13 +182,6 @@ gamecake_loader=function(opts)
 
 	var gamecake_start=function() {
 
-//define a callmelater function
-			var requestAnimationFrame = (function(){
-				return	function(callback,element){
-					window.setTimeout(callback, 1000 / 60);
-				};
-		})();
-
 //initialise lua
 		gamecake.post('cmd=lua\n','require("wetgenes.win").emcc_start({"--logs"})');
 
@@ -176,7 +201,7 @@ gamecake_loader=function(opts)
 		window.show_progress_max=window.show_progress_max || 0;
 		if(window.show_progress_max<n) { window.show_progress_max=n; }
 		var pct=Math.floor(100*(1-(n/window.show_progress_max)));
-		console.log("GameCake Loading "+pct+"%");
+		log("GameCake Loading "+pct+"%");
 		gamecake.progress_bar.setAttribute("value",pct/100);
 		if(pct==100)
 		{
@@ -184,14 +209,36 @@ gamecake_loader=function(opts)
 			gamecake.progress_about.style.display = "none";
 		}
 	};
-	var resize=function(){
+	gamecake.resize=function(){
 		var e=gamecake.div;
+
+		var isFullscreen = !((document.fullScreenElement !== undefined && document.fullScreenElement === null) || 
+		 (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || 
+		 (document.mozFullScreen !== undefined && !document.mozFullScreen) || 
+		 (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen));
+
+		if(isFullscreen)
+		{
+			e=gamecake.canvas; // fullscreen does funky stuff, try not to disturb it.
+		}
+
 		var w=parseFloat(window.getComputedStyle(e).width);
 		var h=parseFloat(window.getComputedStyle(e).height);
-		Module.setCanvasSize(w,h);
-		gamecake.post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')');
+		
+		if(!isFullscreen) // it seems better not to call this when fullscreen
+		{
+			if(Module.setCanvasSize)
+			{
+				Module.setCanvasSize(w,h);
+			}
+		}
+
+		if(gamecake.post)
+		{
+			gamecake.post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')'); // but this might help?
+		}
 	};
-	window.addEventListener("resize",resize);
+	window.addEventListener("resize",gamecake.resize);
 	Module={};
 	gamecake.Module=Module
 	Module.msg=gamecake.msg;
@@ -210,7 +257,7 @@ gamecake_loader=function(opts)
 		
 		if(opts.cakefile)
 		{
-			console.log("fetching "+opts.cakefile);
+			log("fetching "+opts.cakefile);
 			FS.createPreloadedFile('/', "gamecake.zip", opts.cakefile, true, false);
 		}
 		if( gamecake.loading_hook )
@@ -223,7 +270,7 @@ gamecake_loader=function(opts)
 		gamecake.status="start"
 		gamecake.post = Module.cwrap('main_post', 'int', ['string','string']);
 		gamecake_start();
-		resize();
+		gamecake.resize();
 		if( gamecake.loaded_hook )
 		{
 			gamecake.loaded_hook();
@@ -232,18 +279,27 @@ gamecake_loader=function(opts)
 
 	Module.print=function(...args)
 	{
-		console.log(...args)
+		log(...args)
 	}
 
 	Module.printErr=function(...args)
 	{
 		gamecake.stop=true
-		console.log(...args)
+		log(...args)
 	}
+
+	Module.window_event_resize=function(){setTimeout(gamecake.resize,500);}
+	Module.window_event_fullscreenchange=function(){setTimeout(gamecake.resize,500);}
+	Module.window_event_orientationchange=function(){setTimeout(gamecake.resize,500);}
+
+	window.addEventListener("resize",Module.window_event_resize);
+	window.addEventListener("fullscreenchange",Module.window_event_fullscreenchange);
+	window.addEventListener("orientationchange",Module.window_event_orientationchange);
 
 
 	gamecake.load_gamecakejs=function()
 	{
+		gamecake.status="load"
 		var first=document.getElementsByTagName('script')[0];
 		var js=document.createElement('script');
 		js.src=opts.dir+"gamecake.js";
@@ -253,7 +309,6 @@ gamecake_loader=function(opts)
 	gamecake.status="setup"
 	if(!opts.no_load_gamecakejs) // delay this final load action that sets everything in motion
 	{
-		gamecake.status="load"
 		gamecake.load_gamecakejs()
 	}
 

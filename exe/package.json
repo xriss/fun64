@@ -1,7 +1,7 @@
 {
   "name": "gamecake",
   "description": "This is a webassembly build of the gamecake game engine.",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "license": "MIT",
   "repository": {
     "type": "git",
