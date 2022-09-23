@@ -8,10 +8,4 @@ echo
 
 ./build
 
-cd ../docs
-git status
-
-git add .
-git commit -m"publish bump"
-git pull
-git push
+rsync -avh --delete --exclude='.git/' ../docs /server/public/wetgenes.com/fun64/
