@@ -8,4 +8,4 @@ echo
 
 ./build
 
-rsync -avh --delete --exclude='.git/' ../docs /server/public/wetgenes.com/fun64/
+rsync -avh --delete --exclude='.git/' ../docs/ /server/public/wetgenes.com/fun64/
