@@ -1,5 +1,5 @@
 Welcome to fun64 the super simple super lowrez single file game engine 
-powered by gamecake.
+powered by [gamecake](https://github.com/xriss/gamecake/tree/master/lua/wetgenes/gamecake/fun).
 
 Try the live html version of the example projects here, this site can be fund in the plated/source folder.
 
