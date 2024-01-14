@@ -3,8 +3,8 @@ FontName: funfont_8x16Italic
 FullName: funfont_8x16Italic
 FamilyName: funfont_8x16
 Weight: Italic
-Copyright: Copyright (c) 2022, kriss
-UComments: "2022-4-2: Created with FontForge (http://fontforge.org)"
+Copyright: Copyright (c) 2024, kriss
+UComments: "2024-1-14: Created with FontForge (http://fontforge.org)"
 Version: 
 ItalicAngle: 0
 UnderlinePosition: -100
@@ -15,14 +15,14 @@ InvalidEm: 0
 LayerCount: 2
 Layer: 0 0 "Back" 1
 Layer: 1 0 "Fore" 0
-XUID: [1021 673 -1280579862 7610416]
+XUID: [1021 939 1934785006 10323350]
 StyleMap: 0x0201
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
-CreationTime: 1648858938
-ModificationTime: 1648858938
+CreationTime: 1705194125
+ModificationTime: 1705194125
 PfmFamily: 48
 TTFWeight: 400
 TTFWidth: 5

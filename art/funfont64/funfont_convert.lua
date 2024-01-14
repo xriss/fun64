@@ -25,11 +25,11 @@ local unimap={
 }
 
 local rawpos={
-	{ hx=4,hy= 8,	px= 8,py= 0,  style="", },
-	{ hx=8,hy= 8,	px=88,py= 0,  style="", },
-	{ hx=8,hy=16,	px=88,py=128, style="", },
-	{ hx=8,hy=16,	px=232,py=128, style="r", },
-	{ hx=8,hy=16,	px=376,py=128, style="i", },
+	{ hx=4,hy= 8,	px=256+ 8,py= 0,  style="", },
+	{ hx=8,hy= 8,	px=256+88,py= 0,  style="", },
+	{ hx=8,hy=16,	px=256+88,py=128, style="", },
+	{ hx=8,hy=16,	px=256+232,py=128, style="r", },
+	{ hx=8,hy=16,	px=256+376,py=128, style="i", },
 }
 
 
