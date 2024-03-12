@@ -91,7 +91,7 @@ draw=function()
 	    "touch",							-- touch buttons
 	    }
 	    
-	local ax={"lx","ly","lz","rx","ry","rz","dx","dy","mx","my","tx","ty"} -- axis name
+	local ax={"lx","ly","lz","rx","ry","rz","dx","dy","mx","my","vx","vy","tx","ty"} -- axis name
 	
 	local a={}
 		
