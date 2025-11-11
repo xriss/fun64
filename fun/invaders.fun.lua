@@ -6,7 +6,6 @@ local bitdown=require("wetgenes.gamecake.fun.bitdown")		-- ascii to bitmap
 local chipmunk=require("wetgenes.chipmunk")					-- 2d physics https://chipmunk-physics.net/
 
 
------------------------------------------------------------------------------
 --[[#hardware
 
 select the hardware we will need to run this code, eg layers of 
@@ -18,7 +17,6 @@ This also provides a default main function that will upload the
 graphics and call the provided update/draw callbacks.
 
 ]]
------------------------------------------------------------------------------
 hardware,main=system.configurator({
 	mode="fun64", -- select the standard 320x240 screen using the swanky32 palette.
 	graphics=function() -- use a function to return a value created later
@@ -41,9 +39,7 @@ hardware,main=system.configurator({
 	end,
 })
 
------------------------------------------------------------------------------
 --[[#graphics
-
 
 define all graphics in this global, we will convert and upload to tiles 
 at setup although you can change tiles during a game, we try and only 
@@ -51,7 +47,6 @@ upload graphics during initial setup so we have a nice looking sprite
 sheet to be edited by artists
 
 ]]
------------------------------------------------------------------------------
 graphics={
 {0x0000,"_font",0x0340}, -- preserve the 4x8 and 8x8 font area 64x3 tiles
 }
@@ -81,9 +76,7 @@ graphics.loads=function(tab)
 	end
 end
 
------------------------------------------------------------------------------
 --[[#entities
-
 
 	entities.reset()
 	
@@ -137,7 +130,6 @@ lists.
 
 
 ]]
------------------------------------------------------------------------------
 entities={} -- a place to store everything that needs to be updated
 
 -- clear the current data
@@ -201,7 +193,6 @@ entities.count=function(caste) local c=entities.data[caste] return c and #c or 0
 -- also reset the entities right now creating the initial data and info tables
 entities.reset()
 
------------------------------------------------------------------------------
 --[[#entities.systems
 
 A global table for entity systems to live in.
@@ -213,7 +204,6 @@ instance entities.systems_call("load") is used at the bottom
 of this file to prepare graphics of registered systems.
 
 ]]
------------------------------------------------------------------------------
 entities.systems={}
 entities.systems_call=function(fname,...)
 	for n,v in pairs(entities.systems) do
@@ -223,7 +213,6 @@ entities.systems_call=function(fname,...)
 	end
 end
 
------------------------------------------------------------------------------
 --[[#entities.systems.space
 
 	space = entities.systems.space.setup()
@@ -231,7 +220,6 @@ end
 Create the space that simulates all of the physics.
 
 ]]
------------------------------------------------------------------------------
 entities.systems.space={
 setup=function()
 
@@ -250,7 +238,6 @@ end,
 }
 
 
------------------------------------------------------------------------------
 --[[#entities.systems.player
 
 	player = entities.systems.player.add(idx)
@@ -258,7 +245,6 @@ end,
 Add a player
 
 ]]
------------------------------------------------------------------------------
 entities.systems.player={
 
 load=function() graphics.loads{
@@ -337,11 +323,11 @@ add=function(i)
 		local vx,vy=player.body:velocity()
 		local s=4
 
-		if up.button("fire_set") or
-			( up.button("left") and up.button("right_set") ) or
-			( up.button("right") and up.button("left_set") ) then
+		if up.button("fire_set") then
+--			( up.button("left") and up.button("right_set") ) or
+--			( up.button("right") and up.button("left_set") ) then
 		
-			if up.button("mouse_left_set") then player.mouse=true else player.mouse=false end
+--			if up.button("mouse_left_set") then player.mouse=true else player.mouse=false end
 			
 			if entities.count("missile")==0 then
 			
@@ -356,12 +342,12 @@ add=function(i)
 		if up.button("left")  then if vx>0 then vx=0 end vx=vx-s end
 		if up.button("right") then if vx<0 then vx=0 end vx=vx+s end
 		
-		if player.mouse then
-			local mx=up.axis("mx")
-			if     mx < px then if vx>0 then vx=0 end vx=vx-s
-			elseif mx > px then if vx<0 then vx=0 end vx=vx+s
-			end
-		end
+--		if player.mouse then
+--			local mx=up.axis("vx") or 0
+--			if     mx < px then if vx>0 then vx=0 end vx=vx-s
+--			elseif mx > px then if vx<0 then vx=0 end vx=vx+s
+--			end
+--		end
 
 		if px<0  +12 and vx<0 then vx=0 end
 		if px>320-8  and vx>0 then vx=0 end
@@ -390,13 +376,11 @@ end,
 }
 
 
------------------------------------------------------------------------------
 --[[#entities.systems.invader
 
 an invader
 
 ]]
------------------------------------------------------------------------------
 entities.systems.invader={
 
 load=function() graphics.loads{
@@ -523,13 +507,11 @@ add=function(x,y)
 end,
 }
 
------------------------------------------------------------------------------
 --[[#entities.systems.horde
 
 The invading horde
 
 ]]
------------------------------------------------------------------------------
 entities.systems.horde={
 
 sound=function()
@@ -603,7 +585,7 @@ add=function(cx,cy,cs)
 		horde.moved=horde.moved+math.abs(horde.vx) -- +math.abs(horde.vy)
 		if horde.moved > 1024 then
 			horde.moved=0
-			sfx.play(horde.noise,1,1)
+--			sfx.play(horde.noise,1,1)
 			if horde.noise=="move1" then horde.noise="move2" else horde.noise="move1" end
 		end
 	
@@ -655,13 +637,11 @@ end,
 
 }
 
------------------------------------------------------------------------------
 --[[#entities.systems.missile
 
 a missile
 
 ]]
------------------------------------------------------------------------------
 entities.systems.missile={
 
 load=function() graphics.loads{
@@ -729,7 +709,7 @@ add=function(px,py,vx,vy)
 
 	local sfx=system.components.sfx
 
-	sfx.play("shot",1,1)
+--	sfx.play("shot",1,1)
 
 	local names=system.components.tiles.names
 	local space=entities.get("space")
@@ -739,7 +719,7 @@ add=function(px,py,vx,vy)
 	missile.color={r=1/8,g=6/8,b=1/8,a=1}
 	missile.frame=0
 	missile.frames={ names.missile.idx+0 }
-	
+		
 	missile.body=space:body(1,math.huge)
 	missile.body:position(px,py)
 	missile.body:velocity(vx,vy)
@@ -794,13 +774,11 @@ end,
 }
 
 
------------------------------------------------------------------------------
 --[[#entities.systems.bang
 
 a bang
 
 ]]
------------------------------------------------------------------------------
 entities.systems.bang={
 
 load=function() graphics.loads{
@@ -864,7 +842,7 @@ add=function(it)
 
 	local sfx=system.components.sfx
 
-	sfx.play("explode",1,1)
+--	sfx.play("explode",1,1)
 
 	local names=system.components.tiles.names
 	local space=entities.get("space")
@@ -932,13 +910,11 @@ add=function(it)
 end,
 }
 
------------------------------------------------------------------------------
 --[[#entities.systems.score
 
 The score
 
 ]]
------------------------------------------------------------------------------
 entities.systems.score={
 
 add=function()
@@ -967,9 +943,9 @@ add=function()
 
 			local up=ups(0) -- the controls for this player
 			
-		if up.button("fire_clr") or
-			( up.button("left") and up.button("right_clr") ) or
-			( up.button("right") and up.button("left_clr") ) then
+		if up.button("fire_clr") then
+--			( up.button("left") and up.button("right_clr") ) or
+--			( up.button("right") and up.button("left_clr") ) then
 
 				-- use a setup function so we are called outside of update loop
 				setup=function()
@@ -1035,13 +1011,11 @@ end,
 
 }
 
------------------------------------------------------------------------------
 --[[#entities.systems.stars
 
 The stars
 
 ]]
------------------------------------------------------------------------------
 entities.systems.stars={
 
 add=function(cx,cy)
@@ -1052,7 +1026,7 @@ add=function(cx,cy)
 	stars.vy=2
 
 	local ccopper=system.components.copper
-	ccopper.shader_name="fun_copper_stars"		
+--	ccopper.shader_name="fun_copper_stars"		
 	ccopper.shader_uniforms.scroll={0,0,0,0}
 
 	stars.update=function()
@@ -1306,17 +1280,15 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
 -- end of GLSL code
 //]=]
 
------------------------------------------------------------------------------
 --[[#setup
 
 Called once to setup things in the first update loop after hardware has 
 been initialised.
 
 ]]
------------------------------------------------------------------------------
 setup_start=function()
 
-	ups(1).touch="left_fire_right" -- enable touch buttons
+	--ups(1).touch="left_fire_right" -- enable touch buttons
 
 	entities.systems_call("sound")
 
