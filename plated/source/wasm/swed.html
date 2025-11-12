@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SWED</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+	height: 100%;
+	width: 100%;
+}
+
+#canvas {
+	background-color: #000;
+	overflow:hidden;
+}
+
+</style>
+
+<script type="text/javascript" src="coi-serviceworker.js"></script>
+<script type="text/javascript" src="./js/gamecake_loader.js"></script>
+<script type="text/javascript" src="./js/unzipit.js"></script>
+
+<script>
+
+;(function(callback){
+  if (document.readyState != "loading") { callback(); }
+  else { document.addEventListener("DOMContentLoaded", callback); }
+})(function(){
+
+let q=(function(){
+	let qs=window.location.search.substring(1)
+    let q = {}
+    let ps = qs.split("&")
+    for( let i=0; i<ps.length; i++ )
+    {
+        let p = ps[i].split('=')
+        if( p[0]!="" )
+        {
+			q[ decodeURIComponent( p[0] ) ] = decodeURIComponent( p[1] || "" ) || true
+		}
+    }
+    return q;
+})()
+
+let aa=[ "-lcmd" , "swed" ]
+if(q.run) { aa.push("--run") }
+if(q.load) { aa.push(q.load) }
+
+	gamecake=gamecake_loader({
+		dir:"./exe/",
+		args:aa,
+//		urlopts:true,
+		});
+
+});
+
+</script>
+
+</head>
+<body><div id="gamecake" style="position:fixed;width:100%;height:100%;" ></div></body>
+</html>
