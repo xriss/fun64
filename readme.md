@@ -1,9 +1,15 @@
-Welcome to fun64 the super simple super lowrez single file game engine 
-powered by [gamecake](https://github.com/xriss/gamecake/tree/master/lua/wetgenes/gamecake/fun).
+Welcome to fun64 the fat-pixel/single-file game engine powered by 
+[gamecake](https://github.com/xriss/gamecake/tree/master/lua/wetgenes/gamecake/fun).
+
+I have unbroken all the WASM again (again?), sorry but browsers keep breaking 
+things for "security". 
+
+Beta test the new and improved editor at 
+https://xriss.github.io/fun64/wasm/swed.html now with 100% less JS.
 
 Try the live html version of the example projects here, this site can be fund in the plated/source folder.
 
-https://wetgenes.com/fun64
+https://xriss.github.io/fun64/
 
 Note that we can not use github pages anymore as it does not send headers now required by wasm.
 
