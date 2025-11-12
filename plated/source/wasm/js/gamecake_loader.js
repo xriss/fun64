@@ -111,7 +111,7 @@ console.log(tr)
 
 // setup gamecake
 
-	let gamecake={};
+	let gamecake={opts:opts};
 	gamecake.div=document.querySelector(opts.div); // where to put stuff	
 
 

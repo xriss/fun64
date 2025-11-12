@@ -39,54 +39,14 @@
 
 </style>
 
+<script type="text/javascript" src="coi-serviceworker.js"></script>
 <script type="text/javascript" src="js/split.js"></script>
 <script type="text/javascript" src="js/gamecake_loader.js"></script>
 
 <script>
 
-	var str_to_msg=function(s,msg) // split a query like string
-	{
-	var i;
-		var msg=msg || {};
-		
-		var msg_dec=function(s)
-		{
-			var s2="";
-			if(s)
-			{
-				try
-				{
-					s2=s.split("%26").join("&").split("%3d").join("=").split("%25").join("%");
-					return s2;
-				}
-				catch(e)
-				{
-					return "";
-				}
-			}
-			return "";
-		};
-
-		var aa=s.split("&");
-		for(i in aa)
-		{
-			var v=aa[i];
-			var va=v.split("=");
-			var key=msg_dec(va[0]);
-			var val=msg_dec(va[1]);
-			if(key!=="")
-			{
-				msg[key]=val;
-			}
-		}
-		
-		return msg;
-	};
-
-	var msg={}
-	str_to_msg( window.location.search.substring(1) , msg )
-	str_to_msg( window.location.hash.substring(1) , msg )
-
+	let msg={urlopts:true} // read opts from url
+	
 	console.log( msg )
 
 // make sure the page has finished loaded before we do anything
@@ -94,7 +54,7 @@
 ;(function(callback){
   if (document.readyState != "loading") { callback(); }
   else { document.addEventListener("DOMContentLoaded", callback); }
-})(function(){
+})(async function(){
 
 	if(msg.terminal) // display terminal
 	{
@@ -115,7 +75,7 @@
 		document.querySelector( "#terminal" ).style.display = "none"
 	}
 	
-	gamecake=gamecake_loader(msg);
+	gamecake=await gamecake_loader(msg);
 
 });
 

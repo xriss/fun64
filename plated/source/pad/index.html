@@ -153,33 +153,6 @@ end
 	</div>
 </div>
 
-<script id="gamecake_init_lua" type="text/lua" >--<![CDATA[
-
-	local hx,hy,ss=320,240,3
-
-	local opts={
-		times=true, -- request simple time keeping samples
-
-		width=hx*ss,	-- display basics
-		height=hy*ss,
-		screen_scale=ss,
-	--	show="full",
-		title="fun",
-		start="wetgenes.gamecake.fun.main",
-		fun="start",
-		fps=60,
-		... -- include commandline opts
-	}
-
-	math.randomseed( os.time() ) -- try and randomise a little bit better
-
-	oven=require("wetgenes.gamecake.oven").bake(opts).preheat()
-
-	return oven:serv()
-
---]]></script>
-
-
 <script>
 	
 if (typeof(document.isFullscreen === undefined)) {
@@ -192,44 +165,6 @@ if (typeof(document.isFullscreen === undefined)) {
 }
 
 	window.gamecake_original_code=document.getElementById("editor").innerHTML;
-
-/*
-
-		<div id="gamecake_container">
-			<canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onclick="this.focus()"></canvas>
-		</div>
-		<pre id="gamecake_log"></pre>
-
-
-
-	(function () {
-		var newlog = function () {
-			var logger = document.getElementById('gamecake_log');
-			if( logger )
-			{
-				for (var i = 0; i < arguments.length; i++) {
-					if (typeof arguments[i] == 'object') {
-						s=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + "\n";
-					} else {
-						s=arguments[i] + "\n";
-					}
-				}
-				
-				var sticky=( logger.scrollTop >= (logger.scrollHeight-logger.clientHeight) );
-				
-				var t=logger.innerHTML || "";
-				if(t.length>4096) { t=t.slice(-4096); } // limit
-				logger.innerHTML=t+s;
-
-				if(sticky)
-				{
-					logger.scrollTop=(logger.scrollHeight-logger.clientHeight);
-				}
-			}		
-		}
-		window.print=newlog
-	})();
-*/
 
 	var params={};
 	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -286,9 +221,7 @@ if (typeof(document.isFullscreen === undefined)) {
 	var gamecake_load_fun=function(code)
 	{
 
-		console.log("TBD")
-
-		var iframe=$('<iframe style="width:100%;height:100%;position:relative; background-color:#000;" src="../exe/index.html#no_load_gamecakejs=1" ></iframe>');
+		var iframe=$('<iframe style="width:100%;height:100%;position:relative; background-color:#000;" src="../wasm/index.html?no_load_gamecakejs=1&args=--,/start.fun.lua,--logs" ></iframe>');
 		$("#split_right").empty().append(iframe);
 
 
@@ -298,15 +231,22 @@ if (typeof(document.isFullscreen === undefined)) {
 
 			if( gamecake && gamecake.load_gamecakejs ) // ready
 			{
-
 				console.log(gamecake)
+
 				gamecake.loading_hook=function(){
 					gamecake.FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
-					gamecake.FS.mkdir("/lua");
-					gamecake.FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
 				}
-				gamecake.load_gamecakejs()
+				
+				gamecake.loaded_hook=function(){
+					setTimeout(function(){
+						// wiggle hack to resize fun64
+						$("#split_right").width( Math.floor( $("#split_right").width( )-1 ) )
+					},100);
+				}
 
+				gamecake.load_gamecakejs()
+				
+				resize_func()
 			}
 			else
 			{
@@ -319,127 +259,6 @@ if (typeof(document.isFullscreen === undefined)) {
 
 
 	}
-
-/*
-	
-	var show_progress=function(n)
-	{
-		window.show_progress_max=window.show_progress_max || 0;
-		if(window.show_progress_max<n) { window.show_progress_max=n; }
-		var pct=Math.floor(100*(1-(n/window.show_progress_max)));
-		console.log("GameCake Loading "+pct+"%");
-	};
-
-	var gamecake_load_fun=function(code)
-	{
-		var resize=function(){
-			var container;
-			if(document.isFullscreen())
-			{
-				container=$("#canvas"); // fullscreen does funky stuff, try not to disturb it.
-			}
-			else
-			{
-				container=$("#gamecake_container"); // fit canvas to this size
-			}			
-			var w=container.width();
-			var h=container.height();
-			
-			if(!document.isFullscreen()) // it seems better not to call this when fullscreen
-			{
-				Module.setCanvasSize(w,h);
-			}
-
-			if(window.gamecake_post)
-			{
-				gamecake_post('cmd=lua\n','require("wetgenes.win").hardcore.resize(nil,'+w+','+h+')'); // but this might help?
-			}
-		};
-
-		var fullscreen=function(yesno){
-			$("#gamecake_container")[0].focus();
-			if(window.gamecake_post)
-			{
-				if(yesno) // fullscreen is flakey, need to doubletap to get a sure response
-				{
-					gamecake_post('cmd=lua\n','local win=require("wetgenes.win").oven.win win:show() win:show("full") win:show() win:show("full")');
-				}
-				else
-				{
-					gamecake_post('cmd=lua\n','local win=require("wetgenes.win").oven.win win:show("full") win:show() win:show("full") win:show()');
-				}
-			}
-		};
-
-		if( window.Module ) // try and cleanup
-		{
-			window.removeEventListener("resize",Module.window_event_resize);
-			window.removeEventListener("fullscreenchange",Module.window_event_fullscreenchange);
-			window.removeEventListener("orientationchange",Module.window_event_orientationchange);
-		}
-
-		window.Module={};
-		
-		Module.window_event_resize=function(){setTimeout(resize,500);}
-		Module.window_event_fullscreenchange=function(){setTimeout(resize,500);}
-		Module.window_event_orientationchange=function(){setTimeout(resize,500);}
-
-		window.addEventListener("resize",Module.window_event_resize);
-		window.addEventListener("fullscreenchange",Module.window_event_fullscreenchange);
-		window.addEventListener("orientationchange",Module.window_event_orientationchange);
-
-		Module.print=window.print
-		Module.printErr=window.print
-		Module.noInitialRun=true
-		
-		Module.canvas=document.getElementById("canvas");
-		Module.canvas_resize=function(){setTimeout(resize,500);};
-		Module.canvas_fullscreen=fullscreen;
-		Module.locateFile=function(inurl){
-			return "../exe/"+inurl;
-		};
-		Module.monitorRunDependencies=show_progress;
-		Module.preRun=function(){
-			ENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = "#gamecake_container";
-
-			FS.writeFile("/start.fun.lua", code,  { encoding: "utf8" } );
-			FS.mkdir("/lua");
-			FS.writeFile( "/lua/init.lua" , document.getElementById("gamecake_init_lua").innerHTML );
-
-		};
-
-		Module.onRuntimeInitialized=function() {
-
-			gamecake_post = Module.cwrap('main_post', 'int', ['string','string']);
-
-			gamecake_post('cmd=lua\n','require("wetgenes.win").emcc_start({})');
-
-// create a pulse function and call it every frame
-			Module._pulse=function() {
-				cancelAnimationFrame(Module._pulseid);
-				if(!Module._pulse) { return; } // in the middle of reboot
-				Module._pulseid=requestAnimationFrame(Module._pulse);
-				var ret=gamecake_post('cmd=lua\n','return gamecake_pulse()');
-				if(ret!=0) { cancelAnimationFrame(Module._pulseid); } // stop updating on error
-			};
-			Module._pulse();
-
-			setTimeout(resize,500); // call resize in a little while
-			
-			if (head.mobile){
-				Module.canvas_fullscreen(true);
-			};
-		};
-
-		(function(d, script) {
-			script = d.createElement('script');
-			script.type = 'text/javascript';
-			script.async = true;
-			script.src = '../exe/gamecake.js';
-			d.getElementsByTagName('head')[0].appendChild(script);
-		}(document));
-	}
-*/
 
 	
 	$("#iconbar_run").click(function(e){
@@ -513,7 +332,7 @@ $(document).keydown(function(event){
 		</div>
 		<div class="pop_text">
 			<div class="pop_head">
-				The FunPad lets you edit and run <a href="https://wetgenes.com/fun64" target="_blank">Fun64</a> code in any modern browser.
+				The FunPad lets you edit and run <a href="https://xriss.github.io/fun64/" target="_blank">Fun64</a> code in any modern browser.
 				<p>Just paste your code into the editor and click <b>RUN</b> to start your application.</p>
 			</div>
 			<div class="pop_div">
@@ -546,7 +365,7 @@ $(document).keydown(function(event){
 			</div><div class="pop_div">
 				<div class="pop_info">
 					<img src="../data/favicon.png" width="16px" height="16px"/> <b>Fun64</b> is a simple game engine designed for single file game sketches.
-					<p><a href="http://wetgenes.com/fun64" target="_blank">Visit the official site</a></p>
+					<p><a href="https://xriss.github.io/fun64/" target="_blank">Visit the official site</a></p>
 					<p><a href="http://github.com/xriss/fun64" target="_blank">View the project on Github</a></p>
 				</div>
 			</div>
@@ -567,31 +386,31 @@ $(document).keydown(function(event){
 				<p><input type=text id="gamecake_text_input" autofocus="autofocus" placeholder="For example; https://gist.github.com/search?q=fun64+lua"></p>
 			</div>
 			<div class="pop_head title">Play some of the examples below</div>
-			<a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e" class="pop_div gist1">
+			<a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e" class="pop_div gist1">
 				<div class="pop_info">
 					Hello, World!
 				</div>
-			</a><a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F90f8c1d2e9cb0b9d307fe68aebb4b9c3" class="pop_div gist2">
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F90f8c1d2e9cb0b9d307fe68aebb4b9c3" class="pop_div gist2">
 				<div class="pop_info">
 					Shadertoy
 				</div>
-			</a><a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatform.fun.lua" class="pop_div gist3">
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatform.fun.lua" class="pop_div gist3">
 				<div class="pop_info">
 					Platform game
 				</div>
-			</a><a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatobj.fun.lua" class="pop_div gist4">
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatobj.fun.lua" class="pop_div gist4">
 				<div class="pop_info">
 					NPC Conversation
 				</div>
-			</a><a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fe6965fb7b34b9353fd744e223b0f6af6" class="pop_div gist5">
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fe6965fb7b34b9353fd744e223b0f6af6" class="pop_div gist5">
 				<div class="pop_info">
 					Swanky32 Colour Palette
 				</div>
-			</a><a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F0a3b22b101edf1a97fe5b2ca3e865dce" class="pop_div gist6">
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F0a3b22b101edf1a97fe5b2ca3e865dce" class="pop_div gist6">
 				<div class="pop_info">
 					Space Shooter
 				</div>
-			</a><a href="https://wetgenes.com/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F18eac9295deb6e51b097334639d6d55c" class="pop_div gist7">
+			</a><a href="https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F18eac9295deb6e51b097334639d6d55c" class="pop_div gist7">
 				<div class="pop_info">
 					Starfield shader
 				</div>
