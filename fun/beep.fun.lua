@@ -408,7 +408,7 @@ setup=function()
 
 end
 
-
+playing=""
 -- handle raw key press
 msg=function(m)
     if m.class=="key" then
@@ -417,7 +417,8 @@ msg=function(m)
 	    local csfx=system.components.sfx
 	    local s=beeps[m.keyname]
 	    if s then
-		csfx.play(s.name,1,1.0)
+			csfx.play(s.name,1,1.0)
+			playing=s.name
 	    end
 	end
     end
@@ -428,25 +429,23 @@ update=function()
     
     if setup then setup() setup=nil end
 
-    local cmap=system.components.map
     local ctext=system.components.text
     local bg=9
     local fg=31
 
-    cmap.text_clear(0x01000000*bg) -- clear text forcing a background color
+    ctext.text_clear(0x01000000*bg) -- clear text forcing a background color
 	
 
     local tx=wstr.trim([[
 
-Hit a key to play a sound!
+Hit a key ( ]]..playing..[[ ) to play a test sound!
+
 
 ]])
-
-    local tl=wstr.smart_wrap(tx,cmap.text_hx-2)
+    local tl=wstr.smart_wrap(tx,ctext.text_hx-2)
     for i=1,#tl do
 	    local t=tl[i]
-	    cmap.text_print(t,1,16+i,fg,bg)
+	    ctext.text_print(t,1,16+i,fg,bg)
     end
-
 
 end

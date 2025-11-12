@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -16,7 +17,9 @@
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chats.set_tag">lua.wetgenes.gamecake.fun.chatdown.chats.set_tag</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L596">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>tag_value = chats:set_tag(tag_name,tag_value,subject_name)</code></pre><p>Alter the value of the given tag_name. If the value string begins with 
+<div><pre><code>tag_value = chats:set_tag(tag_name,tag_value,subject_name)
+</code></pre>
+<p>Alter the value of the given tag_name. If the value string begins with 
 a &quot;+&quot; or a &quot;-&quot; Then the values will be treated as numbers and added or 
 subtracted from the current value. This allows for simple incremental 
 flag values.</p>

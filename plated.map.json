@@ -1,0 +1,1070 @@
+{
+ "": {
+  "_dirname": "{_root}",
+  "_filename": "{_root}",
+  "_flags": {
+   "body": {
+    "trim": "ends"
+   },
+   "css": {
+    "same": "append"
+   },
+   "footer": {
+    "trim": "ends"
+   },
+   "head": {
+    "trim": "ends"
+   },
+   "html": {
+    "trim": "ends"
+   },
+   "navigation": {
+    "trim": "ends"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_root": "./",
+  "_site": "{_root}",
+  "_sourcename": "",
+  "body": "\\\\\\\\\\\\\\Fun64///////",
+  "css": "@import url('https://fonts.googleapis.com/css?family=Cabin:400,700');\n\n*, *::after, *::before{box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; -ms-box-sizing:border-box;}\n\n\na,img{border:0; outline:none;}textarea:focus,input:focus{outline:0;}*:focus{outline:0;}\n\nhtml\t\t{height:100%;}\nbody, html\t{-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; width:100%; padding:0; margin:0 auto;}\nbody\t\t{background:#58656b; font-family:'Cabin',monospace,sans-serif; font-size:16px; letter-spacing:1px; line-height:24px; color:#3a3a3a; font-size-adjust:0.4; font-weight:normal; font-style:normal; min-width:100%; min-height:100%; display:table;}\na\t\t\t{-webkit-transition:all .2s ease-in-out; -moz-transition:all .2s ease-in-out; -o-transition:all .2s ease-in-out; -ms-transition:all .2s ease-in-out; transition:all .2s ease-in-out; cursor:pointer; overflow-wrap:break-word; word-wrap:break-word; word-break:break-word; -ms-hyphens:auto; -moz-hyphens:auto; -webkit-hyphens:auto; hyphens:auto;} /* Fix long urls */\nh1\t\t\t{font-size:4em; font-weight:normal; color:#1400ff;}\nh2\t\t\t{font-size:2em; font-weight:normal;}\n\na\t\t\t{color:#1400ff; text-decoration:none;}\na:hover\t\t{cursor:pointer;}\nb\t\t\t{font-weight:700;}\n\n.wrap\t\t{width:1024px; margin:0 auto;}\n.wrap.max\t{width:100%;}\n.wrap.max.beep\t{background:url('/fun64/data/beep_back.png'); height:100px; background-size:cover;}\n.wrap.eg\t{padding-bottom:60px;}\n#content\t{display:table-row-group;}\n\n\n.page_link\t{display:inline-block; width:50%; vertical-align:top; margin-top:80px; margin-bottom:80px;}\n.page_link.page_top\t{margin-top:20px; margin-bottom:20px;}\n.page_link:nth-of-type(2)\t{text-align:right;}\n\n\n/*\tINDEX styles\n\t============================================= */\n.fun_bits\t\t{width:1024px; margin:0 auto; font-size:14px; line-height:16px; color:#0b0088; position:relative; margin-top:80px;}\n.fun_bits pre\t{width:1000px; margin:0 auto;}\n\n\n/*\tINDEX NAVIGATION BAR styles\n\t============================================= */\n.navi_wrap\t\t{width:100%; margin:0 auto; background:#58656b; position:fixed; z-index:666; font-family:'Cabin',monospace,sans-serif;}\n.navi\t\t\t{width:1024px; margin:0 auto; padding:20px 0;}\n.navi a\t\t\t{text-decoration:none;}\n.navi a:hover\t{color:#fff;}\na.navi_link_home{display:inline-block; width:55%; color:#eaeaea; vertical-align:top; font-weight:700;}\na.navi_link_all\t{display:inline-block; width:11%; text-align:right; color:#eaeaea;}\na.navi_link_home span:before {background:url('{_root}data/favicon.png')no-repeat center center; display:inline-block; background-size:100%; width:30px; height:24px; content:\"\"; margin-right:10px; zoom:70%;}\na.navi_link_all.pad_link span:before {background:url('{_root}data/icon_pad.png')no-repeat center center; display:inline-block; background-size:contain; width:24px; height:24px; content:\"\"; margin-right:10px; zoom:70%;}\na.navi_link_all.beep_link span:before{background:url('{_root}data/icon_beep.png')no-repeat center center; display:inline-block; background-size:contain; width:20px; height:20px; content:\"\"; margin-right:10px; zoom:70%;}\n\n\n/*\tINDEX TOP SECTION styles\n\t============================================= */\n.fun_about_wrap {position:absolute; width:100%; text-align:center; color:#fff; top:15%; left:0;}\n.fun_about\t\t{color:#fff; font-size:38px; line-height:50px; width:50%; text-align:center; margin:0 auto;}\na.fun_try\t\t{display:block; margin:0 auto; margin-top:40px; font-size:21px; background-color:#eab000; padding:20px 0; border-radius:4px; color:#073a52; text-decoration:none; width:200px; text-align:center;}\na.fun_try:hover\t{background-color:#FFEB3B;}\n.wasm_notice\t{display:none; text-align:center; margin-top:20px;}\n\n\n/*\tINDEX Beep\n\t============================================= */\n.wrap.max.beep a\t{width:100%; height:100%; background-color:rgba(28,50,64,0.8); display:block; margin-top:20px;}\n.wrap.max.beep a:hover\t{background-color:rgba(30,72,99, 0.8);}\n.wrap.max.beep span\t{text-align:center; display:block; color:#FFF; font-size:30px; line-height:100px;}\n.wrap.max.beep span:before {content:\"\"; background:url(/fun64/data/icon_beep.png)no-repeat center center; width:30px; height:24px; display:inline-block; background-size:contain; margin-right:10px;}\n\n\n/*\tINDEX EXAMPLES SECTION styles\n\t============================================= */\na.example\t\t{position:relative; display:block; margin:0 auto; margin-top:20px; margin-bottom:20px; text-decoration:none;}\na.example span\t{display:block;}\nspan.example_text_wrap\t{position:absolute; width:350px; height:214px; background-color:#131b1f; color:#fff; right:0; top:0; padding:30px 40px;}\n.wrap a:nth-of-type(even) span.example_text_wrap\t{left:0;}\nspan.example_text_info\t{color:#126a94;}\nspan.example_text_head\t{font-weight:700; font-size:28px; line-height:34px; padding:10px 0;}\nspan.example_text\t\t{}\n\na.example:before, a.example:after\t{content:\"\"; background-color:#1c3240; width:70%; position:absolute; left:-65%; top:0; bottom:0; -webkit-transform:skewX(-20deg); transform:skewX(-20deg);}\n.wrap.eg a:nth-of-type(even):before\t{display:none;}\n.wrap.eg a:nth-of-type(even):after\t{left:auto; right:-18px; width:0; background-color:#437288; height:0; border-bottom:100px solid #eab000; border-left:100px solid transparent;}\n\na.example:hover span.example_text_wrap\t{background-color:#252263; transition:all .2s ease-in-out}\n\n/*\tFOOTER styles\n\t============================================= */\n\t\n.foot\t\t{background-color:#3e484c; color:#eee; border-top:1px solid #ddd; display:table-footer-group}\n.foot_wrap\t{width:1024px; margin:0 auto; padding:60px; padding-bottom:20px; position:relative;}\n.foot_wrap a{color:#fff; text-decoration:none; font-weight:700;}\n.foot_wrap p a:hover{border-bottom:1px solid #00adff;}\n.foot_wrap p a:after{content:\"\\279a\"; font-size:10px; display:inline-block; vertical-align:top; color:#00adff;}\n.text\t\t{font-weight:400;}\n.text span\t{font-weight:700;}\n.text.wetus\t{position:absolute; right:60px; bottom:20px;}\n.text.wetus *\t{vertical-align:baseline;}\n.text.wetus img\t{width:initial;}\n\n.text_head\t{font-size:42px; font-weight:700; margin-bottom:40px;}\n\na.hi\t\t\t{display:block; position:relative; padding:20px;}\na.hi span\t\t{position:absolute; top:-10px; right:20px; padding:5px 10px; color:#fff; display:none;}\na.hi:hover span\t{display:block;}\n\na.back_top\t\t{display:block; text-align:center; text-decoration:none; color:#aaa; padding:20px 0; font-size:12px;}\na.back_top:hover{background-color:#2d3538;}\n\n\n/*\tBLOG styles\n\t============================================= */\n\n.blog_bits, .post_page\t{margin-top:100px;}\n\n.blog_head\t\t\t{width:1024px; margin:0 auto; margin-top:20px;}\n.blog_head a:hover\t{background-color:#e2e0e8;}\n\nspan.blog_post_title{display:block; font-size:42px; line-height:46px; font-weight:700;}\nspan.blog_post_user\t{display:block; font-size:16px; margin-bottom:20px;}\n\n.blog_list_wrap\t\t{width:1024px; margin:0 auto;}\n.line\t\t\t\t{border-top:1px dashed #1400ff; margin-top:40px; margin-bottom:40px; position:relative;}\n.blog_info\t\t\t{position:absolute; right:10px; top:10px;}\n\n.blog_wrap\t\t\t{width:700px; margin:auto; font-size:20px; line-height:30px; border:0;}\n\n\n/*\tBLOG post styles\n\t============================================= */\n\na.blog_post_link\t{display:inline-block; text-decoration:none; width:320px; height:300px; overflow:hidden; vertical-align:top; padding:20px; box-sizing:border-box; background-color:#fff; color:#3a3a3a; margin-top:30px; margin-right:20px; position:relative; border:8px solid #efefef; border-radius:6px;}\na.blog_post_link:nth-of-type(odd)\t{background-color:#1400ff; color:#fff;}\na.blog_post_link:nth-of-type(3n)\t{margin-right:0;}\na.blog_post_link:nth-of-type(1), a.blog_post_link:nth-of-type(2), a.blog_post_link:nth-of-type(3)\t{margin-top:0;}\na.blog_post_link:hover\t{background-color:rgba(0,0,0,0.4); color:#fff;}\n\na.blog_post_link span.blog_post_title\t{display:block; font-size:26px; line-height:30px; font-weight:700;}\na.blog_post_link span.blog_post_snip\t{display:block; height:180px; overflow:hidden;}\na.blog_post_link span.blog_post_user\t{position:absolute; bottom:0; left:0; background-color:#3a3a3a; color:#fff; width:320px; padding:10px 20px; font-size:12px; margin:0;}\n\n\n/*\tBLOG paging links\n\t============================================= */\n\n.paging div a\t{text-decoration:none; color:#3a3a3a;}\n.paging div a:before {display:inline-block; vertical-align:top; content:\"\\021D0\"; margin-right:5px;}\n.paging div:nth-of-type(2) a:before\t{display:none;}\n.paging div:nth-of-type(2) a:after\t{display:inline-block; vertical-align:top; content:\"\\0279C\"; margin-left:5px;}\n.paging div a:hover {background-color:#e2e0e8;}\n\n\n/*\tBLOG FUNPAD LINK - found beneath each post\n\t============================================= */\n\n.blog_embed_wrap\t{margin:0 auto; margin-top:60px;}\n.blog_embed_head\t{width:700px; margin:auto;}\n\na.bar\t\t\t\t{display:block; width:100%; color:#f7f4fd; font-size:24px; text-align:center; background-color:#3a3a3a; border-radius:4px; padding:15px; text-decoration:none;}\na.bar:hover\t\t\t{background-color:#1400ff;}\n\n.blog_wrap code\t\t{display:block; font-size:16px; overflow-x:scroll;}\n\n\n/*\tPace loading bar - currently not in use\n\t============================================= */\n.pace .pace-progress {height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%;}\n.pace-inactive {display:none;}\n.pace {-webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none;}\n\n\n/*\tFIREFOX font fix\n\t============================================= */\n\t\n@-moz-document url-prefix() {\n    body,html\t\t{font-size:20px; line-height:1;}\n    .fun_bits pre\t{font-size:18px; margin-left:35px;}\n    span.example_text_head\t{font-size:32px;}\n    a.back_top\t\t{font-size:14px;}\n}\n\n\n/*\tMOBILE post styles\n\t============================================= */\n@media screen and (max-width:1024px) {\n\n\tbody\t\t{padding:0;}\t\n\tpre\t\t\t{margin:0 auto;}\n\t.fun_bits, .navi, .blog_head{width:100%; margin:0 auto; padding:50px 0;}\n\t\n\t.fun_bits\t{font-size:12px; padding:80px 0; margin-top:80px;}\n\t.navi a\t\t{font-size:40px; width:25%; text-align:center;}\n\ta.navi_link_home span:before\t{zoom:70%;}\n\ta.navi_link_all.git\t{display:none;}\n\t\n\t.blog_head\t{padding:50px; font-size:42px;}\n\t.wrap\t\t{width:100%; margin:0 auto;}\n\t.fun_bits pre\t{width:93%; margin:0 auto; margin-left:7%;}\n\t.blog_list_wrap, a.blog_post_link\t{width:860px;}\n\t.wrap.eg\t{padding-bottom:0; overflow-x:hidden;}\n\t\n\ta.example\t\t{margin:0; width:100%; height:500px;}\n\ta.example:before, a.example:after\t{display:none;}\n\t\n\t.wrap.eg a:nth-of-type(1)\t{background:url('{_root}data/example_01.png')no-repeat -900px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(2)\t{background:url('{_root}data/example_03.png')no-repeat center center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(3)\t{background:url('{_root}data/example_04.png')no-repeat -1255px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(4)\t{background:url('{_root}data/example_05.png')no-repeat -1200px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(5)\t{background:url('{_root}data/example_02.png')no-repeat -1200px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(6)\t{background:url('{_root}data/example_06.png')no-repeat -200px center; background-size:cover;}\n\t.wrap.eg a:nth-of-type(7)\t{background:url('{_root}data/example_07.png')no-repeat center center; background-size:cover;}\n\t\n\t.fun_about_wrap\t{top:10%;}\n\t.fun_about\t\t{font-size:60px; line-height:80px; width:70%;}\n\ta.fun_try\t\t{font-size:42px; display:inline-block; padding:30px 40px; width:initial; margin-top:25px;}\n\t.wasm_notice\t{display:block; font-size:28px; line-height:45px;}\n\t\n\t.wrap img\t\t{width:100%; display:none;}\n\t.foot_wrap .text_head img\t{display:inline-block; vertical-align:top; width:50px; margin-top:-17px;}\n\t.foot_wrap p\t{font-size:38px; line-height:58px; padding:10px 0;}\n\t.text.wetus\t\t{position:initial;}\n\t.text.wetus img\t{width:80px;}\n\ta.back_top\t\t{padding:60px 0; font-size:32px;}\n\t.foot_wrap p a:after\t{font-size:38px;}\n\t\n\tspan.example_text_wrap\t{height:500px; font-size:2.35em; line-height:1.2em; width:40%;}\n\tspan.example_text_head\t{font-size:1.25em; line-height:1.25em;}\n\tspan.example_text_info\t{margin-top:10px;}\n\t\n\t.blog_bits, .post_page\t{margin-top:140px;}\n\t\n\t.blog_wrap p\t\t\t{margin:60px 0; font-size:42px; line-height:82px;}\n\tspan.blog_post_user\t\t{font-size:24px;}\n\tspan.blog_post_title\t{font-size:60px; line-height:72px;}\n\t\n\t.blog_embed_head, .blog_wrap\t\t\t{width:800px;}\n\ta.blog_post_link\t\t\t\t\t\t{display:block; margin:0 auto; margin-bottom:40px; font-size:38px; line-height:54px; height:400px;}\n\ta.blog_post_link span.blog_post_title\t{font-size:48px; line-height:68px;}\n\ta.blog_post_link span.blog_post_snip\t{height:200px;}\n\ta.blog_post_link span.blog_post_user\t{font-size:24px; width:960px;}\n\t\n\t.page_link, .page_link:nth-of-type(2)\t{text-align:center;}\n\t.page_link a\t{font-size:38px;}\n\t\n\t.paging div a:before {font-size:55px; margin-top:-15px;}\n\t.paging div:nth-of-type(2) a:after {font-size:38px;}\n\t\n\ta.bar\t\t\t{font-size:36px; padding:40px 0;}\n\t\n\t.text_head\t\t{margin-top:40px; margin-bottom:40px; font-size:48px;}\n\t\n\t.foot_wrap\t\t{font-size:1.8em; width:100%;}\n\t\n\t@-moz-document url-prefix() {\n    .fun_bits pre\t{width:100%; margin:0;}\n    }\n   \n}\n",
+  "footer": "<div class=\"wrap max foot\">\n\t<span id=\"about\"></span>\n\t<div class=\"foot_wrap\">\n\t\t<div class=\"text\">\n\t\t\t<div class=\"text_head\"><img src=\"{_root}data/favicon.png\" width=\"40px\"/> Fun64</div>\n\t\t\t<p><a href=\"{_root}\"><b>Fun64</b></a> is a super simple super lowrez single file game engine powered by <a href=\"https://github.com/xriss/gamecake\">Gamecake</a>, <a href=\"http://webassembly.org/\">WebAssembly JS</a> and <a href=\"https://www.lua.org/about.html\">Lua</a>.</p>\n\t\t\t<p>The <a href=\"https://xriss.github.io/fun64/pad/\">FunPad</a> lets you edit and run Fun64 code in any modern browser using <a href=\"https://gist.github.com/search?q=fun64+lua\">Github Gist</a> as storage, creating a unique url that you can share with others to play and collaborate on.</p>\n\t\t\t<p><a href=\"https://xriss.github.io/fun64/run/beep/index.html?terminal=1\">Beep</a> is a simple frequency modulation synthesizer you can use to create sound effects <i>(or questionable tunes)</i> for your applications.</p>\n\t\t</div>\n\t\t<div><p><a href=\"http://github.com/xriss/fun64\">Fun64 is on Github</a></p></div>\n\t\t<div><p>Some documentation for functions can be found <a href=\"https://xriss.github.io/gamecake/\">here</a>.</p></div>\n\t\t<div class=\"text wetus\"><a href=\"http://wetgenes.com\" class=\"hi\"><span>hi!</span><img src=\"{_root}data/wetus.png\"/></a></div>\n\t</div>\n\t<a class=\"back_top\" href=\"#\">BACK TO TOP</a>\n</div>\n<script>\n\t$('.back_top').click(function(){ \n\t\t$('html,body').animate({scrollTop:0}, 400);\n\t\treturn false; \n\t});\n</script>",
+  "head": "<meta name=\"viewport\" content=\"width=device-width\">\n<meta name=\"theme-color\" content=\"#131b1f\">\n<title>{title}</title>\n<style>\n{css}\n</style>\n<script>\n\t\n\tvar ua = navigator.userAgent.toLowerCase();\n\tvar is_android = ua.indexOf(\"android\") > -1; //&& ua.indexOf(\"mobile\");\n\tvar is_firefox = ua.indexOf('firefox') > -1;\n\tif(is_firefox && is_android)\n\t{\n\t// alert ('FF');\n\tdocument.write('<meta name=\"viewport\" content=\"user-scalable=1\"/><!--320-->');\n\t} else {\n\t// alert ('NoFF');\n\tdocument.write('<meta name=\"viewport\" content=\"user-scalable=0\"/><!--320-->');\n\t}\n</script>\n<script\tsrc=\"{_root}js/jquery-3.1.1.min.js\" ></script>\n<script\tsrc=\"{_root}js/google-code-prettify/prettify.js\" ></script>\n<script\tsrc=\"{_root}js/google-code-prettify/lang-lua.js\" ></script>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"{_root}js/google-code-prettify/skins/sons-of-obsidian.css\" />\n<link rel=\"icon\" type=\"image/png\" href=\"{_root}data/favicon.png\" />",
+  "html": "<html lang=\"en\">\n<head>{head}</head>\n<body><div id=\"content\" role=\"main\">{navigation}{body}</div>{footer}</body>\n</html>",
+  "navigation": "<div class=\"navi_wrap\">\n    <div class=\"navi\">\n        <a href=\"{_root}\" class=\"navi_link_home\"><span>Fun64</span></a><a href=\"{_root}blog\" class=\"navi_link_all log_link\">Devlog</a><a href=\"{_root}pad\" class=\"navi_link_all pad_link\"><span>FunPad</span></a><a href=\"https://xriss.github.io/fun64/run/beep/index.html?terminal=1\" class=\"navi_link_all beep_link\"><span>Beep</span></a><a href=\"https://github.com/xriss/fun64\" class=\"navi_link_all git\">Github</a>\n    </div>\n</div>",
+  "title": "\\\\\\\\\\\\\\Fun64///////"
+ },
+ "^": {
+  "_dirname": "{_root}^",
+  "_filename": "{_root}^",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "^/."
+ },
+ "blog": {
+  "_blog_json": {
+   "dir": "blog/.",
+   "feed": {
+    "title": "Title"
+   },
+   "posts_per_feed": 20,
+   "posts_per_page": 12,
+   "url": "/"
+  },
+  "_blog_page_body": "<div class=\"wrap blog_bits\"><div class=\"blog_head\">You are reading: <span>Fun64 dev blog</span></div></div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link page_top\">{_blog_page_older:link_older_page||}</div><div class=\"page_link page_top\">{_blog_page_newer:link_newer_page||}</div>\n</div>\n\n<div class=\"blog_list_wrap\">{_list:blog_list}</div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link\">{_blog_page_older:link_older_page||}</div><div class=\"page_link\">{_blog_page_newer:link_newer_page||}</div>\n</div>\n\n",
+  "_blog_post_body_many": "<a href=\"{_dirname}\" class=\"blog_post_link\">\n\t<span class=\"blog_post_title\">{_blog_post_json.title}</span>\n\t<span class=\"blog_post_snip\">{_blog_post_body}</span>\n\t<span class=\"blog_post_user\">\n\t\t<span>~ {_blog_post_json.author}</span>\n\t\t<span><i>{_blog_post_json.datedash}</i></span>\n\t</span>\n</a>\n\n",
+  "_blog_post_body_one": "<div class=\"wrap post_page\"><div class=\"blog_head\">You are reading: <a href=\"{_root}blog\">Fun64 dev blog</a></div></div>\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link page_top\">{_blog_post_older:link_older_post||}</div><div class=\"page_link page_top\">{_blog_post_newer:link_newer_post||}</div>\n</div>\n\n<div class=\"blog_wrap\">\n\t<span class=\"blog_post_user\">\n\t\t<span>~ {_blog_post_json.author}</span>\n\t\t<span><i>{_blog_post_json.datedash}</i></span>\n\t</span>\n\t<span class=\"blog_post_title\">{_blog_post_json.title}</span>\n\t{_blog_post_body}\t\n</div>\n\n{_blog_post_json.fun_file&&fun_blog_embed}\n\n<div class=\"wrap paging\">\n\t<div class=\"page_link\">{_blog_post_older:link_older_post||}</div><div class=\"page_link\">{_blog_post_newer:link_newer_post||}</div>\n</div>\n\n",
+  "_dirname": "{_root}blog",
+  "_filename": "{_root}blog",
+  "_flags": {
+   "css": {
+    "same": "append"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "blog/.",
+  "blog_list": "{_it._body}\n\n",
+  "css": "body {background:#f7f4fd;}\n",
+  "fun_blog_embed": "\n<div class=\"blog_embed_wrap\">\n\t<div class=\"blog_embed_head\">\n\t\t<div><a href=\"{_root}pad/?url={_dirname}/{_blog_post_json.fun_file}\" class=\"bar\">View this program in FunPad</a></div>\n\t</div>\t\n</div>\n\n",
+  "link_newer_page": "<a href=\"{_it}\">Newer posts</a>\n\n",
+  "link_newer_post": "<a href=\"{_it}\">Newer post</a>\n",
+  "link_older_page": "<a href=\"{_it}\">Older posts</a>\n",
+  "link_older_post": "<a href=\"{_it}\">Older post</a>\n",
+  "this_chunk_is_not_used": "<div class=\"blog_wrap\">\n\t<div class=\"blog_info\"><a href=\"{_dirname}\">{_blog_post_json.title}</a> by {_blog_post_json.author} on {_blog_post_json.datedash}</div>\n\t{_blog_post_body}\n\t{_blog_post_json.fun_file&&fun_blog_link}\n</div>\n",
+  "title": "Fun64 Devlog"
+ },
+ "blog/2017-01-20-basic-fun": {
+  "_blog_post_body": "<p>A cut down and basic fun example, we do not make many assumptions so \nyou are free to configure and setup your code to your own tastes.</p>\n<p>There are only two parts that you must provide for fun to work. The \nfirst is a table describing the virtual hardware component setup, eg \nthe resolution of screen and tilemaps and sprite layers to display.</p>\n<pre><code>hardware={\n    {\n        component=&quot;screen&quot;,\n        size={424,240}, -- lowrez with a 1920x1080 aspect\n        scale=3, -- draw in a window at 3 times scale\n        fps=60, -- 60 fps please\n    },\n    ...\n}\n</code></pre>\n<p>This requests the virtual hardware that will be setup before main is \ncalled. system is a global table that will be created according to your \nrequested hardware and can then be referenced when the main function is \ncalled.</p>\n<p>The second is a main function which will be called as a yield-able \nco-routine with a table that should be treated as an incoming message. \nUse the basic skeleton below to receive need.setup/update/draw \nrequests. As you can see it is possible to have multiple needs at once \nand this call structure allows for a setup, repeat update/draw then cleanup \nflow of code within this co-routine.</p>\n<pre><code>function main(need)\n    if not need.setup then need=coroutine.yield() end -- wait for setup request\n    \n    -- perform setup\n    \n    local done=false while not done do\n        need=coroutine.yield()\n        \n        if need.update then\n\n            -- perform update\n\n        end\n\n        if need.draw then\n\n            -- perform draw\n\n        end\t\t\t\n        \n        if need.clean then done=true end -- cleanup requested\n    end\n\n    -- perform cleanup\n\nend\n</code></pre>\n",
+  "_blog_post_json": {
+   "author": "xriss",
+   "datedash": "2017-01-20",
+   "datetime": [
+    2017,
+    1,
+    20,
+    0,
+    0,
+    0
+   ],
+   "fun_file": "basic.fun.lua",
+   "fun_height": "512px",
+   "timecolon": "00:00:00",
+   "title": "Basic fun!",
+   "unixtime": 1484870400
+  },
+  "_blog_post_newer": "{_root}blog/2017-01-27-comic-test/",
+  "_blog_post_this": "{_root}blog/2017-01-20-basic-fun/",
+  "_dirname": "{_root}blog/2017-01-20-basic-fun",
+  "_filename": "{_root}blog/2017-01-20-basic-fun",
+  "_flags": {
+   "_blog_post_body": {
+    "form": "markdown"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "blog/2017-01-20-basic-fun/.",
+  "title": "{_blog_post_json.title}"
+ },
+ "blog/2017-01-27-comic-test": {
+  "_blog_post_body": "<p>Lets see if we can build 4lfa.com style comics using just fun64 :)</p>\n",
+  "_blog_post_json": {
+   "author": "xriss",
+   "datedash": "2017-01-27",
+   "datetime": [
+    2017,
+    1,
+    27,
+    0,
+    0,
+    0
+   ],
+   "fun_file": "comic.fun.lua",
+   "fun_height": "512px",
+   "timecolon": "00:00:00",
+   "title": "Comic test.",
+   "unixtime": 1485475200
+  },
+  "_blog_post_newer": "{_root}blog/2017-02-12-hello-world/",
+  "_blog_post_older": "{_root}blog/2017-01-20-basic-fun/",
+  "_blog_post_this": "{_root}blog/2017-01-27-comic-test/",
+  "_dirname": "{_root}blog/2017-01-27-comic-test",
+  "_filename": "{_root}blog/2017-01-27-comic-test",
+  "_flags": {
+   "_blog_post_body": {
+    "form": "markdown"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "blog/2017-01-27-comic-test/.",
+  "title": "{_blog_post_json.title}"
+ },
+ "blog/2017-02-12-hello-world": {
+  "_blog_post_body": "<p>Apparently if your hello world example is longer than a couple of lines \nthen you are open to ridicule.</p>\n<p>I suspect people who say this are blissfully unaware exactly what _main \ngets up to before your code runs and lets not even think about C++.</p>\n<p>Still it helps to remove as much gubbins as possible so the code that&#39;s \nrunning becomes obvious. Fun64 is built around the idea that you should \ndefine the hardware before the program runs so lets hide all that away \ninside a builtin function that will set you up a basic looking screen \nto work with.</p>\n<p>Introducing the configurator, this function will provide various setups \ndepending on the mode requested and also provide a main function that \nwill allow you to provide a single update function rather than dealing \nwith more complexities. A single update function is less optimal but a \nperfectly reasonable way to write short bits of test code.</p>\n<p>So far the only mode we have is &quot;fun64&quot; which will get you a 60fps \n320x240 screen with three layers and the Swanky32 palette. The three \nlayers gives us a copper background, a tile+sprite foreground and \nfinally a text overlay on the very top. For graphical memory we have a \n64x64 area of 8x8 tiles (4096 in total) and we auto upload the 4x8 \nfun64 font to the very first line for use by the text layer.</p>\n<p>NB: If you clobber this top line all your text will go funny, just like \non real hardware.</p>\n<p>The main point of the layers is so we can have drop shadows between \nthem, the text layer on top gives us some very cheap 80s looking text \nmenus when used with solid blocks of background color.</p>\n",
+  "_blog_post_json": {
+   "author": "xriss",
+   "datedash": "2017-02-12",
+   "datetime": [
+    2017,
+    2,
+    12,
+    0,
+    0,
+    0
+   ],
+   "fun_file": "helloworld.fun.lua",
+   "fun_height": "512px",
+   "timecolon": "00:00:00",
+   "title": "Hello World!",
+   "unixtime": 1486857600
+  },
+  "_blog_post_newer": "{_root}blog/2017-03-19-chatdown/",
+  "_blog_post_older": "{_root}blog/2017-01-27-comic-test/",
+  "_blog_post_this": "{_root}blog/2017-02-12-hello-world/",
+  "_dirname": "{_root}blog/2017-02-12-hello-world",
+  "_filename": "{_root}blog/2017-02-12-hello-world",
+  "_flags": {
+   "_blog_post_body": {
+    "form": "markdown"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "blog/2017-02-12-hello-world/.",
+  "title": "{_blog_post_json.title}"
+ },
+ "blog/2017-03-19-chatdown": {
+  "_blog_post_body": "<p>Chatdown is  a markdown like text format for describing chat trees, the \nidea is to have all the logic somewhere else and just use this for \ndescribing the relationship and hierarchy of the text.</p>\n<p>The bad news is this means you have to label each part of the chat with \nreasonable ids so the code can find it. Naming things is hard and has\nto be done.</p>\n<p>Mostly the file is interpreted as paragraphs similar to markdowns \nparagraphs separated by empty lines, between these paragraphs lines \nbeginning with one of the special characters #&lt;&gt;= switch the mode, and \nassign where the next set of paragraphs will be stored.</p>\n<p>Following immediately on from these special characters with no white \nspace in between are the id labels, these are used to name each set of \nparagraphs and allow references between them. This is the most complex \npart of the chatdown format.</p>\n<p>A chat is started by beginning a line with a # this can be thought of \nas the talky part of an NPCs brain and a chatdown file contains \nmultiple chats. These chats can reference each other, for example one \nNPC can check what you have told another NPC.</p>\n<p>The first paragraph of a #chat is the display name of the NPC, the rest \nof the paragraphs are a longer description. More data can also be \nassociated with the NPC here but I will go into that another time.</p>\n<p>Responses are started with a &lt; and they belong to the current chat, \nthese are the things that an NPC says, for instance, &lt;welcome is the \nfirst thing an NPC says when you talk to them.</p>\n<p>Decisions are your choices that can be made after an NPC talks, started \nwith a &gt; these are stored in the current response and are primarily \nlinks to another response.</p>\n<p>With decisions the first paragraph is displayed and the remaining \nparagraphs can be used as the spoken out loud dialogue. Some styles of \ndialogue writing use this form, others only need the first paragraph.</p>\n<p>Proxies are variables associated with this chat, they are assigned by \nlines beginning with an = and all paragraphs following are given to \nthis proxy. Proxies way be set inside any of the other states and the \nchange will happen as you progress through the chat. This allows us to \ntrack decisions by changing a proxy inside the decision.</p>\n<p>Proxies may be expanded inside paragraphs or even option names by using \nsquiggly brackets like so {proxyname}, more complicated expansions will \nbe added later if needed.</p>\n<p>This is just an overview and its best we explain with some code, so \ntake a look at the following chatdown example which you will find \nembedded at the top of this fun64 file. The code to parse and display \nthis format is included, probably best you do not look too closely at \nthat bit :)</p>\n<p>Since chatdown took some time to formalise, it is also going to take \nmore than one short post to explain, expect a follow up with a more \ncomplex example.</p>\n",
+  "_blog_post_json": {
+   "author": "xriss",
+   "datedash": "2017-03-19",
+   "datetime": [
+    2017,
+    3,
+    19,
+    0,
+    0,
+    0
+   ],
+   "fun_file": "chatdown.fun.lua",
+   "fun_height": "512px",
+   "timecolon": "00:00:00",
+   "title": "Chatdown",
+   "unixtime": 1489881600
+  },
+  "_blog_post_older": "{_root}blog/2017-02-12-hello-world/",
+  "_blog_post_this": "{_root}blog/2017-03-19-chatdown/",
+  "_dirname": "{_root}blog/2017-03-19-chatdown",
+  "_filename": "{_root}blog/2017-03-19-chatdown",
+  "_flags": {
+   "_blog_post_body": {
+    "form": "markdown"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "blog/2017-03-19-chatdown/.",
+  "title": "{_blog_post_json.title}"
+ },
+ "blog/draft-test": {
+  "_dirname": "{_root}blog/draft-test",
+  "_filename": "{_root}blog/draft-test",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "blog/draft-test/."
+ },
+ "data": {
+  "_dirname": "{_root}data",
+  "_filename": "{_root}data",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "data/."
+ },
+ "docs": {
+  "_dirname": "{_root}docs",
+  "_docs": [
+   {
+    "count": 46,
+    "name": "lua"
+   },
+   {
+    "count": 45,
+    "name": "lua.wetgenes"
+   },
+   {
+    "count": 44,
+    "name": "lua.wetgenes.gamecake"
+   },
+   {
+    "count": 43,
+    "name": "lua.wetgenes.gamecake.fun"
+   },
+   {
+    "count": 19,
+    "name": "lua.wetgenes.gamecake.fun.chatdown"
+   },
+   {
+    "count": 6,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.get_tag"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.replace_tags"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tag"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tags"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_topic"
+   },
+   {
+    "count": 7,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.changes"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_subject"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_tag"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_subject"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_tag"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.dotnames"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.parse"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.setup"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.setup_chat"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.text"
+   },
+   {
+    "count": 23,
+    "name": "lua.wetgenes.gamecake.fun.yarn"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.cells"
+   },
+   {
+    "count": 14,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.cells"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.create"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.create_pages"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.destroy"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.find"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.get_big"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.insert"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_dotnames"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_parents"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.metatable"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.prefabs"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.remove"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.rules"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.pages"
+   },
+   {
+    "count": 2,
+    "name": "lua.wetgenes.gamecake.fun.yarn.prefabs"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.prefabs.set"
+   },
+   {
+    "count": 4,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules.apply"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules.can"
+   },
+   {
+    "count": 1,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules.set"
+   }
+  ],
+  "_docs_json": {
+   "dirname": "{_root}docs",
+   "dirs": {
+    "../../../gamecake/lua/wetgenes/gamecake/fun": ".lua"
+   },
+   "ignore": {
+    "node_modules": true
+   },
+   "urlprefix": {
+    "../../gamecake/lua/": "https://github.com/xriss/gamecake/blob/master/lua/"
+   }
+  },
+  "_filename": "{_root}docs",
+  "_flags": {
+   "menuwrap": {
+    "trim": "ends"
+   },
+   "menuwrap_link": {
+    "trim": "ends"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_list": [
+   {
+    "body": "",
+    "count": 46,
+    "name": "lua"
+   },
+   {
+    "body": "",
+    "count": 45,
+    "name": "lua.wetgenes"
+   },
+   {
+    "body": "",
+    "count": 44,
+    "name": "lua.wetgenes.gamecake"
+   },
+   {
+    "body": "",
+    "count": 43,
+    "name": "lua.wetgenes.gamecake.fun"
+   },
+   {
+    "body": "",
+    "count": 19,
+    "name": "lua.wetgenes.gamecake.fun.chatdown"
+   },
+   {
+    "body": "",
+    "count": 6,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat"
+   },
+   {
+    "body": "<pre><code>tag_value = chat:get_tag(tag_name)\n</code></pre>\n<p>The same as chats:get_tag but the subject of this chat is the \ndefault root.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 278,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.get_tag",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>output = chat:replace_tags(input)\n</code></pre>\n<p>The same as chats:replace_tags but the subject of this chat is the \ndefault root.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 306,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.replace_tags",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>tag_value = chat:set_tag(tag_name,tag_value)\n</code></pre>\n<p>The same as chats:set_tag but the subject of this chat is the \ndefault root.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 292,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tag",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>chat:set_tags(tags)\n</code></pre>\n<p>Set all the values in the given table of {tag_name=tag_value} pairs.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 320,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_tags",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>chat:set_topic(topic_name)\n</code></pre>\n<p>Set the current topic for this chat object, information about this \ntopic and its gotos are built from and stored in this chat object.</p>\n<pre><code>chat.topic_name\n</code></pre>\n<p>Will be set to the given topic name.</p>\n<p>We merge all gotos found in this topic and all topic parents by \niterating over the dotnames. We only use add each topic once and each \ntopic may have a bit of logic that decides if it should be displayed.</p>\n<pre><code>&lt;topic_name?logic_test\n</code></pre>\n<p>So this would goto the topic_name if the logic_test passes. The logic \ntest is written simmilar to a url query after the question mark comes a \nnumber of tests that are then &amp; or | together in left to right order \n(no operator precedence).</p>\n<pre><code>&lt;topic_name?count&lt;10&amp;seen==false\n</code></pre>\n<p>So this would display the goto option if count is less than 10 and seen \nis set to false. These variables we are testing are tag_names and \ndefault to the current subject chat but could reference other subjects \nby explicitly including a root.</p>\n<p>Available logic tests are</p>\n<pre><code>name==value\nname=value\n</code></pre>\n<p>True if the tag is set to this value.</p>\n<pre><code>name!=value\n</code></pre>\n<p>True if the tag is not set to this value.</p>\n<pre><code>name&lt;value\n</code></pre>\n<p>True if the tag is less than this value (numeric test).</p>\n<pre><code>name&gt;value\n</code></pre>\n<p>True if the tag is more than this value (numeric test).</p>\n<pre><code>name&lt;=value\n</code></pre>\n<p>True if the tag is less than or equal to this value (numeric test).</p>\n<pre><code>name&gt;=value\n</code></pre>\n<p>True if the tag is more than or equal to  this value (numeric test).</p>\n<p>All of these tests can be preceded by a ! to negate them so</p>\n<pre><code>name!=vale\n!name==value\n</code></pre>\n<p>Are both a test for inequality.</p>\n<p>Multiple tests can be joined together by &amp; (and) or | (or) this logic \nwill be applied to a running total moving from left to right as the \nvalues are evaluated with the final value deciding if this goto will be \ndisplayed.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 335,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chat.set_topic",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "",
+    "count": 7,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats"
+   },
+   {
+    "body": "<pre><code>chats.changes(chat,change,...)\n\nchats.changes(chat,&quot;subject&quot;)\nchats.changes(chat,&quot;topic&quot;,topic)\nchats.changes(chat,&quot;goto&quot;,goto)\nchats.changes(chat,&quot;tag&quot;,tag_name,tag_value)\n</code></pre>\n<p>This is a callback hook, replace to be notified of changes and possibly \nalter then, by default we print debuging information. Replace this \nfunction with an empty function to prevent this eg</p>\n<pre><code>chats.changes=function()end\n</code></pre>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 671,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.changes",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>chat = chats:get_subject(subject_name)\nchat = chats:get_subject()\n</code></pre>\n<p>Get the chat for the given subject or the chat for the last subject \nselected with set_subject if no subject_name is given.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 563,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_subject",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>tag_value = chats:get_tag(tag_name,subject_name)\n</code></pre>\n<p>Get the tag_value for the given tag_name which can either be \n&quot;tag_root/tag_name&quot; or &quot;tag_name&quot;. The subject_name is the default root \nto use if no tag_root is given in the tag_name.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 578,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.get_tag",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>output = chats:replace_tags(input,subject_name)\n</code></pre>\n<p>Tags in the input text can be wrapped in {tag_name} and will be \nreplaced with the appropriate tag_value. This is done recursively so \ntag_values can contain references to other tags. If a tag does not \nexist then it will not expand and {tag_name} will remain in the output \ntext.</p>\n<p>Again if any tag name does not contain an explicit root then \nsubject_name will be used as the default chat subject.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 639,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>chat = chats:set_subject(subject_name)\n</code></pre>\n<p>Set the current subject for this chats object, this subject becomes the \nchat that you will get if you call get_subject with no arguments.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 546,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_subject",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>tag_value = chats:set_tag(tag_name,tag_value,subject_name)\n</code></pre>\n<p>Alter the value of the given tag_name. If the value string begins with \na &quot;+&quot; or a &quot;-&quot; Then the values will be treated as numbers and added or \nsubtracted from the current value. This allows for simple incremental \nflag values.</p>\n<p>Again if the tag name does not contain an explicit  root then \nsubject_name will be used as the default chat subject.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 596,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.chats.set_tag",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>for part_name in chatdown.dotnames(full_name) do\n    print(part_name)\nend\n</code></pre>\n<p>Iterate all dotnames so if given &quot;aa.bb.cc&quot; we would iterate through \n&quot;aa.bb.cc&quot; , &quot;aa.bb&quot; and &quot;aa&quot;. This is used to inherit data using just \na naming convention.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 255,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.dotnames",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>rawsubjects = chatdown.parse(text)\n</code></pre>\n<p>Parse text from flat text chatdown format into heirachical chat data, \nwhich we refer to as rawsubjects, something that can be output easily \nas json.</p>\n<p>This gives us a readonly rawsubjects structure that can be used to control \nwhat text is displayed during a chat session.</p>\n<p>This is intended to be descriptive and logic less, any real logic \nshould be added using a real language that operates on this rawsubjects and \ngets triggered by the names used. EG, filter out gotos unless certain \ncomplicated conditions are met or change topics to redirect to an \nalternative.</p>\n<p>A self documented example of chatdown formated text can be found in \nlua.wetgenes.gamecake.fun.chatdown.text</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 19,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.parse",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>chats = chatdown.setup_chats(chat_text,changes)\n</code></pre>\n<p>parse and initialise state data for every subjects chunk creating a \nglobal chats with a chat object for each subject.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 700,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.setup",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<pre><code>chat = chatdown.setup_chat(chats,subject_name)\n</code></pre>\n<p>Setup the initial chat state for a subject. This is called \nautomatically by chatdown.setup and probably should not be used \nelsewhere.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 508,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.setup_chat",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "<p>Here is some example chatdown formatted text full of useful \ninformation, it it is intended to be a self documented example.</p>\n<pre><code>\n- This is a single line comment\n-- This is the start of a multi-line comment\n\nAll lines are now comment lines until we see a line that begins with a \ncontrol character leading white space is ignored. If for some reason \nyou need to start a text line with a special character then it can be \nescaped by preceding it with a #\n\nWhat follows is a list of these characters and a brief description \nabout the parser state they switch to.\n\n    1. - (text to ignore)\n    \n        A single line comment that does not change parser state and \n        only this line will be ignored so it can be inserted inside \n        other chunks without losing our place.\n\n    2. -- (text to ignore)\n    \n        Begin a comment chunk, this line and all lines that follow this \n        line will be considered comments and ignored until we switch to \n        a new parser state.\n\n    3. #subject_name\n\n        Begin a new subject chunk, all future topic,goto or tag chunks will \n        belong to this subject.\n        \n        The text that follows this until the next chunk is the long \n        description intended for when you examine the character.\n        \n        Although it makes sense for a subject chunk to belong to one \n        character it could also a group conversation with tags being \n        set to change the current talker as the conversation flows.\n        \n        subject names have simple cascading inheritance according to their \n        name with each level separated by a dot. A chunk named a.b.c \n        will inherit data from any chunks defined for a.b and a in that \n        order of priority.\n\n    4. &gt;topic_name\n    \n        Begin a topic chunk, all future goto or tag chunks will belong \n        to this topic, the lines that follow are how the character \n        responds when questioned about this topic followed by one or \n        more gotos as possible responses that will lead you onto \n        another topic.\n        \n        Topics can be broken into parts, to create a pause, by using an \n        unnamed goto followed by an unnamed topic which will both \n        automatically be given the same generated name and hence linked \n        together.\n        \n    5. &lt;goto_topic_name\n    \n        Begin a goto chunk, all future tag chunks will belong to this \n        goto, this is probably best thought of as a question that will \n        get a reply from the character. This is a choice made by the \n        player that causes a logical jump to another topic.\n        \n        Essentially this means GOTO another topic and there can be \n        multiple GOTO options associated with each topic which the \n        reader is expected to choose between.\n        \n    6. =set_tag_name to this value\n    \n        If there is any text on the rest of this line then it will be \n        assigned to the tag without changing the current parse state so \n        it can be used in the middle of another chunk without losing \n        our place.\n        \n        This single line tag assignment is usually all you need. \n        Alternatively, if there is no text on the rest of this first \n        line, only white space, then the parse state will change and \n        text on all following lines will be assigned to the named tag.\n        \n        This assignment can happen at various places, for instance if \n        it is part of the subject then it will be the starting \n        value for a tag but if it is linked to a topic or goto then the \n        value will be a change as the conversation happens. In all \n        cases the tags are set in a single batch as the state changes \n        so the placement and order makes no difference.\n        \n        Tags can be used inside text chunks or even GOTO labels by \n        tightly wrapping with {} eg {name} would be replaced with the \n        value of name. Tags from other subjects can be referenced by \n        prefixing the tag name with the subject name followed by a forward \n        slash like so {subject/tag}\n                \n\nThe hierarchy of these chunks can be expressed by indentation as all \nwhite space is ignored and combined into a single space. Each SUBJECT will \nhave multiple TOPICs associated with it and each TOPIC will have \nmultiple GOTOs as options to jump between TOPICs. TAGs can be \nassociated with any of these 3 levels and will be evaluated as the \nconversation flows through these points.\n\nSo the chunk hierarchy expressed using indentation to denote children \nof.\n\n    SUBJECT\n        TAG\n        GOTO\n            TAG\n        TOPIC\n            TAG\n            GOTO\n                TAG\n\nThe GOTO chunks in the root SUBJECT chunk are used as prototypes so if a \nGOTO is used in multiple topics its text can be placed within a GOTO \ninside the main SUBJECT chunk rather than repeated constantly. This will \nthen be inherited by a GOTO with no text. An alternative to this \nshorthand is to assign an oft-used piece of text to a tag and reference \nthat in each topic instead.\n\nSUBJECTs and TOPICs also have simple inheritance based on their names this \nenables the building of a prototype which is later expanded. Each \ninheritance level is separated by a dot so aa.bb.cc will inherit from \naa.bb and aa with the data in the longer names having precedence. This \ninheritance is additive only so for instance a TAG can not be unset and \nwould have to be changed to another value by aa.bb.cc if it existed in \naa.bb or aa.\n\nIn practise this means\n&lt;br/&gt;\n&lt;br/&gt;\n</code></pre>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/chatdown.lua",
+    "line": 731,
+    "name": "lua.wetgenes.gamecake.fun.chatdown.text",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua"
+   },
+   {
+    "body": "",
+    "count": 23,
+    "name": "lua.wetgenes.gamecake.fun.yarn"
+   },
+   {
+    "body": "<pre><code>cells = require(&quot;wetgenes.gamecake.fun.yarn.cells&quot;).create(items)\n</code></pre>\n<p>This module contains only one function which can be used to create an \ncells instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/cells.lua",
+    "line": 6,
+    "name": "lua.wetgenes.gamecake.fun.yarn.cells",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/cells.lua"
+   },
+   {
+    "body": "<pre><code>items = require(&quot;wetgenes.gamecake.fun.yarn.items&quot;).create()\n</code></pre>\n<p>This module contains only one function which can be used to create an \nitems instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+    "count": 14,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 6,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>items.cells\n</code></pre>\n<p>We automatically create a cells object bound to this set of items, this \ncells object should be used to define all your custom game cells.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 259,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.cells",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>item = items.create()\nitem = items.create({})\nitem = items.create({},metatable)\n</code></pre>\n<p>Create a single item, optionally pass in a base item table that will be \nturned into a proper item (using setmetatable to add methods). This \nshould always be a new table and will also be returned. If no \nmetatable is provided then items.metatable will be used.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 73,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.create",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>items.pages\n</code></pre>\n<p>We automatically create a pages object bound to this set of items, this \npages object should be used to define all your custom game pages.</p>\n<p>This can be considered a level and you may need multiple pages which \nare moved in and out of items.pages</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 271,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.create_pages",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>item = items.destroy(item)\nitem = item:destroy()\n</code></pre>\n<p>Destroy an item, remove it from the master table dump so it will be \ngarbage collected.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 101,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.destroy",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>child_item = item:find(keyname)\n</code></pre>\n<p>Get the first child item that has a [keyname] value in it. All child \nitems are searched, but this is not recursive.</p>\n<p>returns nil if no child item is found.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 215,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.find",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>big_item = item:get_big()\n</code></pre>\n<p>Get the first big item from this container, returns nil if we do not \ncontain a big item.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 199,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.get_big",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>item = item:insert(parent)\n</code></pre>\n<p>Insert this item into the given parent. Item will automatically be \nremoved from its current parent. If the item is_big then it will be \ninserted into the front of the list otherwise it will go at the end. \nThis is to help with finding big items, since there should only be one \nper container we only have to check the first child.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 173,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.insert",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>for name,tail in items.iterate_dotnames(names) do ... end\n</code></pre>\n<p>Iterator over a names string, start with the full string and cut off \nthe tail on each iteration. This is used for simple inheritance merging \nof named prefabs and rules or anything else.</p>\n<p>Second return value is the tail of the string or the string if not \ntail.</p>\n<p>for example the following input string</p>\n<pre><code>&quot;one.two.three.four&quot;\n</code></pre>\n<p>would get you the following iteration loops, one line per loop</p>\n<pre><code>&quot;one.two.three.four&quot; , &quot;four&quot;\n&quot;one.two.three&quot;      , &quot;three&quot;\n&quot;one.two&quot;            , &quot;two&quot;\n&quot;one&quot;                , &quot;one&quot;\n</code></pre>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 24,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_dotnames",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>for it in item:iterate_parents() do\n    ...\nend\n</code></pre>\n<p>Iterate over the parent chain going upwards. The first iteration is the \nparent of this object and so on.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 128,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.iterate_parents",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>items.metatable\n</code></pre>\n<p>Expose the item metatable so more methods can easily be added.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 59,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.metatable",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>items.prefabs\n</code></pre>\n<p>We automatically create a prefabs object bound to this set of items, this \nprefabs object should be used to define all your custom game prefabs.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 247,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.prefabs",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>item = item:remove()\n</code></pre>\n<p>Remove this item from its parents table or do nothing if the item does \nnot have a parent.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 146,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.remove",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>items.rules\n</code></pre>\n<p>We automatically create a rules object bound to this set of items, this \nrules object should be used to define all your custom game rules.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/items.lua",
+    "line": 235,
+    "name": "lua.wetgenes.gamecake.fun.yarn.items.rules",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua"
+   },
+   {
+    "body": "<pre><code>pages = require(&quot;wetgenes.gamecake.fun.yarn.pages&quot;).create(items)\n</code></pre>\n<p>This module contains only one function which can be used to create an \npages instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/pages.lua",
+    "line": 8,
+    "name": "lua.wetgenes.gamecake.fun.yarn.pages",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/pages.lua"
+   },
+   {
+    "body": "<pre><code>prefabs = require(&quot;wetgenes.gamecake.fun.yarn.prefabs&quot;).create(items)\n</code></pre>\n<p>This module contains only one function which can be used to create an \nprefabs instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+    "count": 2,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/prefabs.lua",
+    "line": 7,
+    "name": "lua.wetgenes.gamecake.fun.yarn.prefabs",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/prefabs.lua"
+   },
+   {
+    "body": "<pre><code>prefab = prefabs:get(name)\nprefab = prefabs:get(name,prefab)\n</code></pre>\n<p>Build and return a table with all prefab values inherited from all its \nparents. Optionally pass in a prefab to override values and also have \nit returned.</p>\n<p>If name doesn&#39;t exist at any level and a table is not passed in then nil \nwill be returned.</p>\n<p>Names are hierarchical, separated by dots, see items.iterate_dotnames</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/prefabs.lua",
+    "line": 44,
+    "name": "lua.wetgenes.gamecake.fun.yarn.prefabs.set",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/prefabs.lua"
+   },
+   {
+    "body": "<pre><code>rules = require(&quot;wetgenes.gamecake.fun.yarn.rules&quot;).create(items)\n</code></pre>\n<p>This module contains only one function which can be used to create an \nrules instance and the rest of this documentation concerns the return \nfrom this create function, not the module itself.</p>\n",
+    "count": 4,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+    "line": 6,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+   },
+   {
+    "body": "<pre><code>item = rules.apply(item,method,...)\n</code></pre>\n<p>item.rules must be a list of rule names and the order in which they should \nbe applied to this item.</p>\n<p>Call the given method in each rule with the item and the remaining arguments.</p>\n<p>If the method returns a value then no more methods will be applied even \nif more rules are listed.</p>\n<p>We always return the passed in item so that calls can be chained.</p>\n<pre><code>item = item:apply(method,...)\n</code></pre>\n<p>This function is inserted into the items.metatable so it can be called \ndirectly from an item.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+    "line": 62,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules.apply",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+   },
+   {
+    "body": "<pre><code>yes = rules.can(item,method)\n</code></pre>\n<p>Returns true if any rule in this item has the given method.</p>\n<pre><code>yes = item:can(method)\n</code></pre>\n<p>This function is inserted into the items.metatable so it can be called \ndirectly from an item.</p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+    "line": 96,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules.can",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+   },
+   {
+    "body": "<pre><code>rule = rules.set(rule)\n</code></pre>\n<p>Set this base rule into the name space using rule.name which must \nbe a string.</p>\n<p>Multiple rules can be applied to an item and each rule will be applied \nin the order listed.</p>\n<p>A rule is a table of named functions that can be applied to an item.</p>\n<pre><code>rule.setup(item)\n</code></pre>\n<p>Must setup the item so that it is safe to call the other rules on it.</p>\n<pre><code>rule.clean(item)\n</code></pre>\n<p>Should cleanup anything that needs cleaning.</p>\n<pre><code>rule.tick(item)\n</code></pre>\n<p>Should perform a single time tick update on the item.\n<br/>\n<br/></p>\n",
+    "count": 1,
+    "file": "../../gamecake/lua/wetgenes/gamecake/fun/yarn/rules.lua",
+    "line": 28,
+    "name": "lua.wetgenes.gamecake.fun.yarn.rules.set",
+    "url": "https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua"
+   }
+  ],
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "docs/.",
+  "body": "<div style=\"width:90%;margin:auto;min-width:960px;\"><div style=\"width:30%;display:inline-block;min-width:320px;vertical-align:top;\">\n\n\t<div style=\"margin:64px 0px;\">\n\t<a style=\"display:block;\" href=\"{_docs_json.dirname}\">/</a>\n\t{_docs:menuwrap}\n\t</div>\n\n</div><div style=\"width:60%;display:inline-block;min-width:640px;\">\n\n\t{_list:wrap}\n\n</div></div>\n",
+  "html": "<html>\n\t<head>\n\t\t<title>{title}</title>\n\t\t<script src=\"coi-serviceworker.js\"></script>\n\t\t<link rel='stylesheet' href='{_docs_json.dirname}/docs.css' />\n\t</head>\n\t<body>{body}</body>\n</html>\n",
+  "menuwrap": "{_it.count>1&&_it:menuwrap_link}",
+  "menuwrap_link": "<a style=\"display:block;\" href=\"{_docs_json.dirname}/{_it.name}\">/{_it.name}</a>",
+  "title": "Welcome to docs!",
+  "wrap": "\n<div style=\"margin:64px 0px;\">\n<h1><a href=\"{_docs_json.dirname}/{_it.name}\">{_it.name}</a></h1>\n<div><a href=\"{_it.url}#L{_it.line}\">{_it.url}</a></div>\n<div>{[[}{_it.body}{]]}</div>\n</div>\n"
+ },
+ "fun": {
+  "_dirname": "{_root}fun",
+  "_filename": "{_root}fun",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "fun/."
+ },
+ "html": {
+  "_dirname": "{_root}html",
+  "_filename": "{_root}html",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "html/."
+ },
+ "index.html": {
+  "_dirname": "{_root}",
+  "_filename": "{_root}index.html",
+  "_flags": {
+   "body": {
+    "form": "markdown",
+    "trim": "ends"
+   },
+   "title": {
+    "trim": "ends"
+   }
+  },
+  "_output_chunkname": "html",
+  "_output_filename": "index.html",
+  "_root": "./",
+  "_site": "{_root}",
+  "_sourcename": "index.^.html",
+  "body": "<div class=\"fun_bits\">\n<pre>\ntitle=\"A small cave full of treasures.\",\nmap=[[\n||000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000||\n||. . . . X . $ . X . $ . X . . . . . . . X . . X . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||\n||. . . . . . . . . . . . . . . . . . . . $ . . $ . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . ? . . . . . . . . . . . . . . . x $ . . x $ . . x $ . . . . . ||\n||================================================--------====--------==================================||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ======||\n||. . . S . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||||||||||||--------====--------==========||\n||. . . . . . . . . . . . . . . . . x $ . . . . . ? . . . . . ||||||||||||. . . . . . . . . . . . . $ . ||\n||. . . . . . . ==========================================================. . . . . . . . . . . . $ . $ ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . $ . ||\n||. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ||\n||======================================================================================================||\n||0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ||\n]],\n}\n</pre>\n<div class=\"fun_about_wrap\">\n    <div class=\"fun_about\">\n        <b>Fun64</b> is a simple game engine designed for single file game sketches.\n    </div>\n    <a class=\"fun_try\" href=\"{_root}pad\">Try it now</a>\n    <div class=\"wasm_notice\">May not work on some mobile browsers</div>\n</div>\n</div>\n<div class=\"wrap max beep\">\n    <a href=\"https://xriss.github.io/fun64/run/beep/index.html?terminal=1\">\n        <span><b>Beep</b> is a simple frequency modulation synthesizer</span>\n    </a>\n</div>\n<div class=\"wrap eg\">\n    <a href=\"https://xriss.github.io/fun64/pad/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fcd4951d249936329a0e08a79c111d17e\" class=\"example\">\n        <img src=\"{_root}data/example_01.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                Hello, World!\n            </span>\n            <span class=\"example_text\">Try out this classic example, tweak some numbers and learn what does what.</span>\n        </span>\n    </a>\n    <a href=\"https://xriss.github.io/fun64/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F90f8c1d2e9cb0b9d307fe68aebb4b9c3\" class=\"example\">\n        <img src=\"{_root}data/example_03.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                Shadertoy\n            </span>\n            <span class=\"example_text\">This example shows how you can use shaders to create an awesome water effect.</span>\n        </span>\n    </a>\n    <a href=\"https://xriss.github.io/fun64/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatform.fun.lua\" class=\"example\">\n        <img src=\"{_root}data/example_04.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                Platform Game\n            </span>\n            <span class=\"example_text\">Use ascii characters to draw new characters and redesign the game map.</span>\n        </span>\n    </a>\n    <a href=\"https://xriss.github.io/fun64/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxriss%2Ffun64%2Fmaster%2Ffun%2Fplatobj.fun.lua\" class=\"example\">\n        <img src=\"{_root}data/example_05.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                NPC Conversation\n            </span>\n            <span class=\"example_text\">Have a go at changing the character conversation choices.</span>\n        </span>\n    </a>\n    <a href=\"https://xriss.github.io/fun64/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2Fe6965fb7b34b9353fd744e223b0f6af6\" class=\"example\">\n        <img src=\"{_root}data/example_02.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                Palette colours\n            </span>\n            <span class=\"example_text\">Listing the Swanky32 colour palette supported by the engine.</span>\n        </span>\n    </a>\n    <a href=\"https://xriss.github.io/fun64/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F0a3b22b101edf1a97fe5b2ca3e865dce\" class=\"example\">\n        <img src=\"{_root}data/example_06.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                Space Shooter\n            </span>\n            <span class=\"example_text\">Create your own twist of the classic invaders style space game.</span>\n        </span>\n    </a>\n    <a href=\"https://xriss.github.io/fun64/?url=https%3A%2F%2Fgist.github.com%2Fxriss%2F18eac9295deb6e51b097334639d6d55c\" class=\"example\">\n        <img src=\"{_root}data/example_07.png\" width=\"1024px\"/>\n        <span class=\"example_text_wrap\">\n            <span class=\"example_text_info\">\n                GIST SKETCH\n            </span>\n            <span class=\"example_text_head\">\n                Starfield shader\n            </span>\n            <span class=\"example_text\">Change the settings of a 2D starfield running in a shader.</span>\n        </span>\n    </a>\n</div>",
+  "title": "Welcome to Fun64"
+ },
+ "js": {
+  "_dirname": "{_root}js",
+  "_filename": "{_root}js",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "js/."
+ },
+ "js/ace": {
+  "_dirname": "{_root}js/ace",
+  "_filename": "{_root}js/ace",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "js/ace/."
+ },
+ "js/ace/snippets": {
+  "_dirname": "{_root}js/ace/snippets",
+  "_filename": "{_root}js/ace/snippets",
+  "_root": "../../../",
+  "_site": "{_root}",
+  "_sourcename": "js/ace/snippets/."
+ },
+ "js/google-code-prettify": {
+  "_dirname": "{_root}js/google-code-prettify",
+  "_filename": "{_root}js/google-code-prettify",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "js/google-code-prettify/."
+ },
+ "js/google-code-prettify/skins": {
+  "_dirname": "{_root}js/google-code-prettify/skins",
+  "_filename": "{_root}js/google-code-prettify/skins",
+  "_root": "../../../",
+  "_site": "{_root}",
+  "_sourcename": "js/google-code-prettify/skins/."
+ },
+ "pad": {
+  "_dirname": "{_root}pad",
+  "_filename": "{_root}pad",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "pad/."
+ },
+ "run": {
+  "_dirname": "{_root}run",
+  "_filename": "{_root}run",
+  "_flags": {
+   "gists": {
+    "form": "json"
+   }
+  },
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "run/.",
+  "gists": [
+   {
+    "md5": "cd4951d249936329a0e08a79c111d17e",
+    "name": "xriss",
+    "title": "Hello World"
+   },
+   {
+    "md5": "e6965fb7b34b9353fd744e223b0f6af6",
+    "name": "xriss",
+    "title": "Palette Dump"
+   },
+   {
+    "md5": "90f8c1d2e9cb0b9d307fe68aebb4b9c3",
+    "name": "xriss",
+    "title": "Shader Toy"
+   }
+  ]
+ },
+ "run/avatar": {
+  "_dirname": "{_root}run/avatar",
+  "_filename": "{_root}run/avatar",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "run/avatar/."
+ },
+ "run/beep": {
+  "_dirname": "{_root}run/beep",
+  "_filename": "{_root}run/beep",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "run/beep/."
+ },
+ "run/beep/index.html": {
+  "_dirname": "{_root}run/beep",
+  "_filename": "{_root}run/beep/index.html",
+  "_flags": {
+   "beep": {
+    "trim": "ends"
+   },
+   "beep_doc": {
+    "trim": "ends"
+   },
+   "html": {
+    "trim": "ends"
+   }
+  },
+  "_output_chunkname": "html",
+  "_output_filename": "run/beep/index.html",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "run/beep/index.^.html",
+  "beep": "<div class=\"beep_wrap\">\n\t<div id=\"gamecake_container\">\n\t\t<canvas id=\"gamecake_canvas\" oncontextmenu=\"event.preventDefault()\" tabindex=\"-1\" onclick=\"this.focus()\"></canvas>\n\t</div><div class=\"log_wrap\">\n\t\t<div class=\"log_head\">Console</div>\n\t\t<pre id=\"gamecake_log\"></pre>\n\t</div>\n\t{beep_doc}\n</div>\n\n\n<script id=\"paint_config\" type=\"text/lua\">\n--<![CDATA[\n\n{\n [\"fat\"]={\n  [\"bloom\"]=1,\n  [\"width\"]=3,\n  [\"escher\"]=0,\n  [\"pickme\"]=4,\n  [\"height\"]=3,\n },\n [\"pix\"]={\n  [\"width\"]=320,\n  [\"height\"]=240,\n  [\"depth\"]=1,\n },\n [\"pal\"]={\n\t0x00000000,\n\t0xff336622,\n\t0xff448822,\n\t0xff66aa33,\n\t0xff66bb77,\n\t0xff66cccc,\n\t0xff5599cc,\n\t0xff5577cc,\n\t0xff445599,\n\t0xff333366,\n\t0xff332244,\n\t0xff442233,\n\t0xff663333,\n\t0xff884433,\n\t0xffbb7766,\n\t0xffeeaa99,\n\t0xffee88bb,\n\t0xffdd6666,\n\t0xffcc3333,\n\t0xffdd5533,\n\t0xffdd7733,\n\t0xffddaa33,\n\t0xffdddd44,\n\t0xff888833,\n\t0xff000000,\n\t0xff222222,\n\t0xff444444,\n\t0xff666666,\n\t0xff888888,\n\t0xffaaaaaa,\n\t0xffcccccc,\n\t0xffffffff,\n }\n}\n\n--]]>\n</script>\n\n<script>\n\n(function () {\n\tvar newlog = function () {\n\t\tvar logger = document.getElementById('gamecake_log');\n\t\tif( logger )\n\t\t{\n\t\t\tfor (var i = 0; i < arguments.length; i++) {\n\t\t\t\tif (typeof arguments[i] == 'object') {\n\t\t\t\t\ts=(JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + \"\\n\";\n\t\t\t\t} else {\n\t\t\t\t\ts=arguments[i] + \"\\n\";\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\tvar sticky=( logger.scrollTop >= (logger.scrollHeight-logger.clientHeight) );\n\t\t\t\n\t\t\tvar t=logger.innerHTML || \"\";\n\t\t\tif(t.length>4096) { t=t.slice(-4096); } // limit\n\t\t\tlogger.innerHTML=t+s;\n\n\t\t\tif(sticky)\n\t\t\t{\n\t\t\t\tlogger.scrollTop=(logger.scrollHeight-logger.clientHeight);\n\t\t\t}\n\t\t}\t\t\n\t}\n//\tconsole.error=newlog;\n\tconsole.warn=newlog;\n\tconsole.log=newlog;\n})();\n\n\n\t\nif (typeof(document.isFullscreen === undefined)) {\n  document.isFullscreen = function() {\n return !((document.fullScreenElement !== undefined && document.fullScreenElement === null) || \n (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || \n (document.mozFullScreen !== undefined && !document.mozFullScreen) || \n (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen));\n  }\n}\n\n\tvar params={};\n\twindow.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,\n\t\tfunction(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );\n\n\t\n\tvar show_progress=function(n)\n\t{\n\t\twindow.show_progress_max=window.show_progress_max || 0;\n\t\tif(window.show_progress_max<n) { window.show_progress_max=n; }\n\t\tvar pct=Math.floor(100*(1-(n/window.show_progress_max)));\n\t\tconsole.log(\"GameCake Loading \"+pct+\"%\");\n\t};\n\n\tvar gamecake_load_cake=function(cakefile)\n\t{\n\t\tvar resize=function(){\n\t\t\tif(!document.isFullscreen())\n\t\t\t{\n\t\t\t\tvar e=document.getElementById(\"gamecake_container\");\n\t\t\t\tvar w=parseFloat(window.getComputedStyle(e).width);\n\t\t\t\tvar h=parseFloat(window.getComputedStyle(e).height);\n\t\t\t\tModule.setCanvasSize(w,h);\n\t\t\t\tif(window.gamecake_post)\n\t\t\t\t{\n\t\t\t\t\tgamecake_post('cmd=lua\\n','require(\"wetgenes.win\").hardcore.resize(nil,'+w+','+h+')');\n\t\t\t\t}\n\t\t\t}\n\t\t};\n\n\t\twindow.addEventListener(\"resize\",function(){setTimeout(resize,500);});\n\t\tModule={};\n\t\tModule.canvas=document.getElementById(\"gamecake_canvas\");\n\t\tModule.canvas_resize=function(){setTimeout(resize,500);};\n\t\tModule.locateFile=function(inurl){\n\t\t\treturn \"../../exe/\"+inurl;\n\t\t};\n\t\tModule.monitorRunDependencies=show_progress;\n\t\tModule.preRun=function(){\n\t\t\tENV.SDL_EMSCRIPTEN_KEYBOARD_ELEMENT = \"gamecake_container\";\n\t\t\tFS.createPreloadedFile('/', \"gamecake.zip\", cakefile, true, false);\n\t\t};\n\n\t\tModule.onRuntimeInitialized=function() {\n\n\t\t\tgamecake_post = Module.cwrap('main_post', 'int', ['string','string']);\n\n\t\t\tgamecake_post('cmd=lua\\n','require(\"wetgenes.win\").emcc_start({})');\n\n/*\n\t\t\tgamecake_post('cmd=lua\\n',\n'local win=require(\"wetgenes.win\")\\n'+\n'local oven=win.oven\\n'+\n'local paint=oven.rebake(oven.modname..\".main_paint\")\\n'+\n'paint.configure( [==['+document.getElementById(\"paint_config\").innerHTML+']==] )\\n');\n*/\t\t\n\t\t\n// create a pulse function and call it every frame\n\t\t\tModule._pulse=function() {\n\t\t\t\tcancelAnimationFrame(Module._pulseid);\n\t\t\t\tif(!Module._pulse) { return; } // in the middle of reboot\n\t\t\t\tModule._pulseid=requestAnimationFrame(Module._pulse);\n\t\t\t\tvar ret=gamecake_post('cmd=lua\\n','return gamecake_pulse()');\n\t\t\t\tif(ret!=0) { cancelAnimationFrame(Module._pulseid); } // stop updating on error\n\t\t\t};\n\t\t\tModule._pulse();\n\n\t\t\tsetTimeout(resize,500); // call resize in a little while\n\t\t};\n\n\t\t(function(d, script) {\n\t\t\tscript = d.createElement('script');\n\t\t\tscript.type = 'text/javascript';\n\t\t\tscript.async = true;\n\t\t\tscript.src = '../../exe/gamecake.js';\n\t\t\td.getElementsByTagName('head')[0].appendChild(script);\n\t\t}(document));\n\t}\n\t\n\tgamecake_load_cake(\"../zips/swanky-beep.zip\");\n\n$(document).keydown(function(event){\n    if(event.keyCode==112){return false;} // disable browsers F1\n    if(event.keyCode==122){return false;} // disable browsers F11\n});\n\n</script>",
+  "beep_doc": "<div class=\"doc_wrap\">\n\t<div class=\"doc_head\">\n\t\t<span><b>Beep</b></span> generates a 48k 16-bit sampled waveform. The highest frequency, 24k and lowest, 0k.\n\t\t<p>Play around with the parameters to create strange beeps and soundscapes.</p>\n\t\t<p>Use the console to copy and paste your creation into the <a href=\"{_root}pad\">FunPad</a>.</p></div>\n\t<div class=\"doc_tit\">\n\t\t<span>Window displays</span>\n\t</div>\n\t<div class=\"doc\">\t\n\t\t<span>Beep</span>\n\t\tSettings for your base waveform. Press play to hear your sound.\n\t</div>\n\t<div class=\"doc\">\t\n\t\t<span>Frequency Modulation</span>\n\t\tDisabled by default. Choose Active to enable the settings in this window. \n\t</div>\n\t<div class=\"doc\">\t\n\t\t<span>Display</span>\n\t\tDisplays the waveform you play. A frame shows 1/60 of a second.\n\t</div>\n\t<div class=\"doc\">\t\n\t\t<span>Filter</span>\n\t\tActive by default. The equalizer lets you adjust the volume of 10 frequency bands.\n\t</div>\n\t<div class=\"doc_tit\">\n\t\t<span>Beep</span>\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Play</span>\n\t\tPlay the frequency of your chosen parameters.<br/>The Console to the right will update itself with the raw code of that frequency.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Square</span>\n\t\tChoose your base waveform. See if you can tell the difference between a square wave and a sine wave.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>C</span>\n\t\tChoose your base frequency. The pitch of the sound gets higher after C.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>4</span>\n\t\tChoose the octave of your base frequency.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Duty</span>\n\t\tAdjust the centrepoint of the waveform. See if you can hear the sound get 'tinnier' when you change the slider.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Sustain Level</span>\n\t\tAdjust the volume of your sound.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Attack</span>\n\t\tAdjust the amount of time to reach peack volume. Time is in seconds.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Decay</span>\n\t\tAdjust the amount of time to decay from peak volume to sustain volume. Time is in seconds.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Sustain</span>\n\t\tAdjust the amount of time spent at sustain volume. Time is in seconds.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Release</span>\n\t\t Adjust the amount of time to fade out from sustain volume. Time is in seconds.\n\t</div>\n\t<div class=\"doc_tit\">\n\t\t<span>Frequency Modulation</span>\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Slide</span>\n\t\tAdjust the frequency of the base waveform over time.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>C3 &lt;- C4 -&gt; C5</span>\n\t\tChoose the note range of your modulator. The first note is at -1 cycle, second note at 0 cycle and third note at 1 cycle.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Waveform, frequency</span>\n\t\tChoose a waveform to modulate the frequency of your base waveform.<br/>There are 16 cycles per second. Adjust these numbers to make your sound warble faster or slower.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>White steps</span>\n\t\tAdjust the number of random value in a single wave cycle. Only applies to Whitenoise.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>White seed</span>\n\t\tAdjust the starting value of the Whitenoise generator. Only applies to Whitenoise.\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Wave rez</span>\n\t\tAdjust the vertical resolution of the waveform, 0 means no adjustment (off).\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Duty</span>\n\t\tAdjust the centrepoint of the modulator to apply to your base waveform.\n\t</div>\n\t<div class=\"doc_tit\">\n\t\t<span>Display</span>\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Slider</span>\n\t\tUse the slider to scroll through the waveform and audio spectrum generated.<br/>\n\t\tThe slider also displays the time of that frame in seconds.\n\t</div>\n\t\n\t<div class=\"doc_tit\">\n\t\t<span>Filter</span>\n\t</div>\n\t<div class=\"doc\">\n\t\t<span>Bands</span>\n\t\tAdjust the volume of each frequency band. 0 is silence and 2 is twice as loud.<br/>\n\t\tDefaults at 1 for each band.\n\t</div>\n</div>",
+  "html": "<html>\n<head>\n\t<title>Swanky Beep</title>\n\t<style>{css}</style>\n\t<script data-pace-options='{ \"eventLag\": false }' src=\"../../js/pace.min.js\"></script>\n\t<script src=\"../../js/jquery-3.1.1.min.js\"></script>\n\t<script src=\"../../js/jquery.splitter.js\"></script>\n\t<link  href=\"../../js/jquery.splitter.css\" type=\"text/css\" rel=\"stylesheet\" />\n\t<script src=\"../../js/ace/ace.js\"></script>\n\t<link rel=\"icon\" type=\"image/png\" href=\"{_root}data/icon_beep.png\" />\n\t<style>\n\t\t\nbody\t\t\t\t{background:#000;}\t\t\n#gamecake_container, .log_wrap\t{display:inline-block; vertical-align:top;}\n\n#gamecake_container {overflow:hidden; width:60%; height:100%;}\n#gamecake_log\t\t{width:100%; height:669px; margin:0; color:#4c4; line-height:18px; font-size:14px; padding:30px 0 0 10px; overflow-y:scroll;}\n\n#gamecake_log::-webkit-scrollbar {width:10px;}\n#gamecake_log::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);}\n#gamecake_log::-webkit-scrollbar-thumb {background-color:#222; outline:1px solid #000;}\n\n.beep_wrap\t\t\t{width:100%; margin:auto; margin-top:60px; background-color:#000;}\n.log_wrap\t\t\t{width:40%; height:700px;}\n.log_head\t\t\t{background-color:#4c4c4c; padding:5px 0 0 10px; height:31px; color:#999; line-height:26px;}\n.doc_wrap\t\t\t{width:1024px; padding:30px 60px 60px 60px; margin:0 auto; color:#FFF;}\n.doc_head\t\t\t{font-size:20px; line-height:30px; padding-bottom:20px;}\n.doc_head a\t\t\t{color:#FFF; font-weight:bold;}\n.doc_head a:hover\t{border-bottom:1px solid #00adff;}\n.doc_head p\t\t\t{margin:10px 0;}\n.doc_head span:before {content:\"\"; background:url(/fun64/data/icon_beep.png)no-repeat center center; width:20px; height:18px; display:inline-block; background-size:contain; margin-right:5px;}\n.doc\t\t\t\t{padding:10px 0; font-size:16px;}\n.doc span\t\t\t{display:block; font-size:20px; padding-bottom:5px; font-weight:bold;}\n.doc_tit\t\t\t{padding:10px 0 10px 20px; margin-bottom:10px; margin-top:20px; font-size:26px; background-color:#48401e; margin-left:-20px; border-radius:20px 0 20px 20px;}\n\n\t</style>\n</head>\n<body>\n\t{navigation}\n\t{beep}\n\t{footer}\n</body>\n</html>"
+ },
+ "run/index.html": {
+  "_dirname": "{_root}run",
+  "_filename": "{_root}run/index.html",
+  "_flags": {
+  },
+  "_output_chunkname": "html",
+  "_output_filename": "run/index.html",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "run/index.^.html",
+  "glink": "<p>\n<a href=\"{_root}pad/?url=https%3A%2F%2Fgist.github.com%2F{_it.name}%2F{_it.md5}\">{_it.title}</a>\n</p>\n",
+  "html": "<html>\n<head>\n\t<title>fun64 gist player</title>\n\t<script src=\"coi-serviceworker.js\"></script>\n\t<script src=\"../exe/jquery.min.js\"></script>\n\t<style>\n.pace .pace-progress { height:4px; background:#88f; position:fixed; z-index:9999; top:0; right:100%; width:100%; }\n.pace-inactive { display:none; }\n.pace { -webkit-pointer-events:none; pointer-events:none; -webkit-user-select:none; -moz-user-select:none; user-select:none; }\n\n*\t\t{box-sizing:border-box;}\nhtml\t{overflow:hidden;}\nbody\t{background:#000; font-family:mono, sans-serif; font-size:16px; line-height:24px; color:#ccc; width:100%; padding:0px; margin:0px;}\nh1\t\t{font-size:4em; font-weight:normal; color:#1400ff;}\nh2\t\t{font-size:2em; font-weight:normal;}\n\na\t\t{color:#88f;}\n\n\t</style>\n</head>\n<body>\n\n\n\t<div id=\"gamecake_div_input\" style=\"width:70%;display:block;margin:256px auto;\" >\n\t\t<div id=\"div_page_url\">\n\t\t\t<p>Paste in the address of a fun64 <a href=\"https://gist.github.com/search?q=fun64+lua\" target=\"_blank\">gist</a> or fun.lua file and press return to run it.</p>\n\t\t\t<input type=text id=\"gamecake_text_input\" style=\"width:100%;font-size:x-large\">\n\t\t\t<p>or use <a href=\"../pad\" >funpad</a> to paste and run any code.</p>\n\t\t\t<p>or try running one of these example gists.</p>\n\t\t\t{gists:glink}\n\t\t</div>\n\t</div>\n\n\t<script type=\"text/javascript\">\n\t\t\n\t\tvar params={};\n\t\twindow.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,\n\t\t\tfunction(str,key,value) { params[decodeURIComponent(key)] = decodeURIComponent(value); } );\n\t\t\n\t\tif(params.url) // redirect to pad for all running now\n\t\t{\n\t\t\twindow.location=\"../pad/?\"+$.param(params);\n\t\t}\n\t\telse\n\t\t{\n\t\t\t$(\"#gamecake_div_input\").show();\n\n\t\t\t$(\"#gamecake_text_input\").keyup(function(e){\n\t\t\t\tif(e.keyCode == 13)\n\t\t\t\t{\n\t\t\t\t\tparams.url=$(\"#gamecake_text_input\").val();\n\t\t\t\t\twindow.location=\"../pad/?\"+$.param(params);\n\t\t\t\t}\n\t\t\t});\n\t\t}\n\t\t\n\t</script>\n\t\n</body>\n</html>\n"
+ },
+ "run/paint": {
+  "_dirname": "{_root}run/paint",
+  "_filename": "{_root}run/paint",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "run/paint/."
+ },
+ "run/zips": {
+  "_dirname": "{_root}run/zips",
+  "_filename": "{_root}run/zips",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "run/zips/."
+ },
+ "wasm": {
+  "_dirname": "{_root}wasm",
+  "_filename": "{_root}wasm",
+  "_root": "../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/."
+ },
+ "wasm/exe": {
+  "_dirname": "{_root}wasm/exe",
+  "_filename": "{_root}wasm/exe",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/."
+ },
+ "wasm/exe/android": {
+  "_dirname": "{_root}wasm/exe/android",
+  "_filename": "{_root}wasm/exe/android",
+  "_root": "../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/."
+ },
+ "wasm/exe/android/include": {
+  "_dirname": "{_root}wasm/exe/android/include",
+  "_filename": "{_root}wasm/exe/android/include",
+  "_root": "../../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/include/."
+ },
+ "wasm/exe/android/lib": {
+  "_dirname": "{_root}wasm/exe/android/lib",
+  "_filename": "{_root}wasm/exe/android/lib",
+  "_root": "../../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/lib/."
+ },
+ "wasm/exe/android/lib/arm64-v8a": {
+  "_dirname": "{_root}wasm/exe/android/lib/arm64-v8a",
+  "_filename": "{_root}wasm/exe/android/lib/arm64-v8a",
+  "_root": "../../../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/lib/arm64-v8a/."
+ },
+ "wasm/exe/android/lib/armeabi-v7a": {
+  "_dirname": "{_root}wasm/exe/android/lib/armeabi-v7a",
+  "_filename": "{_root}wasm/exe/android/lib/armeabi-v7a",
+  "_root": "../../../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/lib/armeabi-v7a/."
+ },
+ "wasm/exe/android/lib/x86": {
+  "_dirname": "{_root}wasm/exe/android/lib/x86",
+  "_filename": "{_root}wasm/exe/android/lib/x86",
+  "_root": "../../../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/lib/x86/."
+ },
+ "wasm/exe/android/lib/x86_64": {
+  "_dirname": "{_root}wasm/exe/android/lib/x86_64",
+  "_filename": "{_root}wasm/exe/android/lib/x86_64",
+  "_root": "../../../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/android/lib/x86_64/."
+ },
+ "wasm/exe/osx": {
+  "_dirname": "{_root}wasm/exe/osx",
+  "_filename": "{_root}wasm/exe/osx",
+  "_root": "../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/osx/."
+ },
+ "wasm/exe/x32": {
+  "_dirname": "{_root}wasm/exe/x32",
+  "_filename": "{_root}wasm/exe/x32",
+  "_root": "../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/x32/."
+ },
+ "wasm/exe/x64": {
+  "_dirname": "{_root}wasm/exe/x64",
+  "_filename": "{_root}wasm/exe/x64",
+  "_root": "../../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/exe/x64/."
+ },
+ "wasm/js": {
+  "_dirname": "{_root}wasm/js",
+  "_filename": "{_root}wasm/js",
+  "_root": "../../",
+  "_site": "{_root}",
+  "_sourcename": "wasm/js/."
+ }
+}

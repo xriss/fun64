@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>GameCake</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.split {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	height: 100%;
+	width: 100%;
+	background-color: #000;
+}
+
+.gutter {
+	cursor: row-resize;
+	background-color: #111;
+}
+
+#gamecake {
+	background-color: #000;
+	overflow:hidden;
+}
+
+#terminal {
+	color: #080;
+	background-color: #000;
+	overflow: auto;
+	font-family: monospace;
+	white-space: pre;
+}
+
+</style>
+
+<script type="text/javascript" src="coi-serviceworker.js"></script>
+<script type="text/javascript" src="js/split.js"></script>
+<script type="text/javascript" src="js/gamecake_loader.js"></script>
+
+<script>
+
+	let msg={urlopts:true} // read opts from url
+	
+	console.log( msg )
+
+// make sure the page has finished loaded before we do anything
+
+;(function(callback){
+  if (document.readyState != "loading") { callback(); }
+  else { document.addEventListener("DOMContentLoaded", callback); }
+})(async function(){
+
+	if(msg.terminal) // display terminal
+	{
+
+		Split(['#gamecake', '#terminal'],{
+			direction: 'vertical',
+			sizes:[90,10],
+			minSize:[20,20],
+			gutterSize:4,
+			onDragEnd:function(){
+				gamecake.resize()
+			},
+		})
+
+	}
+	else
+	{
+		document.querySelector( "#terminal" ).style.display = "none"
+	}
+	
+	gamecake=await gamecake_loader(msg);
+
+});
+
+</script>
+
+</head>
+<body class="split"><div id="gamecake" style="width:100%;height:100%;" ></div><div id="terminal"></div></body>
+</html>

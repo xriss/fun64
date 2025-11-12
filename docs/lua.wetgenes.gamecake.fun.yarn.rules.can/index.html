@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -16,8 +17,12 @@
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.rules.can">lua.wetgenes.gamecake.fun.yarn.rules.can</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua#L96">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/rules.lua</a></div>
-<div><pre><code>yes = rules.can(item,method)</code></pre><p>Returns true if any rule in this item has the given method.</p>
-<pre><code>yes = item:can(method)</code></pre><p>This function is inserted into the items.metatable so it can be called 
+<div><pre><code>yes = rules.can(item,method)
+</code></pre>
+<p>Returns true if any rule in this item has the given method.</p>
+<pre><code>yes = item:can(method)
+</code></pre>
+<p>This function is inserted into the items.metatable so it can be called 
 directly from an item.</p>
 </div>
 </div>

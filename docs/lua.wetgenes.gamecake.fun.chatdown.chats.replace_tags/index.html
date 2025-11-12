@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -16,7 +17,9 @@
 <div style="margin:64px 0px;">
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags">lua.wetgenes.gamecake.fun.chatdown.chats.replace_tags</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua#L639">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/chatdown.lua</a></div>
-<div><pre><code>output = chats:replace_tags(input,subject_name)</code></pre><p>Tags in the input text can be wrapped in {tag_name} and will be 
+<div><pre><code>output = chats:replace_tags(input,subject_name)
+</code></pre>
+<p>Tags in the input text can be wrapped in {tag_name} and will be 
 replaced with the appropriate tag_value. This is done recursively so 
 tag_values can contain references to other tags. If a tag does not 
 exist then it will not expand and {tag_name} will remain in the output 

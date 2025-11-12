@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -17,7 +18,9 @@
 <h1><a href="../../docs/lua.wetgenes.gamecake.fun.yarn.prefabs.set">lua.wetgenes.gamecake.fun.yarn.prefabs.set</a></h1>
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/prefabs.lua#L44">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/prefabs.lua</a></div>
 <div><pre><code>prefab = prefabs:get(name)
-prefab = prefabs:get(name,prefab)</code></pre><p>Build and return a table with all prefab values inherited from all its 
+prefab = prefabs:get(name,prefab)
+</code></pre>
+<p>Build and return a table with all prefab values inherited from all its 
 parents. Optionally pass in a prefab to override values and also have 
 it returned.</p>
 <p>If name doesn&#39;t exist at any level and a table is not passed in then nil 

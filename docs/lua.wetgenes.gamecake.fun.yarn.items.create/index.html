@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -18,7 +19,9 @@
 <div><a href="https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua#L73">https://github.com/xriss/gamecake/blob/master/lua/wetgenes/gamecake/fun/yarn/items.lua</a></div>
 <div><pre><code>item = items.create()
 item = items.create({})
-item = items.create({},metatable)</code></pre><p>Create a single item, optionally pass in a base item table that will be 
+item = items.create({},metatable)
+</code></pre>
+<p>Create a single item, optionally pass in a base item table that will be 
 turned into a proper item (using setmetatable to add methods). This 
 should always be a new table and will also be returned. If no 
 metatable is provided then items.metatable will be used.</p>

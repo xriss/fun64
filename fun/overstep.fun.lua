@@ -54,7 +54,7 @@ hardware.insert{
 	over_size={0,16},
 	sort={-1,-1},
 	mode="xz",
-	layer=2,
+	layer=1,
 }
 
 entities=require("wetgenes.gamecake.fun.entities").create({
@@ -2603,10 +2603,11 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 		if not menu.active then return end
 		if menu.skip_update then menu.skip_update=nil return end
 		
-		local up0=ups(0)
+		local up=ups(0)
 		
-		local mx=up0.axis("mx") -- get mouse position, it will be nil if no mouse
-		local my=up0.axis("my")
+--[[
+		local mx=up.axis("vx") or 0 -- get mouse position, it will be nil if no mouse
+		local my=up.axis("vy") or 0
 		
 		if mx~=menu.mx or my~=menu.my then -- mouse movement
 			menu.mx=mx
@@ -2622,12 +2623,13 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 				end
 			end
 		end
+]]
 
-		if up0.button("b_clr") then
+		if up.button("b_clr") then
 
 			menu.show()
 
-		elseif up0.button("fire_clr") then
+		elseif up.button("fire_clr") then
 
 			for i,item in ipairs(menu.items) do
 			
@@ -2648,14 +2650,14 @@ b b b b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b b b b
 			end
 		end
 		
-		if up0.button("left_set") or up0.button("up_set") then
+		if up.button("left_set") or up.button("up_set") then
 		
 			menu.cursor=menu.cursor-1
 			if menu.cursor<1 then menu.cursor=menu.items.cursor_max end
 
 		end
 		
-		if up0.button("right_set") or up0.button("down_set") then
+		if up.button("right_set") or up.button("down_set") then
 			
 			menu.cursor=menu.cursor+1
 			if menu.cursor>menu.items.cursor_max then menu.cursor=1 end
@@ -4856,29 +4858,21 @@ entities.systems.insert{ caste="yarn",
 	if not entities.systems.menu.active then
 
 		local up=ups(0) -- get all connected controls, merged together
-		local up1=ups(1)
-		local up3=ups(3)
 		
+--[[
 		if	up.button("mouse_left_set") or
 			up.button("mouse_middle_set") or
 			up.button("mouse_right_set") then it.input_mode="mouse" end
-
-		if	up1.button("up_set") or
-			up1.button("down_set") or
-			up1.button("left_set") or
-			up1.button("right_set") then it.input_mode="keys" end
-
-		if	up3.button("up_set") or
-			up3.button("down_set") or
-			up3.button("left_set") or
-			up3.button("right_set") or
-			up3.button("fire_set") then it.input_mode="pad" end
-
+]]
+		if	up.button("up_set") or
+			up.button("down_set") or
+			up.button("left_set") or
+			up.button("right_set") then it.input_mode="pad" end
 
 		if it.input_mode=="mouse" then
 
-			local mx=up.axis("mx") -- get mouse position, it will be nil if no mouse
-			local my=up.axis("my")
+			local mx=up.axis("vx") or 0 -- get mouse position, it will be nil if no mouse
+			local my=up.axis("vy") or 0
 
 			if	up.button("mouse_left_clr") and it.cursor then -- move
 
@@ -4930,7 +4924,7 @@ entities.systems.insert{ caste="yarn",
 		
 		end
 
-		if it.input_mode=="pad" then
+		if it.input_mode=="key" then
 
 			local lx=up.axis("lx") -- get left joystick
 			local ly=up.axis("ly")
@@ -4969,10 +4963,10 @@ entities.systems.insert{ caste="yarn",
 
 		local vx,vy=0,0 -- check keys or dpad movement
 
-		if up.button("pad_up_clr")		then vy=-1 end
-		if up.button("pad_down_clr")	then vy= 1 end
-		if up.button("pad_left_clr")	then vx=-1 end
-		if up.button("pad_right_clr")	then vx= 1 end
+		if up.button("up_clr")		then vy=-1 end
+		if up.button("down_clr")	then vy= 1 end
+		if up.button("left_clr")	then vx=-1 end
+		if up.button("right_clr")	then vx= 1 end
 		
 		if not ( vx==0 and vy==0 ) then
 --print("moving",vx,vy)

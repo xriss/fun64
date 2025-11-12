@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -21,10 +22,14 @@
 chats.changes(chat,&quot;subject&quot;)
 chats.changes(chat,&quot;topic&quot;,topic)
 chats.changes(chat,&quot;goto&quot;,goto)
-chats.changes(chat,&quot;tag&quot;,tag_name,tag_value)</code></pre><p>This is a callback hook, replace to be notified of changes and possibly 
+chats.changes(chat,&quot;tag&quot;,tag_name,tag_value)
+</code></pre>
+<p>This is a callback hook, replace to be notified of changes and possibly 
 alter then, by default we print debuging information. Replace this 
 function with an empty function to prevent this eg</p>
-<pre><code>chats.changes=function()end</code></pre></div>
+<pre><code>chats.changes=function()end
+</code></pre>
+</div>
 </div>
 
 

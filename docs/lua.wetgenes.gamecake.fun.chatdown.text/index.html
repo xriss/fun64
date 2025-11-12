@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome to docs!</title>
+		<script src="coi-serviceworker.js"></script>
 		<link rel='stylesheet' href='../../docs/docs.css' />
 	</head>
 	<body><div style="width:90%;margin:auto;min-width:960px;"><div style="width:30%;display:inline-block;min-width:320px;vertical-align:top;">
@@ -31,13 +32,13 @@ What follows is a list of these characters and a brief description
 about the parser state they switch to.
 
     1. - (text to ignore)
-
+    
         A single line comment that does not change parser state and 
         only this line will be ignored so it can be inserted inside 
         other chunks without losing our place.
 
     2. -- (text to ignore)
-
+    
         Begin a comment chunk, this line and all lines that follow this 
         line will be considered comments and ignored until we switch to 
         a new parser state.
@@ -46,68 +47,68 @@ about the parser state they switch to.
 
         Begin a new subject chunk, all future topic,goto or tag chunks will 
         belong to this subject.
-
+        
         The text that follows this until the next chunk is the long 
         description intended for when you examine the character.
-
+        
         Although it makes sense for a subject chunk to belong to one 
         character it could also a group conversation with tags being 
         set to change the current talker as the conversation flows.
-
+        
         subject names have simple cascading inheritance according to their 
         name with each level separated by a dot. A chunk named a.b.c 
         will inherit data from any chunks defined for a.b and a in that 
         order of priority.
 
     4. &gt;topic_name
-
+    
         Begin a topic chunk, all future goto or tag chunks will belong 
         to this topic, the lines that follow are how the character 
         responds when questioned about this topic followed by one or 
         more gotos as possible responses that will lead you onto 
         another topic.
-
+        
         Topics can be broken into parts, to create a pause, by using an 
         unnamed goto followed by an unnamed topic which will both 
         automatically be given the same generated name and hence linked 
         together.
-
+        
     5. &lt;goto_topic_name
-
+    
         Begin a goto chunk, all future tag chunks will belong to this 
         goto, this is probably best thought of as a question that will 
         get a reply from the character. This is a choice made by the 
         player that causes a logical jump to another topic.
-
+        
         Essentially this means GOTO another topic and there can be 
         multiple GOTO options associated with each topic which the 
         reader is expected to choose between.
-
+        
     6. =set_tag_name to this value
-
+    
         If there is any text on the rest of this line then it will be 
         assigned to the tag without changing the current parse state so 
         it can be used in the middle of another chunk without losing 
         our place.
-
+        
         This single line tag assignment is usually all you need. 
         Alternatively, if there is no text on the rest of this first 
         line, only white space, then the parse state will change and 
         text on all following lines will be assigned to the named tag.
-
+        
         This assignment can happen at various places, for instance if 
         it is part of the subject then it will be the starting 
         value for a tag but if it is linked to a topic or goto then the 
         value will be a change as the conversation happens. In all 
         cases the tags are set in a single batch as the state changes 
         so the placement and order makes no difference.
-
+        
         Tags can be used inside text chunks or even GOTO labels by 
         tightly wrapping with {} eg {name} would be replaced with the 
         value of name. Tags from other subjects can be referenced by 
         prefixing the tag name with the subject name followed by a forward 
         slash like so {subject/tag}
-
+                
 
 The hierarchy of these chunks can be expressed by indentation as all 
 white space is ignored and combined into a single space. Each SUBJECT will 
@@ -146,7 +147,8 @@ aa.bb or aa.
 In practise this means
 &lt;br/&gt;
 &lt;br/&gt;
-</code></pre></div>
+</code></pre>
+</div>
 </div>
 
 
