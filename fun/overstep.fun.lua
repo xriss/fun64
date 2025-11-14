@@ -54,7 +54,7 @@ hardware.insert{
 	over_size={0,16},
 	sort={-1,-1},
 	mode="xz",
-	layer=1,
+	layer=2,
 }
 
 entities=require("wetgenes.gamecake.fun.entities").create({
