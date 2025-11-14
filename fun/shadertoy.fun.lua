@@ -184,7 +184,7 @@ update=function()
 -- test text
 	local tx=[[
     Fun is the enjoyment of pleasure, particularly in leisure activities. Fun is an experience - short-term, often unexpected, informal, not cerebral and generally purposeless. It is an enjoyable distraction, diverting the mind and body from any serious task or contributing an extra dimension to it. Although particularly associated with recreation and play, fun may be encountered during work, social functions, and even seemingly mundane activities of daily living. It may often have little to no logical basis, and opinions on whether or not an activity is fun may differ. A distinction between enjoyment and fun is difficult but possible to articulate, fun being a more spontaneous, playful, or active event. There are psychological and physiological implications to the experience of fun.]]
-	local tl=wstr.smart_wrap(tx,system.components.text.text_hx)
+	local tl=wstr.smart_wrap(tx,system.components.text.text_hx-1)
 	for i=0,system.components.text.tilemap_hy-1 do
 		local t=tl[i+1]
 		if not t then break end
@@ -207,6 +207,12 @@ end
 
 
 #shader "fun_copper_back_wave"
+
+#version 100
+#version 120
+#ifdef VERSION_ES
+precision mediump float;
+#endif
 
 #ifdef VERTEX_SHADER
 
